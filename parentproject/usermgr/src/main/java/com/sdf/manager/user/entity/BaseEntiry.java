@@ -51,6 +51,8 @@ public class BaseEntiry {
 			this.modify = modify;
 		}
 
+		
+
 		public Date getCreaterTime() {
 			return createrTime;
 		}

@@ -3,7 +3,7 @@
     
     
     <%--全局引入的css文件 --%>
-	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/js/easyUI/themes/default/easyui.css"/>    
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/js/easyUI/themes/bootstrap/easyui.css"/>    
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/js/easyUI/themes/icon.css"/>    
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/css/default.css"/>    
     
@@ -198,6 +198,20 @@
           }
         },
         message:'请输入0到1000之间的最多俩位小数的数字'
-      }
+      },
+      md: { //校验有效结束时间要大于有效开始时间的方法
+			validator: function(value, param){ 
+			var startTime2 = $(param[0]).datetimebox('getValue'); 
+			var d1 = $.fn.datebox.defaults.parser(startTime2); 
+			var d2 = $.fn.datebox.defaults.parser(value); 
+			varify=d2>=d1; 
+			return varify; 
+		
+			}, 
+			message: '结束时间要大于等于开始时间！' 
+		} 
+      
       });
+	
+	
 </script>

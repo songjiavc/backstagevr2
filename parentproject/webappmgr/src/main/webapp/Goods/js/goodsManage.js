@@ -995,6 +995,7 @@ function deleteGoodsList(operaType)
 						{
 							$.messager.alert('提示',"当前待删除商品编码为:"+rows[i].code+"已被购买,不可进行删除操作!");
 							deleteFlag = false;
+							break;
 						}
 			}
 	}

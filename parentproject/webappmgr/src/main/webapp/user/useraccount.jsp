@@ -13,6 +13,7 @@
 	  	    text:'添加',
 	  	    iconCls:'icon-add',
 	  	    handler:function(){
+	  	    	initProvince('add','privinceA','');//默认选中全部，则全部下是没有市数据的
 	  	    	$("#addAccount").dialog('open');
 	  	    }
 	  	},{
@@ -24,20 +25,35 @@
 	  	}];
 	</script>
 	 <style type="text/css" scoped="scoped">
-	  		.ftitle{
+	  	 .ftitle{
 	  			width:100%;
+	  			float : left;
 	  			margin-bottom: 20px;
 	  			font-family:'微软雅黑',
 	  		}
 	  		.ftitle label{
+	  			float : left;
 	  			margin-left: 30px;
+	  			width:100px;
+	  		}
+	  		.ftitle .textbox{
+	  			float : left;
+	  			width: 200px;
+	  			margin-left: 30px;
+	  			border-radius : 5px;
 	  		}
 	  		
-	  		.ftitle .textbox{
-	  			margin-right: 50px;
-	  			float : right;
-	  			width: 200px;
+	  		
+	  		.td_font{
+	  			font-weight:bold;
 	  		}
+	  		
+	  		.input_border{
+	  			width:150px;
+	  			border-radius : 5px;
+	  		}
+	  		
+	  		#main-layout{     min-width:1050px;     min-height:240px;     overflow:hidden; }
 	  	</style>
 </head>
 <body>
@@ -45,7 +61,7 @@
 	<table id="accountDataGrid" class="easyui-datagrid" title="用户列表" 
 			data-options="toolbar:toolbar" ></table>
 	    <!-- 添加权限弹框 -->
-  	<div id="addAccount" class="easyui-dialog" title="添加用户" style="width:480px;height:350px;padding:10px;"
+  	<div id="addAccount" class="easyui-dialog" title="添加用户" style="width:500px;height:400px;padding:10px;top:40px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -85,6 +101,19 @@
 	            <label for="confirmPassword" >确认密码:</label>
 	            <input class="easyui-validatebox textbox" type="password" name ="confirmPassword"  data-options="required:true" validType="equalTo['#password']" invalidMessage="两次输入密码不匹配"></input>
 	        </div>
+	         <div class="ftitle">
+	            <label for="subject">用户地域:</label>
+	            <div style="">
+	           		<!-- <label for="privinceA">省:</label> -->
+		            <select class="easyui-combobox " id="privinceA" name="province"  
+		          	  data-options="editable:false" style="width:100px;" >
+					</select>
+					<!-- <label for="cityA">市:</label> -->
+					<select class="easyui-combobox " id="cityA" name="city"  
+		          	  data-options="editable:false" style="width:100px;" >
+					</select>
+	            </div>
+	        </div>
 	       	 <div class="ftitle">
 	            <label for="status">是否启用:</label>
 	            <div style="float:right;margin-right: 40%;">
@@ -95,7 +124,7 @@
           </form>
      </div>  
      <!-- 修改权限弹框 -->
-    <div id="updateAccount" class="easyui-dialog" title="修改用户" style="width:480px;height:350px;padding:10px;"
+    <div id="updateAccount" class="easyui-dialog" title="修改用户" style="width:500px;height:400px;padding:10px;"
             data-options=" 
                 iconCls: 'icon-save',
                 buttons: [{
@@ -135,6 +164,19 @@
 	        <div class="ftitle">
 	            <label for="confirmPassword" >确认密码:</label>
 	            <input class="easyui-validatebox textbox" type="password" name ="confirmPassword"  data-options="required:true"></input>
+	        </div>
+	          <div class="ftitle">
+	            <label for="subject">用户地域:</label>
+	            <div style="">
+	           		<!-- <label for="privinceA">省:</label> -->
+		            <select class="easyui-combobox " id="privinceU" name="province"  
+		          	  data-options="editable:false" style="width:100px;" >
+					</select>
+					<!-- <label for="cityA">市:</label> -->
+					<select class="easyui-combobox " id="cityU" name="city"  
+		          	  data-options="editable:false" style="width:100px;" >
+					</select>
+	            </div>
 	        </div>
           	<div class="ftitle">
 	            <label for="status">是否启用:</label>

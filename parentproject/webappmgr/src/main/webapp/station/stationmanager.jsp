@@ -7,7 +7,8 @@
 	  
 	<jsp:include page="../common/top.jsp" flush="true" /> 
     <script type="text/javascript" src="<%=request.getContextPath() %>/station/js/stationManager.js"></script>  
-    <script type="text/javascript" src="<%=request.getContextPath() %>/station/js/setOrder.js"></script>  
+    <script type="text/javascript" src="<%=request.getContextPath() %>/station/js/setOrder.js"></script><!-- 通行证购买商品js -->  
+     <script type="text/javascript" src="<%=request.getContextPath() %>/station/js/connectApps.js"></script><!-- 通行证和应用版本做关联js -->  
     <script type="text/javascript">
     var initParam = {
     		agentId : '<%=request.getAttribute("userId")%>',
@@ -150,6 +151,29 @@
 		<table id="stationDataGrid" class="easyui-datagrid" title="站点列表"  data-options="toolbar:toolbar" >
 		</table>
 	</div>
+	
+	<!-- 通行证应用版本配置弹框 -->
+  <div id="w" class="easyui-dialog" title="通行证应用版本配置" style="width:700px;height:600px;padding:0px"
+            data-options="
+                iconCls: 'icon-save',
+                buttons: [{
+                    text:'取消',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        $('#w').dialog('close');
+                    }
+                }]
+            ">
+       		<div class="easyui-layout" style="height:100%;padding:0;" >
+	    	 	<div region="north" style="height:50%;" hide="false">
+	    	 		<table id="appGoumai" class="easyui-datagrid" style="width:100%;height:95%;"  title="可以购买的付费应用列表" ></table>
+	    	 	</div>
+	    	 	<div region="center" style="height:50%;padding:0;" >
+	    	 		<table id="appXufei" class="easyui-datagrid" style="width:100%;height:95%;"  title="正在使用的付费应用列表" ></table>
+	    	 	</div>
+    		</div>
+    </div>
+	
 	    <!-- 添加站点 -->
   	<div id="addOrUpdateStation" class="easyui-dialog" title="站点编辑" style="width:480px;height:530px;padding:20px;"
             data-options="

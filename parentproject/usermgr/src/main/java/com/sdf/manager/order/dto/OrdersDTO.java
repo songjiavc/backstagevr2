@@ -13,8 +13,10 @@ public class OrdersDTO {
 	private String name;
 	private String code;//产品编码
 	private String provinceDm;//省份
-	private String price;//总价
+	private String price;//成交价格
 	private String stationId;//站点号码：关联用户表的站点类数据
+	
+	private String stationCode;//站点编码
 	
 	
 	private String status;//订单状态
@@ -39,11 +41,79 @@ public class OrdersDTO {
 	
 	private String creater;
 	
+	private String appId;
+	
+	private String appName;
+	
+	private String userYear;
+	
+	private String userYearName;
+	
+	private String appprovince;
+	
+	private String appCity;
 	
 	
 	
 	
 	
+	
+
+	public String getAppprovince() {
+		return appprovince;
+	}
+
+	public void setAppprovince(String appprovince) {
+		this.appprovince = appprovince;
+	}
+
+	public String getAppCity() {
+		return appCity;
+	}
+
+	public void setAppCity(String appCity) {
+		this.appCity = appCity;
+	}
+
+	public String getStationCode() {
+		return stationCode;
+	}
+
+	public void setStationCode(String stationCode) {
+		this.stationCode = stationCode;
+	}
+
+	public String getAppId() {
+		return appId;
+	}
+
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+
+	public String getAppName() {
+		return appName;
+	}
+
+	public void setAppName(String appName) {
+		this.appName = appName;
+	}
+
+	public String getUserYear() {
+		return userYear;
+	}
+
+	public void setUserYear(String userYear) {
+		this.userYear = userYear;
+	}
+
+	public String getUserYearName() {
+		return userYearName;
+	}
+
+	public void setUserYearName(String userYearName) {
+		this.userYearName = userYearName;
+	}
 
 	public String getCreater() {
 		return creater;

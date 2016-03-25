@@ -119,6 +119,26 @@ public class OrderServiceImpl implements OrderService {
 				dto.setStatusName(statusName);
 			}
 			
+			if(null != entity.getApp())
+			{
+				dto.setAppId(entity.getApp().getId());
+				dto.setAppName(entity.getApp().getAppName());
+				dto.setAppprovince(entity.getApp().getProvince());
+				dto.setAppCity(entity.getApp().getCity());
+			}
+			
+			if(null != entity.getUserYearDiscount())
+			{
+				dto.setUserYear(entity.getUserYearDiscount().getId());
+				dto.setUserYearName(entity.getUserYearDiscount().getUserYearName());
+			}
+			
+			if(null != entity.getStation())
+			{
+				dto.setStationId(entity.getStation().getId());
+				dto.setStationCode(entity.getStation().getCode());
+			}
+			
 			
 			
 		} catch (Exception e) {

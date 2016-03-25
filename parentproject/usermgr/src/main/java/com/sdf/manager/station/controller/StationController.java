@@ -1,5 +1,6 @@
 package com.sdf.manager.station.controller;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -19,6 +20,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sdf.manager.app.entity.App;
+import com.sdf.manager.app.service.AppService;
+import com.sdf.manager.appversion.dto.AppversionDTO;
+import com.sdf.manager.appversion.entity.Appversion;
+import com.sdf.manager.appversion.entity.RelaBsCurAppverAndSta;
+import com.sdf.manager.appversion.service.AppversionService;
+import com.sdf.manager.appversion.service.RelaBsCurAvSService;
 import com.sdf.manager.common.bean.ResultBean;
 import com.sdf.manager.common.exception.BizException;
 import com.sdf.manager.common.util.Constants;
@@ -59,6 +67,15 @@ public class StationController {
 	
 		@Autowired
 		private CityService cityService;
+		
+		@Autowired
+		private AppversionService appversionService;
+		
+		@Autowired
+		private AppService appService;
+		
+		@Autowired
+		private RelaBsCurAvSService relaBsCurAvSService;
 	 
 	 	/** 
 	 	  * @Description: 站点管理菜单入口
@@ -294,7 +311,7 @@ public class StationController {
 	}
 	
 	
-	private List<StationDto> toDtos(List<Station> stations){
+	public List<StationDto> toDtos(List<Station> stations){
 		List<StationDto> dtoList = new ArrayList<StationDto>();
 		for(Station station : stations){
 			StationDto stationDto = new StationDto();
@@ -304,7 +321,7 @@ public class StationController {
 		return dtoList;
 	}
 	
-	private StationDto toDto(	Station station){
+	public StationDto toDto(	Station station){
 		StationDto stationDto = new StationDto();
 		stationDto.setId(station.getId());
 		stationDto.setStationCode(station.getCode());
@@ -338,4 +355,115 @@ public class StationController {
 		}
 		return stationDto;
 	}
+	
+	/**
+	 * 
+	* @Title: getAppversOfStation
+	* @Description: TODO:获取当前通行证拥有的应用版本权限
+	* @Author : banna
+	* @param @param id
+	* @param @param model
+	* @param @param httpSession
+	* @param @return
+	* @param @throws Exception    设定文件
+	* @return List<AppversionDTO>    返回类型
+	* @throws
+	 */
+	@RequestMapping(value = "/getAppversOfStation", method = RequestMethod.GET)
+	public @ResponseBody List<AppversionDTO> getAppversOfStation(
+			@RequestParam(value="id",required=true) String id,
+			ModelMap model,HttpSession httpSession) throws Exception
+	{
+		List<AppversionDTO> appversionDTOs = new ArrayList<AppversionDTO>();
+		
+		Station station = stationService.getSationById(id);
+		
+		List<RelaBsCurAppverAndSta> relaBsCurAppverAndStas = station.getRelaBsCurAppverAndStas();
+		
+		List<Appversion> appversions = new ArrayList<Appversion>();
+		for (RelaBsCurAppverAndSta relaBsCurAppverAndSta : relaBsCurAppverAndStas) {
+		
+			appversions.add(relaBsCurAppverAndSta.getAppversion());
+		}
+		
+		appversionDTOs = appversionService.toRDTOS(appversions);
+		
+		
+		return appversionDTOs;
+	}
+	
+	@RequestMapping(value = "/connectAppVersions", method = RequestMethod.GET)
+	public @ResponseBody ResultBean getAppversOfStation(
+			@RequestParam(value="id",required=true) String id,//关联的通行证id
+			@RequestParam(value="appversions",required=true) String[] appversions,//待关联的应用版本信息
+			ModelMap model,HttpSession httpSession) throws Exception
+	{
+		ResultBean resultBean = new ResultBean();
+		
+		List<Appversion> appversionsList = new ArrayList<Appversion>();
+		//整理关联的应用版本数据，去除应用数据
+		for (String appversionId : appversions) {
+			
+			Appversion appversion = appversionService.getAppversionById(appversionId);
+			
+			if(null != appversion)
+			{
+				appversionsList.add(appversion);
+			}
+			
+		}
+		
+		
+		
+		for (Appversion appversion : appversionsList) {
+			
+			String appId = appversion.getApp().getId();//获取当前应用版本的所属应用id
+			
+			App app = appService.getAppById(appId);
+			
+			Station station  = stationService.getSationById(id);//根据id获取当前通行证的信息
+			
+			//1.放入“当前通行证使用版本记录表”
+			RelaBsCurAppverAndSta rcur = relaBsCurAvSService.getRelaBsCurAppverAndStaByStationIdAndAppId(id, appId);
+			
+			if(null != rcur)
+			{//当前通行证之前使用过这个应用的其他版本
+				rcur.setAppversion(appversion);
+				rcur.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
+				rcur.setModifyTime(new Timestamp(System.currentTimeMillis()));
+			}
+			else
+			{
+				rcur = new RelaBsCurAppverAndSta();
+				rcur.setApp(app);
+				rcur.setAppversion(appversion);
+				rcur.setStation(station);
+				rcur.setSerialNum("0");
+				rcur.setCreater(LoginUtils.getAuthenticatedUserCode(httpSession));
+				rcur.setCreaterTime(new Timestamp(System.currentTimeMillis()));
+				rcur.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
+				rcur.setModifyTime(new Timestamp(System.currentTimeMillis()));
+				rcur.setIsDeleted("1");//有效数据标记位
+			}
+			
+			
+			
+			//2.放入“历史通行证使用版本记录表”
+		}
+		
+		
+		
+		
+		return resultBean;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

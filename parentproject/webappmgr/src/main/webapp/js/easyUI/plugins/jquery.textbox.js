@@ -1,10 +1,10 @@
 /**
- * jQuery EasyUI 1.4.2
+ * jQuery EasyUI 1.4.4
  * 
  * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
- * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
- * To use it on other terms please contact us at info@jeasyui.com
+ * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
+ * To use it on other terms please contact us: info@jeasyui.com
  *
  */
 (function($){
@@ -309,10 +309,11 @@ $(this).textbox("setValue","");
 return jq.each(function(){
 var _43=$(this).textbox("options");
 var _44=$(this).textbox("textbox");
+_42=_42==undefined?"":String(_42);
 if($(this).textbox("getText")!=_42){
-_43.value=_42;
 _44.val(_42);
 }
+_43.value=_42;
 if(!_44.is(":focus")){
 if(_42){
 _44.removeClass("textbox-prompt");

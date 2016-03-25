@@ -28,6 +28,16 @@ public interface StationRepository extends GenericRepository<Station, String>  {
 	
 	/**
 	 * 
+	 * @Title: getStationById
+	 * @Description: 根据id获取通行证数据
+	 * @author:banna
+	 * @return: Station
+	 */
+	@Query("select u from Station u where u.id =?1 and u.isDeleted=1")
+	public Station getStationById(String id);
+	
+	/**
+	 * 
 	* @Description: 根据上级代理id获取其下属的站点数据
 	* @author bann@sdfcp.com
 	* @date 2015年12月1日 上午9:09:23

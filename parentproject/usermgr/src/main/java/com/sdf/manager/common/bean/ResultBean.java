@@ -20,6 +20,28 @@ public class ResultBean
 	
 	private boolean isFinancialManager;//是否拥有财政管理员角色
 	
+	private boolean useFlag;//是否可以使用
+	
+	private boolean isCityCenterManager;//是否拥市中心角色
+	
+	
+	
+
+	public boolean isCityCenterManager() {
+		return isCityCenterManager;
+	}
+
+	public void setCityCenterManager(boolean isCityCenterManager) {
+		this.isCityCenterManager = isCityCenterManager;
+	}
+
+	public boolean isUseFlag() {
+		return useFlag;
+	}
+
+	public void setUseFlag(boolean useFlag) {
+		this.useFlag = useFlag;
+	}
 
 	public boolean isProxy() {
 		return isProxy;

@@ -23,36 +23,39 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.sdf.manager.app.controller.AppController;
+import com.sdf.manager.app.dto.AppDTO;
+import com.sdf.manager.app.entity.App;
+import com.sdf.manager.app.service.AppService;
+import com.sdf.manager.appUnitPrice.entity.AppUnitPrice;
+import com.sdf.manager.appUnitPrice.entity.UserYearDiscount;
+import com.sdf.manager.appUnitPrice.service.AppUPriceService;
 import com.sdf.manager.common.bean.ResultBean;
 import com.sdf.manager.common.exception.GlobalExceptionHandler;
 import com.sdf.manager.common.util.Constants;
 import com.sdf.manager.common.util.DateUtil;
 import com.sdf.manager.common.util.LoginUtils;
 import com.sdf.manager.common.util.QueryResult;
-import com.sdf.manager.goods.dto.GoodsDTO;
-import com.sdf.manager.goods.entity.Goods;
-import com.sdf.manager.goods.entity.RelaSdfGoodProduct;
 import com.sdf.manager.goods.service.GoodsService;
-import com.sdf.manager.goods.service.RelaProAndGoodsService;
 import com.sdf.manager.order.dto.OrdersDTO;
+import com.sdf.manager.order.dto.RenewAppDTO;
 import com.sdf.manager.order.entity.FoundOrderStatus;
 import com.sdf.manager.order.entity.OrderNextStatus;
-import com.sdf.manager.order.entity.OrderStatus;
 import com.sdf.manager.order.entity.Orders;
-import com.sdf.manager.order.entity.RelaSdfStationProduct;
+import com.sdf.manager.order.entity.RelaBsStationAndApp;
+import com.sdf.manager.order.entity.RelaBsStationAndAppHis;
 import com.sdf.manager.order.service.FoundOrderStatusService;
 import com.sdf.manager.order.service.OrderService;
 import com.sdf.manager.order.service.OrderStatusService;
+import com.sdf.manager.order.service.RelaBsStaAppHisService;
+import com.sdf.manager.order.service.RelaBsStaAppService;
 import com.sdf.manager.order.service.RelaSdfStationProService;
-import com.sdf.manager.product.entity.Product;
+import com.sdf.manager.product.entity.City;
+import com.sdf.manager.product.entity.Province;
 import com.sdf.manager.product.service.CityService;
 import com.sdf.manager.product.service.ProductService;
 import com.sdf.manager.product.service.ProvinceService;
-import com.sdf.manager.station.application.dto.StationDto;
 import com.sdf.manager.station.entity.Station;
-import com.sdf.manager.station.repository.StationRepository;
 import com.sdf.manager.station.service.StationService;
 import com.sdf.manager.user.entity.Role;
 import com.sdf.manager.user.entity.User;
@@ -106,6 +109,18 @@ public class OrderController extends GlobalExceptionHandler
 	 
 	 @Autowired
 	 private ProductService productService;
+	 
+	 @Autowired
+	 private AppService appService;
+	 
+	 @Autowired
+	 private AppUPriceService appUPriceService;
+	 
+	 @Autowired
+	 private RelaBsStaAppService relaBsStaAppService;
+	 
+	 @Autowired
+	 private RelaBsStaAppHisService relaBsStaAppHisService;
 	 
 	 
 	 public static final int SERIAL_NUM_LEN = 6;//订单流水号中自动生成的数字位数
@@ -223,9 +238,9 @@ public class OrderController extends GlobalExceptionHandler
 				@RequestParam(value="receiveAddr",required=false) String receiveAddr,//收件人地址
 				@RequestParam(value="receiveTele",required=false) String receiveTele,//收件人电话
 				@RequestParam(value="status",required=false) String status,//状态
-				@RequestParam(value="goodsList",required=false) String goodsList,//选中的商品数据
-				@RequestParam(value="proList",required=false) String proList,//选中的商品下的产品数据和其对应设定的试用期
-				@RequestParam(value="station",required=false) String station,//站点
+				@RequestParam(value="appId",required=false) String appId,//购买的应用的id
+				@RequestParam(value="station",required=false) String station,//通行证id
+				@RequestParam(value="userYearId",required=false) String userYearId,//使用年限id
 				@RequestParam(value="operatype",required=false) String operatype,//0:保存 1：保存并提交
 				ModelMap model,HttpSession httpSession) throws Exception
 		{
@@ -238,27 +253,28 @@ public class OrderController extends GlobalExceptionHandler
 		   if(null != order)
 		   {//商品数据不为空，则进行修改操作
 			  
-			   order.setName(name);
+			   /*修改订单时为哪个通行证购买应用是不可以修改的，且购买的是哪个应用也是不可以修改的，
+			    * 因为形成订单的最小单位是以应用为单位形成订单，也就是说购买一个应用形成一个订单
+			    */
+			   App app = appService.getAppById(appId);
+			   Station stationentity = stationService.getSationById(station);
+			   UserYearDiscount userYearDiscount = appUPriceService.getUserYearDiscountById(userYearId);
+//			   order.setName(app.getAppName());//订单名称就是应用名称
 			   order.setPrice(price);
-			   order.setCode(code);
-			   order.setTransCost(transCost);
-			   order.setPayMode(payMode);
-			   order.setStationId(station);
-			   order.setReceiveAddr(receiveAddr);
-			   order.setReceiveTele(receiveTele);
+//			   order.setApp(app);
+//			   order.setStation(stationentity);
+			   order.setUserYearDiscount(userYearDiscount);
+			   
+//			   order.setCode(code);
+//			   order.setTransCost(transCost);
+//			   order.setPayMode(payMode);
+//			   order.setReceiveAddr(receiveAddr);
+//			   order.setReceiveTele(receiveTele);
+			   
+			   
 			   order.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
 			   order.setModifyTime(new Timestamp(System.currentTimeMillis()));
 			   
-			   JSONArray array = JSONArray.parseArray(goodsList);
-			   List<Goods> goods = new ArrayList<Goods>();
-			   for (Object goodId : array) {
-				   
-				   Goods good = goodsService.getGoodsById(goodId.toString());
-				   goods.add(good);
-				
-			   }
-			   
-			   order.setGoods(goods);
 			   String currentStatus = order.getStatus();
 			   if(OrderController.OPERORTYPE_SAVE.equals(operatype))
 			   {//保存
@@ -283,75 +299,35 @@ public class OrderController extends GlobalExceptionHandler
 				   this.saveFoundOrderStatus(LoginUtils.getAuthenticatedUserCode(httpSession),currentStatus,order);
 			   }
 			   
-			   /**处理产品和站点关联数据**/
-			   //1.删除之前的关联数据
-			   List<RelaSdfStationProduct> deleteData = this.getStationAndProducts(id, model, httpSession);
-			   for (RelaSdfStationProduct relaSdfStationProduct : deleteData) {
-				
-				   relaSdfStationProduct.setIsDeleted(Constants.IS_DELETED);
-				   relaSdfStationProService.update(relaSdfStationProduct);
-			   }
-			   //2.保存新关联数据
-			   /**处理station<-->product关联关系数据**/
-			   JSONObject proOfgoods = JSONObject.parseObject(proList);
-			   List<String> proOfgoodsKeys =  (List<String>) proOfgoods.get("keys");
-			   Map<String,Object> proOfgoodsData =  (Map<String, Object>) proOfgoods.get("data");
-			   List<RelaSdfStationProduct> relaSdfStationProducts = new ArrayList<RelaSdfStationProduct>();
-			   for(int m=0;m<proOfgoodsKeys.size();m++)
-			   {
-				   JSONArray choosegoods = (JSONArray) proOfgoodsData.get(proOfgoodsKeys.get(m));
-				   for(int i=0;i<choosegoods.size();i++)
-				   {
-					   JSONObject products = JSONObject.parseObject(choosegoods.get(i).toString());
-					   List<String> proids =  (List<String>) products.get("keys");
-					   Map<String,Object> data =  (Map<String, Object>) products.get("data");
-					   String proid="";
-					   JSONArray ps;
-					   Product p1;
-					   for(int j=0;j<proids.size();j++)
-					   {
-						   RelaSdfStationProduct relaSdfStationProduct = new RelaSdfStationProduct();
-						   proid = proids.get(j);
-						   ps = (JSONArray) data.get(proid);
-						   relaSdfStationProduct.setProductId(ps.getString(5));//productId中放置的是产品和商品关联表的id
-						   relaSdfStationProduct.setStationId(ps.getString(3));//从前台获取
-						   relaSdfStationProduct.setProbation(ps.getString(2));
-						   relaSdfStationProduct.setGoodsId(ps.getString(1));
-						   relaSdfStationProduct.setOrderId(id);
-						   relaSdfStationProduct.setIsDeleted(Constants.IS_NOT_DELETED);
-						   relaSdfStationProduct.setCreater(LoginUtils.getAuthenticatedUserCode(httpSession));
-						   relaSdfStationProduct.setCreaterTime(new Timestamp(System.currentTimeMillis()));
-						   relaSdfStationProduct.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
-						   relaSdfStationProduct.setModifyTime(new Timestamp(System.currentTimeMillis()));
-						   relaSdfStationProduct.setType(ps.getString(4));
-						   relaSdfStationProduct.setStatus(OrderController.STATION_PRODUCT_INVALID_STATUS);//订单开始时无效
-						   //计算产品使用期和试用期的和,并放置到使用期的值中
-						   relaSdfStationProduct.setDurationOfUse(this.calculateDuration(proid,ps.getString(2)));
-						   
-						   
-						   relaSdfStationProducts.add(relaSdfStationProduct);
-						   
-						   relaSdfStationProService.save(relaSdfStationProduct);
-					   }
-				   }
-			   }
-			   
+			  
 			   //日志输出
 			   logger.info("修改订单--订单code="+code+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
 			   
 		   }
 		   else
 		   {
+			   
+			   
 			   order = new Orders();
-			   order.setName(name);
+			   String ordercode = this.codeGenertor();
+			   App app = appService.getAppById(appId);
+			   Station stationentity = stationService.getSationById(station);
+			   UserYearDiscount userYearDiscount = appUPriceService.getUserYearDiscountById(userYearId);
+			   order.setName(app.getAppName());//订单名称就是应用名称
 			   order.setPrice(price);
-			   order.setCode(code);
-			   order.setTransCost(transCost);
-			   order.setPayMode(payMode);
-			   order.setReceiveAddr(receiveAddr);
-			   order.setReceiveTele(receiveTele);
+			   order.setApp(app);
+			   order.setStation(stationentity);
+			   order.setUserYearDiscount(userYearDiscount);
+			   
+			   order.setName(app.getAppName());
+			   order.setCode(ordercode);
+//			   order.setTransCost(transCost);
+//			   order.setPayMode(payMode);
+//			   order.setReceiveAddr(receiveAddr);
+//			   order.setReceiveTele(receiveTele);
 			   order.setCreater(LoginUtils.getAuthenticatedUserCode(httpSession));
-			   order.setStationId(station);
+			   
+			   
 			   //setCreator中放置的是创建订单人的name
 			   order.setCreator(LoginUtils.getAuthenticatedUserName(httpSession));
 			   order.setCreaterTime(new Timestamp(System.currentTimeMillis()));
@@ -371,16 +347,6 @@ public class OrderController extends GlobalExceptionHandler
 			   }
 			   order.setStatus(currentStatus);//代理保存订单
 			   order.setStatusTime(new Timestamp(System.currentTimeMillis()));
-			   JSONArray array = JSONArray.parseArray(goodsList);
-			   List<Goods> goods = new ArrayList<Goods>();
-			   for (Object goodId : array) {
-				   
-				   Goods good = goodsService.getGoodsById(goodId.toString());
-				   goods.add(good);
-				
-			   }
-			   
-			   order.setGoods(goods);
 			   orderService.save(order);
 			   
 			   
@@ -388,7 +354,7 @@ public class OrderController extends GlobalExceptionHandler
 			   
 			   /*finishSaveOrder用处：用来做订单跟踪表与订单表的数据关联，因为若不获取，
 			   	则当前操作的订单还不存在，无法存入其状态(订单编码也是全局唯一的！！！)*/
-			   Orders finishSaveOrder = orderService.getOrdersByCode(code);
+			   Orders finishSaveOrder = orderService.getOrdersByCode(ordercode);
 			   
 			   if(OrderController.OPERORTYPE_SAVE.equals(operatype))
 			   {
@@ -405,52 +371,10 @@ public class OrderController extends GlobalExceptionHandler
 				   this.saveFoundOrderStatus(LoginUtils.getAuthenticatedUserCode(httpSession),currentStatus,finishSaveOrder);
 			   }
 			   
-			   /**处理station<-->product关联关系数据**/
-			   JSONObject proOfgoods = JSONObject.parseObject(proList);
-			   List<String> proOfgoodsKeys =  (List<String>) proOfgoods.get("keys");
-			   Map<String,Object> proOfgoodsData =  (Map<String, Object>) proOfgoods.get("data");
-			   List<RelaSdfStationProduct> relaSdfStationProducts = new ArrayList<RelaSdfStationProduct>();
-			   for(int m=0;m<proOfgoodsKeys.size();m++)
-			   {
-				   JSONArray choosegoods = (JSONArray) proOfgoodsData.get(proOfgoodsKeys.get(m));
-				   for(int i=0;i<choosegoods.size();i++)//循环选中商品
-				   {
-					   JSONObject products = JSONObject.parseObject(choosegoods.get(i).toString());//选中的产品id
-					   List<String> proids =  (List<String>) products.get("keys");
-					   Map<String,Object> data =  (Map<String, Object>) products.get("data");
-					   String proid="";
-					   JSONArray ps;
-					   Product p1;
-					   for(int j=0;j<proids.size();j++)
-					   {
-						   RelaSdfStationProduct relaSdfStationProduct = new RelaSdfStationProduct();
-						   proid = proids.get(j);//产品id
-						   ps = (JSONArray) data.get(proid);
-						   relaSdfStationProduct.setProductId(ps.getString(5));//productId中放置的是产品和商品关联表的id
-						   relaSdfStationProduct.setStationId(ps.getString(3));//从前台获取
-						   relaSdfStationProduct.setProbation(ps.getString(2));
-						   relaSdfStationProduct.setGoodsId(ps.getString(1));
-						   relaSdfStationProduct.setOrderId(finishSaveOrder.getId());
-						   relaSdfStationProduct.setIsDeleted(Constants.IS_NOT_DELETED);
-						   relaSdfStationProduct.setCreater(LoginUtils.getAuthenticatedUserCode(httpSession));
-						   relaSdfStationProduct.setCreaterTime(new Timestamp(System.currentTimeMillis()));
-						   relaSdfStationProduct.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
-						   relaSdfStationProduct.setModifyTime(new Timestamp(System.currentTimeMillis()));
-						   relaSdfStationProduct.setType(ps.getString(4));
-						   relaSdfStationProduct.setStatus(OrderController.STATION_PRODUCT_INVALID_STATUS);//订单开始时无效
-						   //计算产品使用期和试用期的和,并放置到使用期的值中
-						   relaSdfStationProduct.setDurationOfUse(this.calculateDuration(proid,ps.getString(2)));
-						   
-						   relaSdfStationProducts.add(relaSdfStationProduct);
-						   
-						   relaSdfStationProService.save(relaSdfStationProduct);
-					   }
-				   }
-			   }
 			   
 			  
 			   
-			   resultBean.setMessage("添加订单信息成功!");
+			   resultBean.setMessage("添加订单信息成功!请在订单管理中跟踪订单的审批进度。");
 			   resultBean.setStatus("success");
 			   
 			   //日志输出
@@ -465,7 +389,7 @@ public class OrderController extends GlobalExceptionHandler
 		   return resultBean;
 		}
 	 
-	 /**
+	/* *//**
 	  * 
 	 * @Title: calculateDuration
 	 * @Description: TODO(计算使用期和试用期的和)
@@ -475,7 +399,7 @@ public class OrderController extends GlobalExceptionHandler
 	 * @param @return    设定文件
 	 * @return String    返回类型
 	 * @throws
-	  */
+	  *//*
 	 private String calculateDuration(String productId,String probation)
 	 {
 		 
@@ -491,7 +415,7 @@ public class OrderController extends GlobalExceptionHandler
 		 String countResult = count+"";
 		 
 		 return countResult;
-	 }
+	 }*/
 	 
 	 /**
 	  * 
@@ -538,7 +462,7 @@ public class OrderController extends GlobalExceptionHandler
 	 * @Description: 获取当前订单的商品数据 
 	 * @author bann@sdfcp.com
 	 * @date 2015年11月19日 下午2:55:36
-	  */
+	  *//*
 	 @RequestMapping(value = "/getGoodsOfOrder", method = RequestMethod.GET)
 		public @ResponseBody List<GoodsDTO> getGoodsOfOrder(
 				@RequestParam(value="id",required=false) String id,
@@ -557,14 +481,14 @@ public class OrderController extends GlobalExceptionHandler
 		 	List<GoodsDTO> goodsDtos = goodsService.toDTOS(goods);
 		 	
 		 	return goodsDtos;
-		}
+		}*/
 	 
-	 /**
+	/* *//**
 	  * 
 	 * @Description: 根据订单id获取订单下选中的商品下产品和站点关联的数据
 	 * @author bann@sdfcp.com
 	 * @date 2015年11月26日 下午5:37:11
-	  */
+	  *//*
 	 @RequestMapping(value = "/getStationAndProducts", method = RequestMethod.POST)
 		public @ResponseBody List<RelaSdfStationProduct> getStationAndProducts(
 				@RequestParam(value="orderId",required=false) String orderId,
@@ -573,15 +497,22 @@ public class OrderController extends GlobalExceptionHandler
 		 	List<RelaSdfStationProduct> relaSdfStationProducts = relaSdfStationProService.getRelaSdfStationProductByOrderId(orderId);
 		
 		 	return relaSdfStationProducts;
-		}
+		}*/
 	 
 	 
 	
 	 /**
 	  * 
+	 * @Title: deleteOrders
 	 * @Description: 删除订单信息
-	 * @author bann@sdfcp.com
-	 * @date 2015年11月16日 上午10:07:51
+	 * @param @param ids
+	 * @param @param model
+	 * @param @param httpSession
+	 * @param @return
+	 * @param @throws Exception    设定文件
+	 * @return ResultBean    返回类型
+	 * @author banna
+	 * @throws
 	  */
 	 @RequestMapping(value = "/deleteOrders", method = RequestMethod.POST)
 		public @ResponseBody ResultBean deleteOrders(
@@ -591,15 +522,20 @@ public class OrderController extends GlobalExceptionHandler
 			ResultBean resultBean = new ResultBean();
 			
 			Orders orders;
-			List<Goods> goods = new ArrayList<Goods>();
+			App app = new App();
+			Station station = new Station();
 			for (String id : ids) 
 			{
 				orders = new Orders();
 				orders =  orderService.getOrdersById(id);
 				orders.setIsDeleted("0");;//设置当前数据为已删除状态
+				
+				//删除和应用还有通行证的关联关系
+				orders.setApp(app);
+				orders.setStation(station);
+				
 				orders.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
 				orders.setModifyTime(new Timestamp(System.currentTimeMillis()));
-				orders.setGoods(goods);//用来清空订单与商品的关联数据，方便删除商品时判断是否与有效订单关联
 				orderService.update(orders);
 				
 				 //日志输出
@@ -640,21 +576,82 @@ public class OrderController extends GlobalExceptionHandler
 		    {//财管订单列表审批通过
 			   OrderNextStatus orderNextStatus = orderStatusService.getOrderNextStatusBycurrentStatusId(currentStatus,directFlag);
 			   currentStatus = orderNextStatus.getNextStatusId();
-			   //审批完成后要置“站点<-->产品”关联数据为有效,，即购买此订单产品的站点可以开始使用或试用了，且要初始化当前站点对于产品的使用期的开始时间和结束时间
-			   List<RelaSdfStationProduct> relaSdfStationProducts 
-			   				= relaSdfStationProService.getRelaSdfStationProductByOrderId(orderId);
-			   Date endtime;
-			   for (RelaSdfStationProduct relaSdfStationProduct : relaSdfStationProducts) {
-				   relaSdfStationProduct.setStatus(OrderController.STATION_PRODUCT_VALID_STATUS);
-				   relaSdfStationProduct.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
-				   relaSdfStationProduct.setModifyTime(new Timestamp(System.currentTimeMillis()));
-				   //因为审批已完成，计算当前站点使用该产品的起始时间和终止时间
-				   relaSdfStationProduct.setStartTime(new Timestamp(System.currentTimeMillis()));//开始时间
-				   endtime = DateUtil.getNextDay(Integer.parseInt(relaSdfStationProduct.getDurationOfUse()));
-				   relaSdfStationProduct.setEndTime(DateUtil.formatDateToTimestamp(endtime, DateUtil.FULL_DATE_FORMAT));
+			  
+			   //TODO:财务管理员审批通过后，要向“通行证和应用关联表”中插入数据，且同时也要向“通行证和应用关联从表”中插入数据，这个表用来购买的所有历史记录
+			   String stationId = order.getStation().getId();
+			   String appId = order.getApp().getId();
+			   
+			   //根据通行证id和应用id获取当前通行证正在使用该应用的关联数据sql：where  u.isDeleted ='1' and u.status = '1' and  u.station.id =?1 and  u.app.id =?2
+			   RelaBsStationAndApp relaBsStationAndApp = relaBsStaAppService.
+					   		getRelaBsStationAndAppByStationIdAndAppId(stationId, appId);
+			   if(null != relaBsStationAndApp)
+			   {//已经购买过应用，做的续费操作
+				   //1.更新“通行证与应用”关联表中结束时间
+				   Timestamp lastEndtime = relaBsStationAndApp.getEndTime();//上次一购买应用的到期时间
+				   Date newStartTime = DateUtil.
+						   				getNextDayOfCurrentTime(lastEndtime, 1);//新的开始时间是从上次购买的到期时间的第二天开始计算的
+				   Timestamp newStTimestamp = DateUtil.formatDateToTimestamp(newStartTime, DateUtil.FULL_DATE_FORMAT);//新数据的开始时间
 				   
-				   relaSdfStationProService.update(relaSdfStationProduct);
+				   Date endtime;//新数据的结束时间
+				   endtime = DateUtil.getNextDayOfCurrentTime(newStTimestamp, Integer.parseInt(order.getUserYearDiscount().getDayOfyear()));
+				   
+				   relaBsStationAndApp.setEndTime(DateUtil.formatDateToTimestamp(endtime, DateUtil.FULL_DATE_FORMAT));
+				   relaBsStationAndApp.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
+				   relaBsStationAndApp.setModifyTime(new Timestamp(System.currentTimeMillis()));
+				   relaBsStaAppService.update(relaBsStationAndApp);//通行证对当前应用续费后，更新通行证使用当前应用的到期时间
+				   
+				   //2.向“通行证和应用历史记录关联表”插入数据
+				   RelaBsStationAndAppHis relaBsStationAndAppHis = new RelaBsStationAndAppHis();
+				   relaBsStationAndAppHis.setApp(order.getApp());
+				   relaBsStationAndAppHis.setStation(order.getStation());
+				   relaBsStationAndAppHis.setStartTime(newStTimestamp);//开始时间
+				   relaBsStationAndAppHis.setEndTime(DateUtil.formatDateToTimestamp(endtime, DateUtil.FULL_DATE_FORMAT));
+				   relaBsStationAndAppHis.setIsDeleted(Constants.IS_NOT_DELETED);
+				   relaBsStationAndAppHis.setCreater(LoginUtils.getAuthenticatedUserCode(httpSession));
+				   relaBsStationAndAppHis.setCreaterTime(new Timestamp(System.currentTimeMillis()));
+				   relaBsStationAndAppHis.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
+				   relaBsStationAndAppHis.setModifyTime(new Timestamp(System.currentTimeMillis()));
+				   
+				   relaBsStaAppHisService.save(relaBsStationAndAppHis);
+				   
 			   }
+			   else
+			   {//第一次购买应用
+				   //1.向“通行证与应用”关联表中插入数据
+				   relaBsStationAndApp = new RelaBsStationAndApp();
+				   relaBsStationAndApp.setApp(order.getApp());
+				   relaBsStationAndApp.setStation(order.getStation());
+				   relaBsStationAndApp.setStartTime(new Timestamp(System.currentTimeMillis()));//开始时间
+				   Date endtime;
+				   endtime = DateUtil.getNextDay(Integer.parseInt(order.getUserYearDiscount().getDayOfyear()));
+				   relaBsStationAndApp.setEndTime(DateUtil.formatDateToTimestamp(endtime, DateUtil.FULL_DATE_FORMAT));
+				   relaBsStationAndApp.setStatus("1");//正在使用状态
+				   relaBsStationAndApp.setIsDeleted(Constants.IS_NOT_DELETED);
+				   relaBsStationAndApp.setCreater(LoginUtils.getAuthenticatedUserCode(httpSession));
+				   relaBsStationAndApp.setCreaterTime(new Timestamp(System.currentTimeMillis()));
+				   relaBsStationAndApp.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
+				   relaBsStationAndApp.setModifyTime(new Timestamp(System.currentTimeMillis()));
+				   
+				   relaBsStaAppService.save(relaBsStationAndApp);
+				   
+				   //2.向“通行证和应用历史记录关联表”插入数据
+				   RelaBsStationAndAppHis relaBsStationAndAppHis = new RelaBsStationAndAppHis();
+				   relaBsStationAndAppHis.setApp(order.getApp());
+				   relaBsStationAndAppHis.setStation(order.getStation());
+				   relaBsStationAndAppHis.setStartTime(new Timestamp(System.currentTimeMillis()));//开始时间
+				   relaBsStationAndAppHis.setEndTime(DateUtil.formatDateToTimestamp(endtime, DateUtil.FULL_DATE_FORMAT));
+				   relaBsStationAndAppHis.setIsDeleted(Constants.IS_NOT_DELETED);
+				   relaBsStationAndAppHis.setCreater(LoginUtils.getAuthenticatedUserCode(httpSession));
+				   relaBsStationAndAppHis.setCreaterTime(new Timestamp(System.currentTimeMillis()));
+				   relaBsStationAndAppHis.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
+				   relaBsStationAndAppHis.setModifyTime(new Timestamp(System.currentTimeMillis()));
+				   
+				   relaBsStaAppHisService.save(relaBsStationAndAppHis);
+				   
+				   
+			   }
+			   
+			  
 		    }
 		    else if(OrderController.PAGE_OPERORTYPE_REJECT.equals(operortype))
 		    {//财管订单列表审批驳回
@@ -781,7 +778,7 @@ public class OrderController extends GlobalExceptionHandler
 			ResultBean resultBean = new ResultBean ();
 			
 			//放置分页参数
-			Pageable pageable = new PageRequest(0,10000);
+			Pageable pageable = new PageRequest(0,100000);
 			
 			//参数
 			StringBuffer buffer = new StringBuffer();
@@ -877,7 +874,7 @@ public class OrderController extends GlobalExceptionHandler
 	 * @author bann@sdfcp.com
 	 * @date 2015年11月25日 下午2:39:11
 	  */
-	 @RequestMapping(value = "/getStationList", method = RequestMethod.POST)
+	 /*@RequestMapping(value = "/getStationList", method = RequestMethod.POST)
 		public @ResponseBody List<StationDto> getStationList(
 				@RequestParam(value="id",required=false) String id,
 				ModelMap model,HttpSession httpSession) throws Exception
@@ -887,7 +884,7 @@ public class OrderController extends GlobalExceptionHandler
 		 	//获取当前登录人员的用户信息
 			String code = LoginUtils.getAuthenticatedUserCode(httpSession);//登录用户的code
 		 	String userId = LoginUtils.getAuthenticatedUserId(httpSession);
-			/***根据登录人员的和站点关联的字段，查询当前登录用户的下属站点列表***/
+			*//***根据登录人员的和站点关联的字段，查询当前登录用户的下属站点列表***//*
 			List<Station> stations2 = new ArrayList<Station>();
 			stations2 = stationService.getStationByAgentId(userId);
 			List<StationDto> stationDtos = new ArrayList<StationDto>();
@@ -914,15 +911,15 @@ public class OrderController extends GlobalExceptionHandler
 		 	
 			
 		 	return stationDtos;
-		}
+		}*/
 	 
 	 
-	 /**
+	/* *//**
 	  * 
 	 * @Description: 获取当前站点的其他类别的站点
 	 * @author bann@sdfcp.com
 	 * @date 2015年12月1日 下午1:58:41
-	  */
+	  *//*
 	 @RequestMapping(value = "/getOtherStations", method = RequestMethod.POST)
 		public @ResponseBody List<StationDto> getOtherStations(
 				@RequestParam(value="id",required=false) String id,
@@ -968,16 +965,311 @@ public class OrderController extends GlobalExceptionHandler
 		 	
 		 	return stationDtos;
 		}
+	 */
+	 
+	 /**
+	  * 
+	 * @Title: getXufeiAppList
+	 * @Description: 获取当前通行证可以进行续费的应用数据
+	 * @param @param stationId
+	 * @param @param province
+	 * @param @param city
+	 * @param @param model
+	 * @param @param httpSession
+	 * @param @return
+	 * @param @throws Exception    设定文件
+	 * @return Map<String,Object>    返回类型
+	 * @author banna
+	 * @throws
+	  */
+	 @RequestMapping(value = "/getXufeiAppList", method = RequestMethod.GET)
+		public @ResponseBody Map<String ,Object> getXufeiAppList(
+				@RequestParam(value="page",required=false) int page,
+				@RequestParam(value="rows",required=false) int rows,
+				@RequestParam(value="stationId",required=false) String stationId,
+				@RequestParam(value="province",required=false) String province,
+				@RequestParam(value="city",required=false) String city,
+				ModelMap model,HttpSession httpSession) throws Exception
+		{
+		 	Map<String ,Object> resultData = new HashMap<String, Object>();
+		 	
+		 	//放置分页参数
+			Pageable pageable = new PageRequest(page-1,rows);
+			
+			//参数
+			StringBuffer buffer = new StringBuffer();
+			List<Object> params = new ArrayList<Object>();
+			
+			Station station = stationService.getSationById(stationId);
+			String sprovince = station.getProvinceCode();
+			String scity = station.getCityCode();
+			String lotteryType = station.getStationType();//获取通行证的彩种
+			
+			//排序
+			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
+			orderBy.put("id", "desc");
+			
+			/*//只查询未删除数据
+			params.add("1");//只查询有效的数据
+			buffer.append(" isDeleted = ?").append(params.size());
+			
+			params.add("1");//正在使用的应用
+			buffer.append(" and status = ?").append(params.size());
+			
+			params.add(AppController.APP_STATUS_SJ);//正在上架的应用
+			buffer.append(" and app.appStatus = ?").append(params.size());
+			
+			//连接查询条件
+			if(null != stationId&&!"".equals(stationId.trim()))
+			{
+				params.add(stationId);
+				buffer.append(" and station.id = ?").append(params.size());
+			}
+		 	
+			
+			
+			QueryResult<RelaBsStationAndApp> applist = relaBsStaAppService.getRelaBsStationAndAppList(RelaBsStationAndApp.class,
+					buffer.toString(), params.toArray(),orderBy, pageable);*/
+			
+			QueryResult<RelaBsStationAndApp> applist = appService.getAppOfXufei(RelaBsStationAndApp.class,
+					buffer.toString(), params.toArray(),orderBy, pageable,sprovince,scity,stationId,lotteryType);
+					
+			List<RelaBsStationAndApp> sapps = applist.getResultList();
+		 	
+			List<RenewAppDTO> renewAppDTOs = new ArrayList<RenewAppDTO>();
+			
+			//整理通行证可以续费的应用数据
+			for (RelaBsStationAndApp sapp : sapps) {
+				
+				RenewAppDTO renewAppDTO = new RenewAppDTO();
+				
+				renewAppDTO.setAppId(sapp.getApp().getId());
+				renewAppDTO.setAppName(sapp.getApp().getAppName());
+				
+				renewAppDTO.setProvince(sapp.getApp().getProvince());
+				renewAppDTO.setCity(sapp.getApp().getCity());
+				
+				//放置应用省区域名称
+				Province proentity = new Province();
+				proentity = provinceService.getProvinceByPcode(sapp.getApp().getProvince());
+				renewAppDTO.setProvinceName(null != proentity?proentity.getPname():"");
+				
+				//放置应用市区域名称
+				if(Constants.CITY_ALL.equals(sapp.getApp().getCity()))
+				{
+					renewAppDTO.setCityName(Constants.CITY_ALL_NAME);
+				}
+				else
+				{
+					City cityentity = new City();
+					cityentity = cityService.getCityByCcode(sapp.getApp().getCity());
+					renewAppDTO.setCityName(null != cityentity?cityentity.getCname():"");
+				}
+				//放置上次购买时间的值
+				renewAppDTO.setLastPurchaseTime(DateUtil.formatDate(sapp.getModifyTime(), DateUtil.FULL_DATE_FORMAT));
+				
+				//上次购买此应用的剩余使用时间(endtime-当前时间)
+				long currentTime = System.currentTimeMillis();
+				long endtime = sapp.getEndTime().getTime();
+				int betweenDays = DateUtil.daysBetween(currentTime, endtime);
+				
+				renewAppDTO.setSurplusDays(betweenDays+"");
+				
+				renewAppDTOs.add(renewAppDTO);
+			}
+			
+			resultData.put("rows", renewAppDTOs);
+			resultData.put("total", applist.getTotalCount());
+		 	
+		 	return resultData;
+		}
+	 
+	 /**
+	  * 
+	 * @Title: getFufeiAppList
+	 * @Description: 获取当前通行证可以购买的付费应用数据
+	 * @param @param stationId
+	 * @param @param province
+	 * @param @param city
+	 * @param @param model
+	 * @param @param httpSession
+	 * @param @return
+	 * @param @throws Exception    设定文件
+	 * @return Map<String,Object>    返回类型
+	 * @author banna
+	 * @throws
+	  */
+	 @RequestMapping(value = "/getFufeiAppList", method = RequestMethod.GET)
+		public @ResponseBody Map<String ,Object> getFufeiAppList(
+				@RequestParam(value="page",required=false) int page,
+				@RequestParam(value="rows",required=false) int rows,
+				@RequestParam(value="stationId",required=false) String stationId,
+				@RequestParam(value="province",required=false) String province,//站点省份（暂不使用）
+				@RequestParam(value="city",required=false) String city,//站点市（暂不使用）
+				ModelMap model,HttpSession httpSession) throws Exception
+		{
+		 	Map<String ,Object> resultData = new HashMap<String, Object>();
+		 	
+			//放置分页参数
+			Pageable pageable = new PageRequest(page-1,rows);
+			
+			//参数
+			StringBuffer buffer = new StringBuffer();
+			List<Object> params = new ArrayList<Object>();
+			
+			Station station = stationService.getSationById(stationId);
+			String sprovince = station.getProvinceCode();
+			String scity = station.getCityCode();
+			String lotteryType = station.getStationType();//获取通行证的彩种
+			
+			//排序
+			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
+			orderBy.put("id", "desc");
+			
+			/*//只查询未删除数据
+			params.add("1");//只查询有效的数据
+			buffer.append(" isDeleted = ?").append(params.size());
+			
+			params.add(AppController.APP_STATUS_SJ);//正在上架的应用,只有正在上架的应用可以购买
+			buffer.append(" and appStatus = ?").append(params.size());
+			
+			//连接查询条件
+			if(null != sprovince&&!"".equals(sprovince.trim()))
+			{
+				params.add(sprovince);
+				buffer.append(" and province = ?").append(params.size());
+			}
+			
+			if(null != scity&&!"".equals(scity.trim()))
+			{
+				List<String> paraArr = new ArrayList<String> ();
+				paraArr.add(scity);
+				paraArr.add(Constants.CITY_ALL);
+				params.add(paraArr);
+				buffer.append(" and city in ?").append(params.size());
+			}
+		 	
+			
+			
+			//获取全部上架的应用列表
+			  QueryResult<App> applist = appService.getAppList(App.class,
+					buffer.toString(), params.toArray(),orderBy, pageable);*/
+			
+			//获取全部上架的付费的应用列表
+			QueryResult<App> applist = appService.getAppOfFufei(App.class, buffer.toString(), params.toArray(), orderBy, pageable, sprovince, scity,lotteryType);
+					
+			List<App> apps = applist.getResultList();
+			int totalrow = applist.getTotalCount();//applist.getTotalRecord();jsql的返回数据总值是getTotalRecord
+			
+			//将实体转换为dto
+			List<AppDTO> appDTOs = appService.toRDTOS(apps);
+			
+			resultData.put("rows", appDTOs);
+			resultData.put("total", totalrow);
+		 	
+		 	
+		 	return resultData;
+		}
 	 
 	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
+	 /**
+	  * 
+	 * @Title: getUserYearDiscounts
+	 * @Description: 获取使用年限折扣表数据
+	 * @param @param id
+	 * @param @param model
+	 * @param @param httpSession
+	 * @param @return
+	 * @param @throws Exception    设定文件
+	 * @return List<UserYearDiscount>    返回类型
+	 * @author banna
+	 * @throws
+	  */
+	 @RequestMapping(value = "/getUserYearDiscounts", method = RequestMethod.POST)
+		public @ResponseBody List<UserYearDiscount> getUserYearDiscounts(
+				@RequestParam(value="id",required=false) String id,
+				ModelMap model,HttpSession httpSession) throws Exception
+		{
+		 	List<UserYearDiscount> discounts = new ArrayList<UserYearDiscount>();
+		 	
+		 	discounts = appUPriceService.findAll();
+		 	
+		 	return discounts;
+		}
+				
+	 /**
+	  * 
+	 * @Title: calculateSellprice
+	 * @Description: 计算当前通行证购买当前应用所选择的使用年限下的销售价格
+	 * @param @param stationId
+	 * @param @param province
+	 * @param @param city
+	 * @param @param appId
+	 * @param @param useYear
+	 * @param @param model
+	 * @param @param httpSession
+	 * @param @return
+	 * @param @throws Exception    设定文件
+	 * @return ResultBean    返回类型
+	 * @author banna
+	 * @throws
+	  */
+	 @RequestMapping(value = "/calculateSellprice", method = RequestMethod.GET)
+		public @ResponseBody ResultBean calculateSellprice(
+				@RequestParam(value="stationId",required=false) String stationId,
+				@RequestParam(value="province",required=false) String province,
+				@RequestParam(value="city",required=false) String city,
+				@RequestParam(value="appId",required=false) String appId,
+				@RequestParam(value="useYearId",required=false) String useYearId,
+				ModelMap model,HttpSession httpSession) throws Exception
+		{
+		 	ResultBean resultBean = new ResultBean();
+		 	
+		 	String price = "";
+		 	
+		 	//获取当前通行证的区域
+		 	Station station = stationService.getSationById(stationId);
+		 	String sprovince = station.getProvinceCode();
+		 	String scity = station.getCityCode();
+		 	
+		 	
+		 	//获取应用的单价
+		 	App app = appService.getAppById(appId);
+		 	String morenPrice = app.getAppMoney();//当前通行证想要购买的应用的默认单价
+		 	//查询通行证所在区域是否有特殊定价
+		 	AppUnitPrice cityDj = appUPriceService.
+		 					getAppUnitPriceByAppIdAndProvinceAndCity(appId, sprovince, scity);
+		 	if(null != cityDj)
+		 	{
+		 		price = cityDj.getUnitPrice();
+		 	}
+		 	else
+		 	{
+		 		AppUnitPrice provinceDj = appUPriceService.
+	 					getAppUnitPriceByAppIdAndProvinceAndCity(appId, sprovince, Constants.CITY_ALL);
+		 		
+		 		if(null != provinceDj)
+		 		{
+		 			price = provinceDj.getUnitPrice();
+		 		}
+		 		else
+		 		{
+		 			price = morenPrice;
+		 		}
+		 	}
+		 	
+		 	//获取折扣信息
+		 	UserYearDiscount uydiscount = appUPriceService.getUserYearDiscountById(useYearId);
+		 	
+		 	String userYear = uydiscount.getUseYear();//购买的使用年限（1年或者2年）
+		 	int discount = uydiscount.getDiscount();
+		 	
+		 	Double result = (Double.parseDouble(price)*Integer.parseInt(userYear)*discount)/100;
+		 	
+		 	resultBean.setMessage(result.toString());//返回计算结果
+		 	
+		 	return resultBean;
+		}
 	 
 	 
 	 

@@ -247,7 +247,8 @@ function initDatagrid()
 		            formatter:function(value,row,index){
 		                var btn = '<a class="editcls" onclick="updateStation(&quot;'+row.id+'&quot;)" href="javascript:void(0)"></a>'
 		                	+'<a class="delcls" onclick="delStationById(&quot;'+row.id+'&quot;)" href="javascript:void(0)"></a>'
-		                	+'<a class="setOrder" onclick="setOrder(&quot;'+row.id+'&quot;,&quot;'+row.stationNumber+'&quot;,&quot;'+row.stationStyle+'&quot;)" href="javascript:void(0)"></a>';
+		                	+'<a class="connectApp" onclick="connectApps(&quot;'+row.id+'&quot;,&quot;'+row.provinceCode+'&quot;,&quot;'+row.cityCode+'&quot;)" href="javascript:void(0)"></a>';
+//		                	+'<a class="setOrder" onclick="setOrder(&quot;'+row.id+'&quot;,&quot;'+row.stationNumber+'&quot;,&quot;'+row.stationStyle+'&quot;)" href="javascript:void(0)"></a>';
 		                return btn;
 		            }
 		        }
@@ -255,7 +256,8 @@ function initDatagrid()
 	    onLoadSuccess:function(data){  
 	        $('.editcls').linkbutton({plain:true,iconCls:'icon-edit'});
 	        $('.delcls').linkbutton({plain:true,iconCls:'icon-remove'});
-	        $('.setOrder').linkbutton({plain:true,iconCls:'icon-search'});
+	        $('.connectApp').linkbutton({plain:true,iconCls:'icon-filter'});
+//	        $('.setOrder').linkbutton({plain:true,iconCls:'icon-search'});
 	    }  
 	});
 }
@@ -266,6 +268,7 @@ function initDatagrid()
 	{	
 		$("#setOrder").dialog('close');
 		$("#addOrUpdateStation").dialog('close');
+		$("#w").dialog('close');
 	}
 
 	/**

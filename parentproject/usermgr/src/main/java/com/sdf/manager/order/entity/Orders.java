@@ -4,32 +4,27 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.annotation.Transient;
 
-import com.sdf.manager.goods.entity.Goods;
-import com.sdf.manager.goods.entity.RelaSdfGoodProduct;
+import com.sdf.manager.app.entity.App;
+import com.sdf.manager.appUnitPrice.entity.UserYearDiscount;
+import com.sdf.manager.station.entity.Station;
 import com.sdf.manager.user.entity.BaseEntiry;
 
 @Entity
 @Table(name="T_SDF_ORDERS")
 public class Orders extends BaseEntiry implements Serializable 
 {
-	/** 
-	  * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么) 
-	  */ 
 	private static final long serialVersionUID = 5207440618824306396L;
 
 	@Id
@@ -37,9 +32,6 @@ public class Orders extends BaseEntiry implements Serializable
 	@GenericGenerator(name="idGenerator", strategy="uuid")//uuid由机器生成的主键
 	@GeneratedValue(generator="idGenerator")	
 	private String id;
-	
-	@Column(name="STATION_ID", length=45)
-	private String stationId;//站点号码：关联用户表的站点类数据
 	
 	@Column(name="CODE", length=45)
 	private String code;//订单编号全系统唯一（日期+流水号）
@@ -66,32 +58,58 @@ public class Orders extends BaseEntiry implements Serializable
 	private Timestamp statusTime;//订单状态(0:新建;1:待审核;2:审核通过;3:不通过;4:撤销订单;)
 	
 	@Column(name="PRICE", length=45)
-	private String price;//订单总价
+	private String price;//成交价格
 	
 	@Column(name="CREATOR", length=45)
 	private String creator;//订单创建人
 	
 	
-	@Transient
-	//表间关联的主控方的配置
-	//@JoinTable描述了多对多关系的数据表关系。name属性指定中间表名称，joinColumns定义中间表与Role表的外键关系。
-    //中间表RELA_SDF_AUTHORITY_ROLE的ROLE_ID列是Teacher表的主键列对应的外键列，inverseJoinColumns属性定义了中间表与另外一端(Authority)的外键关系。
-    //属性referencedColumnName标注的是所关联表中的字段名，若不指定则使用的所关联表的主键字段名作为外键。 
-	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinTable(name = "RELA_SDF_ORDER_GOOD", 
-            joinColumns = {  @JoinColumn(name = "ORDER_ID", referencedColumnName = "id")  }, 
-            inverseJoinColumns = {@JoinColumn(name = "GOOD_ID", referencedColumnName = "id") })
-	private List<Goods> goods ;
-	
 	
 	@OneToMany(mappedBy = "orders", fetch = FetchType.LAZY) 
 	private List<FoundOrderStatus> foundOrderStatus;
 	
+	//Data:2016/2/2 ADD
+	@ManyToOne  
+	@JoinColumn(name = "STATION_ID", referencedColumnName = "id")
+	private Station station;//与“通行证表”关联
+	
+	//Data:2016/2/2 ADD
+	@ManyToOne  
+	@JoinColumn(name = "APP_ID", referencedColumnName = "id")
+	private App app;//与“应用表”关联
+	
+	
+	//Data:2016/2/2 ADD
+	@ManyToOne  
+	@JoinColumn(name = "USER_YEARS", referencedColumnName = "id")
+	private UserYearDiscount userYearDiscount;
 	
 	
 	
-	
-	
+	public UserYearDiscount getUserYearDiscount() {
+		return userYearDiscount;
+	}
+
+	public void setUserYearDiscount(UserYearDiscount userYearDiscount) {
+		this.userYearDiscount = userYearDiscount;
+	}
+
+	public Station getStation() {
+		return station;
+	}
+
+	public void setStation(Station station) {
+		this.station = station;
+	}
+
+	public App getApp() {
+		return app;
+	}
+
+	public void setApp(App app) {
+		this.app = app;
+	}
+
 	public List<FoundOrderStatus> getFoundOrderStatus() {
 		return foundOrderStatus;
 	}
@@ -116,13 +134,6 @@ public class Orders extends BaseEntiry implements Serializable
 		this.code = code;
 	}
 
-	public List<Goods> getGoods() {
-		return goods;
-	}
-
-	public void setGoods(List<Goods> goods) {
-		this.goods = goods;
-	}
 
 	public String getId() {
 		return id;
@@ -132,13 +143,6 @@ public class Orders extends BaseEntiry implements Serializable
 		this.id = id;
 	}
 
-	public String getStationId() {
-		return stationId;
-	}
-
-	public void setStationId(String stationId) {
-		this.stationId = stationId;
-	}
 
 	public String getName() {
 		return name;

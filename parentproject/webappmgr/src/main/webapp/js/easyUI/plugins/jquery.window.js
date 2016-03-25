@@ -1,10 +1,10 @@
 /**
- * jQuery EasyUI 1.4.2
+ * jQuery EasyUI 1.4.4
  * 
  * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
- * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
- * To use it on other terms please contact us at info@jeasyui.com
+ * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
+ * To use it on other terms please contact us: info@jeasyui.com
  *
  */
 (function($){
@@ -74,7 +74,7 @@ _13.mask.hide();
 _14.onClose.call(_12);
 },onOpen:function(){
 if(_13.mask){
-_13.mask.css({display:"block",zIndex:$.fn.window.defaults.zIndex++});
+_13.mask.css($.extend({display:"block",zIndex:$.fn.window.defaults.zIndex++},$.fn.window.getMaskSize(_12)));
 }
 if(_13.shadow){
 _13.shadow.css({display:"block",zIndex:$.fn.window.defaults.zIndex++,left:_14.left,top:_14.top,width:_13.window._outerWidth(),height:_13.window._outerHeight()});
@@ -113,17 +113,16 @@ _13.window=win.panel("panel");
 if(_13.mask){
 _13.mask.remove();
 }
-if(_14.modal==true){
-_13.mask=$("<div class=\"window-mask\"></div>").insertAfter(_13.window);
-_13.mask.css({width:(_14.inline?_13.mask.parent().width():_18().width),height:(_14.inline?_13.mask.parent().height():_18().height),display:"none"});
+if(_14.modal){
+_13.mask=$("<div class=\"window-mask\" style=\"display:none\"></div>").insertAfter(_13.window);
 }
 if(_13.shadow){
 _13.shadow.remove();
 }
-if(_14.shadow==true){
-_13.shadow=$("<div class=\"window-shadow\"></div>").insertAfter(_13.window);
-_13.shadow.css({display:"none"});
+if(_14.shadow){
+_13.shadow=$("<div class=\"window-shadow\" style=\"display:none\"></div>").insertAfter(_13.window);
 }
+var _18=_14.closed;
 if(_14.left==null){
 _5(_12);
 }
@@ -131,7 +130,7 @@ if(_14.top==null){
 _b(_12);
 }
 _1(_12);
-if(!_14.closed){
+if(!_18){
 win.window("open");
 }
 };
@@ -191,17 +190,10 @@ _1b.proxy.remove();
 _1b.proxy=null;
 }});
 };
-function _18(){
-if(document.compatMode=="BackCompat"){
-return {width:Math.max(document.body.scrollWidth,document.body.clientWidth),height:Math.max(document.body.scrollHeight,document.body.clientHeight)};
-}else{
-return {width:Math.max(document.documentElement.scrollWidth,document.documentElement.clientWidth),height:Math.max(document.documentElement.scrollHeight,document.documentElement.clientHeight)};
-}
-};
 $(window).resize(function(){
 $("body>div.window-mask").css({width:$(window)._outerWidth(),height:$(window)._outerHeight()});
 setTimeout(function(){
-$("body>div.window-mask").css({width:_18().width,height:_18().height});
+$("body>div.window-mask").css($.fn.window.getMaskSize());
 },50);
 });
 $.fn.window=function(_1c,_1d){
@@ -253,8 +245,13 @@ _b(this);
 _1(this);
 });
 }};
-$.fn.window.parseOptions=function(_23){
-return $.extend({},$.fn.panel.parseOptions(_23),$.parser.parseOptions(_23,[{draggable:"boolean",resizable:"boolean",shadow:"boolean",modal:"boolean",inline:"boolean"}]));
+$.fn.window.getMaskSize=function(_23){
+var _24=$(_23).data("window");
+var _25=(_24&&_24.options.inline);
+return {width:(_25?"100%":$(document).width()),height:(_25?"100%":$(document).height())};
+};
+$.fn.window.parseOptions=function(_26){
+return $.extend({},$.fn.panel.parseOptions(_26),$.parser.parseOptions(_26,[{draggable:"boolean",resizable:"boolean",shadow:"boolean",modal:"boolean",inline:"boolean"}]));
 };
 $.fn.window.defaults=$.extend({},$.fn.panel.defaults,{zIndex:9000,draggable:true,resizable:true,shadow:true,modal:false,inline:false,title:"New Window",collapsible:true,minimizable:true,maximizable:true,closable:true,closed:false});
 })(jQuery);

@@ -92,7 +92,7 @@ public class StationServiceImpl implements StationService {
 	 */
 	public Station getStationById(String id)
 	{
-		Station station =  stationRepository.findOne(id);
+		Station station =  stationRepository.getStationById(id);
 		return station;
 	}
 	
@@ -137,7 +137,7 @@ public class StationServiceImpl implements StationService {
 	 * @see com.sdf.manager.station.service.StationService#getSationById(java.lang.String) 
 	 */
 	public Station getSationById(String id) {
-		return stationRepository.getOne(id);
+		return stationRepository.getStationById(id);
 	}
 
 
@@ -153,5 +153,10 @@ public class StationServiceImpl implements StationService {
 			String stationType, String owner, String ownerTelephone) {
 		return stationRepository.getStationByStationTypeAndOwnerAndOwnertelephone
 				(stationType, owner, ownerTelephone);
+	}
+	
+	public void update(Station station)
+	{
+		stationRepository.save(station);
 	}
 }

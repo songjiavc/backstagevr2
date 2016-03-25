@@ -87,4 +87,13 @@ public interface StationService {
 	 */
 	public List<Station> getStationByStationTypeAndOwnerAndOwnertelephone
 	(String stationType,String owner,String ownerTelephone);
+	
+	/**
+	 * 
+	 * @Title: update
+	 * @Description: 更新通行证实体数据
+	 * @author:banna
+	 * @return: void
+	 */
+	public void update(Station station);
 }

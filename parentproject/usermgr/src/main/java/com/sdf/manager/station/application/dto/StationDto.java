@@ -31,7 +31,25 @@ public class StationDto {
 	
 	private String agentId;//上级代理id
 	
+	private String provinceCode;//省份编码
 	
+	private String cityCode;//市编码
+	
+	
+	
+	
+	public String getProvinceCode() {
+		return provinceCode;
+	}
+	public void setProvinceCode(String provinceCode) {
+		this.provinceCode = provinceCode;
+	}
+	public String getCityCode() {
+		return cityCode;
+	}
+	public void setCityCode(String cityCode) {
+		this.cityCode = cityCode;
+	}
 	public String getAgentId() {
 		return agentId;
 	}

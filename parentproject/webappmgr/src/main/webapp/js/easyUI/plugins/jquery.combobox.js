@@ -1,10 +1,10 @@
 /**
- * jQuery EasyUI 1.4.2
+ * jQuery EasyUI 1.4.4
  * 
  * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
- * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
- * To use it on other terms please contact us at info@jeasyui.com
+ * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
+ * To use it on other terms please contact us: info@jeasyui.com
  *
  */
 (function($){
@@ -202,6 +202,7 @@ var _3d=_37.finder.getEl(_35,v).show();
 if(s.toLowerCase()==q.toLowerCase()){
 _3b=v;
 _3d.addClass("combobox-item-selected");
+_37.onSelect.call(_35,row);
 }
 if(_37.groupField&&_3c!=g){
 $("#"+_36.groupIdPrefix+"_"+$.inArray(g,_36.groups)).show();
@@ -254,7 +255,7 @@ _46.itemIdPrefix="_easyui_combobox_i"+_1;
 _46.groupIdPrefix="_easyui_combobox_g"+_1;
 $(_45).addClass("combobox-f");
 $(_45).combo($.extend({},_47,{onShowPanel:function(){
-$(_45).combo("panel").find("div.combobox-item,div.combobox-group").show();
+$(_45).combo("panel").find("div.combobox-item:hidden,div.combobox-group:hidden").show();
 _8(_45,$(_45).combobox("getValue"));
 _47.onShowPanel.call(_45);
 }}));
@@ -305,17 +306,17 @@ return this.each(function(){
 var _4e=$.data(this,"combobox");
 if(_4e){
 $.extend(_4e.options,_4b);
-_44(this);
 }else{
 _4e=$.data(this,"combobox",{options:$.extend({},$.fn.combobox.defaults,$.fn.combobox.parseOptions(this),_4b),data:[]});
+}
 _44(this);
+if(_4e.options.data){
+_26(this,_4e.options.data);
+}else{
 var _4f=$.fn.combobox.parseData(this);
 if(_4f.length){
 _26(this,_4f);
 }
-}
-if(_4e.options.data){
-_26(this,_4e.options.data);
 }
 _2e(this);
 });

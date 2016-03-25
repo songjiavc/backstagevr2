@@ -162,6 +162,17 @@ public class DateUtil {
      * @param n
      * @return
      */
+    public static Date getNextDayOfCurrentTime(Timestamp currentTime,int n) {
+        
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(currentTime.getTime());
+        calendar.add(Calendar.DAY_OF_MONTH, n);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        return calendar.getTime();
+    }
+    
     public static Date getNextDay(int n) {
         
         Calendar calendar = Calendar.getInstance();
@@ -335,4 +346,61 @@ public class DateUtil {
 		  }
     	 return null;
     }
+    
+    /**
+     * 
+    * @Title: daysBetween
+    * @Description: 计算开始时间为smdate到结束时间bdate之间相差的天数
+    * @param @param smdate
+    * @param @param bdate
+    * @param @return
+    * @param @throws ParseException    设定文件
+    * @return int    返回类型
+    * @author banna
+    * @throws
+     */
+    public static int daysBetween(long smdate,long bdate) throws ParseException    
+    {    
+        long time1 = smdate;                 
+        long time2 = bdate;         
+        long between_days=(time2-time1)/(1000*3600*24);  
+            
+       return Integer.parseInt(String.valueOf(between_days));           
+    }
+    
+    /**
+     * 
+    * @Title: getStrTime
+    * @Description: 将时间戳转换为字符串
+    * @param @param time
+    * @param @return    设定文件
+    * @return String    返回类型
+    * @author banna
+    * @throws
+     */
+    public static String formatTimestampToString(Timestamp time) {
+    	  
+    	  String returnTime;
+    	
+    	  SimpleDateFormat sdf = new SimpleDateFormat(DateUtil.FULL_DATE_FORMAT);
+    	  long lcc_time = time.getTime();
+    	  returnTime = sdf.format(new Date(lcc_time));
+    	  return returnTime;
+    	}
+    
+    /**
+     * 
+     * @Title: formatCurrentDateWithYMD
+     * @Description: 获取当前时间不带时分秒的字符串,返回的格式为“年月日”
+     * @author:banna
+     * @return: String
+     */
+    public static String formatCurrentDateWithYMD() {
+  	  
+  	  String returnTime;
+  	
+  	  SimpleDateFormat sdf = new SimpleDateFormat(DateUtil.SIMPLE_DATE_FORMAT);
+  	  returnTime = sdf.format(new Date());
+  	  return returnTime;
+  	}
 }

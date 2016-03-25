@@ -1,10 +1,10 @@
 /**
- * jQuery EasyUI 1.4.2
+ * jQuery EasyUI 1.4.4
  * 
  * Copyright (c) 2009-2015 www.jeasyui.com. All rights reserved.
  *
- * Licensed under the GPL license: http://www.gnu.org/licenses/gpl.txt
- * To use it on other terms please contact us at info@jeasyui.com
+ * Licensed under the freeware license: http://www.jeasyui.com/license_freeware.php
+ * To use it on other terms please contact us: info@jeasyui.com
  *
  */
 /**
@@ -87,10 +87,10 @@
 			},
 			onOpen: function(){
 				if (state.mask){
-					state.mask.css({
+					state.mask.css($.extend({
 						display:'block',
 						zIndex: $.fn.window.defaults.zIndex++
-					});
+					}, $.fn.window.getMaskSize(target)));
 				}
 				if (state.shadow){
 					state.shadow.css({
@@ -143,32 +143,22 @@
 		
 		// create mask
 		if (state.mask){state.mask.remove();}
-		if (opts.modal == true){
-			state.mask = $('<div class="window-mask"></div>').insertAfter(state.window);
-			state.mask.css({
-				width: (opts.inline ? state.mask.parent().width() : getPageArea().width),
-				height: (opts.inline ? state.mask.parent().height() : getPageArea().height),
-				display: 'none'
-			});
+		if (opts.modal){
+			state.mask = $('<div class="window-mask" style="display:none"></div>').insertAfter(state.window);
 		}
 		
 		// create shadow
 		if (state.shadow){state.shadow.remove();}
-		if (opts.shadow == true){
-			state.shadow = $('<div class="window-shadow"></div>').insertAfter(state.window);
-			state.shadow.css({
-				display: 'none'
-			});
+		if (opts.shadow){
+			state.shadow = $('<div class="window-shadow" style="display:none"></div>').insertAfter(state.window);
 		}
 		
-		// if require center the window
+		// center and open the window
+		var closed = opts.closed;
 		if (opts.left == null){hcenter(target);}
 		if (opts.top == null){vcenter(target);}
 		moveWindow(target);
-		
-		if (!opts.closed){
-			win.window('open');	// open the window
-		}
+		if (!closed){win.window('open');}
 	}
 	
 	
@@ -258,19 +248,19 @@
 		});
 	}
 	
-	function getPageArea() {
-		if (document.compatMode == 'BackCompat') {
-			return {
-				width: Math.max(document.body.scrollWidth, document.body.clientWidth),
-				height: Math.max(document.body.scrollHeight, document.body.clientHeight)
-			}
-		} else {
-			return {
-				width: Math.max(document.documentElement.scrollWidth, document.documentElement.clientWidth),
-				height: Math.max(document.documentElement.scrollHeight, document.documentElement.clientHeight)
-			}
-		}
-	}
+	// function getPageArea() {
+	// 	if (document.compatMode == 'BackCompat') {
+	// 		return {
+	// 			width: Math.max(document.body.scrollWidth, document.body.clientWidth),
+	// 			height: Math.max(document.body.scrollHeight, document.body.clientHeight)
+	// 		}
+	// 	} else {
+	// 		return {
+	// 			width: Math.max(document.documentElement.scrollWidth, document.documentElement.clientWidth),
+	// 			height: Math.max(document.documentElement.scrollHeight, document.documentElement.clientHeight)
+	// 		}
+	// 	}
+	// }
 	
 	// when window resize, reset the width and height of the window's mask
 	$(window).resize(function(){
@@ -279,10 +269,7 @@
 			height: $(window)._outerHeight()
 		});
 		setTimeout(function(){
-			$('body>div.window-mask').css({
-				width: getPageArea().width,
-				height: getPageArea().height
-			});
+			$('body>div.window-mask').css($.fn.window.getMaskSize());
 		}, 50);
 	});
 	
@@ -306,7 +293,6 @@
 					options: $.extend({}, $.fn.window.defaults, $.fn.window.parseOptions(this), options)
 				});
 				if (!state.options.inline){
-//					$(this).appendTo('body');
 					document.body.appendChild(this);
 				}
 			}
@@ -351,6 +337,15 @@
 				moveWindow(this);
 			});
 		}
+	};
+
+	$.fn.window.getMaskSize = function(target){
+		var state = $(target).data('window');
+		var inline = (state && state.options.inline);
+		return {
+			width: (inline ? '100%' : $(document).width()),
+			height: (inline ? '100%' : $(document).height())
+		};
 	};
 	
 	$.fn.window.parseOptions = function(target){

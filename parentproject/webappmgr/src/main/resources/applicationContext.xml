@@ -63,12 +63,51 @@
 			<value>org.gjt.mm.mysql.Driver</value>
 		</property>
 		<property name="url">
-			<!-- <value>jdbc:mysql://localhost:3306/backstage?useUnicode=true&amp;amp;characterEncoding=utf-8</value> -->
-			<value>jdbc:mysql://localhost:3306/echart4?useUnicode=true&amp;amp;characterEncoding=utf-8</value>
+			<!-- <value>jdbc:mysql://182.92.153.8:3306/echart4?useUnicode=true&amp;amp;characterEncoding=utf-8</value> -->
+			<!-- <value>jdbc:mysql://127.0.0.1:3306/echart4?useUnicode=true&amp;amp;characterEncoding=utf-8</value> -->
+			<value>jdbc:mysql://123.56.231.50:3306/echart4?useUnicode=true&amp;amp;characterEncoding=utf-8</value>
 		</property>
 		<!-- <property name="username" value="root" />
 		<property name="password" value="root" /> -->
-		<property name="username" value="echart4" />
-		<property name="password" value="echart4" />
+		<property name="username" value="analysis" />
+		<property name="password" value="34songJIA$#" />
 	</bean>
+	
+	<!-- 定时任务 s-->
+	 <!-- 要调用的工作类 -->
+        <!-- <bean id="quartzJob" class="com.bs.outer.controller.TimingQuarzMethodController"></bean>
+        定义调用对象和调用对象的方法
+        <bean id="jobtask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+            调用的类
+            <property name="targetObject">
+                <ref bean="quartzJob"/>
+            </property>
+            调用类中的方法
+            <property name="targetMethod">
+                <value>updateRelaBsStaAndApp</value>
+            </property>
+        </bean>
+        定义触发时间
+        <bean id="doTime" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+            <property name="jobDetail">
+                <ref bean="jobtask"/>
+            </property>
+            cron表达式
+            <property name="cronExpression">
+                <value>0 0/1 * * * ?</value>0 0/1 0,22 * * ? 每天晚上10点执行的cron表达式0 0/10 0/1 * * ? 
+            </property>
+        </bean>
+        
+        总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序 
+        <bean id="startQuertz" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" >
+            <property name="triggers">
+                <list>
+                    <ref bean="doTime"/>
+                </list>
+            </property>
+           
+        </bean> -->
+        
+       <!-- 定时任务e -->
+	
 </beans>

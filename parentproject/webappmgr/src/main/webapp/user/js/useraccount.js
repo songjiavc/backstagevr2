@@ -2,11 +2,39 @@ $(document).ready(
 		function()
 		{
 			initDatagrid();
+			bindComboboxChange();//给下拉框绑定选中事件
 			closeDialog();
 		}
 );
 //是否刚开始加载页面
 var initFlag;
+
+/**
+ * 绑定上级角色下拉框改变事件
+ */
+function bindComboboxChange()
+{
+	//添加表单中的省份级联
+	$("#privinceA").combobox({
+
+		onSelect: function (rec) {
+			 //加载市级数据
+			 initCities('add','cityA','',rec.pcode);
+		}
+
+		}); 
+	//修改表单中的省份级联
+	$("#privinceU").combobox({
+
+		onSelect: function (rec) {
+			//加载市级数据
+			initCities('update','cityU','',rec.pcode);
+		}
+
+		}); 
+	
+	
+}
 
 /*
  * 	@desc	 
@@ -106,8 +134,16 @@ function initDatagrid()
 						password:data.password,
 						confirmPassword:data.password,
 						telephone:data.telephone,
-						status:data.status
+						status:data.status,
+						privince:data.privince,
+						city:data.city
 					});
+					
+					//初始化省份combobox
+					initProvince("update", "privinceU", data.province);
+					//初始化市级区域combobox
+					initCities('update','cityU',data.city,data.province);
+					
 		        },
 		        error: function (XMLHttpRequest, textStatus, errorThrown) {
 		            alert(errorThrown);
@@ -116,6 +152,79 @@ function initDatagrid()
 			$("#updateAccount").dialog("open");//打开修改用户弹框
 	}
 
+	/**
+	 * 初始化省下拉框
+	 * @param addOrUpdate
+	 * @param provinceId
+	 * @param pcode
+	 */
+	function initProvince(addOrUpdate,provinceId,pcode)
+	{
+		$('#'+provinceId).combobox('clear');//清空combobox值
+		
+		var data = new Object();
+		data.isHasall = false;//不包含"全部"
+		
+		$('#'+provinceId).combobox({
+				queryParams:data,
+				url:contextPath+'/product/getProvinceList.action',
+				valueField:'pcode',
+				textField:'pname',
+				 onLoadSuccess: function (data1) { //数据加载完毕事件
+	                 if (data1.length > 0 && "add" == addOrUpdate) 
+	                 {
+	                	 $("#"+provinceId).combobox('select',data1[0].pcode);
+	                 }
+	                 else
+	            	 {
+	                	//使用“setValue”设置选中值不会触发绑定事件导致多次加载市级数据，否则会多次触发产生错误
+	            	 	$("#"+provinceId).combobox('setValue', pcode);
+	            	 }
+						
+	             }
+			}); 
+	}
+
+	/**
+	 * 初始化市数据
+	 * @param addOrUpdate:标记当前是添加表单操作还是修改表单的操作,值为"add" 和"update"
+	 * @param cityId:当前操作的form表单的id
+	 * @param oldccode:应该选中的市数据code
+	 * @param pcode:级联的上级省code
+	 */
+	function initCities(addOrUpdate,cityId,oldccode,pcode)
+	{
+		$('#'+cityId).combobox('clear');//清空combobox值
+		var data = new Object();
+		
+		data.pcode = pcode;
+		data.isHasall=false;
+		$('#'+cityId).combobox({
+				queryParams:data,
+				url:contextPath+'/product/getCityList.action',
+				valueField:'ccode',
+				textField:'cname',
+				 onLoadSuccess: function (data1) { //数据加载完毕事件
+	                 if (data1.length > 0 && "add" == addOrUpdate) 
+	                 {
+	                	 $("#"+cityId).combobox('setValue',data1[data1.length-1].ccode);
+	                 }
+	                 else
+	            	 {
+	                	 
+	                	 if(data1.length > 0 &&"update" == addOrUpdate&&"" == oldccode)
+	                		 {//在修改表单中级联加载市级数据时也要默认选中全部
+	                		 	$("#"+cityId).combobox('select',data1[data1.length-1].ccode);
+	                		 }
+	                	 else
+	                		 {//当修改产品初始化市级数据时设置选中当前数据值
+	                		 	$("#"+cityId).combobox('select', oldccode);
+	                		 }
+	            	 }
+						
+	             }
+			}); 
+	}
 
 	//提交添加权限form表单
 	function submitAddAccount()

@@ -69,6 +69,11 @@ public class UserServiceImpl implements UserService {
 				user.setPassword(accountBean.getPassword());
 				user.setTelephone(accountBean.getTelephone());
 				user.setStatus(accountBean.getStatus());
+				
+				//date:2016-01-29添加账户中维护区域信息
+				user.setProvinceCode(accountBean.getProvince());
+				user.setCityCode(accountBean.getCity());
+				
 				//  暂时去掉md5加密   user.setPassword(MD5Util.MD5(accountBean.getPassword()));
 				user.setPassword(accountBean.getPassword());
 				user.setIsDeleted(Constants.IS_NOT_DELETED);
@@ -88,6 +93,11 @@ public class UserServiceImpl implements UserService {
 			user.setTelephone(accountBean.getTelephone());
 			user.setStatus(accountBean.getStatus());
 			user.setPassword(accountBean.getPassword());
+			
+			//date:2016-01-29添加账户中维护区域信息
+			user.setProvinceCode(accountBean.getProvince());
+			user.setCityCode(accountBean.getCity());
+			
 			user.setModify("admin");
 			user.setModifyTime(new Date());
 			userRepository.save(user);

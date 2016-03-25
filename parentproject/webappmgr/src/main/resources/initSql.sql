@@ -32,6 +32,11 @@ insert  into `T_SDF_ROLES`(`ID`,`CREATER`,`CREATER_TIME`,`IS_DELETED`,`MODIFY`,`
 values ('1','admin','2015-10-13 14:53:00','1','admin','2015-10-20 10:20:38','2','财务管理员','0','超级管理员','1');
 insert  into `T_SDF_ROLES`(`ID`,`CREATER`,`CREATER_TIME`,`IS_DELETED`,`MODIFY`,`MODIFY_TIME`,`CODE`,`NAME`,`PARENT_ROLE`,`PARENT_ROLENAME`,`ISSYSTEM`) 
 values ('2','admin','2015-10-13 14:53:00','1','admin','2015-10-20 10:20:38','3','代理','0','超级管理员','1');
+/*新添加两个初始化角色数据，省中心和市中心，用于在发布应用公告和应用广告还有通告时使用*/
+insert  into `T_SDF_ROLES`(`ID`,`CREATER`,`CREATER_TIME`,`IS_DELETED`,`MODIFY`,`MODIFY_TIME`,`CODE`,`NAME`,`PARENT_ROLE`,`PARENT_ROLENAME`,`ISSYSTEM`) 
+values ('3','admin','2015-10-13 14:53:00','1','admin','2015-10-20 10:20:38','4','省中心','0','超级管理员','1');
+insert  into `T_SDF_ROLES`(`ID`,`CREATER`,`CREATER_TIME`,`IS_DELETED`,`MODIFY`,`MODIFY_TIME`,`CODE`,`NAME`,`PARENT_ROLE`,`PARENT_ROLENAME`,`ISSYSTEM`) 
+values ('4','admin','2015-10-13 14:53:00','1','admin','2015-10-20 10:20:38','5','市中心','0','超级管理员','1');
 
 insert  into `T_SDF_ROLES`(`ID`,`CREATER`,`CREATER_TIME`,`IS_DELETED`,`MODIFY`,`MODIFY_TIME`,`CODE`,`NAME`,`PARENT_ROLE`,`PARENT_ROLENAME`,`ISSYSTEM`) 
 values ('ff808181514698fb015146a02eaf0000', 'admin', '2015-11-27 09:48:01', '1', 'admin', '2015-11-27 09:48:01', 'SC_ZJ', '市场总监', '0', '超级管理员', '0');
@@ -72,3 +77,27 @@ insert  into `RELA_SDF_AUTHORITY_ROLE`(`ROLE_ID`,`authority_ID`)
 values ('0','4028813a506515ad01506519290a0001');/*超级管理员权限*/
 insert into `RELA_SDF_AUTHORITY_ROLE` (`ROLE_ID`, `authority_ID`)
 values('1','4028813a506515ad01506519e1720002');/*财务管理员权限*/
+
+
+/*
+ * 初始化审批站点发布应用广告状态表数据
+ */
+insert into `T_BS_STATION_AD_STATUS` (`ID`, `isParent`, `parentStatus`, `statusId`, `statusName`) values('1','1',NULL,'00','站点发布应用广告');
+insert into `T_BS_STATION_AD_STATUS` (`ID`, `isParent`, `parentStatus`, `statusId`, `statusName`) values('2','0','1','01','站点保存应用广告');
+insert into `T_BS_STATION_AD_STATUS` (`ID`, `isParent`, `parentStatus`, `statusId`, `statusName`) values('3','0','1','02','市中心驳回应用广告');
+insert into `T_BS_STATION_AD_STATUS` (`ID`, `isParent`, `parentStatus`, `statusId`, `statusName`) values('4','1',NULL,'10','市中心审批站点应用广告');
+insert into `T_BS_STATION_AD_STATUS` (`ID`, `isParent`, `parentStatus`, `statusId`, `statusName`) values('5','0','4','11','提交市中心审批');
+insert into `T_BS_STATION_AD_STATUS` (`ID`, `isParent`, `parentStatus`, `statusId`, `statusName`) values('6','1',NULL,'20','审批完成');
+insert into `T_BS_STATION_AD_STATUS` (`ID`, `isParent`, `parentStatus`, `statusId`, `statusName`) values('7','0','6','21','审批完成发布站点广告');
+insert into `T_BS_STATION_AD_STATUS` (`ID`, `isParent`, `parentStatus`, `statusId`, `statusName`) values('8','1',NULL,'30','不通过');
+insert into `T_BS_STATION_AD_STATUS` (`ID`, `isParent`, `parentStatus`, `statusId`, `statusName`) values('9','0','8','31','审批不通过');
+
+
+/*
+ * 初始化审批站点发布应用广告状态流程表数据
+ */
+insert into `T_BS_STATION_AD_NEXT_STATUS` (`ID`, `current_status_id`, `direction_flag`, `next_status_id`) values('1','01','1','11');
+insert into `T_BS_STATION_AD_NEXT_STATUS` (`ID`, `current_status_id`, `direction_flag`, `next_status_id`) values('2','02','1','11');
+insert into `T_BS_STATION_AD_NEXT_STATUS` (`ID`, `current_status_id`, `direction_flag`, `next_status_id`) values('3','11','1','21');
+insert into `T_BS_STATION_AD_NEXT_STATUS` (`ID`, `current_status_id`, `direction_flag`, `next_status_id`) values('4','11','0','02');
+

@@ -112,6 +112,8 @@ public class AccountController {
 		accountBean.setPassword(user.getPassword());
 		accountBean.setTelephone(user.getTelephone());
 		accountBean.setStatus(user.getStatus());
+		accountBean.setCity(user.getCityCode());
+		accountBean.setProvince(user.getProvinceCode());
 		return accountBean;
 	}
 	

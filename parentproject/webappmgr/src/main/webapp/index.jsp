@@ -7,7 +7,7 @@ Boolean useMaskCode = (Boolean)request.getAttribute("useMaskCode");
 <html>
   <head>
     
-    <title>时代枫企业管理平台</title>
+    <title>后台数据管理平台</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -85,7 +85,7 @@ Boolean useMaskCode = (Boolean)request.getAttribute("useMaskCode");
         <td>&nbsp;</td>
         <td width="578"><div align="center">
         	<div align="right">
-        		<span style="float:left;font-size:30px;font-family:隶书">时代枫企业管理平台</span>
+        		<span style="float:left;font-size:30px;font-family:隶书">后台数据管理平台</span>
         	</div>
         
             <TABLE align="right" cellSpacing=0 cellPadding=0 width="40%" border="0">
