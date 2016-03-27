@@ -1,4 +1,4 @@
-﻿package com.sdf.manager.common.util;
+package com.sdf.manager.common.util;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;

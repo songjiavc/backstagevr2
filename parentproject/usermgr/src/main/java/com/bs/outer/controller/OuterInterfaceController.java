@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bs.outer.entity.Fast3;
+import com.bs.outer.entity.Fast3Analysis;
 import com.bs.outer.service.OuterInterfaceService;
 import com.sdf.manager.ad.controller.AdvertisementController;
 import com.sdf.manager.ad.dto.AdvertisementDTO;
@@ -30,7 +32,6 @@ import com.sdf.manager.ad.service.UploadfileService;
 import com.sdf.manager.announcement.dto.AnnouncementDTO;
 import com.sdf.manager.announcement.entity.Announcement;
 import com.sdf.manager.announcement.service.AnnouncementService;
-import com.sdf.manager.app.dto.AppDTO;
 import com.sdf.manager.app.entity.App;
 import com.sdf.manager.app.service.AppService;
 import com.sdf.manager.appUnitPrice.entity.AppUnitPrice;
@@ -40,10 +41,8 @@ import com.sdf.manager.appversion.dto.AppversionDTO;
 import com.sdf.manager.appversion.entity.Appversion;
 import com.sdf.manager.appversion.service.AppversionService;
 import com.sdf.manager.common.bean.ResultBean;
-import com.sdf.manager.common.exception.GlobalExceptionHandler;
 import com.sdf.manager.common.util.Constants;
 import com.sdf.manager.common.util.DateUtil;
-import com.sdf.manager.common.util.LoginUtils;
 import com.sdf.manager.common.util.QueryResult;
 import com.sdf.manager.companyNotice.dto.ComnoticeDTO;
 import com.sdf.manager.companyNotice.entity.CompanyNotice;
@@ -54,7 +53,6 @@ import com.sdf.manager.notice.entity.ForecastMessage;
 import com.sdf.manager.notice.entity.Notice;
 import com.sdf.manager.notice.service.NoticeService;
 import com.sdf.manager.order.dto.RenewAppDTO;
-import com.sdf.manager.order.entity.Orders;
 import com.sdf.manager.order.entity.RelaBsStationAndApp;
 import com.sdf.manager.order.entity.RelaBsStationAndAppHis;
 import com.sdf.manager.order.service.RelaBsStaAppHisService;
@@ -990,9 +988,35 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 		return appversionDTOs;
 	}
 	
+	/**
+	 * 
+	 * @Title: getLotteryNum
+	 * @Description:  获取开奖结果内容
+	 * * 对应的返回json数据结构：
+	 * @author:songjia
+	 * @return: Fast3
+	 */
+	@RequestMapping(value="/getLotteryNum",method = RequestMethod.GET)
+	public @ResponseBody Fast3 getLotteryNum(@RequestParam(value="issueNumber",required=true) String issueNumber,@RequestParam(value="provinceNumber",required=true) String provinceNumber)
+	{
+		
+		Fast3 fast3 = outerInterfaceService.getKaiJiangNumberByIssueId(Fast3.class,issueNumber, provinceNumber);
+		return fast3;
+	}
 	
-	
-	
-	
-	
+	/**
+	 * 
+	 * @Title: getLotteryNum
+	 * @Description:  获取遗漏统计内容
+	 * * 对应的返回json数据结构：
+	 * @author:songjia
+	 * @return: Fast3
+	 */
+	@RequestMapping(value="/getAnalysisInfo",method = RequestMethod.GET)
+	public @ResponseBody List<Fast3Analysis> getAnalysisInfo(@RequestParam(value="issueNumber",required=true) String issueNumber,@RequestParam(value="provinceNumber",required=true) String provinceNumber)
+	{
+		
+		List<Fast3Analysis> fast3List = outerInterfaceService.getAnalysisListByIssueNumber(Fast3Analysis.class, issueNumber, provinceNumber);
+		return fast3List;
+	}
 }

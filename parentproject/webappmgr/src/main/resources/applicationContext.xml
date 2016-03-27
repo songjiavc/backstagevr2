@@ -18,12 +18,12 @@
 	<!-- 开启注解事务只对当前配置文件有效 -->
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 
-	<jpa:repositories base-package="com.sdf.manager" repository-impl-postfix="Impl"
+	<jpa:repositories base-package="com.sdf.manager,com.bs.outer" repository-impl-postfix="Impl"
 		entity-manager-factory-ref="entityManagerFactory" transaction-manager-ref="transactionManager"  factory-class="com.sdf.manager.common.repository.DefaultRepositoryFactoryBean"></jpa:repositories>
 
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="com.sdf.manager" />
+		<property name="packagesToScan" value="com.sdf.manager,com.bs.outer" />
 		<property name="persistenceProvider">
 			<bean class="org.hibernate.ejb.HibernatePersistence" />
 		</property>
@@ -65,7 +65,7 @@
 		<property name="url">
 			<!-- <value>jdbc:mysql://182.92.153.8:3306/echart4?useUnicode=true&amp;amp;characterEncoding=utf-8</value> -->
 			<!-- <value>jdbc:mysql://127.0.0.1:3306/echart4?useUnicode=true&amp;amp;characterEncoding=utf-8</value> -->
-			<value>jdbc:mysql://123.56.231.50:3306/echart4?useUnicode=true&amp;amp;characterEncoding=utf-8</value>
+			<value>jdbc:mysql://localhost:3306/echart4?useUnicode=true&amp;amp;characterEncoding=utf-8</value>
 		</property>
 		<!-- <property name="username" value="root" />
 		<property name="password" value="root" /> -->

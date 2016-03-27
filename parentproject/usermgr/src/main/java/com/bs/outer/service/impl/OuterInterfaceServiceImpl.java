@@ -1,6 +1,7 @@
 package com.bs.outer.service.impl;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bs.outer.entity.Fast3;
+import com.bs.outer.entity.Fast3Analysis;
+import com.bs.outer.repository.Fast3AnalysisRepository;
+import com.bs.outer.repository.Fast3NumberRepository;
 import com.bs.outer.service.OuterInterfaceService;
 import com.sdf.manager.ad.entity.Advertisement;
 import com.sdf.manager.ad.repository.AdvertisementRepository;
@@ -35,6 +40,12 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	
 	@Autowired
 	private NoticeRepository noticeRepository;//应用公告数据容器层
+	
+	@Autowired
+	private Fast3NumberRepository fast3NumberRepository;
+	
+	@Autowired
+	private Fast3AnalysisRepository fast3AnalysisRepository;
 	
 	//TODO:未完成
 	public QueryResult<Announcement> getAnnouncementOfSta(Class<Announcement> entityClass, String whereJpql, Object[] queryParams, 
@@ -132,6 +143,30 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		QueryResult<Notice> userObj = noticeRepository.
 			getScrollDataBySql(Notice.class,sql.toString(), queryParams, pageable);
 		return userObj;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.bs.outer.service.OuterInterfaceService#getKaiJiangNumberByIssueId(java.lang.Class, java.lang.String, java.lang.String)
+	 */
+	public Fast3 getKaiJiangNumberByIssueId(Class<Fast3> entityClass,String issueNumber,String provinceNumber) {
+		String tableName = "analysis.T_ANHUI_KUAI3_NUMBER";
+		String execSql = "SELECT u.* FROM "+tableName +" u  WHERE ISSUE_NUMBER > ? LIMIT 1 ";
+		Object[] queryParams = new Object[]{
+				issueNumber
+		};
+		Fast3 fast3 = fast3NumberRepository.getEntityBySql(Fast3.class,execSql, queryParams);
+		return fast3;
+	}
+	
+	public List<Fast3Analysis> getAnalysisListByIssueNumber(Class<Fast3Analysis> entityClass,String issueNumber,String provinceNumber){
+		String tableName = "analysis.T_ANHUI_KUAI3_MISSANALYSIS";
+		String execSql = "SELECT u.* FROM "+tableName +" u  WHERE ISSUE_NUMBER >  ?  ";
+		Object[] queryParams = new Object[]{
+				issueNumber
+		};
+		List<Fast3Analysis> fast3AnalysisList = fast3AnalysisRepository.getEntityListBySql(Fast3Analysis.class,execSql, queryParams);
+		return fast3AnalysisList;
 	}
 
 

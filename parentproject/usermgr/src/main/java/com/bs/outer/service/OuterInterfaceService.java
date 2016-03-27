@@ -1,10 +1,12 @@
 package com.bs.outer.service;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 
-import com.bs.outer.bean.Fast3;
+import com.bs.outer.entity.Fast3;
+import com.bs.outer.entity.Fast3Analysis;
 import com.sdf.manager.ad.entity.Advertisement;
 import com.sdf.manager.announcement.entity.Announcement;
 import com.sdf.manager.common.util.QueryResult;
@@ -68,6 +70,14 @@ public interface OuterInterfaceService {
 	 * @author:banna
 	 * @return: QueryResult<Notice>
 	 */
-	public QueryResult<Fast3> getKaiJiangNumberByIssueId(Class<Fast3> entityClass,String whereJpql,String province);
+	public Fast3 getKaiJiangNumberByIssueId(Class<Fast3> entityClass,String issueNumber,String provinceNumber);
 
+	
+	/**
+	 * @param entityClass
+	 * @param issueNumber
+	 * @param provinceNumber
+	 * @return  对外接口，用于返回遗漏统计列表内容
+	 */
+	public List<Fast3Analysis> getAnalysisListByIssueNumber(Class<Fast3Analysis> entityClass,String issueNumber,String provinceNumber);
 }
