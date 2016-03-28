@@ -65,12 +65,19 @@ public interface OuterInterfaceService {
 			LinkedHashMap<String, String> orderby, Pageable pageable,String ugroups,String province,String city,String appId,String lotteryType);
 
 	/**
+	 * 初始化开奖结果内容
+	 * @param provinceNumber
+	 * @return
+	 */
+	public List<Fast3> getKaijiangNumberListByProvinceNumber(String provinceNumber);
+	
+	/**
 	 * @Title: getKaiJiangNumberByIssueId
 	 * @Description: 
-	 * @author:banna
+	 * @author:songjia
 	 * @return: QueryResult<Notice>
 	 */
-	public Fast3 getKaiJiangNumberByIssueId(Class<Fast3> entityClass,String issueNumber,String provinceNumber);
+	public Fast3 getKaiJiangNumberByIssueId(String issueNumber,String provinceNumber);
 
 	
 	/**
@@ -79,5 +86,8 @@ public interface OuterInterfaceService {
 	 * @param provinceNumber
 	 * @return  对外接口，用于返回遗漏统计列表内容
 	 */
-	public List<Fast3Analysis> getAnalysisListByIssueNumber(Class<Fast3Analysis> entityClass,String issueNumber,String provinceNumber);
+	public List<Fast3Analysis> getAnalysisListByIssueNumber(String issueNumber,String provinceNumber);
+	
+	
+	
 }

@@ -145,11 +145,19 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		return userObj;
 	}
 
-
+	public List<Fast3> getKaijiangNumberListByProvinceNumber(String provinceNumber){
+		String tableName = "analysis.T_ANHUI_KUAI3_NUMBER";
+		String execSql = "SELECT \n    p.*\nFROM\n    (SELECT \n        u.*\n    FROM\n        "+ tableName +" u\n    ORDER BY u.issue_number DESC\n    LIMIT 200) p\nORDER BY p.issue_number ASC";
+		Object[] queryParams = new Object[]{
+		};
+		List<Fast3> fast3List = fast3NumberRepository.getEntityListBySql(Fast3.class,execSql, queryParams);
+		return fast3List;
+		
+	}
 	/* (non-Javadoc)
 	 * @see com.bs.outer.service.OuterInterfaceService#getKaiJiangNumberByIssueId(java.lang.Class, java.lang.String, java.lang.String)
 	 */
-	public Fast3 getKaiJiangNumberByIssueId(Class<Fast3> entityClass,String issueNumber,String provinceNumber) {
+	public Fast3 getKaiJiangNumberByIssueId(String issueNumber,String provinceNumber) {
 		String tableName = "analysis.T_ANHUI_KUAI3_NUMBER";
 		String execSql = "SELECT u.* FROM "+tableName +" u  WHERE ISSUE_NUMBER > ? LIMIT 1 ";
 		Object[] queryParams = new Object[]{
@@ -159,7 +167,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		return fast3;
 	}
 	
-	public List<Fast3Analysis> getAnalysisListByIssueNumber(Class<Fast3Analysis> entityClass,String issueNumber,String provinceNumber){
+	public List<Fast3Analysis> getAnalysisListByIssueNumber(String issueNumber,String provinceNumber){
 		String tableName = "analysis.T_ANHUI_KUAI3_MISSANALYSIS";
 		String execSql = "SELECT u.* FROM "+tableName +" u  WHERE ISSUE_NUMBER >  ?  ";
 		Object[] queryParams = new Object[]{

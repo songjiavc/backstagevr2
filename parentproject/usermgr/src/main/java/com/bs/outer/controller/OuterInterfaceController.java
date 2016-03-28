@@ -1000,8 +1000,24 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	public @ResponseBody Fast3 getLotteryNum(@RequestParam(value="issueNumber",required=true) String issueNumber,@RequestParam(value="provinceNumber",required=true) String provinceNumber)
 	{
 		
-		Fast3 fast3 = outerInterfaceService.getKaiJiangNumberByIssueId(Fast3.class,issueNumber, provinceNumber);
+		Fast3 fast3 = outerInterfaceService.getKaiJiangNumberByIssueId(issueNumber, provinceNumber);
 		return fast3;
+	}
+	
+	/**
+	 * 
+	 * @Title: getLotteryNum
+	 * @Description:  获取开奖结果内容
+	 * * 对应的返回json数据结构：
+	 * @author:songjia
+	 * @return: Fast3
+	 */
+	@RequestMapping(value="/getLotteryNumList",method = RequestMethod.GET)
+	public @ResponseBody List<Fast3> getLotteryNumList(@RequestParam(value="provinceNumber",required=true) String provinceNumber)
+	{
+		
+		List<Fast3> fast3List = outerInterfaceService.getKaijiangNumberListByProvinceNumber(provinceNumber);
+		return fast3List;
 	}
 	
 	/**
@@ -1016,7 +1032,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	public @ResponseBody List<Fast3Analysis> getAnalysisInfo(@RequestParam(value="issueNumber",required=true) String issueNumber,@RequestParam(value="provinceNumber",required=true) String provinceNumber)
 	{
 		
-		List<Fast3Analysis> fast3List = outerInterfaceService.getAnalysisListByIssueNumber(Fast3Analysis.class, issueNumber, provinceNumber);
+		List<Fast3Analysis> fast3List = outerInterfaceService.getAnalysisListByIssueNumber( issueNumber, provinceNumber);
 		return fast3List;
 	}
 }
