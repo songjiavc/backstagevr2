@@ -197,10 +197,17 @@ function initDatagrid()
  */
 var setting ;
 var zNodes ;//放置树节点的全局变量
-function initAreaData(areaDataGridId)
+function initAreaData(areaDataGridId,isProvinceManager,province)
 {
 	
 	var data = new Object();
+	
+	if(isProvinceManager)
+		{
+			data.isProvince = isProvinceManager;
+			data.provinceCode = province;
+		}
+	
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
         type: "get",
@@ -229,6 +236,50 @@ function initAreaData(areaDataGridId)
    });
 	
 	$.fn.zTree.init($("#"+areaDataGridId), setting, zNodes);
+}
+
+/**
+ * 获取当前登录用户的角色
+ */
+function getLoginuserRole()
+{
+	var isCityManager = false;//是否拥有市中心角色
+	var isProvinceManager = false;//是否拥有省中心角色
+	var currentcode = "";
+	var province = "";
+	var city  = "";
+	var returnArr = new Array();
+	
+	var data1 = new Object();
+	var url = contextPath + '/announcement/getLoginuserRole.action';
+	$.ajax({
+		async: false,   //设置为同步获取数据形式
+        type: "post",
+        url: url,
+        data:data1,
+        dataType: "json",
+        success: function (data) {
+        	isCityManager = data.cityCenterManager;
+        	isProvinceManager = data.provinceCenterManager;
+        	currentcode = data.message;
+        	province = data.province;
+        	city = data.city;
+        	
+        	
+        	returnArr.push(isCityManager);
+        	returnArr.push(isProvinceManager);
+        	returnArr.push(currentcode);
+        	returnArr.push(province);
+        	returnArr.push(city);
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+        		window.parent.location.href = contextPath + "/error.jsp";
+        }
+   });
+	
+	
+	return returnArr;
+	
 }
 
 
@@ -491,22 +542,45 @@ function updateAnnouncement(id,status)
 								lotteryType:data.lotteryType//彩种
 							});
 							//初始化通行证列表数据
-							initStationGList(id, 'stationDataGridU')
-							//初始化区域树
-							initAreaData('areaDataGridU');
-							//选中当前应用广告发布的区域
-							var zTree = $.fn.zTree.getZTreeObj("areaDataGridU");
-							var node;//ztree树节点变量
-							var cityIds = checkAreas(id);
-							$.each(cityIds,function(j,cityId){
-								areaList.put(cityId, cityId);
-								node = zTree.getNodeByParam("id",cityId);
-								if(null != node)
-								{
-									zTree.checkNode(node, true, true);//设置树节点被选中
-								}
-			    			});
+							initStationGList(id, 'stationDataGridU');
 							
+							//初始化区域树
+							var roleArr = getLoginuserRole();
+						  	var isCityManager = roleArr[0];//是否拥有市中心角色
+							var isProvinceManager = roleArr[1];//是否拥有省中心角色
+							var currentcode = roleArr[2];
+							var province = roleArr[3];
+							
+							if(!isCityManager)
+							{
+								$("#areaDivU").show();// id="areaDivA"
+								//展示所有的区域信息，树的形式
+							  	initAreaData('areaDataGridU',isProvinceManager,province);
+								//选中当前应用广告发布的区域
+								var zTree = $.fn.zTree.getZTreeObj("areaDataGridU");
+								var node;//ztree树节点变量
+								var cityIds = checkAreas(id);
+								$.each(cityIds,function(j,cityId){
+									areaList.put(cityId, cityId);
+									node = zTree.getNodeByParam("id",cityId);
+									if(null != node)
+									{
+										zTree.checkNode(node, true, true);//设置树节点被选中
+									}
+				    			});
+								
+							}
+							else
+							{
+								$("#areaDivU").hide();
+								/*var cityIds = checkAreas(id);
+								$.each(cityIds,function(j,cityId){
+									areaList.put(cityId, cityId);
+				    			});*/
+							}
+							
+							
+						
 							/**绑定修改框中的开始日期可选范围**/
 							var startFanwei = data.startTimestr;
 							$('#startTimeU').datebox().datebox('calendar').calendar({
@@ -566,6 +640,39 @@ function checkAreas(id)
 	return area;
 }
 
+//添加通告
+function addAnnouncement()
+{
+	//清空数据列表
+  	clearLists();
+  	//加载通行证组数据
+  	initStationGList('','stationDataGridA');
+  	
+  	var roleArr = getLoginuserRole();
+  	var isCityManager = roleArr[0];//是否拥有市中心角色
+	var isProvinceManager = roleArr[1];//是否拥有省中心角色
+	var currentcode = roleArr[2];
+	var province = roleArr[3];
+  	
+	
+	if(!isCityManager)
+		{
+			$("#areaDivA").show();// id="areaDivA"
+			//展示所有的区域信息，树的形式
+		  	initAreaData('areaDataGridA',isProvinceManager,province);
+		}
+	else
+		{
+			$("#areaDivA").hide();
+		}
+  
+  	
+  	
+  	
+  	
+  	$("#addAnnouncement").dialog('open');
+}
+
 
 /**
  * 提交保存通告
@@ -579,19 +686,36 @@ function submitAddAnnouncement(operatype)
 			param.announceStatus = operatype;
 			param.stationGdata = JSON.stringify(stationGList);
 			
-			var codearr = new Array();
-			 var treeObj=$.fn.zTree.getZTreeObj("areaDataGridA"),
-		     nodes=treeObj.getCheckedNodes(true),
-		     v="";
+//			var codearr = new Array();
+			var roleArr = getLoginuserRole();
+			var isCityManager = roleArr[0];//是否拥有市中心角色
+			var isProvinceManager = roleArr[1];//是否拥有省中心角色
+			var currentcode = roleArr[2];
+			var province = roleArr[3];
+			var city = roleArr[4];
 			
-			for(var i=0; i<nodes.length; i++)
-			{
-				if(!nodes[i].isParent)
+			if(!isCityManager)
+				{
+					 var treeObj=$.fn.zTree.getZTreeObj("areaDataGridA"),
+				     nodes=treeObj.getCheckedNodes(true),
+				     v="";
+					
+					for(var i=0; i<nodes.length; i++)
 					{
-						areaList.put(nodes[i].id, nodes[i].id);
+						if(!nodes[i].isParent)
+							{
+								areaList.put(nodes[i].id, nodes[i].id);
+							}
+						
 					}
-				
-			}
+				}
+			else
+				{
+					areaList = new map();
+					areaList.put(city,city);//若为市中心发布的通告，则区域写入自己所在城市
+				}
+			
+			
 			param.areadata = JSON.stringify(areaList);
 			
 			
@@ -632,23 +756,40 @@ function submitUpdateAnnouncement(operatype)
 			var flag = false;
 			param.announceStatus = operatype;
 			param.stationGdata = JSON.stringify(stationGList);
-			var codearr = new Array();
-			 var treeObj=$.fn.zTree.getZTreeObj("areaDataGridU"),
-		     nodes=treeObj.getCheckedNodes(true),
-		     v="";
-			 areaList = new map();//在统计区域选中数据之前清空list，因为arealist没有选中触发事件和取消选中触发事件，所以在此处计算选中的区域数据
-			for(var i=0; i<nodes.length; i++)
-			{
-				if(!nodes[i].isParent)
+//			var codearr = new Array();
+			
+			
+			var roleArr = getLoginuserRole();
+			var isCityManager = roleArr[0];//是否拥有市中心角色
+			var isProvinceManager = roleArr[1];//是否拥有省中心角色
+			var currentcode = roleArr[2];
+			var province = roleArr[3];
+			var city = roleArr[4];
+			
+			if(!isCityManager)
+				{
+					 var treeObj=$.fn.zTree.getZTreeObj("areaDataGridU"),
+				     nodes=treeObj.getCheckedNodes(true),
+				     v="";
+					 areaList = new map();//在统计区域选中数据之前清空list，因为arealist没有选中触发事件和取消选中触发事件，所以在此处计算选中的区域数据
+					for(var i=0; i<nodes.length; i++)
 					{
-						if(!areaList.contain(nodes[i].id))
+						if(!nodes[i].isParent)
 							{
-								areaList.put(nodes[i].id, nodes[i].id);
+								if(!areaList.contain(nodes[i].id))
+									{
+										areaList.put(nodes[i].id, nodes[i].id);
+									}
+								
 							}
 						
 					}
-				
-			}
+				}
+			else//在初始化修改弹框时已经向arealist放入区域值
+				{
+					areaList = new map();
+					areaList.put(city,city);//若为市中心发布的通告，则区域写入自己所在城市
+				}
 			
 			param.areadata = JSON.stringify(areaList);
 			

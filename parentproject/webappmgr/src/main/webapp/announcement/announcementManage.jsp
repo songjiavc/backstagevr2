@@ -13,16 +13,8 @@
   	    text:'添加通告',
   	    iconCls:'icon-add',
   	    handler:function(){
-  	    	//清空数据列表
-  	    	clearLists();
-  	    	//加载通行证组数据
-  	    	initStationGList('','stationDataGridA')
   	    	
-  	    	//展示所有的区域信息，树的形式，一级节点为省，二级节点为市,（暂时不做成根据应用加载区域的效果，因为在应用是给市级使用时，不好对区域数据去重）
-  	    	initAreaData('areaDataGridA');
-  	    	
-  	    	
-  	    	$("#addAnnouncement").dialog('open');
+  	    	addAnnouncement();
   	    	
   	    }
   	}/* ,
@@ -237,10 +229,10 @@
 				      </form>
 	    	 	</div>
 	    	 	<div region="center" style="height:60%;padding:0;" >
-	    	 		<div id="txzDivA" style="width:100%;height:50%;">
+	    	 		<div id="txzDivA" style="width:100%;min-height:50%;">
 	    	 			<table id="stationDataGridA" class="easyui-datagrid" style="width:100%;height:100%;" title="选择发布通告的通行证组" ></table>
 	    	 		</div>
-	    	 		<div style="width:100%;height:50%;">
+	    	 		<div style="width:100%;height:50%;" id="areaDivA">
 	    	 			<label for="areaDataGridA">选择发布的区域:</label>
 	    	 			<ul id="areaDataGridA" class="ztree"></ul>
 	    	 		</div>
@@ -323,7 +315,7 @@
 	    	 		<div id="txzDivA" style="width:100%;height:50%;">
 	    	 			<table id="stationDataGridU" class="easyui-datagrid" style="width:100%;height:100%;" title="选择发布通告的通行证组" ></table>
 	    	 		</div>
-	    	 		<div style="width:100%;height:50%;">
+	    	 		<div style="width:100%;height:50%;"  id="areaDivU">
 	    	 			<label for="areaDataGridU">选择发布的区域:</label>
 	    	 			<ul id="areaDataGridU" class="ztree"></ul>
 	    	 		</div>
