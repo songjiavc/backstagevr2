@@ -1,4 +1,8 @@
-package com.bs.outer.bean;
+package com.bs.outer.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /** 
   * @ClassName: Fast3 
@@ -7,28 +11,33 @@ package com.bs.outer.bean;
   * @date Feb 22, 2016 4:30:49 PM 
   *  
   */
+@Entity
 public class Fast3 {
-
+	
+	@Id
+	@Column(name="ID", nullable=false, length=45)
+	private int id;
+	@Column(name="ISSUE_NUMBER")
 	private String issueNumber;
-	
+	@Column(name="NO1")
 	private int no1;
-	 
+	@Column(name="NO2")
 	private int no2;
-	
+	@Column(name="NO3")
 	private int no3;
-	
+	@Column(name="THREE_SUM")
 	private int threeSum;
-	
+	@Column(name="THREE_SPAN")
 	private int threeSpan;
-	
+	@Column(name="BIG_COUNT")
 	private int bigCount;
-	
+	@Column(name="SMALL_COUNT")
 	private int smallCount;
-	
+	@Column(name="ODD_COUNT")
 	private int oddCount;
-	
+	@Column(name="EVEN_COUNT")
 	private int evenCount;
-	
+	@Column(name="NUM_STATUS")
 	private int numStatus;
 
 	public String getIssueNumber() {

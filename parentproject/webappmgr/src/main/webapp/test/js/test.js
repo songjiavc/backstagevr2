@@ -265,20 +265,16 @@ function getProxyOfStation()
 //获取通当前安装的应用的最新版本数据
 function getAppversionsOfnew()
 {
-	var data = new Object();
-	
-	var appIds = new Array();
-	
-	appIds.push('402881e452f3784b0152f3794a740000');
-	appIds.push('40288134527c7c7b01527c8235120002');
-	
-	data.appIds = appIds.toString();
+	var data = {
+			issueNumber : '160327012',
+			provinceNumber : '100005'
+	};
 	
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
         type: "get",
         data:data,
-        url: contextPath+'/outerInterface/getAppversionsOfnew.action',
+        url: contextPath+'/outerInterface/getAnalysisInfo.action',
         dataType: "json",
         success: function (data) {
         	

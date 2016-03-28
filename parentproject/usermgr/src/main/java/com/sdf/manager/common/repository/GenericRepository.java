@@ -2,6 +2,7 @@ package com.sdf.manager.common.repository;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import javax.persistence.Query;
 
@@ -95,4 +96,22 @@ public interface GenericRepository<T, ID extends Serializable> extends JpaReposi
 		 */
 
 		public QueryResult<T> getScrollDataBySql(Class<T> entityClass,String sql, Object[] queryParams, Pageable pageable);
+		
+		/**
+		 * @author  songjia
+		 * @param entityClass
+		 * @param sql
+		 * @param queryParams
+		 * @return 用sql返回指定实体内容
+		 */
+		public T getEntityBySql(Class<T> entityClass,String sql,Object[] queryParams);
+		
+		/**
+		 * @author  songjia
+		 * @param entityClass
+		 * @param sql
+		 * @param queryParams
+		 * @return 用sql返回指定实体内容
+		 */
+		public List<T> getEntityListBySql(Class<T> entityClass,String sql,Object[] queryParams);
 }

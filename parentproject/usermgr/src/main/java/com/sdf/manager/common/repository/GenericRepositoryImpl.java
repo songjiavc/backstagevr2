@@ -5,6 +5,7 @@ import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -110,6 +111,23 @@ public class GenericRepositoryImpl<T, ID extends Serializable> extends SimpleJpa
         setQueryParams(query, queryParams);
         qr.setTotalCount(Integer.parseInt(query.getSingleResult().toString()));
 		return qr;
+	}
+	/* (non-Javadoc)
+	 * @see com.sdf.manager.common.repository.GenericRepository#getEntityBySql(java.lang.Class, java.lang.String, java.lang.Object[])
+	 */
+	public T getEntityBySql(Class<T> entityClass,String sql,Object[] queryParams){
+		Query query = em.createNativeQuery(sql,entityClass);
+		setQueryParams(query, queryParams);
+		return (T) query.getSingleResult();
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.sdf.manager.common.repository.GenericRepository#getEntityBySql(java.lang.Class, java.lang.String, java.lang.Object[])
+	 */
+	public List<T> getEntityListBySql(Class<T> entityClass,String sql,Object[] queryParams){
+		Query query = em.createNativeQuery(sql,entityClass);
+		setQueryParams(query, queryParams);
+		return query.getResultList();
 	}
 	
 	private String getCountField(Class<T> clazz) {
