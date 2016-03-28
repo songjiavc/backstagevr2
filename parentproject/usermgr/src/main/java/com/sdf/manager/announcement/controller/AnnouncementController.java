@@ -30,12 +30,16 @@ import com.sdf.manager.announcement.entity.AnnouncementAndArea;
 import com.sdf.manager.announcement.service.AnnouncementAndAreaService;
 import com.sdf.manager.announcement.service.AnnouncementService;
 import com.sdf.manager.common.bean.ResultBean;
+import com.sdf.manager.common.util.Constants;
 import com.sdf.manager.common.util.DateUtil;
 import com.sdf.manager.common.util.LoginUtils;
 import com.sdf.manager.common.util.QueryResult;
 import com.sdf.manager.product.entity.City;
 import com.sdf.manager.product.service.CityService;
 import com.sdf.manager.product.service.ProvinceService;
+import com.sdf.manager.user.entity.Role;
+import com.sdf.manager.user.entity.User;
+import com.sdf.manager.user.service.RoleService;
 import com.sdf.manager.user.service.UserService;
 import com.sdf.manager.userGroup.dto.UserGroupDTO;
 import com.sdf.manager.userGroup.entity.UserGroup;
@@ -71,6 +75,9 @@ public class AnnouncementController {
 	
 	@Autowired
 	private UserService userService;
+	
+	 @Autowired
+	 private RoleService roleService;
 	
 	public static final String ANNOUNCEMENT_FB="1";
 	public static final String ANNOUNCEMENT_BC="0";
@@ -127,6 +134,10 @@ public class AnnouncementController {
 		//只查询未删除数据
 		params.add("1");//只查询有效的数据
 		buffer.append(" isDeleted = ?").append(params.size());
+		
+		//只查询当前登录用户创建的通告数据
+		params.add(LoginUtils.getAuthenticatedUserCode(httpSession));
+		buffer.append(" and creater = ?").append(params.size());
 		
 		
 		/*if(null != province && !"".equals(province.trim())&&!Constants.PROVINCE_ALL.equals(province))
@@ -490,4 +501,59 @@ public class AnnouncementController {
 		 return cityIds;
 		 
 	 }
+	 
+	/**
+	 * 
+	 * @Title: getLoginuserRole
+	 * @Description: 获取当前登录人员的角色是否为"省中心"或者"市中心"
+	 * @author:banna
+	 * @return: ResultBean
+	 */
+	 @RequestMapping(value = "/getLoginuserRole", method = RequestMethod.POST)
+		public @ResponseBody ResultBean getLoginuserRole(
+				@RequestParam(value="id",required=false) String id,
+				ModelMap model,HttpSession httpSession) throws Exception
+		{
+		 	ResultBean resultBean = new ResultBean();
+		 	
+		 	//获取session中的登录数据
+			String code = LoginUtils.getAuthenticatedUserCode(httpSession);
+			User user = userService.getUserByCode(code);
+			String province = user.getProvinceCode();
+			String city = user.getCityCode();
+			//获取当前登录人员的角色list
+			List<Role> roles = user.getRoles();
+			
+			//根据“代理”和“财政管理员”的角色id获取对应的角色数据，用来判断当前用户的角色中是否有权限
+			Role roleProvinceManager = roleService.getRoleById(Constants.ROLE_PROVINCE_CENTER_ID);
+			Role roleCityManger = roleService.getRoleById(Constants.ROLE_CITY_CENTER_ID);
+			
+			if(roles.contains(roleProvinceManager))
+			{
+				resultBean.setProvinceCenterManager(true);
+				resultBean.setProvince(province);
+				resultBean.setCity(city);
+				//若为代理，返回当前登陆人的id
+				resultBean.setMessage(code);
+			}
+			else
+			{
+				resultBean.setProvinceCenterManager(false);
+			}
+			
+			if(roles.contains(roleCityManger))
+			{
+				resultBean.setCityCenterManager(true);
+				resultBean.setProvince(province);
+				resultBean.setCity(city);
+				resultBean.setMessage(code);
+			}
+			else
+			{
+				resultBean.setCityCenterManager(false);
+			}
+			
+		 	
+		 	return resultBean;
+		}
 }
