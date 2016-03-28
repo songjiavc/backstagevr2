@@ -274,7 +274,7 @@ function getAppversionsOfnew()
 		async: false,   //设置为同步获取数据形式
         type: "get",
         data:data,
-        url: contextPath+'/outerInterface/getAnalysisInfo.action',
+        url: contextPath+'/outerInterface/getLotteryNumList.action',
         dataType: "json",
         success: function (data) {
         	
