@@ -521,6 +521,18 @@ public class AnnouncementController {
 			User user = userService.getUserByCode(code);
 			String province = user.getProvinceCode();
 			String city = user.getCityCode();
+			String provinceName ="";
+			String cityName = "";
+			if(null!=province)
+			{
+				provinceName = provinceService.getProvinceByPcode(province).getPname();
+			}
+			if(null!=city)
+			{
+				 cityName = cityService.getCityByCcode(city).getCname();
+			}
+			
+			
 			//获取当前登录人员的角色list
 			List<Role> roles = user.getRoles();
 			
@@ -532,6 +544,7 @@ public class AnnouncementController {
 			{
 				resultBean.setProvinceCenterManager(true);
 				resultBean.setProvince(province);
+				resultBean.setProvinceName(provinceName);
 				resultBean.setCity(city);
 				//若为代理，返回当前登陆人的id
 				resultBean.setMessage(code);
@@ -545,7 +558,9 @@ public class AnnouncementController {
 			{
 				resultBean.setCityCenterManager(true);
 				resultBean.setProvince(province);
+				resultBean.setProvinceName(provinceName);
 				resultBean.setCity(city);
+				resultBean.setCityName(cityName);
 				resultBean.setMessage(code);
 			}
 			else
