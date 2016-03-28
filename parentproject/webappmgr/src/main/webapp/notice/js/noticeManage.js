@@ -83,8 +83,20 @@ function bindComboboxChange()
 	        onSelect: function(date){  
 	            $("#endTimeU").datebox('validate');
 	        }  
-	    });  
-	
+	    }); 
+	 
+	 $("#endTimeA").datebox({  
+	        onChange: function(date){  
+	        	
+	        	initForecastDatagird('forcastDataGridA');
+	        }  
+	    }); 
+	 $("#endTimeU").datebox({  
+	        onChange: function(date){  
+	        	
+	        	initForecastDatagird('forcastDataGridU');
+	        }  
+	    }); 
 }
 
 /**
@@ -647,7 +659,10 @@ function initStationGList(id,stationDataGridId)
 					{field:'createTime',title:'创建时间',width:130,align:'center'}
 		    ]],
 	    onLoadSuccess:function(data){ 
-	    	
+	    	 if(data.rows.length==0){
+					var body = $(this).data().datagrid.dc.body2;
+					body.find('table tbody').append('<tr><td width="'+body.width()+'" style="height: 25px; text-align: center;" colspan="4">没有数据</td></tr>');
+				}
 	    	
 	    	var selectedRows = $('#'+stationDataGridId).datagrid('getRows');
 	    	if(stationGList.keys.length>0)
@@ -891,6 +906,7 @@ function updateNotice(id,noticeStatus)
  */
 function initForecastDatagird(forecastDatagirdId)
 {
+	forecastList = new map();
 	//?※应用的区域应该对预测信息的显示有限制吗？？？目前代码中没有约束，TODO:之后把应用和预测信息做成级联
 	var params = new Object();
 	if('forcastDataGridU' == forecastDatagirdId)
@@ -904,11 +920,18 @@ function initForecastDatagird(forecastDatagirdId)
 			forecastList.put(forecastId, forecastId);
 		}
 		params.lottertyType = $("#lotteryTypeU").combobox('getValue');
+		
+		params.startTime = $("#startTimeU").datebox('getValue');
+		params.endTime = $("#endTimeU").datebox('getValue');
 	}
 	else
 		{
 			params.lottertyType = $("#lotteryTypeA").combobox('getValue');
+			params.startTime = $("#startTimeA").datebox('getValue');
+			params.endTime = $("#endTimeA").datebox('getValue');
 		}
+	
+	params.noticeData = '1';//应用公告获取预测信息数据
 	
 	
 	//渲染列表
@@ -943,7 +966,10 @@ function initForecastDatagird(forecastDatagirdId)
 					{field:'cityName',title:'市',width:80,align:'center'}
 		    ]],
 	    onLoadSuccess:function(data){ 
-	    	
+	    	if(data.rows.length==0){
+				var body = $(this).data().datagrid.dc.body2;
+				body.find('table tbody').append('<tr><td width="'+body.width()+'" style="height: 25px; text-align: center;" colspan="5">没有数据</td></tr>');
+			}
 	    	
 	    	var selectedRows = $('#'+forecastDatagirdId).datagrid('getRows');
 	    	if(forecastList.keys.length>0)
