@@ -33,6 +33,24 @@ function bindComboboxChange()
 
 		}); 
 	
+	$("#searchFormCityU").combobox({
+
+		onSelect: function (rec) {
+			//加载区级数据
+			initDistrictes('searchFormDistrictU',rec.ccode)
+		}
+
+		}); 
+	
+	$("#searchFormCityA").combobox({
+
+		onSelect: function (rec) {
+			//加载区级数据
+			initDistrictes('searchFormDistrictA',rec.ccode)
+		}
+
+		}); 
+	
 	
 }
 
@@ -155,11 +173,95 @@ function initCities(cityId,pcode)
 			 onLoadSuccess: function (data1) { //数据加载完毕事件
                  if (data1.length > 0 ) 
                  {
-                	 $("#"+cityId).combobox('setValue',data1[data1.length-1].ccode);
+                	 $("#"+cityId).combobox('select',data1[data1.length-1].ccode);
                  }
 					
              }
 		}); 
+}
+
+/**
+ * 初始化区下拉框
+ * @param districtId
+ * @param ccode
+ */
+function initDistrictes(districtId,ccode)
+{
+	$('#'+districtId).combobox('clear');//清空combobox值
+	var data = new Object();
+	
+	data.ccode = ccode;
+	data.isHasall=true;
+	$('#'+districtId).combobox({
+			queryParams:data,
+			url:contextPath+'/userGroup/getDistrictList.action',
+			valueField:'acode',
+			textField:'aname',
+			 onLoadSuccess: function (data1) { //数据加载完毕事件
+                 if (data1.length > 0 ) 
+                 {
+                	 $("#"+districtId).combobox('setValue',data1[data1.length-1].acode);
+                 }
+					
+             }
+		}); 
+}
+
+//添加通行证组弹框
+function addUsergroup()
+{
+	clearstationList();
+  	$("#searchFormStyleA").combobox('setValue','');
+  	
+  //获取当前通行证的角色
+	var roleArr = getLoginuserRole();
+	var isCityManager = roleArr[0];//是否拥有市中心角色
+	var isProvinceManager = roleArr[1];//是否拥有省中心角色
+	var currentcode = roleArr[2];
+	var province = roleArr[3];
+	var city = roleArr[4];
+	var provinceName = roleArr[5]; //5
+	var cityName = roleArr[6];//6
+	
+	if(isCityManager)//如果是“市中心”角色
+	{
+		
+		initDistrictes('searchFormDistrictA',city);
+		
+		$("#pa").hide();
+		$("#ca").hide();
+		$("#paShow").show();
+		$("#paName").val(provinceName);
+		$("#paHiddencode").val(province);
+		$("#caShow").show();
+		$("#caName").val(cityName);
+		$("#caHiddencode").val(city);
+		
+	}
+	else if(isProvinceManager)//如果是“省中心”角色
+		{
+			initCities('searchFormCityA',province);
+		
+			$("#pa").hide();
+			$("#paShow").show();
+			$("#ca").show();
+			$("#caShow").hide();
+			$("#paName").val(provinceName);
+			$("#paHiddencode").val(province);
+			
+		}
+	else
+		{
+			$("#pa").show();
+			$("#ca").show();
+			$("#paShow").hide();
+			$("#caShow").hide();
+		
+			initProvince('searchFormProvinceA');
+		}
+  	
+  	initStationList('','stationDataGridA');
+  	$("#addUgroup").dialog('open');
 }
 
 
@@ -178,6 +280,57 @@ function dosearch(addOrUpdate)
 
 }
 
+/**
+ * 获取当前登录用户的角色
+ */
+function getLoginuserRole()
+{
+	var isCityManager = false;//是否拥有市中心角色
+	var isProvinceManager = false;//是否拥有省中心角色
+	var currentcode = "";
+	var province = "";
+	var city  = "";
+	var provinceName  = "";
+	var cityName  = "";
+	var returnArr = new Array();
+	
+	var data1 = new Object();
+	var url = contextPath + '/announcement/getLoginuserRole.action';
+	$.ajax({
+		async: false,   //设置为同步获取数据形式
+        type: "post",
+        url: url,
+        data:data1,
+        dataType: "json",
+        success: function (data) {
+        	isCityManager = data.cityCenterManager;
+        	isProvinceManager = data.provinceCenterManager;
+        	currentcode = data.message;
+        	province = data.province;
+        	city = data.city;
+        	provinceName = data.provinceName;
+        	cityName = data.cityName;
+        	
+        	
+        	returnArr.push(isCityManager);
+        	returnArr.push(isProvinceManager);
+        	returnArr.push(currentcode);
+        	returnArr.push(province);
+        	returnArr.push(city);
+        	returnArr.push(provinceName);
+        	returnArr.push(cityName);
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+        		window.parent.location.href = contextPath + "/error.jsp";
+        }
+   });
+	
+	
+	return returnArr;
+	
+}
+
+
 
 
 /**
@@ -186,11 +339,45 @@ function dosearch(addOrUpdate)
 function initStationList(id,stationDataGridId)
 {
 	var params = new Object();
+	//获取当前通行证的角色
+	var roleArr = getLoginuserRole();
+	var isCityManager = roleArr[0];//是否拥有市中心角色
+	var isProvinceManager = roleArr[1];//是否拥有省中心角色
+	var currentcode = roleArr[2];
+	var province = roleArr[3];
+	var city = roleArr[4];
+	var provinceName = roleArr[5]; //5
+	var cityName = roleArr[6];//6
+	
 	if('stationDataGridU' == stationDataGridId)
 	{
-		params.searchFormProvince = $("#searchFormProvinceU").combobox('getValue');
-		params.searchFormCity = $("#searchFormCityU").combobox('getValue');
-		params.searchFormStyle = $("#searchFormStyleU").combobox('getValue');
+		if(isCityManager)//如果是“市中心”角色
+			{
+				
+				params.searchFormProvince = province;
+				params.searchFormCity = city;
+				params.searchFormStyle = $("#searchFormStyleU").combobox('getValue');
+				params.searchFormDistrict = $("#searchFormDistrictU").combobox('getValue');
+				
+			}
+		else if(isProvinceManager)//如果是“省中心”角色
+			{
+				
+				params.searchFormProvince = province;
+				params.searchFormCity = $("#searchFormCityU").combobox('getValue');
+				params.searchFormStyle = $("#searchFormStyleU").combobox('getValue');
+				params.searchFormDistrict = $("#searchFormDistrictU").combobox('getValue');
+			}
+		else
+			{
+			
+				params.searchFormProvince = $("#searchFormProvinceU").combobox('getValue');
+				params.searchFormCity = $("#searchFormCityU").combobox('getValue');
+				params.searchFormStyle = $("#searchFormStyleU").combobox('getValue');
+				params.searchFormDistrict = $("#searchFormDistrictU").combobox('getValue');
+			}
+			
+		
 		
 		var stations = checkStations(id, stationDataGridId);
 		
@@ -203,9 +390,33 @@ function initStationList(id,stationDataGridId)
 	else
 		if('stationDataGridA' == stationDataGridId)
 		{
-			params.searchFormProvince = $("#searchFormProvinceA").combobox('getValue');
-			params.searchFormCity = $("#searchFormCityA").combobox('getValue');
-			params.searchFormStyle = $("#searchFormStyleA").combobox('getValue');
+			if(isCityManager)//如果是“市中心”角色
+			{
+				
+				
+				params.searchFormProvince = province;
+				params.searchFormCity = city;
+				params.searchFormStyle = $("#searchFormStyleA").combobox('getValue');
+				params.searchFormDistrict = $("#searchFormDistrictA").combobox('getValue');
+				
+			}
+		else if(isProvinceManager)//如果是“省中心”角色
+			{
+				
+				
+				params.searchFormProvince = province;
+				params.searchFormCity = $("#searchFormCityA").combobox('getValue');
+				params.searchFormStyle = $("#searchFormStyleA").combobox('getValue');
+				params.searchFormDistrict = $("#searchFormDistrictA").combobox('getValue');
+			}
+		else
+			{
+			
+				params.searchFormProvince = $("#searchFormProvinceA").combobox('getValue');
+				params.searchFormCity = $("#searchFormCityA").combobox('getValue');
+				params.searchFormStyle = $("#searchFormStyleA").combobox('getValue');
+				params.searchFormDistrict = $("#searchFormDistrictA").combobox('getValue');
+			}
 		}
 	
 	//渲染列表
@@ -233,6 +444,10 @@ function initStationList(id,stationDataGridId)
 		    ]],
 	    onLoadSuccess:function(data){ 
 	    	
+	    	if(data.rows.length==0){
+				var body = $(this).data().datagrid.dc.body2;
+				body.find('table tbody').append('<tr><td width="'+body.width()+'" style="height: 25px; text-align: center;" colspan="7">没有数据</td></tr>');
+			}
 	    	
 	    	var selectedRows = $('#'+stationDataGridId).datagrid('getRows');
 	    	if(stationList.keys.length>0)
@@ -346,7 +561,57 @@ function updateUgroup(id)
 						userGroupDescription:data.userGroupDescription//通行证组描述
 					});
 					//初始化通行证列表数据
-					initProvince('searchFormProvinceU');//初始化通行证的查询条件
+//					initProvince('searchFormProvinceU');//初始化通行证的查询条件
+					
+					//获取当前通行证的角色
+					var roleArr = getLoginuserRole();
+					var isCityManager = roleArr[0];//是否拥有市中心角色
+					var isProvinceManager = roleArr[1];//是否拥有省中心角色
+					var currentcode = roleArr[2];
+					var province = roleArr[3];
+					var city = roleArr[4];
+					var provinceName = roleArr[5]; //5
+					var cityName = roleArr[6];//6
+					
+					if(isCityManager)//如果是“市中心”角色
+					{
+						initDistrictes('searchFormDistrictU',city);
+					
+						$("#pu").hide();
+						$("#cu").hide();
+						$("#puShow").show();
+						$("#cuShow").show();
+						$("#puName").val(provinceName);
+						$("#puHiddencode").val(province);
+						
+						$("#cuName").val(cityName);
+						$("#cuHiddencode").val(city);
+						
+					}
+					else if(isProvinceManager)//如果是“省中心”角色
+						{
+							initCities('searchFormCityU',province);
+						
+							$("#pu").hide();
+							$("#puShow").show();
+							$("#cu").show();
+							$("#cuShow").hide();
+							$("#puName").val(provinceName);
+							$("#puHiddencode").val(province);
+							
+						}
+					else
+						{
+							initProvince('searchFormProvinceU');
+							
+							$("#pu").show();
+							$("#cu").show();
+							$("#puShow").hide();
+							$("#cuShow").hide();
+						
+						}
+					
+					
 					$("#searchFormStyleU").combobox('setValue','');
 					initStationList(id,'stationDataGridU');
 					
@@ -433,28 +698,6 @@ function submitUpdateUgroup()
 	});
 }
 
-///**
-// * 生成应用编码
-// */
-//function generateCode()
-//{
-//	$.ajax({
-//		async: false,   //设置为同步获取数据形式
-//        type: "post",
-//        url: contextPath+'/app/generateAppcode.action',
-//        dataType: "json",
-//        success: function (data) {
-//        	
-//        	var appCode = data.code;
-//        	$("#codeA").textbox('setText',appCode);
-//        	$("#codehidden").val(appCode);
-//        	
-//        },
-//        error: function (XMLHttpRequest, textStatus, errorThrown) {
-//            window.parent.location.href = contextPath + "/error.jsp";
-//        }
-//   });
-//}
 
 /**
  * 删除通行证组数据（TODO:校验和通告等数据无关联时可以删除）

@@ -13,11 +13,8 @@
   	    text:'添加通行证组',
   	    iconCls:'icon-add',
   	    handler:function(){
-  	    	clearstationList();
-  	    	$("#searchFormStyleA").combobox('setValue','');
-  	    	initProvince('searchFormProvinceA');
-  	    	initStationList('','stationDataGridA');
-  	    	$("#addUgroup").dialog('open');
+  	    	
+  	    	addUsergroup();
   	    	
   	    }
   	} ];
@@ -59,6 +56,17 @@
 	  		}
 	  		
 	  		#main-layout{     min-width:1050px;     min-height:240px;     overflow:hidden; }
+	  		
+	  		.toolbarTb div{
+	  			float:left;
+	  		}
+	  		
+	  		.showName
+	  		{
+	  			border:none;
+	  			
+	  		}
+	  		
 		</style>
 		
 	 
@@ -185,13 +193,33 @@
     		</div>
     </div>
     
-     <div id="tbA" style="padding:3px">
-    	<span>省:</span>
+     <div id="tbA" style="padding:3px" class="toolbarTb">
+    	 <div id="pa">
+    	 	<span>省:</span>
 	    	<select class="easyui-combobox " id="searchFormProvinceA" name="searchFormProvince" style="width:150px;" >
 	    	</select>
-    	<span>市:</span>
+    	 </div>
+    	 <div id="paShow">
+     			<input id="paName" type="text" class="showName" readonly="readonly"/>
+     			<input id="paHiddencode" type="hidden"/>
+     	 </div>
+    	 <div id="ca">
+    	 	<span>市:</span>
 	    	<select class="easyui-combobox " id="searchFormCityA" name="searchFormProvince" style="width:150px;" >
 	    	</select>
+    	 </div>
+    	 <div id="caShow">
+     			<input id="caName" type="text" class="showName" readonly="readonly"/>
+     			<input id="caHiddencode" type="hidden"/>
+     		</div>
+    	 <div id="da">
+    	 	<span>区:</span>
+		    	<select class="easyui-combobox " id="searchFormDistrictA" name="searchFormDistrict" style="width:150px;" >
+		    	</select>
+    	 </div>
+    	
+    	
+    	
     	<span>站点类型:</span>
 	    	<select class="easyui-combobox" id="searchFormStyleA" name="searchFormStyle" style="width:100px;">
 								<option value="">全部</option>
@@ -200,13 +228,34 @@
 						</select>
     	<a href="#" class="icon-search" plain="true" onclick="dosearch(0)">查询</a>
     </div>
-     <div id="tbU" style="padding:3px">
-    	<span>省:</span>
-	    	<select class="easyui-combobox " id="searchFormProvinceU" name="searchFormProvince" style="width:150px;" >
+     <div id="tbU" style="padding:3px" class="toolbarTb">
+     	<div id="pu">
+	     	<span>省:</span>
+		    	<select class="easyui-combobox " id="searchFormProvinceU" name="searchFormProvince" style="width:150px;" >
 	    	</select>
-    	<span>市:</span>
+     	</div>
+     	<div id="puShow">
+     			<input id="puName" type="text" class="showName" readonly="readonly"/>
+     			<input id="puHiddencode" type="hidden"/>
+     	</div>
+    	<div id="cu">
+    		<span>市:</span>
 	    	<select class="easyui-combobox " id="searchFormCityU" name="searchFormProvince" style="width:150px;" >
 	    	</select>
+    	
+    	</div>
+    	<div id="cuShow">
+     			<input id="cuName" type="text" class="showName" readonly="readonly"/>
+     			<input id="cuHiddencode" type="hidden"/>
+     	</div>
+    	
+    	<div id="du">
+    		<span>区:</span>
+	    	<select class="easyui-combobox " id="searchFormDistrictU" name="searchFormDistrict" style="width:150px;" >
+	    	</select>
+    	</div>
+    	
+	    
     	<span>站点类型:</span>
     			<select class="easyui-combobox" id="searchFormStyleU" name="searchFormStyle" style="width:100px;">
 							<option value="">全部</option>

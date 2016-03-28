@@ -24,10 +24,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONObject;
 import com.sdf.manager.common.bean.ResultBean;
 import com.sdf.manager.common.exception.GlobalExceptionHandler;
+import com.sdf.manager.common.util.Constants;
 import com.sdf.manager.common.util.LoginUtils;
 import com.sdf.manager.common.util.QueryResult;
 import com.sdf.manager.goods.dto.RelaSdfGoodProductDTO;
 import com.sdf.manager.goods.entity.Goods;
+import com.sdf.manager.product.entity.City;
+import com.sdf.manager.product.entity.District;
+import com.sdf.manager.product.service.DistrictService;
 import com.sdf.manager.station.application.dto.StationDto;
 import com.sdf.manager.station.controller.StationController;
 import com.sdf.manager.station.entity.Station;
@@ -52,6 +56,9 @@ public class UserGroupController // extends GlobalExceptionHandler
 	
 	@Autowired
 	private StationService stationService;
+	
+	@Autowired
+	private DistrictService districtService;
 	
 	@RequestMapping(value = "/getDetailUserGroup", method = RequestMethod.GET)
 	public @ResponseBody UserGroupDTO getDetailUserGroup(@RequestParam(value="id",required=false) String id,
@@ -425,4 +432,30 @@ public class UserGroupController // extends GlobalExceptionHandler
 		 return resultBean;
 	 }
 	
+	 /**
+	  * 
+	  * @Title: getDistrictList
+	  * @Description: 根据市的code获取其下属的区数据
+	  * @author:banna
+	  * @return: List<District>
+	  */
+	 @RequestMapping(value = "/getDistrictList", method = RequestMethod.POST)
+		public @ResponseBody List<District> getDistrictList(
+				@RequestParam(value="ccode",required=false) String ccode,
+				@RequestParam(value="isHasall",required=false) boolean isHasall,
+				ModelMap model,HttpSession httpSession) throws Exception
+		{
+		 	
+		 	List<District> districts = districtService.findDistrictesOfCity(ccode);
+		 	if(!isHasall){
+			 	return districts;
+		 	}else{
+		 		District districtall = new District();
+		 		districtall.setAname(Constants.DISTRICT_ALL_NAME);
+		 		districtall.setAcode(Constants.DISTRICT_ALL);
+		 		districts.add(districtall);
+		 	}
+		 	return districts;
+		}
+	 
 }
