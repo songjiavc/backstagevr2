@@ -144,6 +144,7 @@ public class StationController {
 			@RequestParam(value="searchFormTelephone",required=false) String searchFormTelephone,//模糊查询所选省
 			@RequestParam(value="searchFormProvince",required=false) String searchFormProvince,//模糊查询所选省
 			@RequestParam(value="searchFormCity",required=false) String searchFormCity,//模糊查询所选市
+			@RequestParam(value="searchFormDistrict",required=false) String searchFormDistrict,//模糊查询所选区
 			@RequestParam(value="searchFormAgent",required=false) String searchFormAgent,//模糊查询所选市
 			ModelMap model,HttpSession httpSession) throws Exception
 	{
@@ -178,6 +179,13 @@ public class StationController {
 			params.add(searchFormCity);//根据省份查询产品数据
 			buffer.append(" and cityCode = ?").append(params.size());
 		}
+		
+		if(null != searchFormDistrict && !"".equals(searchFormDistrict)&& !Constants.DISTRICT_ALL.equals(searchFormDistrict))
+		{
+			params.add(searchFormDistrict);//根据区查询通行证数据
+			buffer.append(" and regionCode = ?").append(params.size());
+		}
+		
 		if(null != searchFormName && !"".equals(searchFormName))
 		{
 			params.add("%"+searchFormName+"%");//根据产品描述模糊查询产品数据
