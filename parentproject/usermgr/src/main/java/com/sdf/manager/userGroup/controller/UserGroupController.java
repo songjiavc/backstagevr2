@@ -105,6 +105,10 @@ public class UserGroupController // extends GlobalExceptionHandler
 			params.add("1");//只查询有效的数据
 			buffer.append(" isDeleted = ?").append(params.size());
 			
+			//只查询当前登录用户创建的通行证组数据
+			params.add(LoginUtils.getAuthenticatedUserCode(httpSession));
+			buffer.append(" and creater = ?").append(params.size());
+			
 			//连接查询条件
 			if(null != userGroupName&&!"".equals(userGroupName.trim()))
 			{
