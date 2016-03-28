@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>应用管理</title>
+    <title>预测信息管理</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <link href="<%=request.getContextPath() %>/css/ztree/zTreeStyle.css" rel="stylesheet" type="text/css" />
     <jsp:include page="../common/top.jsp" flush="true" /> 
@@ -128,7 +128,7 @@
 	            <input type="hidden" name="id" id="idA"/>
 	            <div style="float:left;margin-left: 30px;">
 		            <input class="easyui-textbox " type="text" id="forecastNameA" name="forecastName"  style="width:200px"  
-		               data-options="required:true" validType="length[0,20]" invalidMessage="名称字数最多可输入20个字" missingMessage="预测信息名称不可以为空"></input>
+		               data-options="required:true" validType="length[0,20]" invalidMessage="名称字数最多可输入20个字" missingMessage="预测信息名称不可以为空"/>
 		        </div>
 	        </div>
 	       <div class="ftitle">
@@ -165,14 +165,14 @@
 	            <label for="priceA">有效开始时间:</label>
 	            <div style="float:left;margin-left:30px;">
 			            <input class="easyui-datebox commonInput" type="text" id="startTimeA" name="startTime" data-options="required:true,editable:false" 
-			           ></input>
+			           />
 		          </div>
 	        </div>
 	        <div class="ftitle">
 	            <label for="priceA">有效结束时间:</label>
 	            <div style="float:left;margin-left:30px;">
 		            <input class="easyui-datebox commonInput" type="text" id="endTimeA" validType="md['#startTimeA']" name="endTime" data-options="required:true,editable:false" 
-		             ></input>
+		             />
 		         </div>
 	        </div>
 	      </form>
@@ -201,7 +201,7 @@
 	            <input type="hidden" name="id" id="idU"/>
 	            <div style="float:left;margin-left: 30px;">
 		            <input class="easyui-textbox " type="text" id="forecastNameU" name="forecastName"  style="width:200px"  
-		               readonly="readonly"></input>
+		               readonly="readonly"/>
 		        </div>
 	        </div>
 	       <div class="ftitle">
@@ -238,14 +238,14 @@
 	            <label for="priceA">有效开始时间:</label>
 	            <div style="float:left;margin-left:30px;">
 			            <input class="easyui-datebox commonInput" type="text" id="startTimeU" name="startTime" data-options="required:true,editable:false" 
-			           ></input>
+			           />
 		          </div>
 	        </div>
 	        <div class="ftitle">
 	            <label for="priceA">有效结束时间:</label>
 	            <div style="float:left;margin-left:30px;">
 		            <input class="easyui-datebox commonInput" type="text" id="endTimeU" validType="md['#startTimeU']" name="endTime" data-options="required:true,editable:false" 
-		             ></input>
+		             />
 		         </div>
 	        </div>
 	     </form>

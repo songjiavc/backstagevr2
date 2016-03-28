@@ -123,7 +123,7 @@ function initforecastProvince(addOrUpdate,provinceId,pcode)
 	$('#'+provinceId).combobox('clear');//清空combobox值
 	
 	var data = new Object();
-	data.isHasall = true;//不包含"全部"
+	data.isHasall = false;//不包含"全部"
 	
 	$('#'+provinceId).combobox({
 			queryParams:data,
@@ -380,9 +380,8 @@ function submitAddForecast()
 		},
 	    success:function(data){
 	    	//提交表单后，从后台返回的data类型为String，要获取信息需要将其转换为json类型，使用eval("(" + data + ")")方法转换
-	    	$.messager.alert('提示', eval("(" + data + ")").message);
 	    	$("#addForecast").dialog('close');//初始化添加应用弹框关闭
-	    	
+	    	$.messager.alert('提示', eval("(" + data + ")").message);
 	    	//添加角色后刷新数据列表
 	    	$('#ff').form('clear');//清空表单内容
 	    	initDatagrid();
@@ -413,10 +412,12 @@ function submitUpdateForecast()
 			return flag;
 		},
 	    success:function(data){
+	    	
+	    	$("#updateForecast").dialog('close');
+	    	
 	    	//提交表单后，从后台返回的data类型为String，要获取信息需要将其转换为json类型，使用eval("(" + data + ")")方法转换
 	    	$.messager.alert('提示', eval("(" + data + ")").message);
 	    	
-	    	$("#updateForecast").dialog('close');
 	    	//修改角色后刷新数据列表
 	    	initDatagrid();
 	    	
