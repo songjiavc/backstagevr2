@@ -24,8 +24,38 @@ public class ResultBean
 	
 	private boolean isCityCenterManager;//是否拥市中心角色
 	
+	private boolean isProvinceCenterManager;//是否拥省中心角色
+	
+	private String province;
+	
+	private String city;
 	
 	
+	
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public boolean isProvinceCenterManager() {
+		return isProvinceCenterManager;
+	}
+
+	public void setProvinceCenterManager(boolean isProvinceCenterManager) {
+		this.isProvinceCenterManager = isProvinceCenterManager;
+	}
 
 	public boolean isCityCenterManager() {
 		return isCityCenterManager;
