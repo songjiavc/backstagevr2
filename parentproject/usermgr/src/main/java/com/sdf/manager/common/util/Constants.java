@@ -15,6 +15,10 @@ public class Constants {
 	
 	public static final String CITY_ALL_NAME = "全部";//市级的“全部”选项对应的显示名称
 	
+	public static final String DISTRICT_ALL = "all";//区级的“全部”选项对应的值
+	
+	public static final String DISTRICT_ALL_NAME = "全部";//区级的“全部”选项对应的显示名称
+	
 	public static final String REGION_ALL = "all";//市级的“全部”选项对应的值
 	
 	public static final String REGION_ALL_NAME = "全部";//市级的“全部”选项对应的显示名称
