@@ -47,6 +47,8 @@ public class Constants {
 	
 	public static final String ROLE_CITY_CENTER_ID = "4";//“市中心”角色id
 	
+	public static final String ROLE_PROVINCE_CENTER_ID = "3";//“省中心”角色id
+	
 	public static final String LOTTERY_TYPE_TC = "1";//彩种：体彩
 	
 	public static final String LOTTERY_TYPE_FC = "2";//彩种：福彩
