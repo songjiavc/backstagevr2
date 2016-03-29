@@ -4,12 +4,15 @@
 	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc
 	   http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
 	   http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
        http://www.springframework.org/schema/context 
-       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/task  
+	  http://www.springframework.org/schema/task/spring-task-3.1.xsd ">
 <!-- 将spring-mvc-3.0.xsd改为spring-mvc-3.2.xsd可以修改ajax获取json数据失败的错误，还需要将 <mvc:annotation-driven/>修改为当前文件中的形式-->
 <!--  
 	当映射为@RequestMapping("/user/add")时：
@@ -18,7 +21,10 @@
 	3、拦截/，例如：/user/add，弊端：对jpg,js,css静态文件的访问也被拦截不能正常显示。后面有解决办法。
 	4、拦截/*，可以走到Action中，但转发到jsp时再次被拦截，不能访问到jsp。
 -->
-
+   <task:annotation-driven/> 
+       <context:annotation-config/>  
+        <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>  
+        <context:component-scan base-package="com.sdf.tasts" />  
 	<!-- 扫描web包，应用Spring的注解,※当前的配置要扫描管理包下内容和接口包下内容 -->
 	<context:component-scan base-package="com">  
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>   
