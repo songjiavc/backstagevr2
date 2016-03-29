@@ -694,6 +694,7 @@ function submitAddAnnouncement(operatype)
 			var province = roleArr[3];
 			var city = roleArr[4];
 			
+			var areaFlag = true;
 			if(!isCityManager)
 				{
 					 var treeObj=$.fn.zTree.getZTreeObj("areaDataGridA"),
@@ -708,27 +709,34 @@ function submitAddAnnouncement(operatype)
 							}
 						
 					}
+					if(areaList.keys.length==0)
+					{
+						areaFlag = false;
+						$.messager.alert('提示', "请选择当前通告要发布给哪些区域!");
+					}
 				}
 			else
 				{
 					areaList = new map();
-					areaList.put(city,city);//若为市中心发布的通告，则区域写入自己所在城市
+					/*若当前用户的角色为市中心，则可以进行区域和通行证组二选一的填写，否则通行证组则无意义，因为应用广告的区域范围到市，而市中心可以新建通行证组
+					的可选通行证范围也是本市，若默认写入当前市中心的区域值，则通行证组无法显示出其特殊性，因为通行证组的数据是市中心管辖通行证的子集；而其他角色
+					包括省中心和公司则不会发生这种情况，因为省中心不可以选择通行证组，若可选择通行证组可以跨越市级区域，通行证组不一定是选择的区域下通行证的子集，
+					公司角色与省中心同理*/		
+					if(stationGList.keys.length==0)
+					{//※若当前市中心角色用户没有选择通行证组，那么当前应用广告默认向全市发布
+						areaList.put(city,city);//若为市中心发布的通告，则区域写入自己所在城市
+					}
 				}
 			
 			
 			param.areadata = JSON.stringify(areaList);
 			
 			
-			if($('#ff').form('enableValidation').form('validate')&&areaList.keys.length>0)
+			if($('#ff').form('enableValidation').form('validate') && areaFlag)
 				{
 					flag = true;
 				}
-			else
-				if(areaList.keys.length==0)
-				{
-					flag = false;
-					$.messager.alert('提示', "请选择通告要发布给哪些区域!");
-				}
+			
 			return flag;
 		},
 	    success:function(data){
@@ -766,6 +774,7 @@ function submitUpdateAnnouncement(operatype)
 			var province = roleArr[3];
 			var city = roleArr[4];
 			
+			var areaFlag = true;
 			if(!isCityManager)
 				{
 					 var treeObj=$.fn.zTree.getZTreeObj("areaDataGridU"),
@@ -784,27 +793,35 @@ function submitUpdateAnnouncement(operatype)
 							}
 						
 					}
+					
+					if(areaList.keys.length==0)
+					{
+						areaFlag = false;
+						$.messager.alert('提示', "请选择当前通告要发布给哪些区域!");
+					}
 				}
 			else//在初始化修改弹框时已经向arealist放入区域值
 				{
 					areaList = new map();
-					areaList.put(city,city);//若为市中心发布的通告，则区域写入自己所在城市
+					/*若当前用户的角色为市中心，则可以进行区域和通行证组二选一的填写，否则通行证组则无意义，因为应用广告的区域范围到市，而市中心可以新建通行证组
+					的可选通行证范围也是本市，若默认写入当前市中心的区域值，则通行证组无法显示出其特殊性，因为通行证组的数据是市中心管辖通行证的子集；而其他角色
+					包括省中心和公司则不会发生这种情况，因为省中心不可以选择通行证组，若可选择通行证组可以跨越市级区域，通行证组不一定是选择的区域下通行证的子集，
+					公司角色与省中心同理*/		
+					if(stationGList.keys.length==0)
+					{//※若当前市中心角色用户没有选择通行证组，那么当前应用广告默认向全市发布
+						areaList.put(city,city);//若为市中心发布的通告，则区域写入自己所在城市
+					}
 				}
 			
 			param.areadata = JSON.stringify(areaList);
 			
 			
 			
-			if($('#ffUpdate').form('enableValidation').form('validate') &&areaList.keys.length>0 )
+			if($('#ffUpdate').form('enableValidation').form('validate') && areaFlag)
 				{
 					flag = true;
 				}
-			else
-				if(areaList.keys.length==0)
-				{
-					flag = false;
-					$.messager.alert('提示', "请选择通告要发布给哪些区域!");
-				}
+			
 			return flag;
 		},
 	    success:function(data){
