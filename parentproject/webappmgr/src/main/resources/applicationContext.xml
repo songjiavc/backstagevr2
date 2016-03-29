@@ -65,7 +65,7 @@
 		<property name="url">
 			<!-- <value>jdbc:mysql://182.92.153.8:3306/echart4?useUnicode=true&amp;amp;characterEncoding=utf-8</value> -->
 			<!-- <value>jdbc:mysql://127.0.0.1:3306/echart4?useUnicode=true&amp;amp;characterEncoding=utf-8</value> -->
-			<value>jdbc:mysql://localhost:3306/echart4?useUnicode=true&amp;amp;characterEncoding=utf-8</value>
+			<value>jdbc:mysql://123.56.231.50:3306/echart4?useUnicode=true&amp;amp;characterEncoding=utf-8</value>
 		</property>
 		<!-- <property name="username" value="root" />
 		<property name="password" value="root" /> -->

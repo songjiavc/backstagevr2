@@ -41,6 +41,8 @@ import com.sdf.manager.appversion.dto.AppversionDTO;
 import com.sdf.manager.appversion.entity.Appversion;
 import com.sdf.manager.appversion.service.AppversionService;
 import com.sdf.manager.common.bean.ResultBean;
+import com.sdf.manager.common.bean.ResultBeanData;
+import com.sdf.manager.common.bean.ResultBeanDataList;
 import com.sdf.manager.common.util.Constants;
 import com.sdf.manager.common.util.DateUtil;
 import com.sdf.manager.common.util.QueryResult;
@@ -1003,9 +1005,6 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 		accountBean.setStatus(user.getStatus());
 		accountBean.setCity(user.getCityCode());
 		accountBean.setProvince(user.getProvinceCode());
-		
-		
-		
 		return accountBean;
 	}
 	
@@ -1047,12 +1046,22 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	 * @author:songjia
 	 * @return: Fast3
 	 */
+	@SuppressWarnings("finally")
 	@RequestMapping(value="/getLotteryNum",method = RequestMethod.GET)
-	public @ResponseBody Fast3 getLotteryNum(@RequestParam(value="issueNumber",required=true) String issueNumber,@RequestParam(value="provinceNumber",required=true) String provinceNumber)
+	public @ResponseBody ResultBeanData<Fast3> getLotteryNum(@RequestParam(value="issueNumber",required=true) String issueNumber,@RequestParam(value="provinceNumber",required=true) String provinceNumber)
 	{
-		
-		Fast3 fast3 = outerInterfaceService.getKaiJiangNumberByIssueId(issueNumber, provinceNumber);
-		return fast3;
+		ResultBeanData<Fast3> fast3Bean  = new ResultBeanData<Fast3>();
+		try{
+			Fast3 fast3 = outerInterfaceService.getKaiJiangNumberByIssueId(issueNumber, provinceNumber);
+			fast3Bean.setStatus("1");
+			fast3Bean.setMessage("success");
+			fast3Bean.setEntity(fast3);
+		}catch(Exception ex){
+			fast3Bean.setStatus("0");
+			fast3Bean.setMessage("failure");
+		}finally{
+			return fast3Bean;
+		}
 	}
 	
 	/**
@@ -1063,12 +1072,23 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	 * @author:songjia
 	 * @return: Fast3
 	 */
+	@SuppressWarnings("finally")
 	@RequestMapping(value="/getLotteryNumList",method = RequestMethod.GET)
-	public @ResponseBody List<Fast3> getLotteryNumList(@RequestParam(value="provinceNumber",required=true) String provinceNumber)
+	public @ResponseBody ResultBeanDataList<Fast3> getLotteryNumList(@RequestParam(value="provinceNumber",required=true) String provinceNumber)
 	{
-		
-		List<Fast3> fast3List = outerInterfaceService.getKaijiangNumberListByProvinceNumber(provinceNumber);
-		return fast3List;
+		ResultBeanDataList<Fast3> resultList = new ResultBeanDataList<Fast3>();
+		try{
+			List<Fast3> fast3List = outerInterfaceService.getKaijiangNumberListByProvinceNumber(provinceNumber);
+			resultList.setDataList(fast3List);
+			resultList.setMessage("success");
+			resultList.setStatus("1");
+		}catch(Exception ex){
+			logger.error("获取初始化开奖号码结果集错误！");
+			resultList.setMessage("failure");
+			resultList.setStatus("0");
+		}finally{
+			return resultList;
+		}
 	}
 	
 	/**
@@ -1080,10 +1100,20 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	 * @return: Fast3
 	 */
 	@RequestMapping(value="/getAnalysisInfo",method = RequestMethod.GET)
-	public @ResponseBody List<Fast3Analysis> getAnalysisInfo(@RequestParam(value="issueNumber",required=true) String issueNumber,@RequestParam(value="provinceNumber",required=true) String provinceNumber)
+	public @ResponseBody ResultBeanDataList<Fast3Analysis> getAnalysisInfo(@RequestParam(value="issueNumber",required=true) String issueNumber,@RequestParam(value="provinceNumber",required=true) String provinceNumber)
 	{
-		
-		List<Fast3Analysis> fast3List = outerInterfaceService.getAnalysisListByIssueNumber( issueNumber, provinceNumber);
-		return fast3List;
+		ResultBeanDataList<Fast3Analysis> resultList = new ResultBeanDataList<Fast3Analysis>();
+		try{
+			List<Fast3Analysis> fast3List = outerInterfaceService.getAnalysisListByIssueNumber( issueNumber, provinceNumber);
+			resultList.setDataList(fast3List);
+			resultList.setMessage("success");
+			resultList.setStatus("1");
+		}catch(Exception ex){
+			logger.error("获取遗漏统计结果集错误！");
+			resultList.setMessage("failure");
+			resultList.setStatus("0");
+		}finally{
+			return resultList;
+		}
 	}
 }
