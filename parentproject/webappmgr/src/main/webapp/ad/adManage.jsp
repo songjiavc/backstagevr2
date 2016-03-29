@@ -224,7 +224,7 @@
 	    	 		<div id="txzDivA" style="width:100%;height:40%;">
 	    	 			<table id="stationDataGridA" class="easyui-datagrid" style="width:100%;height:100%;" title="选择发布广告的通行证组" ></table>
 	    	 		</div>
-	    	 		<div style="width:100%;height:20%;">
+	    	 		<div style="width:100%;height:20%;" id="areaDivA">
 	    	 			<label for="areaDataGridA">选择发布的区域:</label>
 	    	 			<ul id="areaDataGridA" class="ztree"></ul>
 	    	 		</div>
@@ -321,7 +321,7 @@
 	    	 		<div id="txzDivU" style="width:100%;height:40%;">
 	    	 			<table id="stationDataGridU" class="easyui-datagrid" style="width:100%;height:100%;" title="选择发布广告的通行证组" ></table>
 	    	 		</div>
-	    	 		<div style="width:100%;min-height:20;">
+	    	 		<div style="width:100%;min-height:20;" id="areaDivU">
 	    	 			<label for="areaDataGridU">选择发布的区域:</label>
 	    	 			<ul id="areaDataGridU" class="ztree"></ul>
 	    	 		</div>
