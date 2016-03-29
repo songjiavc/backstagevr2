@@ -14,20 +14,7 @@
   	    iconCls:'icon-add',
   	    handler:function(){
   	    	
-  	    	$("#addNotice").dialog('open');
-  	    	//清空数据列表
-  	    	clearLists();
-  	    	//初始化页面展示
-  	    	initAddPage();
-  	    	
-  	    	//判断当前登录用户可以创建什么类型的应用广告，根据类型加载弹框,除了市中心用户，其他用户不可以显示通行证组的选择
-  	    	checkNoticeUseUgroup('txzDivA','','stationDataGridA');
-  	    	//加载应用列表
-  	    	initAppDatagrid('','appDataGridA');
-  	    	
-  	    	//展示所有的区域信息，树的形式，一级节点为省，二级节点为市,（暂时不做成根据应用加载区域的效果，因为在应用是给市级使用时，不好对区域数据去重）
-  	    	initAreaData('areaDataGridA');
-  	    	
+  	    	addAppNotice();
   	    	
   	    	
   	    	
@@ -266,7 +253,7 @@
 	    	 		<div id="forecastDivA" style="width:100%;height:30%;">
 	    	 			<table id="forcastDataGridA" class="easyui-datagrid" style="width:100%;height:100%;" title="选择预测信息" ></table>
 	    	 		</div>
-	    	 		<div style="width:100%;height:10%;">
+	    	 		<div style="width:100%;height:10%;" id="areaDivA">
 	    	 			<label for="areaDataGridA">选择发布的区域:</label>
 	    	 			<ul id="areaDataGridA" class="ztree"></ul>
 	    	 		</div>
@@ -368,7 +355,7 @@
 	    	 		<div id="forecastDivU" style="width:100%;height:30%;">
 	    	 			<table id="forcastDataGridU" class="easyui-datagrid" style="width:100%;height:100%;" title="选择预测信息" ></table>
 	    	 		</div>
-	    	 		<div style="width:100%;height:10%;">
+	    	 		<div style="width:100%;height:10%;" id="areaDivU">
 	    	 			<label for="areaDataGridU">选择发布的区域:</label>
 	    	 			<ul id="areaDataGridU" class="ztree"></ul>
 	    	 		</div>
