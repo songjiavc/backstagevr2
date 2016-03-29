@@ -720,73 +720,88 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	 * @return: List<AdvertisementDTO>
 	 */
 	@RequestMapping(value="/getAdsOfStationAndApp",method = RequestMethod.GET)
-	public @ResponseBody List<AdvertisementDTO> getAdsOfStationAndApp(@RequestParam(value="stationId",required=true) String stationId,
+	public @ResponseBody Map<String,Object> getAdsOfStationAndApp(@RequestParam(value="stationId",required=true) String stationId,
 													@RequestParam(value="appId",required=true) String appId	)
 	{
+		Map<String,Object> result = new HashMap<String, Object>();
 		List<AdvertisementDTO> advertisementDTOs = new ArrayList<AdvertisementDTO>();
 		List<UserGroup> ugroups = new ArrayList<UserGroup>();
 		String province;
 		String city;
 		String lotteryType;
-		
-		Station station = stationService.getSationById(stationId);
-		
-		App app = appService.getAppById(appId);
-		lotteryType = app.getLotteryType();
-		
-		province = station.getProvinceCode();
-		city = station.getCityCode();
-		
-		ugroups = station.getUserGroups();//获取通行证组数据
-		
-		//放置分页参数
-		Pageable pageable = new PageRequest(0,1000000);//查询所有的数据
-		
-		StringBuffer ugroupArr = new StringBuffer();
-		if(ugroups.size()>0)
+		try
 		{
-			for(int i=0;i<ugroups.size();i++)
+			Station station = stationService.getSationById(stationId);
+			
+			App app = appService.getAppById(appId);
+			lotteryType = app.getLotteryType();
+			
+			province = station.getProvinceCode();
+			city = station.getCityCode();
+			
+			ugroups = station.getUserGroups();//获取通行证组数据
+			
+			//放置分页参数
+			Pageable pageable = new PageRequest(0,1000000);//查询所有的数据
+			
+			StringBuffer ugroupArr = new StringBuffer();
+			if(ugroups.size()>0)
 			{
-				if(i==0)
+				for(int i=0;i<ugroups.size();i++)
 				{
-					ugroupArr.append("'"+ugroups.get(i).getId()+"'");
-				}
-				else
-				{
-					ugroupArr.append(",");
-					ugroupArr.append("'"+ugroups.get(i).getId()+"'");
+					if(i==0)
+					{
+						ugroupArr.append("'"+ugroups.get(i).getId()+"'");
+					}
+					else
+					{
+						ugroupArr.append(",");
+						ugroupArr.append("'"+ugroups.get(i).getId()+"'");
+					}
 				}
 			}
-		}
-		
-		//参数
-		StringBuffer buffer = new StringBuffer();
-		List<Object> params = new ArrayList<Object>();
-		LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
-		
-		QueryResult<Advertisement> adQueryResult = outerInterfaceService.
-				getAdvertisementOfStaAndApp(Advertisement.class, buffer.toString(), params.toArray(),
-						orderBy, pageable, ugroupArr.toString(), province, city,appId,lotteryType);
-		 
-		List<Advertisement> advertisements = adQueryResult.getResultList();
-		
-		for (Advertisement advertisement : advertisements) 
-		{
-			if(AdvertisementController.AD_IMG.equals(advertisement.getImgOrWord()))//若为图片广告，则将图片的路径整理到
+			
+			//参数
+			StringBuffer buffer = new StringBuffer();
+			List<Object> params = new ArrayList<Object>();
+			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
+			
+			QueryResult<Advertisement> adQueryResult = outerInterfaceService.
+					getAdvertisementOfStaAndApp(Advertisement.class, buffer.toString(), params.toArray(),
+							orderBy, pageable, ugroupArr.toString(), province, city,appId,lotteryType);
+			 
+			List<Advertisement> advertisements = adQueryResult.getResultList();
+			
+			for (Advertisement advertisement : advertisements) 
 			{
-				StringBuffer imgUrl = new StringBuffer();
-				
-				Uploadfile uploadfile = uploadfileService.getUploadfileByNewsUuid(advertisement.getAppImgUrl());
-				
-				imgUrl.append(uploadfile.getUploadfilepath()+uploadfile.getUploadRealName());
-				
-				advertisement.setAppImgUrl(imgUrl.toString());
+				if(AdvertisementController.AD_IMG.equals(advertisement.getImgOrWord()))//若为图片广告，则将图片的路径整理到
+				{
+					StringBuffer imgUrl = new StringBuffer();
+					
+					Uploadfile uploadfile = uploadfileService.getUploadfileByNewsUuid(advertisement.getAppImgUrl());
+					
+					imgUrl.append(uploadfile.getUploadfilepath()+uploadfile.getUploadRealName());
+					
+					advertisement.setAppImgUrl(imgUrl.toString());
+				}
 			}
+			
+			advertisementDTOs = advertisementService.toRDTOS(advertisements);
+			
+			result.put("advertisementDTOs", advertisementDTOs);
+			result.put("status", "1");
+			result.put("message", "数据获取成功！");
+		}
+		catch(Exception e)
+		{
+			logger.info("获取应用广告数据时报错！stationId="+stationId+"&& appId="+appId);
+			result.put("status", "0");
+			result.put("message", "数据获取失败！");
 		}
 		
-		advertisementDTOs = advertisementService.toRDTOS(advertisements);
 		
-		return advertisementDTOs;
+		
+		return result;
 	}
 	
 	/**
@@ -797,9 +812,11 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	 * @return: List<AdvertisementDTO>
 	 */
 	@RequestMapping(value="/getNoticesOfStationAndApp",method = RequestMethod.GET)
-	public @ResponseBody List<NoticeDTO> getNoticesOfStationAndApp(@RequestParam(value="stationId",required=true) String stationId,
+	public @ResponseBody Map<String,Object> getNoticesOfStationAndApp(@RequestParam(value="stationId",required=true) String stationId,
 													@RequestParam(value="appId",required=true) String appId	)
 	{
+		Map<String,Object> result = new HashMap<String, Object>();
+		
 		List<NoticeDTO> noticeDTOs = new ArrayList<NoticeDTO>();
 		
 		List<UserGroup> ugroups = new ArrayList<UserGroup>();
@@ -807,72 +824,86 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 		String city;
 		String lotteryType;
 		
-		Station station = stationService.getSationById(stationId);
-		
-		App app = appService.getAppById(appId);
-		lotteryType = app.getLotteryType();
-		
-		province = station.getProvinceCode();
-		city = station.getCityCode();
-		
-		ugroups = station.getUserGroups();//获取通行证组数据
-		
-		//放置分页参数
-		Pageable pageable = new PageRequest(0,1000000);//查询所有的数据
-		
-		StringBuffer ugroupArr = new StringBuffer();
-		if(ugroups.size()>0)
+		try
 		{
-			for(int i=0;i<ugroups.size();i++)
-			{
-				if(i==0)
-				{
-					ugroupArr.append("'"+ugroups.get(i).getId()+"'");
-				}
-				else
-				{
-					ugroupArr.append(",");
-					ugroupArr.append("'"+ugroups.get(i).getId()+"'");
-				}
-			}
-		}
 		
-		//参数
-		StringBuffer buffer = new StringBuffer();
-		List<Object> params = new ArrayList<Object>();
-		LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
-		
-		QueryResult<Notice> nQueryResult = outerInterfaceService.
-				getNoticeOfStaAndApp(Notice.class, buffer.toString(), params.toArray(),
-						orderBy, pageable, ugroupArr.toString(), province, city,appId,lotteryType);
-		 
-		List<Notice> notices = nQueryResult.getResultList();
-		
-		for (Notice notice : notices) 
-		{
+			Station station = stationService.getSationById(stationId);
 			
-			if(NoticeController.APP_CATEGORY_FORCAST.equals(notice.getAppCategory()))//若为预测类应用公告，则返回的公告内容就是预测信息的连接
+			App app = appService.getAppById(appId);
+			lotteryType = app.getLotteryType();
+			
+			province = station.getProvinceCode();
+			city = station.getCityCode();
+			
+			ugroups = station.getUserGroups();//获取通行证组数据
+			
+			//放置分页参数
+			Pageable pageable = new PageRequest(0,1000000);//查询所有的数据
+			
+			StringBuffer ugroupArr = new StringBuffer();
+			if(ugroups.size()>0)
 			{
-				List<ForecastMessage> forecastMessages = notice.getForecastMessages();
-				StringBuffer content = new StringBuffer();
-				
-				for (ForecastMessage forecastMessage : forecastMessages) 
+				for(int i=0;i<ugroups.size();i++)
 				{
-					
-					String forcastName = forecastMessage.getForecastName();
-					String forcastMes = forecastMessage.getForecastContent();
-					
-					content.append(forcastName+":"+forcastMes+";");
-					
+					if(i==0)
+					{
+						ugroupArr.append("'"+ugroups.get(i).getId()+"'");
+					}
+					else
+					{
+						ugroupArr.append(",");
+						ugroupArr.append("'"+ugroups.get(i).getId()+"'");
+					}
 				}
-				
-				notice.setAppNoticeWord(content.toString());//重新放置预测信息
 			}
+			
+			//参数
+			StringBuffer buffer = new StringBuffer();
+			List<Object> params = new ArrayList<Object>();
+			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
+			
+			QueryResult<Notice> nQueryResult = outerInterfaceService.
+					getNoticeOfStaAndApp(Notice.class, buffer.toString(), params.toArray(),
+							orderBy, pageable, ugroupArr.toString(), province, city,appId,lotteryType);
+			 
+			List<Notice> notices = nQueryResult.getResultList();
+			
+			for (Notice notice : notices) 
+			{
+				
+				if(NoticeController.APP_CATEGORY_FORCAST.equals(notice.getAppCategory()))//若为预测类应用公告，则返回的公告内容就是预测信息的连接
+				{
+					List<ForecastMessage> forecastMessages = notice.getForecastMessages();
+					StringBuffer content = new StringBuffer();
+					
+					for (ForecastMessage forecastMessage : forecastMessages) 
+					{
+						
+						String forcastName = forecastMessage.getForecastName();
+						String forcastMes = forecastMessage.getForecastContent();
+						
+						content.append(forcastName+":"+forcastMes+";");
+						
+					}
+					
+					notice.setAppNoticeWord(content.toString());//重新放置预测信息
+				}
+			}
+			
+			noticeDTOs = noticeService.toRDTOS(notices);
+			
+			result.put("noticeDTOs", noticeDTOs);
+			result.put("status", "1");
+			result.put("message", "数据获取成功！");
+		
 		}
-		
-		noticeDTOs = noticeService.toRDTOS(notices);
-		
-		return noticeDTOs;
+		catch(Exception e)
+		{
+			logger.info("获取应用公告数据时报错！stationId="+stationId+"&& appId="+appId);
+			result.put("status", "0");
+			result.put("message", "数据获取失败！");
+		}
+		return result;
 	}
 	
 	
@@ -884,9 +915,12 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	 * @return: List<NoticeDTO>
 	 */
 	@RequestMapping(value="/getKaijiangNoticesOfStationAndApp",method = RequestMethod.GET)
-	public @ResponseBody List<NoticeDTO> getKaijiangNoticesOfStationAndApp(@RequestParam(value="stationId",required=true) String stationId,
+	public @ResponseBody Map<String,Object> getKaijiangNoticesOfStationAndApp(@RequestParam(value="stationId",required=true) String stationId,
 													@RequestParam(value="appId",required=true) String appId	)
 	{
+		
+		Map<String,Object> result = new HashMap<String, Object>();
+		
 		List<NoticeDTO> noticeDTOs = new ArrayList<NoticeDTO>();
 		
 		List<UserGroup> ugroups = new ArrayList<UserGroup>();
@@ -894,36 +928,53 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 		String city;
 		String lotteryType;
 		
-		Station station = stationService.getSationById(stationId);
+		try
+		{
+			Station station = stationService.getSationById(stationId);
+			
+			App app = appService.getAppById(appId);
+			lotteryType = app.getLotteryType();
+			
+			province = station.getProvinceCode();
+			city = station.getCityCode();
+			
+			ugroups = station.getUserGroups();//获取通行证组数据
+			
+			//放置分页参数
+			Pageable pageable = new PageRequest(0,1000000);//查询所有的数据
+			
+			StringBuffer ugroupArr = new StringBuffer();//获取开奖公告不需要用户组参数
+			//参数
+			StringBuffer buffer = new StringBuffer();
+			List<Object> params = new ArrayList<Object>();
+			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
+			
+			QueryResult<Notice> nQueryResult = outerInterfaceService.
+					getKaijiangNoticeOfStaAndApp(Notice.class, buffer.toString(), params.toArray(),
+							orderBy, pageable, ugroupArr.toString(), province, city,appId,lotteryType);
+			 
+			List<Notice> notices = nQueryResult.getResultList();
+			
+			
+			
+			noticeDTOs = noticeService.toRDTOS(notices);
+			
+			
+			result.put("KaijiangnoticeDTOs", noticeDTOs);
+			result.put("status", "1");
+			result.put("message", "数据获取成功！");
 		
-		App app = appService.getAppById(appId);
-		lotteryType = app.getLotteryType();
-		
-		province = station.getProvinceCode();
-		city = station.getCityCode();
-		
-		ugroups = station.getUserGroups();//获取通行证组数据
-		
-		//放置分页参数
-		Pageable pageable = new PageRequest(0,1000000);//查询所有的数据
-		
-		StringBuffer ugroupArr = new StringBuffer();//获取开奖公告不需要用户组参数
-		//参数
-		StringBuffer buffer = new StringBuffer();
-		List<Object> params = new ArrayList<Object>();
-		LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
-		
-		QueryResult<Notice> nQueryResult = outerInterfaceService.
-				getKaijiangNoticeOfStaAndApp(Notice.class, buffer.toString(), params.toArray(),
-						orderBy, pageable, ugroupArr.toString(), province, city,appId,lotteryType);
-		 
-		List<Notice> notices = nQueryResult.getResultList();
+		}
+		catch(Exception e)
+		{
+			logger.info("获取开奖公告数据时报错！stationId="+stationId+"&& appId="+appId);
+			result.put("status", "0");
+			result.put("message", "数据获取失败！");
+		}
 		
 		
 		
-		noticeDTOs = noticeService.toRDTOS(notices);
-		
-		return noticeDTOs;
+		return result;
 	}
 	
 	/**
