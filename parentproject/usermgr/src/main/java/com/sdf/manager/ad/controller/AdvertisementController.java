@@ -1,9 +1,5 @@
 package com.sdf.manager.ad.controller;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
 import com.sdf.manager.ad.dto.AdvertisementDTO;
@@ -41,11 +36,9 @@ import com.sdf.manager.app.entity.App;
 import com.sdf.manager.app.service.AppService;
 import com.sdf.manager.common.bean.ResultBean;
 import com.sdf.manager.common.bean.TreeBean;
-import com.sdf.manager.common.util.Constants;
 import com.sdf.manager.common.util.DateUtil;
 import com.sdf.manager.common.util.LoginUtils;
 import com.sdf.manager.common.util.QueryResult;
-import com.sdf.manager.notice.entity.AppNoticeAndArea;
 import com.sdf.manager.product.entity.City;
 import com.sdf.manager.product.entity.Province;
 import com.sdf.manager.product.service.CityService;
@@ -95,6 +88,7 @@ public class AdvertisementController //extends GlobalExceptionHandler
 	
 	@Autowired
 	private UploadfileService uploadfileService;
+	
 	
 	public static final String SJX_ROLE_CODE="5";//数据库初始化内容，市中心角色,应用公告也用
 	public static final String PROVINCE_ROLE_CODE="4";//数据库初始化内容，省中心角色,应用公告也用
@@ -453,14 +447,25 @@ public class AdvertisementController //extends GlobalExceptionHandler
 	 @RequestMapping(value = "/getTreedataOfAdvertisement", method = RequestMethod.GET)
 		public @ResponseBody List<TreeBean> getTreedataOfAdvertisement(
 				@RequestParam(value="appsdata",required=false) String appsdata,//绑定的通行证组数据list
+				@RequestParam(value="isProvince",required=false) boolean isProvince,//是否为“省中心”角色
+				@RequestParam(value="provinceCode",required=false) String provinceCode,//当前登录人员所在省份
 				ModelMap model,HttpSession httpSession) throws Exception
 		{
 		 	List<TreeBean> treeList = new ArrayList<TreeBean>();
 		 	
 		   
 		 //整理并放置应用数据
+		 	List<Province> provinces = new ArrayList<Province>();
+		 	if(isProvince)//若为“省中心”角色，则只获取当前角色下的城市信息
+		 	{
+		 		Province province = provinceService.getProvinceByPcode(provinceCode);
+		 		provinces.add(province);
+		 	}
+		 	else
+		 	{
+		 		provinces = provinceService.findAll();
+		 	}
 		 	
-		 	List<Province> provinces = provinceService.findAll();
 		 	
 		 	for (Province province : provinces) {
 				
