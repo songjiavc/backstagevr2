@@ -24,6 +24,16 @@ public interface OuterInterfaceService {
 	 */
 	public QueryResult<Announcement> getAnnouncementOfSta(Class<Announcement> entityClass, String whereJpql, Object[] queryParams, 
 			LinkedHashMap<String, String> orderby, Pageable pageable,String ugroups,String province,String city,String lotteryType);
+	
+	/**
+	 * 
+	 * @Title: getAnnouncementOfStaAndNotInReceipt
+	 * @Description: TODO:查询符合当前通行证要求且在有效期内且不存在于通告回执表中的数据
+	 * @author:banna
+	 * @return: QueryResult<Announcement>
+	 */
+	public QueryResult<Announcement> getAnnouncementOfStaAndNotInReceipt(Class<Announcement> entityClass, String whereJpql, Object[] queryParams, 
+			LinkedHashMap<String, String> orderby, Pageable pageable,String ugroups,String province,String city,String lotteryType,String stationId);
 	/**
 	 * 
 	 * @Title: getCompanyNoticeOfSta
