@@ -108,7 +108,7 @@ public class TimingQuarzMethodController {
      * @author:banna
      * @return: void
      */
-    @Scheduled(cron = "0 0 3 * * ? ")  //cron = "0 0 3 * * ? "
+    @Scheduled(cron = "0 0 3 * * ? ")  //cron = "0 0 3 * * ? ""0 0/2 0/1 * * ? "
 	public void addReceiptOfAnnouncement()
 	{
     	Pageable pageable = new PageRequest(0, Integer.MAX_VALUE);
@@ -143,8 +143,10 @@ public class TimingQuarzMethodController {
 			//放置分页参数
 			Pageable pageableStation = new PageRequest(0,Integer.MAX_VALUE);//查询所有的数据
 			
+			ugroupArr = new StringBuffer();
 			if(null!=station.getUserGroups()&&station.getUserGroups().size()>0)
 			{
+				
 				for(int i=0;i<station.getUserGroups().size();i++)
 				{
 					if(i==0)
