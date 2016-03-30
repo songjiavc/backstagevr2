@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bs.outer.entity.AnnouncementReceipt;
 import com.bs.outer.entity.Fast3;
 import com.bs.outer.entity.Fast3Analysis;
+import com.bs.outer.service.AnnouncementReceiptService;
 import com.bs.outer.service.OuterInterfaceService;
 import com.sdf.manager.ad.controller.AdvertisementController;
 import com.sdf.manager.ad.dto.AdvertisementDTO;
@@ -135,8 +137,15 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	 @Autowired
 	 private CityService cityService;//市业务层
 	 
+	 @Autowired
+	 private AnnouncementReceiptService announcementReceiptService;//通告回执表业务层
+	 
 	 //静态变量
 	 public static final String DEFAULT_FREE_USE_DAY_OF_YEARS = "365";//免费使用时间天数的默认值
+	 
+	 public static final String ANNOUNCEMENT_ALREADY_READ = "1";//通告回执表的通告已读状态位
+	 
+	 public static final String ANNOUNCEMENT_NOT_READ = "0";//通告回执表的通告未读状态位
 	
 	/**
 	 * 
@@ -374,6 +383,54 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 		
 		
 		return renewAppDTOs;
+	}
+	
+	/**
+	 * 
+	 * @Title: addReceiptOfAnnouncement
+	 * @Description: 通告确定已读的状态更新接口
+	 * @author:banna
+	 * @return: ResultBean
+	 */
+	@RequestMapping(value="/addReceiptOfAnnouncement",method=RequestMethod.GET)
+	public @ResponseBody ResultBean addReceiptOfAnnouncement(@RequestParam(value="stationId",required=true) String stationId)
+	{
+		ResultBean resultBean = new ResultBean();
+		
+		try
+		{
+			//更新有效期内的通告回执表数据的“已读”状态
+			Date et = DateUtil.formatStringToDate(DateUtil.formatCurrentDateWithYMD(), DateUtil.SIMPLE_DATE_FORMAT);//注意：在将string转换为date时，转换的格式一定要与string的格式统一，否则无法转换，eg：“2016-03-21”转换为date类型，只能使用DateUtil.SIMPLE_DATE_FORMAT转换，否则抛出异常
+			Timestamp endTime = DateUtil.formatDateToTimestamp(et, DateUtil.FULL_DATE_FORMAT);
+			 
+			//获取今天可以展示的数据，将今天展示的数据的标记位置为“已读”
+			 List<AnnouncementReceipt> announcementReceipts = announcementReceiptService.
+					 getAnnouncementReceiptByStatusAndEndTimeAndStationId(OuterInterfaceController.ANNOUNCEMENT_NOT_READ, endTime, stationId);
+			 
+			 for (AnnouncementReceipt announcementReceipt : announcementReceipts) {
+				
+				 announcementReceipt.setStatus(OuterInterfaceController.ANNOUNCEMENT_ALREADY_READ);
+				 announcementReceipt.setStatusTime(new Timestamp(System.currentTimeMillis()));
+				 announcementReceiptService.update(announcementReceipt);
+				 
+				 logger.info("更新通行证回执表已读状态，通行证id="+stationId+"&&更新的通告回执表id="+announcementReceipt.getId());
+			}
+			 
+			 resultBean.setStatus("1");
+			 resultBean.setMessage("更新成功");
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			
+			logger.error("通告回执已读状态接口报错，通行证id="+stationId);
+			
+			 resultBean.setStatus("0");
+			 resultBean.setMessage("更新失败");
+		}
+		
+		return resultBean;
 	}
 	
 	/**
@@ -676,10 +733,14 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	{
 		List<AnnouncementDTO> announcementDTOs = new ArrayList<AnnouncementDTO>();
 		
+		//获取通告数据的sql：获取的数据应该是回执表中未到有效结束时间的且未读状态的通告
+		//生成回执表的sql：有效期内的通告数据且不存在于通告回执表的数据
+		
+		
+		
 		try
 		{
-			List<UserGroup> ugroups = new ArrayList<UserGroup>();
-			String province;
+			/*String province;
 			String city;
 			String lotteryType;
 			
@@ -689,24 +750,23 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			city = station.getCityCode();
 			lotteryType = station.getStationType();//1；体彩2：福彩
 			
-			ugroups = station.getUserGroups();//获取通行证组数据
 			
 			//放置分页参数
 			Pageable pageable = new PageRequest(0,1000000);//查询所有的数据
 			
 			StringBuffer ugroupArr = new StringBuffer();
-			if(ugroups.size()>0)
+			if(null!=station.getUserGroups() && station.getUserGroups().size()>0)
 			{
-				for(int i=0;i<ugroups.size();i++)
+				for(int i=0;i<station.getUserGroups().size();i++)
 				{
 					if(i==0)
 					{
-						ugroupArr.append("'"+ugroups.get(i).getId()+"'");
+						ugroupArr.append("'"+station.getUserGroups().get(i).getId()+"'");
 					}
 					else
 					{
 						ugroupArr.append(",");
-						ugroupArr.append("'"+ugroups.get(i).getId()+"'");
+						ugroupArr.append("'"+station.getUserGroups().get(i).getId()+"'");
 					}
 				}
 			}
@@ -719,7 +779,24 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 					getAnnouncementOfSta(Announcement.class, buffer.toString(), params.toArray(),
 							orderBy, pageable, ugroupArr.toString(), province, city,lotteryType);
 			
-			List<Announcement> announcements = announceResult.getResultList();
+			List<Announcement> announcements = announceResult.getResultList();*/
+			
+			List<Announcement> announcements = new ArrayList<Announcement>();
+			
+			 Date et = DateUtil.formatStringToDate(DateUtil.formatCurrentDateWithYMD(), DateUtil.SIMPLE_DATE_FORMAT);//注意：在将string转换为date时，转换的格式一定要与string的格式统一，否则无法转换，eg：“2016-03-21”转换为date类型，只能使用DateUtil.SIMPLE_DATE_FORMAT转换，否则抛出异常
+    		 Timestamp endTime = DateUtil.formatDateToTimestamp(et, DateUtil.FULL_DATE_FORMAT);
+    		 
+    		 List<AnnouncementReceipt> announcementReceipts = announcementReceiptService.
+    				 getAnnouncementReceiptByStatusAndEndTimeAndStationId(OuterInterfaceController.ANNOUNCEMENT_NOT_READ, endTime, stationId);
+    		 
+    		 for (AnnouncementReceipt announcementReceipt : announcementReceipts) {
+				
+    			 Announcement announcement = new Announcement();
+    			 announcement = announcementService.getAnnouncementById(announcementReceipt.getAnnouncementId());
+    			 
+    			 announcements.add(announcement);
+    			 
+			}
 			
 			announcementDTOs = announcementService.toRDTOS(announcements);
 			

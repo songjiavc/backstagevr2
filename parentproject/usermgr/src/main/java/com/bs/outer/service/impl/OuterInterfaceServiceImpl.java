@@ -65,6 +65,28 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 				getScrollDataBySql(Announcement.class,sql.toString(), queryParams, pageable);
 			return userObj;
 	}
+	
+	
+	public QueryResult<Announcement> getAnnouncementOfStaAndNotInReceipt(Class<Announcement> entityClass, String whereJpql, Object[] queryParams, 
+			LinkedHashMap<String, String> orderby, Pageable pageable,String ugroups,String province,String city,String lotteryType,String stationId){
+		StringBuffer sql = new StringBuffer("SELECT u.* FROM (T_BS_ANNOUNCEMENT u LEFT JOIN RELA_BS_ANN_AND_AREA a ON u.ID=a.ANNOUNCEMENT_ID) LEFT JOIN RELA_BS_ANN_AND_UGROUP au ON u.ID=au.ANNOUNCE_ID"+
+					"	WHERE u.IS_DELETED='1' AND u.ANNOUNCE_STATUS='1'   "+
+					"   AND u.END_TIME>=CURDATE() AND u.START_TIME<=CURDATE()  AND u.LOTTERY_TYPE='"+lotteryType+"'");
+					if(ugroups.length()>0)
+					{
+						sql.append("	AND (au.USERGROUP_ID IN ("+ugroups+") OR (a.PROVINCE='"+province+"' AND a.CITY='"+city+"')) ");
+					}
+					else
+					{
+						sql.append(" AND a.PROVINCE='"+province+"' AND a.CITY='"+city+"' ");
+					}
+					
+					sql.append(" AND u.ID NOT IN (SELECT an.ID FROM T_BS_RECEIPT_OF_ANNOUNCEMENT bra LEFT JOIN T_BS_ANNOUNCEMENT an ON an.ID=bra.ANNOUNCEMENT_ID WHERE an.IS_DELETED='1' " +
+                                " AND an.ANNOUNCE_STATUS='1' AND bra.STATION_ID='"+stationId+"' )");
+		QueryResult<Announcement> userObj = announcementRepository.
+				getScrollDataBySql(Announcement.class,sql.toString(), queryParams, pageable);
+			return userObj;
+	}
 
 
 	public QueryResult<CompanyNotice> getCompanyNoticeOfSta(
