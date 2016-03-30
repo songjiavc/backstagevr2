@@ -88,7 +88,7 @@ public class Station extends BaseEntiry implements Serializable
 	private String agentId;//上级代理id
 	
 	
-	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinTable(name = "RELA_BS_STATION_AND_UGROUP", 
 		joinColumns = {  @JoinColumn(name = "STATION_ID", referencedColumnName = "id")  }, 
 		inverseJoinColumns = {@JoinColumn(name = "USER_GROUP_ID", referencedColumnName = "id") })
