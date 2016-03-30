@@ -1187,7 +1187,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			accountBean.setId(user.getId());
 			accountBean.setCode(user.getCode());
 			accountBean.setName(user.getName());
-			accountBean.setPassword(user.getPassword());
+//			accountBean.setPassword(user.getPassword());
 			accountBean.setTelephone(user.getTelephone());
 			accountBean.setStatus(user.getStatus());
 			accountBean.setCity(user.getCityCode());
