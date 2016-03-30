@@ -532,7 +532,7 @@ public class AppController  extends GlobalExceptionHandler{
 		public @ResponseBody List<TreeBean> getTreedata(ModelMap model,HttpSession httpSession) throws Exception 
 		{
 			//放置分页参数
-			Pageable pageable = new PageRequest(0,100000);
+			Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);
 			
 			//参数
 			StringBuffer buffer = new StringBuffer();
@@ -658,7 +658,7 @@ public class AppController  extends GlobalExceptionHandler{
 			ResultBean resultBean = new ResultBean ();
 			
 			//放置分页参数
-			Pageable pageable = new PageRequest(0,1000000);
+			Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);
 			
 			//参数
 			StringBuffer buffer = new StringBuffer();
@@ -750,7 +750,7 @@ public class AppController  extends GlobalExceptionHandler{
 		 
 		 //验证当天是否已生成应用
 		//放置分页参数
-			Pageable pageable = new PageRequest(0,100000);
+			Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);
 			
 			//参数
 			StringBuffer buffer = new StringBuffer();

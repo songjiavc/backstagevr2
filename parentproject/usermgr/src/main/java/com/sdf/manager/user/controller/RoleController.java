@@ -250,7 +250,7 @@ public class RoleController extends GlobalExceptionHandler
 		public @ResponseBody List<TreeBean> getTreedata(ModelMap model,HttpSession httpSession) throws Exception 
 		{
 			//放置分页参数
-			Pageable pageable = new PageRequest(0,10000);
+			Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);
 			
 			//参数
 			StringBuffer buffer = new StringBuffer();
@@ -353,7 +353,7 @@ public class RoleController extends GlobalExceptionHandler
 			List<RoleAuthBean> roleBeans = new ArrayList<RoleAuthBean> ();
 			
 			//放置分页参数
-			Pageable pageable = new PageRequest(0,10000);
+			Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);
 			
 			//参数
 			StringBuffer buffer = new StringBuffer();
@@ -415,7 +415,7 @@ public class RoleController extends GlobalExceptionHandler
 			ResultBean resultBean = new ResultBean ();
 			
 			//放置分页参数
-			Pageable pageable = new PageRequest(0,10000);
+			Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);
 			
 			//参数
 			StringBuffer buffer = new StringBuffer();

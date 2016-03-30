@@ -20,11 +20,11 @@ public interface RelaBsStaAppRepository extends GenericRepository<RelaBsStationA
 	/**
 	 * 
 	 * @Title: getRelaBsStationAndAppByStatusAndEndTime
-	 * @Description: TODO:获取有效的且正在使用的且有效结束时间大于传入参数的通行证和应用的数据
+	 * @Description: TODO:获取有效的且正在使用的且有效结束时间小于传入参数的通行证和应用的数据
 	 * @author:banna
 	 * @return: List<RelaBsStationAndApp>
 	 */
-	@Query("select u from RelaBsStationAndApp u where  u.isDeleted ='1' and  u.status =?1 and u.endTime>?2")
+	@Query("select u from RelaBsStationAndApp u where  u.isDeleted ='1' and  u.status =?1 and u.endTime<?2")
 	public List<RelaBsStationAndApp> getRelaBsStationAndAppByStatusAndEndTime(String status,Timestamp endTime);
 	
 }

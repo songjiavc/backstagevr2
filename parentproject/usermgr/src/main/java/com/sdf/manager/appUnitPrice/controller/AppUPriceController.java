@@ -302,7 +302,7 @@ public class AppUPriceController extends GlobalExceptionHandler {
 		 ResultBean resultBean = new ResultBean();
 		 
 		 //放置分页参数
-			Pageable pageable = new PageRequest(0,10000);
+			Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);
 			
 			//参数
 			StringBuffer buffer = new StringBuffer();
