@@ -11,7 +11,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.aspectj.apache.bcel.classfile.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sdf.manager.ad.entity.Uploadfile;
+import com.sdf.manager.ad.service.UploadfileService;
 import com.sdf.manager.app.dto.AppDTO;
 import com.sdf.manager.app.entity.App;
 import com.sdf.manager.app.service.AppService;
@@ -51,6 +52,9 @@ public class AppversionController extends GlobalExceptionHandler {
 	
 	@Autowired
 	private AppService appService;
+	
+	@Autowired
+	private UploadfileService uploadfileService;
 	
 	/**应用版本管理模块的默认值**/
 	public static final String APP_V_STATUS_DSJ = "0";//应用版本状态(0:待上架)
@@ -560,6 +564,58 @@ public class AppversionController extends GlobalExceptionHandler {
 		 	}
 			
 		 	return appDTOs;
+		}
+	 
+	 /**
+	  * 
+	  * @Title: saveFujian
+	  * @Description: 保存应用安装包附件
+	  * @author:banna
+	  * @return: ResultBean
+	  */
+	 @RequestMapping(value = "/saveFujian", method = RequestMethod.GET)
+		public @ResponseBody ResultBean  saveFujian(
+				@RequestParam(value="realname",required=false) String realname,
+				@RequestParam(value="filename",required=false) String filename,
+				@RequestParam(value="uplId",required=false) String uplId,
+				ModelMap model,HttpSession httpSession) throws Exception {
+		 
+		 ResultBean resultBean = new ResultBean();
+		 String type=getExt(filename);
+		 String uploadfilepath = "/uploadApkFile/";
+		 
+		 Uploadfile uploadfile = uploadfileService.getUploadfileByNewsUuid(uplId);
+		 
+		 //因为一个应用只能有一个图片附件，所以当这个upId有数据的话就进行修改操作，如果没有数据就创建数据
+		 if(null != uploadfile)
+		 {
+			 uploadfile.setUploadFileName(filename);
+			 uploadfile.setUploadRealName(realname);
+			 uploadfile.setUploadfilepath(uploadfilepath);
+			 uploadfile.setUploadContentType(type);
+			 
+			 uploadfileService.update(uploadfile);
+		 }
+		 else
+		 {
+			 uploadfile = new Uploadfile();
+			 uploadfile.setNewsUuid(uplId);
+			 uploadfile.setUploadFileName(filename);
+			 uploadfile.setUploadRealName(realname);
+			 uploadfile.setUploadfilepath(uploadfilepath);
+			 uploadfile.setUploadContentType(type);
+			 
+			 uploadfileService.save(uploadfile);
+		 }
+		 
+		 resultBean.setStatus("success");
+		 
+		 return resultBean;
+		 
+	 }
+	 
+	 private String getExt(String fileName) {
+			return fileName.substring(fileName.lastIndexOf("."));
 		}
 	 
 	

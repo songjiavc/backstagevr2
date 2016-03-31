@@ -59,6 +59,13 @@
 	  			border-radius : 5px;
 	  		}
 	  		
+	  		.ftitle .urlInput{
+	  			float : left;
+	  			width: 250px;
+	  			margin-left: 30px;
+	  			border-radius : 5px;
+	  		}
+	  		
 	  		.td_font{
 	  			font-weight:bold;
 	  		}
@@ -149,12 +156,17 @@
 	         <div class="ftitle">
 	            <label for="versionCodeA">应用版本号:</label>
 	            <input class="easyui-validatebox commonInput" type="text" id="versionCodeA" name="versionCode" data-options="required:true"
-	             	validType="checkAVernum['#versionCodeA','appIdA']"  missingMessage="应用版本号不可以为空" ></input>
+	             	validType="checkAVernum['#versionCodeA','appIdA','idA']"  missingMessage="应用版本号不可以为空" ></input>
+	        </div>
+	        <div class="ftitle">
+	            <label for="appVersionUrlU">上传应用安装包:</label>
+	            <input type="hidden" name="appVersionUrl"  id= "urlHiddenA">
+	             <a href="#" id="uploadA" class="l-btn l-btn-small" style="margin-left:30px;" plain="true" onclick="openDialog('ddA','add')" style="width:200px;">点击上传应用安装包</a>
 	        </div>
 	         <div class="ftitle">
 	            <label for="appVersionUrlA">应用版本安装包位置:</label>
-	            <input class="easyui-validatebox commonInput" type="text" id="appVersionUrlA" name="appVersionUrl" 
-	               ></input>
+	           <input class="easyui-validatebox urlInput" type="text" id="appVersionUrlA"  
+	              readonly="readonly" ></input>
 	        </div>
 	        <div class="ftitle">
 	            <label for="appDeveloperA">应用开发商:</label>
@@ -220,12 +232,18 @@
 	         <div class="ftitle">
 	            <label for="versionCodeU">应用版本号:</label>
 	            <input class="easyui-validatebox commonInput" type="text" id="versionCodeU" name="versionCode" data-options="required:true"
-	           	 validType="checkAVernum['#versionCodeU','appIdU']"  missingMessage="应用版本号不可以为空" ></input>
+	           	 validType="checkAVernum['#versionCodeU','appIdU','idU']"  missingMessage="应用版本号不可以为空" ></input>
 	        </div>
+	        <div class="ftitle">
+	            <label for="appVersionUrlU">上传应用安装包:</label>
+	            <input type="hidden" name="appVersionUrl"  id= "urlHiddenU">
+	             <a href="#" id="uploadU" class="l-btn l-btn-small" style="margin-left:30px;" plain="true" onclick="openDialog('ddA','update')" style="width:200px;">点击上传应用安装包</a>
+	        </div>
+	        
 	         <div class="ftitle">
 	            <label for="appVersionUrlU">应用版本安装包位置:</label>
-	            <input class="easyui-validatebox commonInput" type="text" id="appVersionUrlU" name="appVersionUrl" 
-	               ></input>
+	            <input class="easyui-validatebox urlInput" type="text" id="appVersionUrlU"  
+	              readonly="readonly" ></input>
 	        </div>
 	        <div class="ftitle">
 	            <label for="appDeveloperU">应用开发商:</label>
@@ -244,6 +262,8 @@
 	         
 	      </form>
     </div>
+    
+    <div id="ddA">Dialog Content.</div>
 </body>
 	
 	

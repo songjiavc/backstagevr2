@@ -77,6 +77,19 @@
     	<url-pattern>/servlet/Upload</url-pattern>
   	</servlet-mapping>
   	<!-- 文件上传end-->
+  	
+  	<!-- apk文件上传start-->
+	<servlet>
+    	<description>This is the description of my J2EE component</description>
+    	<display-name>This is the display name of my J2EE component</display-name>
+    	<servlet-name>UploadApk</servlet-name>
+    	<servlet-class>com.sdf.manager.servlet.UploadApk</servlet-class>
+  	</servlet>
+  	<servlet-mapping>
+    	<servlet-name>UploadApk</servlet-name>
+    	<url-pattern>/servlet/UploadApk</url-pattern>
+  	</servlet-mapping>
+  	<!-- apk文件上传end-->
   
   
    <!-- 设置默认加载首页 -->

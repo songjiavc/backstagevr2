@@ -190,6 +190,9 @@ function updateAppVersion(id)
 						appDeveloper:data.appDeveloper,
 						appVersionStatus:data.appVersionStatus
 					});
+					
+					initApkList(data.appVersionUrl,'appVersionUrlU');
+					
 					var appId = data.appId;//所属的应用id
 					$("#codeU").textbox('setText',data.appVersionCode);
 					initParentAppList('appIdU','update',appId,false);
@@ -566,7 +569,7 @@ $.extend($.fn.validatebox.defaults.rules, {
     		{
         		rules.checkAVernum.message = "当前应用版本号已存在"; 
         		
-                return !checkAppVerNum($("#"+param[1]).combobox('getValue'),value);
+                return !checkAppVerNum($("#"+param[1]).combobox('getValue'),value,$("#"+param[2]).val());
     		}
         	
         }
@@ -579,13 +582,14 @@ $.extend($.fn.validatebox.defaults.rules, {
  * @param versionCode
  * @returns {Boolean}
  */
-function checkAppVerNum(appId,versionCode)
+function checkAppVerNum(appId,versionCode,id)
 {
 	var flag = false;//当前值可用，不存在
 	var data = new Object();
 	
 	data.appId = appId;
 	data.versionCode = versionCode;
+	data.id=id;
 	
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
@@ -637,6 +641,110 @@ function checkAppVerName(id,name)
    });
 	
 	return flag;
+}
+
+/**
+ * 打开弹框上传附件
+ * @param dialogId
+ * @param addorupdate
+ */
+function openDialog(dialogId,addorupdate){
+	var createUUID = (function (uuidRegEx, uuidReplacer) { 
+		 return function () { 
+		 return"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(uuidRegEx, uuidReplacer).toUpperCase(); 
+		};
+		 })(/[xy]/g, function (c) { 
+		 var r = Math.random() * 16 | 0, 
+		 v = c =="x"? r : (r & 3 | 8); 
+		 return v.toString(16); 
+		});
+	
+	var uploadId ;
+	var uploadShowDivId;
+	if('update'==addorupdate)
+		{
+			
+			uploadId = $("#urlHiddenU").val();
+			
+			if(null == uploadId || '' == uploadId)//若附件id为空，则生成附件id并放入值中
+				{
+					uploadId = createUUID();
+					$("#urlHiddenU").val(uploadId);
+				}
+			
+			uploadShowDivId="appVersionUrlU";
+		}
+	else
+		if('add'==addorupdate)
+		{
+			uploadShowDivId="appVersionUrlA";
+			if(''==$("#urlHiddenA").val())
+				{
+					uploadId = createUUID();
+					$("#urlHiddenA").val(uploadId);
+				}
+			else
+				{
+					uploadId = $("#urlHiddenA").val();
+				}
+			
+		}
+	
+	var url = 'uploadApkFile.jsp?uploadId='+uploadId;
+	$('#'+dialogId).dialog({
+	    title: '上传应用安装包文件',
+	    width: 500,
+	    height: 300,
+	    closed: false,
+	    cache: false,
+	    content: '<iframe id="'+uploadId+'"src="'+url+'" width="100%" height="100%" frameborder="0" scrolling="auto" ></iframe>',  
+//	    href: 'uploadFile.jsp?uploadId='+uploadId,
+	    modal: true,
+	    onClose:function(){
+	    		initApkList(uploadId,uploadShowDivId);
+	    	}
+	});
+	
+}
+
+/**
+ * 初始化应用安装包附件
+ * @param upId：附件id
+ * @param listId：附件列表容器id
+ */
+function initApkList(upId,listId)
+{
+	var data = new Object();
+	data.uplId = upId;
+	
+	
+	$.ajax({
+		async: false,   //设置为同步获取数据形式
+        type: "get",
+        url: contextPath+'/advertisement/getFileOfAppad.action',
+        data:data,
+        dataType: "json",
+        success: function (returndata) {
+        	
+        	if(null!=returndata.id&&0!=returndata.id)
+        		{
+				  	var upload=returndata;
+				  	var fileName = upload.uploadFileName;
+					var realName = upload.uploadRealName;
+					var filepath = upload.uploadfilepath;
+					
+					$("#"+listId).val(filepath+fileName);
+	        	
+        		}
+        	
+        	
+      			
+        	
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            window.parent.location.href = contextPath + "/error.jsp";
+        }
+   });
 }
 
 
