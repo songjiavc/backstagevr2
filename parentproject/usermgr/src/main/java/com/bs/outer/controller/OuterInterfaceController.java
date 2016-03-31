@@ -1233,10 +1233,31 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 				String maxVersionFlowId =
 						appversionService.
 						findMaxVersionFlowId(appId, AppversionController.APP_V_STATUS_SJ);//获取当前应用下的应用版本数据是上架状态的最大版本流水号
-				Appversion appversion = appversionService.
-						getAppversionByAppIdAndVersionFlowId(appId, maxVersionFlowId);//根据appId和版本流水号获取应用版本数据
 				
-				appversions.add(appversion);
+				if(null!=maxVersionFlowId)
+				{
+					Appversion appversion = appversionService.
+							getAppversionByAppIdAndVersionFlowId(appId, maxVersionFlowId);//根据appId和版本流水号获取应用版本数据
+					
+					Uploadfile uploadfile = uploadfileService.getUploadfileByNewsUuid(appversion.getAppVersionUrl());
+					
+					String apkUrl = "";
+					if(null!=uploadfile)
+					{
+						apkUrl = uploadfile.getUploadfilepath()+uploadfile.getUploadRealName();//抓取附件的真实存储路径
+						appversion.setAppVersionUrl(apkUrl);
+					}
+					
+					
+					
+					appversions.add(appversion);
+				}
+				else
+				{
+					continue;
+				}
+				
+				
 			}
 			appversionDTOs = appversionService.toRDTOS(appversions);
 			
