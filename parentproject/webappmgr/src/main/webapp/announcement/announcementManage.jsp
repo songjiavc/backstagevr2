@@ -325,6 +325,22 @@
     		</div>
     </div>
     
+     <div id="checkAReceipt" class="easyui-dialog" title="查看通告回执信息" style="width:800px;height:400px;padding:0px;border:0;"
+   		  data-options="
+                iconCls: 'icon-save',
+                buttons: [{
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:function(){
+                        $('#checkAReceipt').dialog('close');
+                    }
+                }]
+            ">
+		    <div class="easyui-layout" style="height:100%;padding:0;" >
+		   	 <table id="announcementReceiptsDatagrid" class="easyui-datagrid" style="width:100%;height:100%;" title="" ></table>
+		    </div>
+	  </div>
+    
     
     
 

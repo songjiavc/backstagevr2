@@ -117,6 +117,7 @@ function closeDialog()
 {
 	$("#addAnnouncement").dialog('close');
 	$("#updateAnnouncement").dialog('close');
+	$('#checkAReceipt').dialog('close');
 }
 
 
@@ -170,7 +171,8 @@ function initDatagrid()
 				{field:'opt',title:'操作',width:160,align:'center',  
 			            formatter:function(value,row,index){  
 			                var btn = '<a class="editcls" onclick="updateAnnouncement(&quot;'+row.id+'&quot;,&quot;'+row.announceStatus+'&quot;)" href="javascript:void(0)">编辑</a>'
-			                	+'<a class="deleterole" onclick="deleteAnnouncement(&quot;'+row.id+'&quot;,&quot;'+row.announceStatus+'&quot;)" href="javascript:void(0)">删除</a>';
+			                		+'<a class="deleterole" onclick="deleteAnnouncement(&quot;'+row.id+'&quot;,&quot;'+row.announceStatus+'&quot;)" href="javascript:void(0)">删除</a>'
+			                	+'<a class="checkReceipt" onclick="checkReceipts(&quot;'+row.id+'&quot;)" href="javascript:void(0)">回执查看</a>';
 			                return btn;  
 			            }  
 			        }  
@@ -178,6 +180,7 @@ function initDatagrid()
 	    onLoadSuccess:function(data){  
 	        $('.editcls').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'}); 
 	        $('.deleterole').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});  
+	        $('.checkReceipt').linkbutton({text:'回执查看',plain:true,iconCls:'icon-remove'});  
 	        
 	        if(data.rows.length==0){
 				var body = $(this).data().datagrid.dc.body2;
@@ -186,6 +189,56 @@ function initDatagrid()
 	        
 	        
 	    }
+	});
+}
+
+/**
+ * 查看当前通告的回执情况
+ * @param id
+ */
+function checkReceipts(id)
+{
+	$('#checkAReceipt').dialog('open');
+	
+	var params = new Object();
+	
+	params.id=id;
+	
+	//渲染列表
+	$('#announcementReceiptsDatagrid').datagrid({
+		singleSelect:false,
+		rownumbers:false,
+		queryParams: params,
+		url: contextPath + '/announcement/getReceiptsOfAnnouncement.action',
+		method:'get',
+		border:false,
+		singleSelect:false,
+		fitColumns:true,
+		pagination:true,
+		collapsible:false,
+		pageSize:10,//初始化页面显示条数的值是根据pageList的数组中的值来设置的，否则无法正确设置
+		pageList:[5,10,15],
+		columns:[[
+//				{field:'id',checkbox:true},
+				{field:'stationNumber',title:'站点号',width:'12%',align:'center'},
+				{field:'statusName',title:'回执状态',width:'12%',align:'center'},
+				{field:'statusTime',title:'回执时间',width:'20%',align:'center'},
+				{field:'provinceName',title:'省',width:'10%',align:'center'},
+				{field:'cityName',title:'市',width:'10%',align:'center'},
+				{field:'stationStyle',title:'站点类型',width:'10%',align:'center'},
+				{field:'name',title:'站主名称',width:'11%',align:'center'},
+				{field:'telephone',title:'站主电话',width:'15%',align:'center'}
+				
+		    ]],
+	    onLoadSuccess:function(data){ 
+	    	
+	    	if(data.rows.length==0){
+				var body = $(this).data().datagrid.dc.body2;
+				body.find('table tbody').append('<tr><td width="'+body.width()+'" style="height: 25px; text-align: center;" colspan="8">没有数据</td></tr>');
+			}
+	    	
+	    	
+	    } 
 	});
 }
 

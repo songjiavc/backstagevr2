@@ -24,7 +24,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bs.outer.controller.OuterInterfaceController;
+import com.bs.outer.entity.AnnouncementReceipt;
+import com.bs.outer.service.AnnouncementReceiptService;
 import com.sdf.manager.announcement.dto.AnnouncementDTO;
+import com.sdf.manager.announcement.dto.ReceiptStationDTO;
 import com.sdf.manager.announcement.entity.Announcement;
 import com.sdf.manager.announcement.entity.AnnouncementAndArea;
 import com.sdf.manager.announcement.service.AnnouncementAndAreaService;
@@ -35,8 +39,11 @@ import com.sdf.manager.common.util.DateUtil;
 import com.sdf.manager.common.util.LoginUtils;
 import com.sdf.manager.common.util.QueryResult;
 import com.sdf.manager.product.entity.City;
+import com.sdf.manager.product.entity.Province;
 import com.sdf.manager.product.service.CityService;
 import com.sdf.manager.product.service.ProvinceService;
+import com.sdf.manager.station.entity.Station;
+import com.sdf.manager.station.service.StationService;
 import com.sdf.manager.user.entity.Role;
 import com.sdf.manager.user.entity.User;
 import com.sdf.manager.user.service.RoleService;
@@ -78,6 +85,12 @@ public class AnnouncementController {
 	
 	 @Autowired
 	 private RoleService roleService;
+	 
+	 @Autowired
+	 private StationService stationService;
+	 
+	 @Autowired
+	 private AnnouncementReceiptService announcementReceiptService;
 	
 	public static final String ANNOUNCEMENT_FB="1";
 	public static final String ANNOUNCEMENT_BC="0";
@@ -500,6 +513,105 @@ public class AnnouncementController {
 		 
 		 return cityIds;
 		 
+	 }
+	 
+	 /**
+	  * 
+	  * @Title: getReceiptsOfAnnouncement
+	  * @Description: 获取当前通告的“确定查看：状态及通行证数据
+	  * @author:banna
+	  * @return: List<ReceiptStationDTO>
+	  */
+	 @RequestMapping(value = "/getReceiptsOfAnnouncement", method = RequestMethod.GET)
+		public @ResponseBody Map<String,Object>  getReceiptsOfAnnouncement(
+				@RequestParam(value="id",required=false) String id,
+				@RequestParam(value="page",required=false) int page,
+				@RequestParam(value="rows",required=false) int rows,
+				ModelMap model,HttpSession httpSession) throws Exception {
+		 
+		 Map<String,Object> returnData = new HashMap<String,Object> ();
+		 	
+	 	//放置分页参数
+		Pageable pageable = new PageRequest(page-1,rows);
+		
+		//参数
+		StringBuffer buffer = new StringBuffer();
+		List<Object> params = new ArrayList<Object>();
+		
+		LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
+		orderBy.put("id", "desc");
+		
+		params.add(id);//只查询有效的数据
+		buffer.append(" announcementId = ?").append(params.size());
+		
+		 
+		 
+		 
+		 QueryResult<AnnouncementReceipt> announcementResult = announcementReceiptService.
+				 getAnnouncementReceiptsList(AnnouncementReceipt.class, buffer.toString(), params.toArray(),orderBy, pageable);
+		 
+		 
+		List<AnnouncementReceipt> announcementReceipts = announcementResult.getResultList();
+		Long totalrow = announcementResult.getTotalRecord();
+		
+		//将实体转换为dto
+		List<ReceiptStationDTO> receiptStationDTOs = new ArrayList<ReceiptStationDTO>();
+		
+		//整理实体数据
+		for (AnnouncementReceipt announcementReceipt : announcementReceipts) 
+		{
+			ReceiptStationDTO receiptStationDTO = new ReceiptStationDTO();
+			
+			Station station = stationService.getSationById(announcementReceipt.getStationId());
+			
+			if(OuterInterfaceController.ANNOUNCEMENT_NOT_READ.equals(announcementReceipt.getStatus()))
+			{
+				receiptStationDTO.setStatusName("未读");
+			}
+			else
+				if(OuterInterfaceController.ANNOUNCEMENT_ALREADY_READ.equals(announcementReceipt.getStatus()))
+				{
+					receiptStationDTO.setStatusName("已读");
+				}
+			//放入更新状态时间
+			receiptStationDTO.setStatusTime(DateUtil.formatTimestampToString(announcementReceipt.getStatusTime()));
+			
+			receiptStationDTO.setName(station.getOwner());//站主名称
+			
+			if(null != station.getProvinceCode())//省级区域
+			{
+				Province province = new Province();
+				province = provinceService.getProvinceByPcode(station.getProvinceCode());
+				receiptStationDTO.setProvinceName(null != province?province.getPname():"");
+			}
+			if(null != station.getCityCode())//市级区域
+			{
+				if(Constants.CITY_ALL.equals(station.getCityCode()))
+				{
+					receiptStationDTO.setCityName(Constants.CITY_ALL_NAME);
+				}
+				else
+				{
+					City city = new City();
+					city = cityService.getCityByCcode(station.getCityCode());
+					receiptStationDTO.setCityName(null != city?city.getCname():"");
+				}
+				
+			}
+			
+			receiptStationDTO.setStationStyle(station.getStationType());//站点类型
+			
+			receiptStationDTO.setTelephone(station.getOwnerTelephone());//站主电话
+			
+			receiptStationDTO.setStationNumber(station.getStationNumber());//站点号
+			
+			receiptStationDTOs.add(receiptStationDTO);
+		}
+		
+		returnData.put("rows", receiptStationDTOs);
+		returnData.put("total", totalrow);
+		 
+		 return returnData;
 	 }
 	 
 	/**

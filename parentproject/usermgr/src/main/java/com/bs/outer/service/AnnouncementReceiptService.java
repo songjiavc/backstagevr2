@@ -1,9 +1,13 @@
 package com.bs.outer.service;
 
 import java.sql.Timestamp;
+import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+
 import com.bs.outer.entity.AnnouncementReceipt;
+import com.sdf.manager.common.util.QueryResult;
 
 public interface AnnouncementReceiptService {
 	/**
@@ -40,5 +44,9 @@ public interface AnnouncementReceiptService {
 	 * @return: void
 	 */
 	public void update(AnnouncementReceipt entity);
+	
+	public QueryResult<AnnouncementReceipt> getAnnouncementReceiptsList(Class<AnnouncementReceipt> entityClass,
+			String whereJpql, Object[] queryParams,
+			LinkedHashMap<String, String> orderby, Pageable pageable);
 	
 }
