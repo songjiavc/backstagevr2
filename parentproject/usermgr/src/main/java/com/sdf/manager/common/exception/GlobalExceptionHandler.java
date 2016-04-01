@@ -70,6 +70,7 @@ public abstract class GlobalExceptionHandler {
 	        
 	        //添加自己的异常处理逻辑，如日志记录　　　
 	        logger.error("全局异常捕捉 ，异常返回提示："+ returnMsg+"异常信息："+e.getMessage());
+	        e.printStackTrace();
 	        request.setAttribute("exceptionMessage", returnMsg);  
 	        
 //	        ModelAndView mav = new ModelAndView();
