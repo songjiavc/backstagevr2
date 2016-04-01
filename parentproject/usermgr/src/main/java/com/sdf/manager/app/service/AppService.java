@@ -50,4 +50,15 @@ public interface AppService {
 			String whereJpql, Object[] queryParams,
 			LinkedHashMap<String, String> orderby, Pageable pageable,String province,String city,String stationId,String lotteryType);
 	
+	/**
+	 * 
+	 * @Title: getAppOfUninstall
+	 * @Description: 获取符合当前区域和彩种条件的但是并未在当前一体机安装的应用数据
+	 * @author:banna
+	 * @return: QueryResult<App>
+	 */
+	public QueryResult<App> getAppOfUninstall(Class<App> entityClass,
+			String whereJpql, Object[] queryParams,
+			LinkedHashMap<String, String> orderby, Pageable pageable,String province,String city,String lotteryType,String installappIds);
+	
 }

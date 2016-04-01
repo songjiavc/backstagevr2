@@ -107,6 +107,12 @@
 		    			<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="getKaijiangNotice()">获取通当前开奖公告数据</a> 
 		    		</td>
 		    	</tr>
+		    	
+		    	<tr>
+		    		<td width="100%">
+		    			<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="testAddReceiptOfAnnouncement()">测试通告确认查看接口</a> 
+		    		</td>
+		    	</tr>
 	    	</table>	
 	</div>
 

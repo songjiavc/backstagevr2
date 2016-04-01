@@ -117,7 +117,24 @@ public class AppServiceImpl implements AppService {
 			LinkedHashMap<String, String> orderby, Pageable pageable,String province,String city,String lotteryType) {
 		String sql = " SELECT u.* FROM T_BS_APPLICATION u LEFT JOIN T_BS_APP_PRICE_AND_AREA tbs ON u.ID=tbs.APP_ID "+
 						" WHERE u.IS_DELETED='1' AND tbs.IS_DELETED='1'  AND u.APP_STATUS='1' AND u.PROVINCE='"+province+"' AND u.CITY IN ('"+Constants.CITY_ALL+"','"+city+"') "+
-						" 	AND  tbs.CITY='"+city+"' AND tbs.UNIT_PRICE>0";//"AND u.LOTTERY_TYPE='"+lotteryType+"'",应用彩种的关联关系还没有连接
+						" 	AND  tbs.CITY='"+city+"' AND tbs.UNIT_PRICE>0 AND u.LOTTERY_TYPE='"+lotteryType+"' ";//"AND u.LOTTERY_TYPE='"+lotteryType+"'",应用彩种的关联关系还没有连接
+		QueryResult<App> appQueryResult = appRepository.
+			getScrollDataBySql(App.class,sql, queryParams, pageable);
+		return appQueryResult;
+	}
+	
+	/**
+	 * 
+	 * @Title: getAppOfUninstall
+	 * @Description: 获取当前通行证未安装的但是可以安装的应用数据
+	 * @author:banna
+	 */
+	public QueryResult<App> getAppOfUninstall(Class<App> entityClass,
+			String whereJpql, Object[] queryParams,
+			LinkedHashMap<String, String> orderby, Pageable pageable,String province,String city,String lotteryType,String installappIds) {
+		String sql = "  SELECT u.* FROM T_BS_APPLICATION u  WHERE u.IS_DELETED='1' "+
+					 "   AND u.APP_STATUS='1' AND u.PROVINCE='"+province+"' AND u.CITY IN ('"+Constants.CITY_ALL+"','"+city+"')  	"+
+					 "    AND u.LOTTERY_TYPE='"+lotteryType+"' AND u.ID NOT IN ("+installappIds+")";
 		QueryResult<App> appQueryResult = appRepository.
 			getScrollDataBySql(App.class,sql, queryParams, pageable);
 		return appQueryResult;
@@ -130,7 +147,7 @@ public class AppServiceImpl implements AppService {
 				"  LEFT JOIN RELA_BS_STATION_AND_APP tbsap ON u.ID=tbsap.APP_ID "+
 				" WHERE u.IS_DELETED='1' AND tbs.IS_DELETED='1' AND tbsap.IS_DELETED='1' AND tbsap.STATUS='1'   "+
 				" AND u.APP_STATUS='1' AND tbsap.STATION_ID='"+stationId+"'  AND u.PROVINCE='"+province+"' AND u.CITY IN ('"+Constants.CITY_ALL+"','"+city+"')  "+
-				" 	AND  tbs.CITY='"+city+"' AND tbs.UNIT_PRICE>0";//"AND u.LOTTERY_TYPE='"+lotteryType+"'",应用彩种的关联关系还没有连接
+				" 	AND  tbs.CITY='"+city+"' AND tbs.UNIT_PRICE>0 AND u.LOTTERY_TYPE='"+lotteryType+"'";//"AND u.LOTTERY_TYPE='"+lotteryType+"'",应用彩种的关联关系还没有连接
 		QueryResult<RelaBsStationAndApp> appQueryResult = relaBsStaAppRepository.
 			getScrollDataBySql(RelaBsStationAndApp.class,sql, queryParams, pageable);
 		return appQueryResult;

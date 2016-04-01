@@ -90,14 +90,38 @@ function getAuthOfStationAndApp()
         }
    });
 }
-
+//
+function testAddReceiptOfAnnouncement()
+{
+	var data = new Object();
+	
+	var stationId='402881e452ab44b60152ab45b7480000';//传入参数
+	
+	data.stationId = stationId;
+	
+	$.ajax({
+		async: false,   //设置为同步获取数据形式
+        type: "get",
+        data:data,
+        url: contextPath+'/outerInterface/addReceiptOfAnnouncement.action',
+        dataType: "json",
+        success: function (data) {
+        	
+        	
+        	
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+        	alert("error!");
+        }
+   });
+}
 
 //根据通行证获取通告数据接口
 function getAnnouncementOfStation()
 {
 	var data = new Object();
 	
-	var stationId='402881eb537d70f401537d7debae000b';//传入参数
+	var stationId='402881e452ab0f850152ab1661410004';//传入参数
 	
 	data.stationId = stationId;
 	
@@ -210,7 +234,7 @@ function getKaijiangNotice()
 {
 	var data = new Object();
 	
-	var stationId='402881e452ab44b60152ab45b7480000';//传入参数:huludao:402881e452ab44b60152ab45b7480000;beijing:402881eb537d70f401537d7debae000b
+	var stationId='402881eb537d70f401537d7debae000b';//传入参数:huludao:402881e452ab44b60152ab45b7480000;beijing:402881eb537d70f401537d7debae000b
 	
 	data.stationId = stationId;
 	
@@ -265,16 +289,21 @@ function getProxyOfStation()
 //获取通当前安装的应用的最新版本数据
 function getAppversionsOfnew()
 {
-	var data = {
-			issueNumber : '160327012',
-			provinceNumber : '100005'
-	};
+	var data = new Object();
+	
+	var appIds = new Array();
+	
+	appIds.push('40288134527c7c7b01527c8235120002');
+	appIds.push('40288134527c7c7b01527c878cb80003');	
+	
+	data.appIds = appIds.toString();
+	data.stationId='402881e452ab0f850152ab1661410004';
 	
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
         type: "get",
         data:data,
-        url: contextPath+'/outerInterface/getLotteryNumList.action',
+        url: contextPath+'/outerInterface/getAppversionsOfnew.action',
         dataType: "json",
         success: function (data) {
         	

@@ -1128,7 +1128,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			ugroups = station.getUserGroups();//获取通行证组数据
 			
 			//放置分页参数
-			Pageable pageable = new PageRequest(0,1000000);//查询所有的数据
+			Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);//查询所有的数据
 			
 			StringBuffer ugroupArr = new StringBuffer();//获取开奖公告不需要用户组参数
 			//参数
@@ -1220,14 +1220,33 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	 * @return: List<AppversionDTO>
 	 */
 	@RequestMapping(value="/getAppversionsOfnew",method = RequestMethod.GET)
-	public @ResponseBody List<AppversionDTO> getAppversionsOfnew(@RequestParam(value="appIds",required=true) String[] appIds)
+	public @ResponseBody Map<String,Object> getAppversionsOfnew(
+			@RequestParam(value="stationId",required=true) String stationId,
+			@RequestParam(value="appIds",required=true) String[] appIds)
 	{
+		Map<String,Object> returnData = new HashMap<String, Object>();
+		
 		List<AppversionDTO> appversionDTOs = new ArrayList<AppversionDTO>();
 		List<Appversion> appversions = new ArrayList<Appversion>();
 		
+		StringBuffer installappIds = new StringBuffer();//放置已安装的应用字符串
+		
 		try
 		{
-			for (String appId : appIds) {
+			//获取已安装的应用的最新版本数据
+			for (int i=0;i<appIds.length;i++) 
+			{
+				String appId = appIds[i];
+				if(i==0)
+				{
+					installappIds.append("'"+appId+"'");
+				}
+				else
+				{
+					installappIds.append(",");
+					installappIds.append("'"+appId+"'");
+				}
+				
 				
 				//获取当前appId下的且已上架的应用版本的最新版本数据
 				String maxVersionFlowId =
@@ -1261,8 +1280,68 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			}
 			appversionDTOs = appversionService.toRDTOS(appversions);
 			
+			returnData.put("installedNewAppversions", appversionDTOs);
 			
-			/*result.put("appversionDTOs", appversionDTOs);
+			
+			//获取未安装的但可以使用的应用的最新版本数据
+			List<Appversion> appversions2 = new ArrayList<Appversion>();
+			List<AppversionDTO> appversionDTOs2 = new ArrayList<AppversionDTO>();
+			Station station = stationService.getSationById(stationId);
+			String sprovince = station.getProvinceCode();
+			String sCity = station.getCityCode();
+			String lotterytype = station.getStationType();
+			
+			
+			Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);//查询所有的数据
+			
+			//参数
+			StringBuffer buffer = new StringBuffer();
+			List<Object> params = new ArrayList<Object>();
+			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
+			
+			QueryResult<App> appResult = appService.getAppOfUninstall
+					(App.class, buffer.toString(), params.toArray(),
+							orderBy, pageable,  sprovince, sCity ,lotterytype, installappIds.toString());
+			
+			List<App> unInstallApps = appResult.getResultList();
+			
+			for (App unInstallApp : unInstallApps) {
+				
+				//获取当前appId下的且已上架的应用版本的最新版本数据
+				String maxVersionFlowId =
+						appversionService.
+						findMaxVersionFlowId(unInstallApp.getId(), AppversionController.APP_V_STATUS_SJ);//获取当前应用下的应用版本数据是上架状态的最大版本流水号
+				
+				if(null!=maxVersionFlowId)
+				{
+					Appversion appversion = appversionService.
+							getAppversionByAppIdAndVersionFlowId(unInstallApp.getId(), maxVersionFlowId);//根据appId和版本流水号获取应用版本数据
+					
+					Uploadfile uploadfile = uploadfileService.getUploadfileByNewsUuid(appversion.getAppVersionUrl());
+					
+					String apkUrl = "";
+					if(null!=uploadfile)
+					{
+						apkUrl = uploadfile.getUploadfilepath()+uploadfile.getUploadRealName();//抓取附件的真实存储路径
+						appversion.setAppVersionUrl(apkUrl);
+					}
+					
+					
+					
+					appversions2.add(appversion);
+				}
+				else
+				{
+					continue;
+				}
+				
+				
+			}
+			appversionDTOs2 = appversionService.toRDTOS(appversions2);
+			
+			returnData.put("notInstalledNewAppversions", appversionDTOs2);
+			
+			/*
 			result.put("status", "1");
 			result.put("message", "数据获取成功！");*/
 			logger.info("获取根据应用id获取一体机当前安装的所有应用的最新版本数据接口数据成功getAppversionsOfnew！appIds="+appIds);
@@ -1276,7 +1355,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 		
 		
 		
-		return appversionDTOs;
+		return returnData;
 	}
 	
 	/**
