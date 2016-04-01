@@ -1233,7 +1233,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 		
 		try
 		{
-			//获取已安装的应用的最新版本数据
+			/**1.获取已安装的应用的最新版本数据**/
 			for (int i=0;i<appIds.length;i++) 
 			{
 				String appId = appIds[i];
@@ -1283,7 +1283,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			returnData.put("installedNewAppversions", appversionDTOs);
 			
 			
-			//获取未安装的但可以使用的应用的最新版本数据
+			/**2.获取未安装的但可以使用的应用的最新版本数据**/
 			List<Appversion> appversions2 = new ArrayList<Appversion>();
 			List<AppversionDTO> appversionDTOs2 = new ArrayList<AppversionDTO>();
 			Station station = stationService.getSationById(stationId);
@@ -1299,6 +1299,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			List<Object> params = new ArrayList<Object>();
 			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
 			
+			//获取当前通行证的未安装但是可以进行安装的已上架的应用数据
 			QueryResult<App> appResult = appService.getAppOfUninstall
 					(App.class, buffer.toString(), params.toArray(),
 							orderBy, pageable,  sprovince, sCity ,lotterytype, installappIds.toString());
