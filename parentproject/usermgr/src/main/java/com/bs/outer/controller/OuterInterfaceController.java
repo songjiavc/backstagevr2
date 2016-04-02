@@ -204,6 +204,10 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 				List<RenewAppDTO> useAppDTOs = new ArrayList<RenewAppDTO>();
 				useAppDTOs = this.getAppListOfStation(station.getId());
 				returnResult.put("useAppDTOs", useAppDTOs);
+				//5.获取当前通行证可以使用的应用的最新版本数据
+				List<AppversionDTO> appversionDTOs = new ArrayList<AppversionDTO>();
+				appversionDTOs = this.getAppversionsOfStationCouldUse(station.getId());
+				returnResult.put("couldUseAppversions", appversionDTOs);
 				
 			}
 			logger.info("访问登录接口成功 stationCode="+stationCode+"&&password="+password);
@@ -1213,50 +1217,53 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	
 	/**
 	 * 
-	 * @Title: getAppversionsOfnew
-	 * @Description: TODO:根据应用id获取一体机当前安装的所有应用的最新版本数据
-	 * * 对应的返回json数据结构：appVersionOfnew.json
+	 * @Title: getAppversionsOfStationCouldUse
+	 * @Description: 获取当前通行证可以使用的应用的最新版本数据
 	 * @author:banna
 	 * @return: List<AppversionDTO>
 	 */
-	@RequestMapping(value="/getAppversionsOfnew",method = RequestMethod.GET)
-	public @ResponseBody Map<String,Object> getAppversionsOfnew(
-			@RequestParam(value="stationId",required=true) String stationId,
-			@RequestParam(value="appIds",required=true) String[] appIds)
+	@RequestMapping(value="/getAppversionsOfStationCouldUse",method = RequestMethod.GET)
+	public @ResponseBody List<AppversionDTO> getAppversionsOfStationCouldUse(
+			@RequestParam(value="stationId",required=true) String stationId)
 	{
-		Map<String,Object> returnData = new HashMap<String, Object>();
-		
 		List<AppversionDTO> appversionDTOs = new ArrayList<AppversionDTO>();
-		List<Appversion> appversions = new ArrayList<Appversion>();
-		
-		StringBuffer installappIds = new StringBuffer();//放置已安装的应用字符串
+		StringBuffer installappIds = new StringBuffer();
 		
 		try
-		{
-			/**1.获取已安装的应用的最新版本数据**/
-			for (int i=0;i<appIds.length;i++) 
+		{ 
+			List<Appversion> appversions2 = new ArrayList<Appversion>();
+			Station station = stationService.getSationById(stationId);
+			String sprovince = station.getProvinceCode();
+			String sCity = station.getCityCode();
+			String lotterytype = station.getStationType();
+			
+			
+			Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);//查询所有的数据
+			
+			//参数
+			StringBuffer buffer = new StringBuffer();
+			List<Object> params = new ArrayList<Object>();
+			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
+			
+			//获取当前通行证的未安装但是可以进行安装的已上架的应用数据
+			QueryResult<App> appResult = appService.getAppOfUninstall
+					(App.class, buffer.toString(), params.toArray(),
+							orderBy, pageable,  sprovince, sCity ,lotterytype, installappIds.toString());
+			
+			List<App> unInstallApps = appResult.getResultList();
+			
+			for (App unInstallApp : unInstallApps) 
 			{
-				String appId = appIds[i];
-				if(i==0)
-				{
-					installappIds.append("'"+appId+"'");
-				}
-				else
-				{
-					installappIds.append(",");
-					installappIds.append("'"+appId+"'");
-				}
-				
 				
 				//获取当前appId下的且已上架的应用版本的最新版本数据
 				String maxVersionFlowId =
 						appversionService.
-						findMaxVersionFlowId(appId, AppversionController.APP_V_STATUS_SJ);//获取当前应用下的应用版本数据是上架状态的最大版本流水号
+						findMaxVersionFlowId(unInstallApp.getId(), AppversionController.APP_V_STATUS_SJ);//获取当前应用下的应用版本数据是上架状态的最大版本流水号
 				
 				if(null!=maxVersionFlowId)
 				{
 					Appversion appversion = appversionService.
-							getAppversionByAppIdAndVersionFlowId(appId, maxVersionFlowId);//根据appId和版本流水号获取应用版本数据
+							getAppversionByAppIdAndVersionFlowId(unInstallApp.getId(), maxVersionFlowId);//根据appId和版本流水号获取应用版本数据
 					
 					Uploadfile uploadfile = uploadfileService.getUploadfileByNewsUuid(appversion.getAppVersionUrl());
 					
@@ -1269,7 +1276,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 					
 					
 					
-					appversions.add(appversion);
+					appversions2.add(appversion);
 				}
 				else
 				{
@@ -1278,9 +1285,98 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 				
 				
 			}
-			appversionDTOs = appversionService.toRDTOS(appversions);
+			appversionDTOs = appversionService.toRDTOS(appversions2);
 			
-			returnData.put("installedNewAppversions", appversionDTOs);
+			
+			/*
+			result.put("status", "1");
+			result.put("message", "数据获取成功！");*/
+			logger.info("获取当前通行证可以使用的使用的最新版本数据接口成功，stationId="+stationId);
+		}
+		catch(Exception e)
+		{
+			logger.error("获取当前通行证可以使用的使用的最新版本数据接口错误，stationId="+stationId);
+			/*result.put("status", "0");
+			result.put("message", "数据获取失败！");*/
+		}
+		
+		return appversionDTOs;
+	}
+	
+	/**
+	 * 
+	 * @Title: getAppversionsOfnew
+	 * @Description: TODO:根据应用id获取一体机当前安装的所有应用的最新版本数据
+	 * * 对应的返回json数据结构：appVersionOfnew.json
+	 * @author:banna
+	 * @return: List<AppversionDTO>
+	 */
+	@RequestMapping(value="/getAppversionsOfnew",method = RequestMethod.GET)
+	public @ResponseBody Map<String,Object> getAppversionsOfnew(
+			@RequestParam(value="stationId",required=true) String stationId,
+			@RequestParam(value="appIds",required=false) String[] appIds)
+	{
+		Map<String,Object> returnData = new HashMap<String, Object>();
+		
+		List<AppversionDTO> appversionDTOs = new ArrayList<AppversionDTO>();
+		List<Appversion> appversions = new ArrayList<Appversion>();
+		
+		StringBuffer installappIds = new StringBuffer();//放置已安装的应用字符串
+		
+		try
+		{ 
+			if(null != appIds && appIds.length>0)
+			{
+				/**1.获取已安装的应用的最新版本数据**/
+				for (int i=0;i<appIds.length;i++) 
+				{
+					String appId = appIds[i];
+					if(i==0)
+					{
+						installappIds.append("'"+appId+"'");
+					}
+					else
+					{
+						installappIds.append(",");
+						installappIds.append("'"+appId+"'");
+					}
+					
+					
+					//获取当前appId下的且已上架的应用版本的最新版本数据
+					String maxVersionFlowId =
+							appversionService.
+							findMaxVersionFlowId(appId, AppversionController.APP_V_STATUS_SJ);//获取当前应用下的应用版本数据是上架状态的最大版本流水号
+					
+					if(null!=maxVersionFlowId)
+					{
+						Appversion appversion = appversionService.
+								getAppversionByAppIdAndVersionFlowId(appId, maxVersionFlowId);//根据appId和版本流水号获取应用版本数据
+						
+						Uploadfile uploadfile = uploadfileService.getUploadfileByNewsUuid(appversion.getAppVersionUrl());
+						
+						String apkUrl = "";
+						if(null!=uploadfile)
+						{
+							apkUrl = uploadfile.getUploadfilepath()+uploadfile.getUploadRealName();//抓取附件的真实存储路径
+							appversion.setAppVersionUrl(apkUrl);
+						}
+						
+						
+						
+						appversions.add(appversion);
+					}
+					else
+					{
+						continue;
+					}
+					
+					
+				}
+				appversionDTOs = appversionService.toRDTOS(appversions);
+				
+				returnData.put("installedNewAppversions", appversionDTOs);
+			}
+			
 			
 			
 			/**2.获取未安装的但可以使用的应用的最新版本数据**/

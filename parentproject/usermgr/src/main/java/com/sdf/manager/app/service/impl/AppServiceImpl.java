@@ -132,11 +132,16 @@ public class AppServiceImpl implements AppService {
 	public QueryResult<App> getAppOfUninstall(Class<App> entityClass,
 			String whereJpql, Object[] queryParams,
 			LinkedHashMap<String, String> orderby, Pageable pageable,String province,String city,String lotteryType,String installappIds) {
-		String sql = "  SELECT u.* FROM T_BS_APPLICATION u  WHERE u.IS_DELETED='1' "+
-					 "   AND u.APP_STATUS='1' AND u.PROVINCE='"+province+"' AND u.CITY IN ('"+Constants.CITY_ALL+"','"+city+"')  	"+
-					 "    AND u.LOTTERY_TYPE='"+lotteryType+"' AND u.ID NOT IN ("+installappIds+")";
+		StringBuffer sql = new StringBuffer("  SELECT u.* FROM T_BS_APPLICATION u  WHERE u.IS_DELETED='1' "+
+					 "   AND u.APP_STATUS='"+AppController.APP_STATUS_SJ+"' AND u.PROVINCE='"+province+"' AND u.CITY IN ('"+Constants.CITY_ALL+"','"+city+"')  	"+
+					 "    AND u.LOTTERY_TYPE='"+lotteryType+"' ");
+		if(null!=installappIds && installappIds.length()>0)
+		{
+			sql.append("  AND u.ID NOT IN ("+installappIds+")");
+		}
+		
 		QueryResult<App> appQueryResult = appRepository.
-			getScrollDataBySql(App.class,sql, queryParams, pageable);
+			getScrollDataBySql(App.class,sql.toString(), queryParams, pageable);
 		return appQueryResult;
 	}
 	

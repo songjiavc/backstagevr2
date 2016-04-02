@@ -293,11 +293,11 @@ function getAppversionsOfnew()
 	
 	var appIds = new Array();
 	
-	appIds.push('40288134527c7c7b01527c8235120002');
-	appIds.push('40288134527c7c7b01527c878cb80003');	
+//	appIds.push('40288134527c7c7b01527c8235120002');
+//	appIds.push('40288134527c7c7b01527c878cb80003');	
 	
-	data.appIds = appIds.toString();
-	data.stationId='402881e452ab0f850152ab1661410004';
+//	data.appIds = appIds.toString();
+	data.stationId='402881eb537d70f401537d7debae000b';
 	
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
