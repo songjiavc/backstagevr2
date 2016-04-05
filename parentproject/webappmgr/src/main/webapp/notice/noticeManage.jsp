@@ -160,7 +160,7 @@
   
   
     <!-- 添加应用公告弹框 -->
-  <div id="addNotice" class="easyui-dialog" title="添加应用公告" style="width:800px;height:650px;padding:0px;border:0;"
+  <div id="addNotice" class="easyui-dialog" title="添加应用公告" style="width:800px;height:650px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -266,7 +266,7 @@
 	     
     </div>
      <!-- 修改应用弹框 -->
-     <div id="updateNotice" class="easyui-dialog" title="修改应用广告信息" style="width:800px;height:600px;padding:0px;border:0;"
+     <div id="updateNotice" class="easyui-dialog" title="修改应用广告信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{

@@ -158,7 +158,7 @@
   
   
     <!-- 添加通告弹框 -->
-  <div id="addAnnouncement" class="easyui-dialog" title="添加通告" style="width:800px;height:650px;padding:0px;border:0;"
+  <div id="addAnnouncement" class="easyui-dialog" title="添加通告" style="width:800px;height:650px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -245,7 +245,7 @@
 	     
     </div>
      <!-- 修改通告弹框 -->
-     <div id="updateAnnouncement" class="easyui-dialog" title="修改通告信息" style="width:800px;height:600px;padding:0px;border:0;"
+     <div id="updateAnnouncement" class="easyui-dialog" title="修改通告信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{

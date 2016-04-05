@@ -102,7 +102,7 @@
   
   
     <!-- 添加预测信息弹框 -->
-  <div id="addForecast" class="easyui-dialog" title="添加预测信息" style="width:600px;height:500px;padding:10px;top:40px;"
+  <div id="addForecast" class="easyui-dialog" title="添加预测信息" style="width:600px;height:500px;padding:10px;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -178,7 +178,7 @@
 	      </form>
     </div>
      <!-- 修改应用弹框 -->
-     <div id="updateForecast" class="easyui-dialog" title="修改预测信息" style="width:600px;height:500px;padding:10px;top:40px;"
+     <div id="updateForecast" class="easyui-dialog" title="修改预测信息" style="width:600px;height:500px;padding:10px;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{

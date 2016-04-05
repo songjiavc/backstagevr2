@@ -435,9 +435,9 @@ function initStationList(id,stationDataGridId)
 		pageList:[5,10],
 		columns:[[
 				{field:'id',checkbox:true},
-				{field:'stationNumber',title:'站点号',width:'20%',align:'center'},
+				{field:'stationNumber',title:'站点号',width:'10%',align:'center'},
 				{field:'province',title:'省',width:'10%',align:'center'},
-				{field:'city',title:'市',width:'10%',align:'center'},
+				{field:'city',title:'市',width:'14%',align:'center'},
 				{field:'stationStyle',title:'站点类型',width:'20%',align:'center'},
 				{field:'name',title:'站主名称',width:'20%',align:'center'},
 				{field:'telephone',title:'站主电话',width:'20%',align:'center'},

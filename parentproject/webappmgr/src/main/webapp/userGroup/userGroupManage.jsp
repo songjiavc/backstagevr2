@@ -100,7 +100,7 @@
   
   
     <!-- 添加通行证组弹框 -->
-  <div id="addUgroup" class="easyui-dialog" title="添加通行证组" style="width:800px;height:600px;padding:0px;border:0;"
+  <div id="addUgroup" class="easyui-dialog" title="添加通行证组" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -119,7 +119,7 @@
                 }]
             ">
 		
-			<div class="easyui-layout" style="height:100%;padding:0;" >
+			<div class="easyui-layout" style="height:100%;padding:0;width:100%;" >
 	    	 	<div region="north" style="height:45%;" title="通行证基本内容" hide="false">
 	    	 		<form id="ff" method="get" novalidate style="margin-top:5px;">
 		    	 		<div class="ftitle">
@@ -140,7 +140,7 @@
 				        </div>
 				       </form>
 	    	 	</div>
-	    	 	<div region="center" style="height:55%;padding:0;" title="选择通行证">
+	    	 	<div region="center" style="height:55%;padding:0;width:99%;" title="选择通行证">
 	    	 		<table id="stationDataGridA" class="easyui-datagrid" style="width:100%;height:95%;"  title="通行证列表" toolbar="#tbA"></table>
 	    	 	</div>
     		</div>
@@ -149,7 +149,7 @@
 	     
     </div>
      <!-- 修改应用弹框 -->
-     <div id="updateUgroup" class="easyui-dialog" title="修改应用信息" style="width:800px;height:600px;padding:0px;border:0;"
+     <div id="updateUgroup" class="easyui-dialog" title="修改应用信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -166,7 +166,7 @@
                     }
                 }]
             ">
-	      <div class="easyui-layout" style="height:100%;padding:0;" >
+	      <div class="easyui-layout" style="height:100%;padding:0;width:100%;" >
 	    	 	<div region="north" style="height:45%;" title="通行证基本内容" hide="false">
 	    	 		<form id="ffUpdate" method="get" novalidate style="margin-top:5px;">
 		    	 		<div class="ftitle">
@@ -187,13 +187,13 @@
 				        </div>
 				       </form>
 	    	 	</div>
-	    	 	<div region="center" style="height:55%;padding:0;" title="选择通行证">
+	    	 	<div region="center" style="height:55%;padding:0;width:99%;" title="选择通行证">
 	    	 		<table id="stationDataGridU" class="easyui-datagrid" style="width:100%;height:95%;"  title="通行证列表" toolbar="#tbU"></table>
 	    	 	</div>
     		</div>
     </div>
     
-     <div id="tbA" style="padding:3px" class="toolbarTb">
+     <div id="tbA" style="padding:3px;width:750px;" class="toolbarTb">
     	 <div id="pa">
     	 	<span>省:</span>
 	    	<select class="easyui-combobox " id="searchFormProvinceA" name="searchFormProvince" style="width:150px;" >
