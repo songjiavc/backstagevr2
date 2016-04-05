@@ -38,7 +38,38 @@ function addDialogCancel()
 	         }); 
 }
 
-
+/**
+ * 校验当前附件id下是否有附件数据
+ * @param upId
+ * @returns {Boolean}
+ */
+function upIdHaveFujian(upId)
+{
+	var data = new Object();
+	data.uplId = upId;
+	var returnFlag = false;
+	$.ajax({
+		async: false,   //设置为同步获取数据形式
+        type: "get",
+        url: contextPath+'/advertisement/getFileOfAppad.action',
+        data:data,
+        dataType: "json",
+        success: function (returndata) {
+        	
+        	if(0 != returndata.id)//若没有附件，则生成一个附件实体，且id=0
+        		{
+        			returnFlag = true;
+        		}
+      			
+        	
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            window.parent.location.href = contextPath + "/error.jsp";
+        }
+   });
+	
+	return returnFlag;
+}
 
 
 //关闭弹框
@@ -76,7 +107,7 @@ function initDatagrid()
 				{field:'id',hidden:true},
 				{field:'appVersionStatus',hidden:true},//应用版本状态(0:待上架1:上架2:下架3:更新)
 				{field:'appVersionCode',title:'应用版本编码',width:150,align:'center'},
-		        {field:'appName',width:120,title:'应用版本名称',align:'center'},
+		        {field:'appVersionName',width:120,title:'应用版本名称',align:'center'},
 		        {field:'versionCode',width:100,title:'版本号',align:'center'},
 		        {field:'appName',width:100,title:'所属应用',align:'center'},
 				{field:'appVersionStatusName',title:'应用版本状态',width:100,align:'center'},
@@ -219,7 +250,16 @@ function submitAddAppVersion()
 		url:contextPath+'/appversion/saveOrUpdate.action',
 		onSubmit:function(param){
 			var flag = false;
-			if($('#ff').form('enableValidation').form('validate') )
+			
+			var upId = $("#urlHiddenA").val();
+			var haveFujian = upIdHaveFujian(upId);//返回值为false时则没有附件
+			var fujianFlag = true;
+			if(null == upId||''==upId ||!haveFujian)
+			{
+				fujianFlag = false;
+				$.messager.alert('提示', "请上传应用版本安装包!");
+			}
+			if($('#ff').form('enableValidation').form('validate') && fujianFlag)
 				{
 					flag = true;
 				}
@@ -245,6 +285,7 @@ function submitAddAppVersion()
 
 /**
  * 提交修改商品表单
+ * 
  */
 function submitUpdateAppVersion()
 {
@@ -252,7 +293,16 @@ function submitUpdateAppVersion()
 		url:contextPath+'/appversion/saveOrUpdate.action',
 		onSubmit:function(param){
 			var flag = false;
-			if($('#ffUpdate').form('enableValidation').form('validate') )
+			
+			var upId = $("#urlHiddenU").val();
+			var haveFujian = upIdHaveFujian(upId);//返回值为false时则没有附件
+			var fujianFlag = true;
+			if(null == upId||''==upId ||!haveFujian)
+			{
+				fujianFlag = false;
+				$.messager.alert('提示', "请上传应用版本安装包!");
+			}
+			if($('#ffUpdate').form('enableValidation').form('validate') && fujianFlag)
 				{
 					flag = true;
 				}
