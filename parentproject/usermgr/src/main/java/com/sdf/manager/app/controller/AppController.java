@@ -174,8 +174,11 @@ public class AppController  extends GlobalExceptionHandler{
 			
 			if(null != city&&!"".equals(city.trim()))
 			{
-				params.add(city);
-				buffer.append(" and city = ?").append(params.size());
+				List<String> paraArr = new ArrayList<String> ();
+				paraArr.add(city);
+				paraArr.add(Constants.CITY_ALL);
+				params.add(paraArr);
+				buffer.append(" and city in ?").append(params.size());
 			}
 			/**
 			 * 根据省市筛选应用数据，当前是应用广告模块在使用这个功能，end
