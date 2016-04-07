@@ -273,10 +273,10 @@ function initAppDatagrid(adId,appDatagridId)
 			params.province=areamsg.province;
 			/*目前定义的规则为：省中心和市中心都可以看见当前省级区域内的应用列表
 			（※：因为市可以有定制应用也可以使用通用的省级应用，所以应该省级范围内的应用都可以显示在列表内）*/
-			/*if('1'==adtype)
+			if('1'==adtype)
 				{//若当前登录用户是市中心用户时，则也赋予市级区域信息
 					params.city=areamsg.city;
-				}*/
+				}
 		}
 	
 	
