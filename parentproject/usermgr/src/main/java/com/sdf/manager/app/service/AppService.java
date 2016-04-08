@@ -37,7 +37,7 @@ public interface AppService {
 	 */
 	public QueryResult<App> getAppOfFufei(Class<App> entityClass,
 			String whereJpql, Object[] queryParams,
-			LinkedHashMap<String, String> orderby, Pageable pageable,String province,String city,String lotteryType);
+			LinkedHashMap<String, String> orderby, Pageable pageable,String province,String city,String lotteryType,String stationId);
 	
 	/**
 	 * 

@@ -1156,7 +1156,8 @@ public class OrderController extends GlobalExceptionHandler
 					buffer.toString(), params.toArray(),orderBy, pageable);*/
 			
 			//获取全部上架的付费的应用列表
-			QueryResult<App> applist = appService.getAppOfFufei(App.class, buffer.toString(), params.toArray(), orderBy, pageable, sprovince, scity,lotteryType);
+			QueryResult<App> applist = appService.getAppOfFufei
+					(App.class, buffer.toString(), params.toArray(), orderBy, pageable, sprovince, scity,lotteryType,stationId);
 					
 			List<App> apps = applist.getResultList();
 			int totalrow = applist.getTotalCount();//applist.getTotalRecord();jsql的返回数据总值是getTotalRecord
