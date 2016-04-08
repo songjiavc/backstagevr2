@@ -141,7 +141,7 @@
   
   
     <!-- 添加公司公告弹框 -->
-  <div id="addKaijiangNotice" class="easyui-dialog" title="添加开奖公告" style="width:800px;height:550px;padding:0px;border:0;"
+  <div id="addKaijiangNotice" class="easyui-dialog" fit="true" title="添加开奖公告" style="width:800px;height:550px;padding:0px;border:0;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -169,7 +169,7 @@
             ">
 		
 			<div class="easyui-layout" style="height:100%;padding:0;" >
-	    	 	<div region="north" style="height:50%;" title="公司公告基本内容" hide="false" >
+	    	 	<div region="north" style="height:50%;" title="开奖公告基本内容" hide="false" >
 	    	 		<form id="ff" method="get"  style="margin-top:5px;" ><!-- enctype="multipart/form-data":上传文件需要,这是提交媒体文件的声明 -->
 		    	 		<div class="ftitle">
 				            <label for="codeA">开奖公告名称:</label>
@@ -212,7 +212,7 @@
 	     
     </div>
      <!-- 修改开奖公告弹框 -->
-     <div id="updateKaijiangNotice" class="easyui-dialog" title="修改开奖公告信息" style="width:800px;height:550px;padding:0px;border:0;"
+     <div id="updateKaijiangNotice" class="easyui-dialog" fit="true" title="修改开奖公告信息" style="width:800px;height:550px;padding:0px;border:0;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -236,7 +236,7 @@
                 }]
             ">
 	    <div class="easyui-layout" style="height:100%;padding:0;" >
-	    	 	<div region="north" style="height:50%;" title="公司公告基本内容" hide="false">
+	    	 	<div region="north" style="height:50%;" title="开奖公告基本内容" hide="false">
 	    	 		<form id="ffUpdate" method="get" novalidate style="margin-top:5px;">
 		    	 		<div class="ftitle"> 
 		    	 			<label>开奖公告名称:</label>

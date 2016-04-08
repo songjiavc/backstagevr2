@@ -142,8 +142,8 @@
  	</div>  
   
   
-    <!-- 添加应用广告弹框 -->
-  <div id="addAd" class="easyui-dialog" title="添加应用广告" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+    <!-- 添加应用广告弹框 --> 
+  <div id="addAd" class="easyui-dialog" fit="true" title="添加应用广告" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -237,11 +237,11 @@
     </div>
     
     <!-- 图片预览弹框 -->
-    <div id="uploadShowAimgPreview" title="图片预览" class="easyui-dialog" style="width:500px; height:400px;"> </div>
-    <div id="uploadShowUimgPreview" title="图片预览" class="easyui-dialog" style="width:500px; height:400px;"> </div>
+    <div id="uploadShowAimgPreview" title="图片预览" class="easyui-dialog" fit="true" style="width:500px; height:400px;"> </div>
+    <div id="uploadShowUimgPreview" title="图片预览" class="easyui-dialog" fit="true" style="width:500px; height:400px;"> </div>
     
      <!-- 修改应用弹框 -->
-     <div id="updateAd" class="easyui-dialog" title="修改应用广告信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+     <div id="updateAd" class="easyui-dialog" fit="true" title="修改应用广告信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
