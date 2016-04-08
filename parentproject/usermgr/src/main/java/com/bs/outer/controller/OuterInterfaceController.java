@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bs.outer.entity.AnnouncementReceipt;
 import com.bs.outer.entity.Fast3;
 import com.bs.outer.entity.Fast3Analysis;
+import com.bs.outer.entity.Fast3DanMa;
+import com.bs.outer.entity.Fast3Same;
+import com.bs.outer.entity.Fast3SiMa;
 import com.bs.outer.service.AnnouncementReceiptService;
 import com.bs.outer.service.OuterInterfaceService;
 import com.sdf.manager.ad.controller.AdvertisementController;
@@ -1531,6 +1534,42 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			resultList.setStatus("0");
 		}finally{
 			return resultList;
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * @Title: getLotteryNum
+	 * @Description:  获取遗漏统计内容
+	 * * 对应的返回json数据结构：
+	 * @author:songjia
+	 * @return: Fast3
+	 */
+	@RequestMapping(value="/getStatisticsInfo",method = RequestMethod.GET)
+	public @ResponseBody Map<String,Object> getStatisticsInfo(@RequestParam(value="danMaIssueNumber",required=true) String danMaIssueNumber ,@RequestParam(value="siMaId",required=true) String siMaId ,@RequestParam(value="sameIssueNumber",required=true) String sameIssueNumber ,@RequestParam(value="provinceNumber",required=true) String provinceNumber)
+	{
+		Map<String,Object> rtnMap = new HashMap<String,Object>();
+		try{
+			List<Fast3DanMa> danMaList =outerInterfaceService.getInitDanmaList(danMaIssueNumber, provinceNumber);
+			List<Fast3SiMa> simaList = outerInterfaceService.getInitSimaList(Integer.parseInt(siMaId), provinceNumber);
+			List<Fast3Same> sameList = outerInterfaceService.getInitSameList(sameIssueNumber, provinceNumber);
+			if(danMaList == null || simaList == null || sameList == null){
+				rtnMap.put("message","failure");
+				rtnMap.put("status", "0");
+			}else{
+				rtnMap.put("message","success");
+				rtnMap.put("status", "1");
+				rtnMap.put("danMaList", danMaList);
+				rtnMap.put("simaList", simaList);
+				rtnMap.put("sameList", sameList);
+			}
+		}catch(Exception ex){
+			logger.error("获取遗漏统计结果集错误！");
+			rtnMap.put("message","failure");
+			rtnMap.put("status", "0");
+		}finally{
+			return rtnMap;
 		}
 	}
 }

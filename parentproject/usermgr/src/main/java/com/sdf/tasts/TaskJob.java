@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import com.sdf.manager.order.entity.Orders;
 import com.sdf.manager.order.service.OrderService;  
       
-    @Component("taskJob") 
+ //   @Component("taskJob") 
     public class TaskJob { 
     	@Autowired
    	   private OrderService orderService;
