@@ -103,7 +103,7 @@
 	    	</table>	
 	</div>
 
-    <div id="main-layout" data-options="region:'center'" data-options="border:false" >
+    <div  data-options="region:'center'" data-options="border:false" >
     	 <table id="datagrid" class="easyui-datagrid"  title="应用列表" >
 			</table>
  	</div>  

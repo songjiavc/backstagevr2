@@ -153,9 +153,9 @@ function initDatagrid()
 				{field:'ck',checkbox:true},
 				{field:'id',hidden:true},
 				{field:'announceStatus',hidden:true},
-				{field:'announcementName',title:'通告名称',width:150,align:'center'},
-				{field:'announceStatusName',title:'通告状态',width:150,align:'center'},
-				{field:'lotteryType',width:50,title:'彩种',align:'center',  
+				{field:'announcementName',title:'通告名称',width:'15%',align:'center'},
+				{field:'announceStatusName',title:'通告状态',width:'8%',align:'center'},
+				{field:'lotteryType',width:'7%',title:'彩种',align:'center',  
 		            formatter:function(value,row,index){  
 		            	var lotteryTypeName ='';
 		            	switch(value)
@@ -165,10 +165,10 @@ function initDatagrid()
 		            	}
 		            	return lotteryTypeName;  
 		            }  },
-		        {field:'startTimestr',width:120,title:'有效开始时间',align:'center'},
-				{field:'endTimestr',title:'有效结束时间',width:120,align:'center'},
-				{field:'createTime',title:'创建时间',width:120,align:'center'},
-				{field:'opt',title:'操作',width:160,align:'center',  
+		        {field:'startTimestr',width:'15%',title:'有效开始时间',align:'center'},
+				{field:'endTimestr',title:'有效结束时间',width:'15%',align:'center'},
+				{field:'createTime',title:'创建时间',width:'15%',align:'center'},
+				{field:'opt',title:'操作',width:'25%',align:'center',  
 			            formatter:function(value,row,index){  
 			                var btn = '<a class="editcls" onclick="updateAnnouncement(&quot;'+row.id+'&quot;,&quot;'+row.announceStatus+'&quot;)" href="javascript:void(0)">编辑</a>'
 			                		+'<a class="deleterole" onclick="deleteAnnouncement(&quot;'+row.id+'&quot;,&quot;'+row.announceStatus+'&quot;)" href="javascript:void(0)">删除</a>'

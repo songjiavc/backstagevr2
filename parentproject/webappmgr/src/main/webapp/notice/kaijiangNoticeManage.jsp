@@ -134,7 +134,7 @@
 	    	</table>	
 	</div>
 
-    <div id="main-layout" data-options="region:'center'" data-options="border:false" >
+    <div data-options="region:'center'" data-options="border:false" >
     	 <table id="datagrid" class="easyui-datagrid"  title="开奖公告列表" >
 			</table>
  	</div>  

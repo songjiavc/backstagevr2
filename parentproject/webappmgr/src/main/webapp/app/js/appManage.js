@@ -212,10 +212,10 @@ function initDatagrid()
 				{field:'ck',checkbox:true},
 				{field:'id',hidden:true},
 				{field:'appStatus',hidden:true},//应用状态(0:待上架1:上架2:下架3:更新)
-				{field:'appCode',title:'应用编码',width:150,align:'center'},
-		        {field:'appName',width:120,title:'应用名称',align:'center'},
-				{field:'appTypeName',title:'应用状态',width:100,align:'center'},
-				{field:'lotteryType',width:50,title:'彩种',align:'center',  
+				{field:'appCode',title:'应用编码',width:'15%',align:'center'},
+		        {field:'appName',width:'17%',title:'应用名称',align:'center'},
+				{field:'appTypeName',title:'应用状态',width:'8%',align:'center'},
+				{field:'lotteryType',width:'7%',title:'彩种',align:'center',  
 		            formatter:function(value,row,index){  
 		            	var lotteryTypeName ='';
 		            	switch(value)
@@ -225,11 +225,11 @@ function initDatagrid()
 		            	}
 		            	return lotteryTypeName;  
 		            }  },
-				{field:'appDeveloper',title:'应用开发者',width:100,align:'center'},
-				{field:'provinceName',title:'省',width:80,align:'center'},
-				{field:'cityName',title:'市',width:80,align:'center'},
-				{field:'createTime',title:'创建时间',width:130,align:'center'},
-				{field:'opt',title:'操作',width:160,align:'center',  
+				{field:'appDeveloper',title:'应用开发者',width:'8%',align:'center'},
+				{field:'provinceName',title:'省',width:'6%',align:'center'},
+				{field:'cityName',title:'市',width:'6%',align:'center'},
+				{field:'createTime',title:'创建时间',width:'15%',align:'center'},
+				{field:'opt',title:'操作',width:'15%',align:'center',  
 			            formatter:function(value,row,index){  
 			                var btn = '<a class="editcls" onclick="updateApp(&quot;'+row.id+'&quot;,&quot;'+row.appStatus+'&quot;)" href="javascript:void(0)">编辑</a>'
 			                	+'<a class="deleterole" onclick="deleteApp(&quot;'+row.id+'&quot;,&quot;'+row.appStatus+'&quot;)" href="javascript:void(0)">删除</a>';
