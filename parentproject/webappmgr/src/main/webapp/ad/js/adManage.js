@@ -204,12 +204,12 @@ function initDatagrid()
 				{field:'ck',checkbox:true},
 				{field:'id',hidden:true},
 				{field:'adStatus',hidden:true},
-				{field:'appAdName',title:'应用广告名称',width:150,align:'center'},
-				{field:'adStatusName',title:'应用广告状态',width:150,align:'center'},
-		        {field:'startTimestr',width:120,title:'有效开始时间',align:'center'},
-				{field:'endTimestr',title:'有效结束时间',width:120,align:'center'},
-				{field:'createTime',title:'创建时间',width:120,align:'center'},
-				{field:'opt',title:'操作',width:160,align:'center',  
+				{field:'appAdName',title:'应用广告名称',width:'20%',align:'center'},
+				{field:'adStatusName',title:'应用广告状态',width:'10%',align:'center'},
+		        {field:'startTimestr',width:'15%',title:'有效开始时间',align:'center'},
+				{field:'endTimestr',title:'有效结束时间',width:'15%',align:'center'},
+				{field:'createTime',title:'创建时间',width:'20%',align:'center'},
+				{field:'opt',title:'操作',width:'15%',align:'center',  
 			            formatter:function(value,row,index){  
 			                var btn = '<a class="editcls" onclick="updateAd(&quot;'+row.id+'&quot;,&quot;'+row.adStatus+'&quot;)" href="javascript:void(0)">编辑</a>'
 			                	+'<a class="deleterole" onclick="deleteAd(&quot;'+row.id+'&quot;,&quot;'+row.adStatus+'&quot;)" href="javascript:void(0)">删除</a>';
