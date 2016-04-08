@@ -115,11 +115,12 @@ public class AppServiceImpl implements AppService {
 	public QueryResult<App> getAppOfFufei(Class<App> entityClass,
 			String whereJpql, Object[] queryParams,
 			LinkedHashMap<String, String> orderby, Pageable pageable,String province,String city,String lotteryType,String stationId) {
-		String sql = " SELECT u.* FROM T_BS_APPLICATION u LEFT JOIN T_BS_APP_PRICE_AND_AREA tbs ON u.ID=tbs.APP_ID "+
-						" WHERE u.IS_DELETED='1' AND tbs.IS_DELETED='1'  AND u.APP_STATUS='1' AND u.PROVINCE='"+province+"' AND u.CITY IN ('"+Constants.CITY_ALL+"','"+city+"') "+
-						" 	AND  tbs.CITY='"+city+"' AND tbs.UNIT_PRICE>0 AND u.LOTTERY_TYPE='"+lotteryType+"' "
-						+ " AND u.id NOT IN (SELECT rbsaa.APP_ID FROM RELA_BS_STATION_AND_APP rbsaa  WHERE  "
-						+"  rbsaa.IS_DELETED='1' AND rbsaa.STATUS='1' AND rbsaa.STATION_ID='"+stationId+"')";//
+		String sql = " SELECT u.* FROM T_BS_APPLICATION u LEFT JOIN RELA_BS_STATION_AND_APP rbsaa  ON u.ID= rbsaa.APP_ID "//left join的默认属性是outer，所以left join与left outer join效果相同
+						+ "	AND rbsaa.IS_DELETED='1' AND rbsaa.STATUS='1' AND rbsaa.STATION_ID='"+stationId+"' "
+						+ "  LEFT JOIN T_BS_APP_PRICE_AND_AREA tbs ON u.ID=tbs.APP_ID "
+						+ " WHERE u.IS_DELETED='1' AND tbs.IS_DELETED='1'  AND u.APP_STATUS='1' AND u.PROVINCE='"+province+"' AND u.CITY IN ('"+Constants.CITY_ALL+"','"+city+"') "
+						+ " 	AND  tbs.CITY='"+city+"' AND tbs.UNIT_PRICE>0 AND u.LOTTERY_TYPE='"+lotteryType+"' "
+						+ " AND rbsaa.ID IS NULL  ";//
 		QueryResult<App> appQueryResult = appRepository.
 			getScrollDataBySql(App.class,sql, queryParams, pageable);
 		return appQueryResult;
