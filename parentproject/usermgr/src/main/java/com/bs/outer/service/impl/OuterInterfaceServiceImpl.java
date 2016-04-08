@@ -8,11 +8,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.bs.outer.entity.Fast3;
 import com.bs.outer.entity.Fast3Analysis;
+import com.bs.outer.entity.Fast3DanMa;
+import com.bs.outer.entity.Fast3Same;
+import com.bs.outer.entity.Fast3SiMa;
 import com.bs.outer.repository.Fast3AnalysisRepository;
+import com.bs.outer.repository.Fast3DanMaRepository;
 import com.bs.outer.repository.Fast3NumberRepository;
+import com.bs.outer.repository.Fast3SameRepository;
+import com.bs.outer.repository.Fast3SiMaRepository;
 import com.bs.outer.service.OuterInterfaceService;
 import com.sdf.manager.ad.entity.Advertisement;
 import com.sdf.manager.ad.repository.AdvertisementRepository;
@@ -46,6 +53,17 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	
 	@Autowired
 	private Fast3AnalysisRepository fast3AnalysisRepository;
+	
+	@Autowired
+	private Fast3DanMaRepository fast3DanMaRepository;
+	
+	@Autowired
+	private Fast3SiMaRepository fast3SiMaRepository;
+	
+	@Autowired
+	private Fast3SameRepository fast3SameRepository;
+	
+	
 	
 	//TODO:未完成
 	public QueryResult<Announcement> getAnnouncementOfSta(Class<Announcement> entityClass, String whereJpql, Object[] queryParams, 
@@ -199,5 +217,51 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		return fast3AnalysisList;
 	}
 
+	public List<Fast3DanMa> getInitDanmaList(String issueNumber,String provinceNumber){
+		String tableName = "analysis.T_ANHUI_KUAI3_DANMA";
+		String where = null;
+		if(StringUtils.isEmpty(issueNumber)){
+			where = " ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
+		}else{
+			where = " WHERE  "+ issueNumber +" <  (SELECT ISSUE_NUMBER FROM "+ tableName +"ORDER BY ISSUE_NUMBER DESC LIMIT 1)  ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
+		}
+		String execSql = "SELECT * FROM "+tableName + where;
+		Object[] queryParams = new Object[]{
+		};
+		List<Fast3DanMa> fast3AnalysisList = fast3DanMaRepository.getEntityListBySql(Fast3DanMa.class,execSql, queryParams);
+		return fast3AnalysisList;
+	}
+
+
+	public List<Fast3SiMa> getInitSimaList(int siMaId, String provinceNumber) {
+		String tableName = "analysis.T_ANHUI_KUAI3_SIMA";
+		String where = null;
+		if(siMaId == 0){
+			where = " ORDER BY ID DESC LIMIT 10 ";
+		}else{
+			where = " WHERE "+ siMaId +"  <  (SELECT ID FROM "+ tableName +"ORDER BY ID DESC LIMIT 1)  ORDER BY ID DESC LIMIT 10 ";
+		}
+		String execSql = "SELECT * FROM "+tableName + where;
+		Object[] queryParams = new Object[]{
+		};
+		List<Fast3SiMa> fast3SiMaList = fast3SiMaRepository.getEntityListBySql(Fast3SiMa.class,execSql, queryParams);
+		return fast3SiMaList;
+	}
+
+
+	public List<Fast3Same> getInitSameList(String issueNumber, String provinceNumber) {
+		String tableName = "analysis.T_ANHUI_KUAI3_SAMENUMBER";
+		String where = null;
+		if(StringUtils.isEmpty(issueNumber)){
+			where = " ORDER BY CURRENT_ISSUE DESC LIMIT 10 ";
+		}else{
+			where = " WHERE "+ issueNumber +"  <  (SELECT CURRENT_ISSUE FROM "+ tableName +"ORDER BY CURRENT_ISSUE DESC LIMIT 1)  ORDER BY CURRENT_ISSUE DESC LIMIT 10  ";
+		}
+		String execSql = "SELECT * FROM "+tableName + where;
+		Object[] queryParams = new Object[]{
+		};
+		List<Fast3Same> fast3SameList = fast3SameRepository.getEntityListBySql(Fast3Same.class,execSql, queryParams);
+		return fast3SameList;
+	}
 
 }

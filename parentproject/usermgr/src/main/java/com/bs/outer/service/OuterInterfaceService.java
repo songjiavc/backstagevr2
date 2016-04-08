@@ -7,6 +7,9 @@ import org.springframework.data.domain.Pageable;
 
 import com.bs.outer.entity.Fast3;
 import com.bs.outer.entity.Fast3Analysis;
+import com.bs.outer.entity.Fast3DanMa;
+import com.bs.outer.entity.Fast3Same;
+import com.bs.outer.entity.Fast3SiMa;
 import com.sdf.manager.ad.entity.Advertisement;
 import com.sdf.manager.announcement.entity.Announcement;
 import com.sdf.manager.common.util.QueryResult;
@@ -98,6 +101,16 @@ public interface OuterInterfaceService {
 	 */
 	public List<Fast3Analysis> getAnalysisListByIssueNumber(String issueNumber,String provinceNumber);
 	
+	/**
+	 * @param issueNumber
+	 * @param provinceNumber
+	 * @return 如果期号为空则认为是初始化内容，不为空则判断是否有更新的记录然后返回
+	 */
+	public List<Fast3DanMa> getInitDanmaList(String issueNumber,String provinceNumber);
+	
+	public List<Fast3SiMa> getInitSimaList(int siMaId,String provinceNumber);
+	
+	public List<Fast3Same> getInitSameList(String issueNumber,String provinceNumber);
 	
 	
 }
