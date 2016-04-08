@@ -148,7 +148,7 @@
 	    	</form>
 	</div>
 	<div data-options="region:'center'" style="height:100px;">
-		<table id="stationDataGrid" class="easyui-datagrid" title="站点列表"  data-options="toolbar:toolbar" >
+		<table id="stationDataGrid" class="easyui-datagrid" title="通行证列表"  data-options="toolbar:toolbar" >
 		</table>
 	</div>
 	
