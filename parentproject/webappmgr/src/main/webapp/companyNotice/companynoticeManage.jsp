@@ -166,7 +166,7 @@
   
   
     <!-- 添加公司公告弹框 -->
-  <div id="addComnotice" class="easyui-dialog" title="添加公司公告" style="width:800px;height:650px;padding:0px;border:0;top:1px;"
+  <div id="addComnotice" class="easyui-dialog" title="添加公司公告" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
