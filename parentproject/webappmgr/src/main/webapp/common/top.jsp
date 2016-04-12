@@ -3,7 +3,7 @@
     
     
     <%--全局引入的css文件 --%>
-	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/js/easyUI/themes/bootstrap/easyui.css"/>    
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/js/easyUI/themes/metro/easyui.css"/>    
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/js/easyUI/themes/icon.css"/>    
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/css/default.css"/>    
     
