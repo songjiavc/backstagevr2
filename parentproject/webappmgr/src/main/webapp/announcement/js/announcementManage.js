@@ -168,7 +168,7 @@ function initDatagrid()
 		        {field:'startTimestr',width:'15%',title:'有效开始时间',align:'center'},
 				{field:'endTimestr',title:'有效结束时间',width:'15%',align:'center'},
 				{field:'createTime',title:'创建时间',width:'15%',align:'center'},
-				{field:'opt',title:'操作',width:'25%',align:'center',  
+				{field:'opt',title:'操作',width:'23%',align:'center',  
 			            formatter:function(value,row,index){  
 			                var btn = '<a class="editcls" onclick="updateAnnouncement(&quot;'+row.id+'&quot;,&quot;'+row.announceStatus+'&quot;)" href="javascript:void(0)">编辑</a>'
 			                		+'<a class="deleterole" onclick="deleteAnnouncement(&quot;'+row.id+'&quot;,&quot;'+row.announceStatus+'&quot;)" href="javascript:void(0)">删除</a>'
