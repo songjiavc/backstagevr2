@@ -73,11 +73,11 @@ Boolean useMaskCode = (Boolean)request.getAttribute("useMaskCode");
 </style>
 
 </head>
-<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" >
-	
+<body  leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="background-image: url('images/bg_01.gif');background-repeat: repeat;">
+	<!-- bgcolor="#FFFFFF" -->
 <center>
   <form method="post" name="login" style="margin:0px" action="<%=request.getContextPath() %>/menu/getNewPage.action"><!-- <%=request.getContextPath() %>/account/Login.action -->
-    <table id="__01" width="1000" height="600" border="0" cellpadding="0" cellspacing="0" background="images/bg_01.gif">
+    <table id="__01" width="1000" height="600" border="0" cellpadding="0" cellspacing="0" >
       <tr>
         <td colspan="3" height="100">&nbsp;</td>
       </tr>
