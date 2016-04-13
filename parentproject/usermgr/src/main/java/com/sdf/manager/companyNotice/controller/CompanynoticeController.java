@@ -180,7 +180,7 @@ private Logger logger = LoggerFactory.getLogger(CompanynoticeController.class);
 	 	
 		//排序
 		LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
-		orderBy.put("id", "desc");
+		orderBy.put("createrTime", "desc");
 		
 		QueryResult<CompanyNotice> comResult = companynoticeService.getCompanynoticeList(CompanyNotice.class,
 				buffer.toString(), params.toArray(),orderBy, pageable);

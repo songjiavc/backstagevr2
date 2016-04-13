@@ -203,7 +203,7 @@ public class OrderController extends GlobalExceptionHandler
 			
 			//排序
 			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
-			orderBy.put("id", "desc");
+			orderBy.put("createrTime", "desc");
 			
 			QueryResult<Orders> orderlist = orderService.getOrdersList(Orders.class, buffer.toString(), params.toArray(),
 					orderBy, pageable);
