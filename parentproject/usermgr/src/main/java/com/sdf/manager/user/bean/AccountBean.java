@@ -35,8 +35,18 @@ public class AccountBean
 	//区
 	private String country;
 	
+	private String lotteryType;//彩种，1：体彩，2：福彩  0：全部 
 	
 	
+	
+	public String getLotteryType() {
+		return lotteryType;
+	}
+
+	public void setLotteryType(String lotteryType) {
+		this.lotteryType = lotteryType;
+	}
+
 	public String getProvince() {
 		return province;
 	}

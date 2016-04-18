@@ -34,10 +34,22 @@ public class ResultBean
 	
 	private String cityName;
 	
+	private String lotteryType;
 	
 	
 	
 	
+	
+	
+	
+
+	public String getLotteryType() {
+		return lotteryType;
+	}
+
+	public void setLotteryType(String lotteryType) {
+		this.lotteryType = lotteryType;
+	}
 
 	public String getProvinceName() {
 		return provinceName;

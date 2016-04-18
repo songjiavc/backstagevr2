@@ -101,6 +101,14 @@
 	            <label for="confirmPassword" >确认密码:</label>
 	            <input class="easyui-validatebox textbox" type="password" name ="confirmPassword"  data-options="required:true" validType="equalTo['#password']" invalidMessage="两次输入密码不匹配"></input>
 	        </div>
+	        <div class="ftitle">
+	            <label for="lotteryTypeA" >用户类型:</label>
+		    			<select class="easyui-combobox" id="lotteryTypeA" name="lotteryType" style="width:200px;">
+							<option value="">全部</option>
+							<option value="1" >体彩</option>
+							<option value="2">福彩</option>
+						</select>
+	        </div>
 	         <div class="ftitle">
 	            <label for="subject">用户地域:</label>
 	            <div style="">
@@ -164,6 +172,14 @@
 	        <div class="ftitle">
 	            <label for="confirmPassword" >确认密码:</label>
 	            <input class="easyui-validatebox textbox" type="password" name ="confirmPassword"  data-options="required:true"></input>
+	        </div>
+	        <div class="ftitle">
+	            <label for="lotteryTypeU" >用户类型:</label>
+		    			<select class="easyui-combobox" id="lotteryTypeU" name="lotteryType" style="width:200px;">
+							<option value="0">全部</option>
+							<option value="1" >体彩</option>
+							<option value="2">福彩</option>
+						</select>
 	        </div>
 	          <div class="ftitle">
 	            <label for="subject">用户地域:</label>

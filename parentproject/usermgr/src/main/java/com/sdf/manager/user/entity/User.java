@@ -72,6 +72,9 @@ public class User extends BaseEntiry implements Serializable
 	@Column(name="STATUS")
 	private String status;
 	
+	@Column(name="LOTTERY_TYPE")
+	private String lotteryType;//彩种，1：体彩，2：福彩  0：全部 
+	
 	@Transient
 	//@ManyToMany注释表示Teacher是多对多关系的一端。
     //@JoinTable描d述了多对多关系的数据表关系。name属性指定中间表名称，joinColumns定义中间表与Teacher表的外键关系。
@@ -86,6 +89,16 @@ public class User extends BaseEntiry implements Serializable
 	@OneToMany(mappedBy = "agentId", fetch = FetchType.LAZY) 
 	private List<AgentRange> agentRanges;
 	
+	
+	
+	public String getLotteryType() {
+		return lotteryType;
+	}
+
+	public void setLotteryType(String lotteryType) {
+		this.lotteryType = lotteryType;
+	}
+
 	public String getId() {
 		return id;
 	}
