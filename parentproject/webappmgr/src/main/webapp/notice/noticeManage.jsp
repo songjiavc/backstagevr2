@@ -198,17 +198,7 @@
 				            <input class="easyui-validatebox commonInput" type="text" id="appNoticeNameA" name="appNoticeName" style="width:200px"  
 				             data-options="required:true" validType="length[1,15]" invalidMessage="名称字数最多可输入15个字"   missingMessage="公告名称不可以为空" ></input>
 				        </div>
-				       <div class="ftitle">
-				            <label for="lotteryTypeA">彩种分类:</label>
-				             <div style="float:left;margin-left:30px;">
-				             	 <select class="easyui-combobox " id="lotteryTypeA" name="lotteryType"  data-options="editable:false" style="width:200px;" >
-						          	  <option value="1">体彩</option>
-						          	  <option value="2">福彩</option>
-								</select>
-				             </div>
-				           
-				        </div>
-				         <div class="ftitle">
+				        <div class="ftitle">
 				            <label for="priceA">有效开始时间:</label>
 				            <div style="float:left;margin-left:30px;">
 						            <input class="easyui-datebox commonInput" type="text" id="startTimeA" name="startTime" data-options="required:true,editable:false" 
@@ -222,6 +212,24 @@
 					             ></input>
 					         </div>
 				        </div>
+				       <div class="ftitle" id="lAI">
+				            <label for="lotteryTypeA">彩种分类:</label>
+				            <div  style="float : left;margin-left:30px;">
+				             		<input id="laiLName"  type="text" style="width:200px;" readonly="readonly">
+				             </div>
+				             
+				           
+				        </div>
+				         <div class="ftitle" id="lA">
+				        	 <label for="lotteryTypeA">彩种分类:</label>
+				         	<div  style="float:left;margin-left:30px;">
+				             	 <select class="easyui-combobox " id="lotteryTypeA" name="lotteryType"  data-options="editable:false" style="width:200px;" >
+						          	  <option value="1">体彩</option>
+						          	  <option value="2">福彩</option>
+								</select>
+				             </div>
+				         </div>
+				         
 				         <div id="appCatoryDivA" class="ftitlenot">
 				            <label for="appCategoryA">公告类型:</label>
 				             <div style="float : left;margin-left:30px;">
@@ -300,17 +308,6 @@
 				             data-options="required:true" validType="length[1,15]" invalidMessage="名称字数最多可输入15个字"   missingMessage="公告名称不可以为空" ></input>
 				        </div>
 				        <div class="ftitle">
-				            <label for="lotteryTypeU">彩种分类:</label>
-				             <div style="float : left;margin-left:30px;">
-				             	 <select class="easyui-combobox " id="lotteryTypeU" name="lotteryType"  
-					          	  data-options="editable:false" style="width:200px;" >
-					          	  <option value="1" >体彩</option>
-					          	  <option value="2" >福彩</option>
-								</select>
-				             </div>
-				           
-				        </div>
-				         <div class="ftitle">
 				            <label for="priceA">有效开始时间:</label>
 				            <div style="float:left;margin-left:30px;">
 						            <input class="easyui-datebox commonInput" type="text" id="startTimeU" name="startTime" data-options="required:true,editable:false" 
@@ -324,6 +321,21 @@
 					             ></input>
 					         </div>
 				        </div>
+				        <div class="ftitle">
+				            <label for="lotteryTypeU">彩种分类:</label>
+				             <div id="lUI" style="float : left;margin-left:30px;">
+				             		<input id="luiLName"  type="text" style="width:200px;" readonly="readonly">
+				             </div>
+				             <div id="lUS" style="float : left;margin-left:30px;">
+				             	 <select class="easyui-combobox " id="lotteryTypeU" name="lotteryType"  
+					          	  data-options="editable:false" style="width:200px;" >
+					          	  <option value="1" >体彩</option>
+					          	  <option value="2" >福彩</option>
+								</select>
+				             </div>
+				           
+				        </div>
+				         
 				        
 				         <div id="appCatoryDivU" class="ftitlenot">
 				            <label for="appCategoryU">公告类型:</label>

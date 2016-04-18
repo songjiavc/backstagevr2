@@ -658,6 +658,7 @@ public class AdvertisementController //extends GlobalExceptionHandler
 		 
 		 String code = LoginUtils.getAuthenticatedUserCode(httpSession);
 		 User user = userService.getUserByCode(code);
+		 String lotteryType = user.getLotteryType();
 		 
 		 //获取当前登录人员的角色list
 		 List<Role> roles = user.getRoles();
@@ -685,6 +686,7 @@ public class AdvertisementController //extends GlobalExceptionHandler
 			 returndata.put("province", user.getProvinceCode());
 			 returndata.put("city", user.getCityCode());
 			 returndata.put("adType", adType);
+			 returndata.put("lotteryType", lotteryType);
 		 }
 		 
 		 return returndata;

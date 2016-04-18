@@ -277,6 +277,14 @@ function initAppDatagrid(adId,appDatagridId)
 				{//若当前登录用户是市中心用户时，则也赋予市级区域信息
 					params.city=areamsg.city;
 				}
+			
+			
+		}
+	
+	if('0'!= areamsg.lotteryType)
+		{
+			//如果是‘省中心’或‘市中心’用户则关联lotteryType数据或者是特定彩种类型的公司用户也按照用户彩种加载app数据
+			params.lotteryType = areamsg.lotteryType;
 		}
 	
 	
@@ -311,6 +319,16 @@ function initAppDatagrid(adId,appDatagridId)
 				{field:'id',hidden:true},
 				{field:'appStatus',hidden:true},//应用状态(0:待上架1:上架2:下架3:更新)
 		        {field:'appName',width:120,title:'应用名称',align:'center'},
+		        {field:'lotteryType',width:50,title:'彩种',align:'center',  
+		            formatter:function(value,row,index){  
+		            	var lotteryTypeName ='';
+		            	switch(value)
+		            	{
+		            		case '1':lotteryTypeName='体彩';break;
+		            		case '2':lotteryTypeName='福彩';break;
+		            	}
+		            	return lotteryTypeName;  
+		            }  },
 				{field:'provinceName',title:'省',width:80,align:'center'},
 				{field:'cityName',title:'市',width:80,align:'center'}
 		    ]],  

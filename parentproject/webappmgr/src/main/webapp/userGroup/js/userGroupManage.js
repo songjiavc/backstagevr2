@@ -292,6 +292,7 @@ function getLoginuserRole()
 	var city  = "";
 	var provinceName  = "";
 	var cityName  = "";
+	var lotteryType = '';//2016-4-18 ADD
 	var returnArr = new Array();
 	
 	var data1 = new Object();
@@ -311,6 +312,7 @@ function getLoginuserRole()
         	provinceName = data.provinceName;
         	cityName = data.cityName;
         	
+        	lotteryType = data.lotteryType;//2016-4-18 ADD
         	
         	returnArr.push(isCityManager);
         	returnArr.push(isProvinceManager);
@@ -319,6 +321,7 @@ function getLoginuserRole()
         	returnArr.push(city);
         	returnArr.push(provinceName);
         	returnArr.push(cityName);
+        	returnArr.push(lotteryType);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
         		window.parent.location.href = contextPath + "/error.jsp";
@@ -348,6 +351,7 @@ function initStationList(id,stationDataGridId)
 	var city = roleArr[4];
 	var provinceName = roleArr[5]; //5
 	var cityName = roleArr[6];//6
+	var lotteryType = roleArr[7];//7
 	
 	if('stationDataGridU' == stationDataGridId)
 	{
@@ -356,7 +360,9 @@ function initStationList(id,stationDataGridId)
 				
 				params.searchFormProvince = province;
 				params.searchFormCity = city;
-				params.searchFormStyle = $("#searchFormStyleU").combobox('getValue');
+				params.searchFormStyle = lotteryType;
+				//隐藏站点类型选项
+				$("#lu").hide();
 				params.searchFormDistrict = $("#searchFormDistrictU").combobox('getValue');
 				
 			}
@@ -365,7 +371,8 @@ function initStationList(id,stationDataGridId)
 				
 				params.searchFormProvince = province;
 				params.searchFormCity = $("#searchFormCityU").combobox('getValue');
-				params.searchFormStyle = $("#searchFormStyleU").combobox('getValue');
+				params.searchFormStyle = lotteryType;
+				$("#lu").hide();
 				params.searchFormDistrict = $("#searchFormDistrictU").combobox('getValue');
 			}
 		else
@@ -373,7 +380,18 @@ function initStationList(id,stationDataGridId)
 			
 				params.searchFormProvince = $("#searchFormProvinceU").combobox('getValue');
 				params.searchFormCity = $("#searchFormCityU").combobox('getValue');
-				params.searchFormStyle = $("#searchFormStyleU").combobox('getValue');
+				if('0'!=lotteryType&&''!=lotteryType)
+					{
+						params.searchFormStyle = lotteryType;
+						$("#lu").hide();
+					}
+				else
+					{
+						$("#lu").show();
+						params.searchFormStyle = $("#searchFormStyleU").combobox('getValue');
+					}
+				
+				
 				params.searchFormDistrict = $("#searchFormDistrictU").combobox('getValue');
 			}
 			
@@ -396,7 +414,8 @@ function initStationList(id,stationDataGridId)
 				
 				params.searchFormProvince = province;
 				params.searchFormCity = city;
-				params.searchFormStyle = $("#searchFormStyleA").combobox('getValue');
+				params.searchFormStyle = lotteryType;
+				$("#la").hide();
 				params.searchFormDistrict = $("#searchFormDistrictA").combobox('getValue');
 				
 			}
@@ -406,7 +425,8 @@ function initStationList(id,stationDataGridId)
 				
 				params.searchFormProvince = province;
 				params.searchFormCity = $("#searchFormCityA").combobox('getValue');
-				params.searchFormStyle = $("#searchFormStyleA").combobox('getValue');
+				params.searchFormStyle = lotteryType;
+				$("#la").hide();
 				params.searchFormDistrict = $("#searchFormDistrictA").combobox('getValue');
 			}
 		else
@@ -414,7 +434,18 @@ function initStationList(id,stationDataGridId)
 			
 				params.searchFormProvince = $("#searchFormProvinceA").combobox('getValue');
 				params.searchFormCity = $("#searchFormCityA").combobox('getValue');
-				params.searchFormStyle = $("#searchFormStyleA").combobox('getValue');
+				
+				
+				if('0'!=lotteryType&&''!=lotteryType)
+				{
+					params.searchFormStyle = lotteryType;
+					$("#la").hide();
+				}
+				else
+					{
+						$("#la").show();
+						params.searchFormStyle = $("#searchFormStyleA").combobox('getValue');
+					}
 				params.searchFormDistrict = $("#searchFormDistrictA").combobox('getValue');
 			}
 		}

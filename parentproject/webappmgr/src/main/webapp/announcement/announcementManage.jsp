@@ -194,16 +194,6 @@
 				            <input class="easyui-validatebox commonInput" type="text" id="announcementNameA" name="announcementName" style="width:200px"  
 				             data-options="required:true" validType="length[1,15]" invalidMessage="名称字数最多可输入15个字"   missingMessage="通告名称不可以为空" ></input>
 				        </div>
-				        <div class="ftitle">
-				            <label for="lotteryTypeA">彩种分类:</label>
-				             <div style="float:left;margin-left:30px;">
-				             	 <select class="easyui-combobox " id="lotteryTypeA" name="lotteryType"  data-options="editable:false" style="width:200px;" >
-						          	  <option value="1" >体彩</option>
-						          	  <option value="2">福彩</option>
-								</select>
-				             </div>
-				           
-				        </div>
 				         <div class="ftitle">
 				            <label for="priceA">有效开始时间:</label>
 				            <div style="float:left;margin-left:30px;">
@@ -218,6 +208,25 @@
 					             ></input>
 					         </div>
 				        </div>
+				        <div class="ftitle" id="lAI">
+				            <label for="lotteryTypeA">彩种分类:</label>
+				            <div  style="float : left;margin-left:30px;">
+				             		<input id="laiLName"  type="text" style="width:200px;" readonly="readonly">
+				             </div>
+				             
+				           
+				        </div>
+				         <div class="ftitle" id="lA">
+				            <label for="lotteryTypeA">彩种分类:</label>
+				             <div style="float:left;margin-left:30px;">
+				             	 <select class="easyui-combobox " id="lotteryTypeA" name="lotteryType"  data-options="editable:false" style="width:200px;" >
+						          	  <option value="1" >体彩</option>
+						          	  <option value="2">福彩</option>
+								</select>
+				             </div>
+				           
+				        </div>
+				        
 				        
 				        <div class="ftitlenot">
 				            <label for="priceA">通告内容:</label>
@@ -277,16 +286,6 @@
 				            <input class="easyui-validatebox commonInput" type="text" id="announcementNameU" name="announcementName" style="width:200px"  
 				             data-options="required:true" validType="length[1,15]" invalidMessage="名称字数最多可输入15个字"    missingMessage="通告名称不可以为空" ></input>
 				        </div>
-				        <div class="ftitle">
-				            <label for="lotteryTypeA">彩种分类:</label>
-				             <div style="float:left;margin-left:30px;">
-				             	 <select class="easyui-combobox " id="lotteryTypeU" name="lotteryType"  data-options="editable:false" style="width:200px;" >
-						          	  <option value="1" checked>体彩</option>
-						          	  <option value="2">福彩</option>
-								</select>
-				             </div>
-				           
-				        </div>
 				         <div class="ftitle">
 				            <label for="priceA">有效开始时间:</label>
 				            <div style="float:left;margin-left:30px;">
@@ -301,6 +300,21 @@
 					             ></input>
 					         </div>
 				        </div>
+				        <div class="ftitle">
+				            <label for="lotteryTypeU">彩种分类:</label>
+				             <div id="lUI" style="float : left;margin-left:30px;">
+				             		<input id="luiLName"  type="text" style="width:200px;" readonly="readonly">
+				             </div>
+				             <div id="lUS" style="float : left;margin-left:30px;">
+				             	 <select class="easyui-combobox " id="lotteryTypeU" name="lotteryType"  
+					          	  data-options="editable:false" style="width:200px;" >
+					          	  <option value="1" >体彩</option>
+					          	  <option value="2" >福彩</option>
+								</select>
+				             </div>
+				           
+				        </div>
+				        
 				        
 				        <div class="ftitlenot">
 				            <label for="priceA">通告内容:</label>

@@ -133,6 +133,13 @@ private Logger logger = LoggerFactory.getLogger(CompanynoticeController.class);
 		params.add("1");//只查询有效的数据
 		buffer.append(" isDeleted = ?").append(params.size());
 		
+		//只查询当前登录用户创建的公司公告数据
+		if(!"admin".equals(LoginUtils.getAuthenticatedUserCode(httpSession)))
+		{
+			params.add(LoginUtils.getAuthenticatedUserCode(httpSession));
+			buffer.append(" and creater = ?").append(params.size());
+		}
+		
 		
 		/*if(null != province && !"".equals(province.trim())&&!Constants.PROVINCE_ALL.equals(province))
 		{

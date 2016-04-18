@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bs.outer.service.StationAdService;
 import com.sdf.manager.ad.controller.AdvertisementController;
 import com.sdf.manager.ad.dto.AdvertisementDTO;
 import com.sdf.manager.ad.entity.Advertisement;
@@ -43,6 +44,7 @@ import com.sdf.manager.common.exception.GlobalExceptionHandler;
 import com.sdf.manager.common.util.Constants;
 import com.sdf.manager.common.util.DateUtil;
 import com.sdf.manager.common.util.LoginUtils;
+import com.sdf.manager.common.util.QueryResult;
 import com.sdf.manager.order.controller.OrderController;
 import com.sdf.manager.product.entity.City;
 import com.sdf.manager.product.service.CityService;
@@ -104,6 +106,9 @@ public class stationAdController extends GlobalExceptionHandler
 	private AppAdAndAreaService adAndAreaService;
 	 
 	 
+	 @Autowired
+	 private StationAdService stationAdService;
+	 
 	 
 	 
 	 public static final int SERIAL_NUM_LEN = 6;//订单流水号中自动生成的数字位数
@@ -160,7 +165,7 @@ public class stationAdController extends GlobalExceptionHandler
 	 
 	/**
 	 * 
-	* @Description:获取站点应用广告列表数据
+	* @Description:市中心获取站点应用广告列表数据
 	* @author bann@sdfcp.com
 	* @date 2015年11月16日 下午3:50:33
 	 */
@@ -172,6 +177,13 @@ public class stationAdController extends GlobalExceptionHandler
 				ModelMap model,HttpSession httpSession) throws Exception
 		{
 			Map<String,Object> returnData = new HashMap<String,Object> ();
+			
+			//获取当前登录人员的省份和市信息
+			String code = LoginUtils.getAuthenticatedUserCode(httpSession);
+			User user = userService.getUserByCode(code);
+			String uProvince = user.getProvinceCode();
+			String uCity = user.getCityCode();
+			String lotteryType = user.getLotteryType();//当前登录的“市中心”的用户彩种类型
 			
 			//放置分页参数
 			Pageable pageable = new PageRequest(page-1,rows);
@@ -199,17 +211,16 @@ public class stationAdController extends GlobalExceptionHandler
 			不能获取市中心可以管理的其他应用广告数据.且获取到的应用广告数据应该是creatorStationd的值不是空值的*/
 			
 			
-			/*QueryResult<Orders> orderlist = orderService.getOrdersList(Orders.class, buffer.toString(), params.toArray(),
-					orderBy, pageable);
+			QueryResult<Advertisement> adverlist = stationAdService.getAdvertisementOfStaApply(Advertisement.class,
+					buffer.toString(), params.toArray(),orderBy, pageable,uProvince,uCity,lotteryType);
+			List<Advertisement> ads = adverlist.getResultList();
+			Long totalrow = adverlist.getTotalRecord();
 			
+			//将实体转换为dto
+			List<AdvertisementDTO> advertisementDTOs = advertisementService.toRDTOS(ads);
 			
-			List<Orders> orders = orderlist.getResultList();
-			Long totalrow = orderlist.getTotalRecord();
-			
-			List<OrdersDTO> orderDtos = orderService.toDTOS(orders);//将实体转换为dto
-			
-			returnData.put("rows", orderDtos);
-			returnData.put("total", totalrow);*/
+			returnData.put("rows", advertisementDTOs);
+			returnData.put("total", totalrow);
 			
 			return returnData;
 		}

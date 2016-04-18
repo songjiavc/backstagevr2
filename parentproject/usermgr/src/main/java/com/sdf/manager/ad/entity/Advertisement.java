@@ -67,7 +67,7 @@ public class Advertisement extends BaseEntiry{
 	private String creatorStation;//创建站点,若创建的是站点类别的应用广告，则要填充创建站点的字段值
 	
 	@Column(name="STATION_AD_STATUS", length=45)
-	private String stationAdStatus;//通行证发布的应用广告的当前状态
+	private String stationAdStatus;//通行证发布的应用广告的当前审批状态。对应的表是T_BS_STATION_AD_STATUS
 	
 	@Column(name="STATION_AD_STATUS_TIME")
 	private Timestamp stationAdStatusTime;//通行证发布的应用广告的当前状态更新时间

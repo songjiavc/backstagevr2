@@ -91,6 +91,72 @@ function initQueryCities(proId)
              }
 		}); 
 }
+/**
+ * 获取当前登录用户的区域信息
+ * @returns
+ */
+function getLoginArea()
+{
+	var returnarea ;
+	var data = new Object();
+	$.ajax({
+		async: false,   //设置为同步获取数据形式
+        type: "get",
+        url: contextPath+'/advertisement/getLoginArea.action',
+        data:data,
+        dataType: "json",
+        success: function (returndata) {
+        	
+        	returnarea = returndata;
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            window.parent.location.href = contextPath + "/error.jsp";
+        }
+   });
+	
+	return returnarea;
+}
+
+/**
+ * 初始化添加公司公告弹框
+ */
+function addComNotice()
+{
+	//清空数据列表
+  	clearLists();
+  	//加载通行证组数据
+  	initStationGList('','stationDataGridA')
+  	
+  	//展示所有的区域信息，树的形式，一级节点为省，二级节点为市,（暂时不做成根据应用加载区域的效果，因为在应用是给市级使用时，不好对区域数据去重）
+  	initAreaData('areaDataGridA');
+  	
+  	var areamsg = getLoginArea();
+  	
+  	if('0'!= areamsg.lotteryType&&''!=areamsg.lotteryType)
+	{
+		//是特定彩种类型的公司用户也按照用户彩种加载app数据
+  		//隐藏彩种选择
+		$("#lAI").show();
+		if('1' == areamsg.lotteryType)
+		{
+			$("#laiLName").val("体彩");
+		}
+		else if('2' == areamsg.lotteryType)
+		{
+			$("#laiLName").val("福彩");
+		}
+		$("#lotteryTypeA").combobox('setValue',areamsg.lotteryType);
+		$("#lA").hide();
+	}
+  	else
+  		{
+	  		$("#lAI").hide();
+			$("#lA").show();
+	  	}
+  	
+  	
+  	$("#addComnotice").dialog('open');
+}
 
 
 
@@ -330,6 +396,10 @@ function initStationGList(id,stationDataGridId)
 		    ]],
 	    onLoadSuccess:function(data){ 
 	    	
+	    	if(data.rows.length==0){
+				var body = $(this).data().datagrid.dc.body2;
+				body.find('table tbody').append('<tr><td width="'+body.width()+'" style="height: 25px; text-align: center;" colspan="4">没有数据</td></tr>');
+			}
 	    	
 	    	var selectedRows = $('#'+stationDataGridId).datagrid('getRows');
 	    	if(stationGList.keys.length>0)
@@ -476,6 +546,30 @@ function updateComnotice(id,status)
 									zTree.checkNode(node, true, true);//设置树节点被选中
 								}
 			    			});
+							
+							var areamsg = getLoginArea();
+						  	
+						  	if('0'!= areamsg.lotteryType&&''!=areamsg.lotteryType)
+							{
+								//是特定彩种类型的公司用户也按照用户彩种加载app数据
+						  		//隐藏彩种选择
+								$("#lUI").show();
+								if('1' == data.lotteryType)
+								{
+									$("#luiLName").val("体彩");
+								}
+								else if('2' == data.lotteryType)
+								{
+									$("#luiLName").val("福彩");
+								}
+								$("#lUS").hide();
+							}
+						  	else
+						  		{
+							  		$("#lUI").hide();
+									$("#lUS").show();
+							  	}
+							
 							
 							/**绑定修改框中的开始日期可选范围**/
 							var startFanwei = data.startTimestr;

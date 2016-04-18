@@ -219,13 +219,14 @@
     	 </div>
     	
     	
-    	
-    	<span>站点类型:</span>
-	    	<select class="easyui-combobox" id="searchFormStyleA" name="searchFormStyle" style="width:100px;">
-								<option value="">全部</option>
-								<option value="1" >体彩</option>
-								<option value="2">福彩</option>
-						</select>
+    	 <div id="la">
+	    	<span>站点类型:</span>
+		    	<select class="easyui-combobox" id="searchFormStyleA" name="searchFormStyle" style="width:100px;">
+									<option value="">全部</option>
+									<option value="1" >体彩</option>
+									<option value="2">福彩</option>
+							</select>
+		</div>
     	<a href="#" class="icon-search" plain="true" onclick="dosearch(0)">查询</a>
     </div>
      <div id="tbU" style="padding:3px" class="toolbarTb">
@@ -255,13 +256,14 @@
 	    	</select>
     	</div>
     	
-	    
-    	<span>站点类型:</span>
-    			<select class="easyui-combobox" id="searchFormStyleU" name="searchFormStyle" style="width:100px;">
-							<option value="">全部</option>
-							<option value="1" >体彩</option>
-							<option value="2">福彩</option>
-				</select>
+	    <div id="lu">
+	    	<span>站点类型:</span>
+	    			<select class="easyui-combobox" id="searchFormStyleU" name="searchFormStyle" style="width:100px;">
+								<option value="">全部</option>
+								<option value="1" >体彩</option>
+								<option value="2">福彩</option>
+					</select>
+		</div>
     	<a href="#" class="icon-search" plain="true" onclick="dosearch(1)">查询</a>
     </div>
 </body>

@@ -794,6 +794,7 @@ public class NoticeController {
 		 
 		 String code = LoginUtils.getAuthenticatedUserCode(httpSession);
 		 User user = userService.getUserByCode(code);
+		 String lotteryType = user.getLotteryType();
 		 
 		 //获取当前登录人员的角色list
 		 List<Role> roles = user.getRoles();
@@ -821,6 +822,7 @@ public class NoticeController {
 			 returndata.put("province", user.getProvinceCode());
 			 returndata.put("city", user.getCityCode());
 			 returndata.put("appcategory", appcategory);
+			 returndata.put("lotteryType", lotteryType);
 		 }
 		 
 		 return returndata;
