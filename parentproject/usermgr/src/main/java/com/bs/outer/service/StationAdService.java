@@ -21,6 +21,6 @@ public interface StationAdService {
 	public QueryResult<Advertisement> getAdvertisementOfStaApply(
 			Class<Advertisement> entityClass, String whereJpql,
 			Object[] queryParams, LinkedHashMap<String, String> orderby,
-			Pageable pageable,String province,String city,String lotteryType,String adStatus);
+			Pageable pageable,String province,String city,String lotteryType,String adStatus,String adName);
 	
 }

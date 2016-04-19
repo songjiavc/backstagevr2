@@ -203,7 +203,7 @@ public class stationAdController extends GlobalExceptionHandler
 			
 			
 			QueryResult<Advertisement> adverlist = stationAdService.getAdvertisementOfStaApply(Advertisement.class,
-					buffer.toString(), params.toArray(),orderBy, pageable,uProvince,uCity,lotteryType,null);
+					buffer.toString(), params.toArray(),orderBy, pageable,uProvince,uCity,lotteryType,null,adName);
 			List<Advertisement> ads = adverlist.getResultList();
 			int totalrow = adverlist.getTotalCount();
 			
