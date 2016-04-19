@@ -54,7 +54,7 @@ public interface OuterInterfaceService {
 	 * @return: QueryResult<Advertisement>
 	 */
 	public QueryResult<Advertisement> getAdvertisementOfStaAndApp(Class<Advertisement> entityClass, String whereJpql, Object[] queryParams, 
-			LinkedHashMap<String, String> orderby, Pageable pageable,String ugroups,String province,String city,String appId,String lotteryType);
+			LinkedHashMap<String, String> orderby, Pageable pageable,String ugroups,String province,String city,String appId,String lotteryType,String stationId);
 	
 	/**
 	 * 

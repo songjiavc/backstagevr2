@@ -132,12 +132,12 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	public QueryResult<Advertisement> getAdvertisementOfStaAndApp(
 			Class<Advertisement> entityClass, String whereJpql,
 			Object[] queryParams, LinkedHashMap<String, String> orderby,
-			Pageable pageable,String ugroups,String province,String city,String appId,String lotteryType) {
+			Pageable pageable,String ugroups,String province,String city,String appId,String lotteryType,String stationId) {
 		StringBuffer sql = new StringBuffer("SELECT u.* FROM ((T_BS_APP_AD u LEFT JOIN RELA_BS_APPAD_AND_APP app ON u.ID=app.APP_AD_ID)  "+
 				"	 LEFT JOIN RELA_BS_APPAD_AND_UGROUP au ON u.ID=au.APP_AD_ID) LEFT JOIN RELA_BS_APPAD_AND_AREA aarea ON u.id = aarea.APP_AD_ID WHERE u.IS_DELETED='1'  "+
 				"	AND u.AD_STATUS='1' AND app.APP_ID='"+appId+"'"+
 				"   AND u.AD_END_TIME>=CURDATE() AND u.AD_START_TIME<=CURDATE() ");//AND u.LOTTERY_TYPE='"+lotteryType+"'"
-		
+		//查询应用广告类别不包括站点类型的应用广告
 		if(ugroups.length()>0)
 		{
 			sql.append("	AND (au.USERGROUP_ID IN ("+ugroups+") OR (aarea.PROVINCE='"+province+"' AND aarea.CITY='"+city+"')) GROUP BY u.id");
@@ -146,6 +146,17 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		{
 			sql.append(" AND aarea.PROVINCE='"+province+"' AND aarea.CITY='"+city+"' GROUP BY u.id");
 		}
+		/*//查询应用广告类别包括站点应用广告
+		if(ugroups.length()>0)
+		{
+			sql.append("	AND (au.USERGROUP_ID IN ("+ugroups+") OR (aarea.PROVINCE='"+province+"' AND aarea.CITY='"+city+"') "
+					+ "OR (u.CREATOR_STATION='"+stationId+"' AND u.STATION_AD_STATUS='21')) ");
+		}
+		else
+		{
+			sql.append("	AND ( (aarea.PROVINCE='"+province+"' AND aarea.CITY='"+city+"') "
+					+ "OR (u.CREATOR_STATION='"+stationId+"' AND u.STATION_AD_STATUS='21')) ");
+		}*/
 		QueryResult<Advertisement> userObj = advertisementRepository.
 			getScrollDataBySql(Advertisement.class,sql.toString(), queryParams, pageable);
 		return userObj;
