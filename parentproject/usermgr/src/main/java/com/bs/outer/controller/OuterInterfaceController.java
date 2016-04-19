@@ -1554,7 +1554,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			List<Fast3DanMa> danMaList =outerInterfaceService.getInitDanmaList(danMaIssueNumber, provinceNumber);
 			List<Fast3SiMa> simaList = outerInterfaceService.getInitSimaList(Integer.parseInt(siMaId), provinceNumber);
 			List<Fast3Same> sameList = outerInterfaceService.getInitSameList(sameIssueNumber, provinceNumber);
-			if(danMaList == null || simaList == null || sameList == null){
+			if(danMaList.size() == 0 || simaList.size() == 0 || sameList.size() == 0){
 				rtnMap.put("message","failure");
 				rtnMap.put("status", "0");
 			}else{

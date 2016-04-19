@@ -21,6 +21,9 @@ public class Fast3DanMa{
 	@Column(name="DANMA_TWO")
 	private Integer danmaTwo;
 	
+	@Column(name="DROWN_NUMBER")
+	private String drownNumber;
+	
 	@Column(name="CREATE_TIME")
 	private Date createTime;
 	
@@ -57,6 +60,14 @@ public class Fast3DanMa{
 
 	public void setDanmaTwo(Integer danmaTwo) {
 		this.danmaTwo = danmaTwo;
+	}
+
+	public String getDrownNumber() {
+		return drownNumber;
+	}
+
+	public void setDrownNumber(String drownNumber) {
+		this.drownNumber = drownNumber;
 	}
 
 	public Date getCreateTime() {
