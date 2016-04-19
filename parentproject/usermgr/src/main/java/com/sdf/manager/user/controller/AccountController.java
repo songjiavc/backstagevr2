@@ -114,6 +114,7 @@ public class AccountController {
 		accountBean.setStatus(user.getStatus());
 		accountBean.setCity(user.getCityCode());
 		accountBean.setProvince(user.getProvinceCode());
+		accountBean.setLotteryType(user.getLotteryType());//date：2016-4-18ADD
 		return accountBean;
 	}
 	

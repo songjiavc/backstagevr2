@@ -168,7 +168,7 @@ function initDatagrid()
 		        {field:'startTimestr',width:'15%',title:'有效开始时间',align:'center'},
 				{field:'endTimestr',title:'有效结束时间',width:'15%',align:'center'},
 				{field:'createTime',title:'创建时间',width:'15%',align:'center'},
-				{field:'opt',title:'操作',width:'25%',align:'center',  
+				{field:'opt',title:'操作',width:'23%',align:'center',  
 			            formatter:function(value,row,index){  
 			                var btn = '<a class="editcls" onclick="updateAnnouncement(&quot;'+row.id+'&quot;,&quot;'+row.announceStatus+'&quot;)" href="javascript:void(0)">编辑</a>'
 			                		+'<a class="deleterole" onclick="deleteAnnouncement(&quot;'+row.id+'&quot;,&quot;'+row.announceStatus+'&quot;)" href="javascript:void(0)">删除</a>'
@@ -301,6 +301,7 @@ function getLoginuserRole()
 	var currentcode = "";
 	var province = "";
 	var city  = "";
+	var lotteryType = '';
 	var returnArr = new Array();
 	
 	var data1 = new Object();
@@ -317,6 +318,7 @@ function getLoginuserRole()
         	currentcode = data.message;
         	province = data.province;
         	city = data.city;
+        	lotteryType = data.lotteryType;
         	
         	
         	returnArr.push(isCityManager);
@@ -324,6 +326,7 @@ function getLoginuserRole()
         	returnArr.push(currentcode);
         	returnArr.push(province);
         	returnArr.push(city);
+        	returnArr.push(lotteryType);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
         		window.parent.location.href = contextPath + "/error.jsp";
@@ -603,6 +606,7 @@ function updateAnnouncement(id,status)
 							var isProvinceManager = roleArr[1];//是否拥有省中心角色
 							var currentcode = roleArr[2];
 							var province = roleArr[3];
+							var lotteryType = roleArr[5];
 							
 							if(!isCityManager)
 							{
@@ -622,6 +626,26 @@ function updateAnnouncement(id,status)
 									}
 				    			});
 								
+								if('0'==lotteryType || ''==lotteryType)
+									{
+										$("#lUI").hide();
+										$("#lUS").show();
+									}
+								else
+									{
+										$("#lUI").show();
+										$("#lUS").hide();
+										if('1' == data.lotteryType)
+											{
+												$("#luiLName").val("体彩");
+											}
+										else if('2' == data.lotteryType)
+											{
+												$("#luiLName").val("福彩");
+											}
+									}
+								
+								
 							}
 							else
 							{
@@ -630,6 +654,18 @@ function updateAnnouncement(id,status)
 								$.each(cityIds,function(j,cityId){
 									areaList.put(cityId, cityId);
 				    			});*/
+								
+								$("#lUI").show();
+								$("#lUS").hide();
+								if('1' == data.lotteryType)
+									{
+										$("#luiLName").val("体彩");
+									}
+								else if('2' == data.lotteryType)
+									{
+										$("#luiLName").val("福彩");
+									}
+									
 							}
 							
 							
@@ -706,6 +742,7 @@ function addAnnouncement()
 	var isProvinceManager = roleArr[1];//是否拥有省中心角色
 	var currentcode = roleArr[2];
 	var province = roleArr[3];
+	var lotteryType = roleArr[5];
   	
 	
 	if(!isCityManager)
@@ -713,10 +750,45 @@ function addAnnouncement()
 			$("#areaDivA").show();// id="areaDivA"
 			//展示所有的区域信息，树的形式
 		  	initAreaData('areaDataGridA',isProvinceManager,province);
+		  	
+		  	if('0'==lotteryType || ''==lotteryType)
+		  		{
+			  		$("#lAI").hide();
+					$("#lA").show();
+		  		}
+		  	else
+		  		{
+			  		//隐藏彩种选择
+					$("#lAI").show();
+					if('1' == lotteryType)
+					{
+						$("#laiLName").val("体彩");
+					}
+					else if('2' == lotteryType)
+					{
+						$("#laiLName").val("福彩");
+					}
+					$("#lotteryTypeA").combobox('setValue',lotteryType);
+					$("#lA").hide();
+		  		}
+		  	
 		}
 	else
 		{
 			$("#areaDivA").hide();
+			
+			//隐藏彩种选择
+			$("#lAI").show();
+			if('1' == lotteryType)
+			{
+				$("#laiLName").val("体彩");
+			}
+			else if('2' == lotteryType)
+			{
+				$("#laiLName").val("福彩");
+			}
+			$("#lotteryTypeA").combobox('setValue',lotteryType);
+			$("#lA").hide();
 		}
   
   	

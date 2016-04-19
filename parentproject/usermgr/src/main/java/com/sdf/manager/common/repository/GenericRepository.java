@@ -98,6 +98,15 @@ public interface GenericRepository<T, ID extends Serializable> extends JpaReposi
 		public QueryResult<T> getScrollDataBySql(Class<T> entityClass,String sql, Object[] queryParams, Pageable pageable);
 		
 		/**
+		 * sql中带group by的sql语句执行
+		 * @Title: getScrollDataByGroupBySql
+		 * @Description: TODO
+		 * @author:banna
+		 * @return: QueryResult<T>
+		 */
+		public QueryResult<T> getScrollDataByGroupBySql(Class<T> entityClass,String sql, Object[] queryParams, Pageable pageable) ;
+		
+		/**
 		 * @author  songjia
 		 * @param entityClass
 		 * @param sql

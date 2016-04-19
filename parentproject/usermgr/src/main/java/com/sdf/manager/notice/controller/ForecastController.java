@@ -157,7 +157,7 @@ public class ForecastController //extends GlobalExceptionHandler
 		 	
 			//排序
 			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
-			orderBy.put("id", "desc");
+			orderBy.put("createrTime", "desc");
 			
 			QueryResult<ForecastMessage> forecastlist = forecastService.getForecastList(ForecastMessage.class,
 					buffer.toString(), params.toArray(),orderBy, pageable);

@@ -310,11 +310,23 @@ function initAddPage()
 	
 	var areamsg = getLoginArea();
 	var appcategory = areamsg.appcategory;
+	var lotteryType = areamsg.lotteryType;
 	if('1'==appcategory ||'0'==appcategory)//在登录用户是市中心或者是省中心用户时赋予区域
 	{
 		$("#appCategoryhiddenA").val(appcategory);//设置应用公告的类别值
 		$("#appCatoryDivA").hide();//公告类别下拉框隐藏
 		$("#forecastDivA").hide();//预测信息列表所属div隐藏
+		//隐藏彩种选择
+		$("#lAI").show();
+		if('1' == lotteryType)
+		{
+			$("#laiLName").val("体彩");
+		}
+		else if('2' == lotteryType)
+		{
+			$("#laiLName").val("福彩");
+		}
+		$("#lA").hide();
 	}
 	else
 		{//若登录用户不是省中心或者市中心，则应用公告类别的值是和下拉框关联的
@@ -331,6 +343,28 @@ function initAddPage()
 				}
 			
 			$("#appCategoryhiddenA").val(appCatogoryCombo);
+			
+			if('0'!=lotteryType&&''!=lotteryType)
+				{
+					//隐藏彩种选择
+					$("#lAI").show();
+					if('1' == lotteryType)
+					{
+						$("#laiLName").val("体彩");
+					}
+					else if('2' == lotteryType)
+					{
+						$("#laiLName").val("福彩");
+					}
+					$("#lA").hide();
+				}
+			else
+				{
+					$("#lAI").hide();
+					$("#lA").show();
+				}
+			
+			
 		}
 }
 
@@ -371,6 +405,7 @@ function initAppDatagrid(noticeId,appDatagridId)
 	
 	var areamsg = getLoginArea();
 	var appcategory = areamsg.appcategory;
+	var lotteryType = areamsg.lotteryType;
 	if('1'==appcategory ||'0'==appcategory)//在登录用户是市中心或者是省中心用户时赋予区域
 		{
 			params.province=areamsg.province;
@@ -379,6 +414,16 @@ function initAppDatagrid(noticeId,appDatagridId)
 			if('1'==appcategory)
 				{//若当前登录用户是市中心用户时，则也赋予市级区域信息
 					params.city=areamsg.city;
+				}
+			
+			params.lotteryType = lotteryType;
+			$("#lotteryTypeA").combobox('setValue',lotteryType);
+		}
+	else
+		{
+			if('0'!=lotteryType&&''!=lotteryType)
+				{
+					params.lotteryType = lotteryType;
 				}
 		}
 	
@@ -392,11 +437,11 @@ function initAppDatagrid(noticeId,appDatagridId)
 				appId = apps[i].id;
 				appList.put(appId, appId);
 			}
-			params.lotteryType = $("#lotteryTypeU").combobox('getValue');
+			/*params.lotteryType = $("#lotteryTypeU").combobox('getValue');*/
 		}
 	else
 		{
-			params.lotteryType = $("#lotteryTypeA").combobox('getValue');
+			/*params.lotteryType = $("#lotteryTypeA").combobox('getValue');*/
 		}
 	
 	$('#'+appDatagridId).datagrid({
@@ -852,6 +897,7 @@ function updateNotice(id,noticeStatus)
 							var isProvinceManager = roleArr[1];//是否拥有省中心角色
 							var currentcode = roleArr[2];
 							var province = roleArr[3];
+							var lotteryType = roleArr[5];
 							
 							if(!isCityManager)
 							{
@@ -882,7 +928,7 @@ function updateNotice(id,noticeStatus)
 							}
 							
 							//设置公告类型div显示
-	//						var areamsg = getLoginArea();
+//							var areamsg = getLoginArea();
 							var appcategory = data.appCategory;//areamsg.appcategory;
 							if('1'!=appcategory &&'0'!=appcategory)//在登录用户不是市中心且不是省中心用户时赋予区域
 								{
@@ -898,11 +944,44 @@ function updateNotice(id,noticeStatus)
 										{
 											$("#forecastDivU").hide();
 										}
+									
+									if('0'!=lotteryType&&''!=lotteryType)
+										{
+											
+											$("#lUI").show();
+											$("#lUS").hide();
+											if('1' == data.lotteryType)
+											{
+												$("#luiLName").val("体彩");
+											}
+											else if('2' == data.lotteryType)
+											{
+												$("#luiLName").val("福彩");
+											}
+										}
+									else
+										{
+											$("#lUI").hide();
+											$("#lUS").show();
+										}
+									
 								}
 							else
 								{
 									$("#appCatoryDivU").hide();
 									$("#forecastDivU").hide();
+									
+									$("#lUI").show();
+									$("#lUS").hide();
+									if('1' == data.lotteryType)
+										{
+											$("#luiLName").val("体彩");
+										}
+									else if('2' == data.lotteryType)
+										{
+											$("#luiLName").val("福彩");
+										}
+										
 								}
 								
 							
@@ -1608,6 +1687,8 @@ function getLoginuserRole()
 	var currentcode = "";
 	var province = "";
 	var city  = "";
+	var lotteryType = '';
+	
 	var returnArr = new Array();
 	
 	var data1 = new Object();
@@ -1624,6 +1705,7 @@ function getLoginuserRole()
         	currentcode = data.message;
         	province = data.province;
         	city = data.city;
+        	lotteryType = data.lotteryType;
         	
         	
         	returnArr.push(isCityManager);
@@ -1631,6 +1713,7 @@ function getLoginuserRole()
         	returnArr.push(currentcode);
         	returnArr.push(province);
         	returnArr.push(city);
+        	returnArr.push(lotteryType);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
         		window.parent.location.href = contextPath + "/error.jsp";

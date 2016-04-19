@@ -57,6 +57,17 @@ function initDatagrid()
 				{field:'code',title:'登录帐号',width:'10%',align:'center'},
 				{field:'name',title:'名称',width:'10%',align:'center'},
 				{field:'telephone',title:'电话',width:'15%',align:'center'},
+				{field:'lotteryType',width:'7%',title:'彩种',align:'center',  
+		            formatter:function(value,row,index){  
+		            	var lotteryTypeName ='';
+		            	switch(value)
+		            	{
+		            		case '0':lotteryTypeName='全部';break;
+		            		case '1':lotteryTypeName='体彩';break;
+		            		case '2':lotteryTypeName='福彩';break;
+		            	}
+		            	return lotteryTypeName;  
+		            }  },
 				{field:'creater',title:'录入人',width:'10%',align:'center'},
 				{field:'createrTime',title:'录入时间',width:'10%',align:'center'},
 				{field:'status',title:'启用',align:'center',width:'5%',
@@ -136,7 +147,8 @@ function initDatagrid()
 						telephone:data.telephone,
 						status:data.status,
 						privince:data.privince,
-						city:data.city
+						city:data.city,
+						lotteryType:data.lotteryType
 					});
 					
 					//初始化省份combobox

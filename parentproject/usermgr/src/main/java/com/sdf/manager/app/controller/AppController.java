@@ -186,7 +186,7 @@ public class AppController  extends GlobalExceptionHandler{
 		 	
 			//排序
 			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
-			orderBy.put("id", "desc");
+			orderBy.put("createrTime", "desc");
 			
 			QueryResult<App> applist = appService.getAppList(App.class,
 					buffer.toString(), params.toArray(),orderBy, pageable);

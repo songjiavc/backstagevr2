@@ -136,7 +136,7 @@
 	             <div style="float : left;margin-left:30px;">
 	             	 <select class="easyui-combobox " id="lotteryTypeA" name="lotteryType"  
 		          	  data-options="editable:false" style="width:200px;" >
-		          	  <option value="1" checked>体彩</option>
+		          	  <option value="1" >体彩</option>
 		          	  <option value="2" >福彩</option>
 					</select>
 	             </div>

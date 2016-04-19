@@ -34,7 +34,7 @@ public class FoundStationAdStatus {
 	@Column(name="STATUS_SJ", length=11)
 	private Timestamp statusSj;//操作状态时间
 	
-	@Column(name="CREATOR", length=2)
+	@Column(name="CREATOR", length=45)
 	private String creator;//状态操作人
 	
     @ManyToOne  

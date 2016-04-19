@@ -199,7 +199,7 @@ public class AnnouncementController {
 	 	
 		//排序
 		LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
-		orderBy.put("id", "desc");
+		orderBy.put("createrTime", "desc");
 		
 		QueryResult<Announcement> annResult = announcementService.getAnnouncementList(Announcement.class,
 				buffer.toString(), params.toArray(),orderBy, pageable);
@@ -635,11 +635,15 @@ public class AnnouncementController {
 			String city = user.getCityCode();
 			String provinceName ="";
 			String cityName = "";
-			if(null!=province)
+			String lotteryType = user.getLotteryType();
+			
+			resultBean.setLotteryType(lotteryType);
+			
+			if(null!=province&&!"".equals(province))
 			{
 				provinceName = provinceService.getProvinceByPcode(province).getPname();
 			}
-			if(null!=city)
+			if(null!=city&&!"".equals(city))
 			{
 				 cityName = cityService.getCityByCcode(city).getCname();
 			}

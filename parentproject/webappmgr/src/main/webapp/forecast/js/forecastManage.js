@@ -385,11 +385,7 @@ function submitAddForecast()
 	    	//添加角色后刷新数据列表
 	    	$('#ff').form('clear');//清空表单内容
 	    	initDatagrid();
-	    	$('#ff [name="lotteryType"]:radio').each(function() {   //设置“体彩”为默认选中radio
-	            if (this.value == '1'){   
-	               this.checked = true;   
-	            }       
-	         }); 
+	    	$("#lotteryTypeA").combobox('setValue',"1");
 	    	
 	    	
 	    }

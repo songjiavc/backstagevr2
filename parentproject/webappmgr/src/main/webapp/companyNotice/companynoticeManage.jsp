@@ -13,16 +13,8 @@
   	    text:'添加公司公告',
   	    iconCls:'icon-add',
   	    handler:function(){
-  	    	//清空数据列表
-  	    	clearLists();
-  	    	//加载通行证组数据
-  	    	initStationGList('','stationDataGridA')
   	    	
-  	    	//展示所有的区域信息，树的形式，一级节点为省，二级节点为市,（暂时不做成根据应用加载区域的效果，因为在应用是给市级使用时，不好对区域数据去重）
-  	    	initAreaData('areaDataGridA');
-  	    	
-  	    	
-  	    	$("#addComnotice").dialog('open');
+  	    	addComNotice();
   	    	
   	    }
   	}/* ,
@@ -203,16 +195,6 @@
 				             data-options="required:true" validType="length[1,15]" invalidMessage="名称字数最多可输入15个字"   missingMessage="公司公告名称不可以为空" ></input>
 				        </div>
 				        <div class="ftitle">
-				            <label for="lotteryTypeA">彩种分类:</label>
-				             <div style="float:left;margin-left:30px;">
-				             	 <select class="easyui-combobox " id="lotteryTypeA" name="lotteryType"  data-options="editable:false" style="width:200px;" >
-						          	  <option value="1" >体彩</option>
-						          	  <option value="2">福彩</option>
-								</select>
-				             </div>
-				           
-				        </div>
-				         <div class="ftitle">
 				            <label for="priceA">有效开始时间:</label>
 				            <div style="float:left;margin-left:30px;">
 						            <input class="easyui-datebox commonInput" type="text" id="startTimeA" name="startTime" data-options="required:true,editable:false" 
@@ -227,6 +209,26 @@
 					         </div>
 				        </div>
 				        
+				        
+				        <div class="ftitle" id="lAI">
+				            <label for="lotteryTypeA">彩种分类:</label>
+				            <div  style="float : left;margin-left:30px;">
+				             		<input id="laiLName"  type="text" style="width:200px;" readonly="readonly">
+				             </div>
+				             
+				           
+				        </div>
+				         <div class="ftitle" id="lA">
+				            <label for="lotteryTypeA">彩种分类:</label>
+				             <div style="float:left;margin-left:30px;">
+				             	 <select class="easyui-combobox " id="lotteryTypeA" name="lotteryType"  data-options="editable:false" style="width:200px;" >
+						          	  <option value="1" >体彩</option>
+						          	  <option value="2">福彩</option>
+								</select>
+				             </div>
+				           
+				        </div>
+				         
 				        <div class="ftitlenot">
 				            <label for="priceA">公司公告内容:</label>
 				            <textarea id="comnoticeContentA" name="comnoticeContent" class="easyui-validatebox" data-options="required:true" missingMessage="公司公告内容不可以为空"
@@ -284,17 +286,9 @@
 				            <input type="hidden" name="id" id="idU"/>
 				            <input class="easyui-validatebox commonInput" type="text" id="comnoticeNameU" name="comnoticeName" style="width:200px"  
 				             data-options="required:true" validType="length[1,15]" invalidMessage="名称字数最多可输入15个字"   missingMessage="公司公告名称不可以为空" ></input>
+				        
 				        </div>
-				        <div class="ftitle">
-				            <label for="lotteryTypeA">彩种分类:</label>
-				             <div style="float:left;margin-left:30px;">
-				             	 <select class="easyui-combobox " id="lotteryTypeU" name="lotteryType"  data-options="editable:false" style="width:200px;" >
-						          	  <option value="1" checked>体彩</option>
-						          	  <option value="2">福彩</option>
-								</select>
-				             </div>
-				           
-				        </div>
+				        
 				         <div class="ftitle">
 				            <label for="priceA">有效开始时间:</label>
 				            <div style="float:left;margin-left:30px;">
@@ -309,6 +303,22 @@
 					             ></input>
 					         </div>
 				        </div>
+				        
+				        <div class="ftitle">
+				           <label for="lotteryTypeU">彩种分类:</label>
+				             <div id="lUI" style="float : left;margin-left:30px;">
+				             		<input id="luiLName"  type="text" style="width:200px;" readonly="readonly">
+				             </div>
+				             <div id="lUS" style="float : left;margin-left:30px;">
+				             	 <select class="easyui-combobox " id="lotteryTypeU" name="lotteryType"  
+					          	  data-options="editable:false" style="width:200px;" >
+					          	  <option value="1" >体彩</option>
+					          	  <option value="2" >福彩</option>
+								</select>
+				             </div>
+				           
+				        </div>
+				        
 				        
 				        <div class="ftitlenot">
 				            <label for="priceA">公司公告内容:</label>

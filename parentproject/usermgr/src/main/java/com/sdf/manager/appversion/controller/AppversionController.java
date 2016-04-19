@@ -149,7 +149,7 @@ public class AppversionController extends GlobalExceptionHandler {
 			
 			//排序
 			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
-			orderBy.put("id", "desc");
+			orderBy.put("createrTime", "desc");
 			
 			QueryResult<Appversion> appversionlist = appversionService.getAppversionList(Appversion.class,
 					buffer.toString(), params.toArray(),orderBy, pageable);

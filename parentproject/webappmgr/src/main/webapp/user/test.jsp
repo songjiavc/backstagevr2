@@ -37,7 +37,7 @@
     <img src="images/noscript.gif" alt='抱歉，请开启脚本支持！' />
 </div></noscript>
     <div region="north" split="false" border="false" style="overflow: hidden; height: 50px;
-        background: url(images/layout-browser-hd-bg.gif) #7f99be repeat-x center 50%;
+        background: url('../images/1.jpg')  repeat-x center 50%;
         color: #fff; font-family: Verdana, 微软雅黑,黑体">
         <span style="float:right; padding-right:20px;" class="head"> 
        	 <a href="#" id="editpass">修改密码</a> <a href="#" id="loginOut" onclick="logout()">安全退出</a>

@@ -3,7 +3,7 @@
 Boolean useMaskCode = (Boolean)request.getAttribute("useMaskCode");
 %>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML>
 <html>
   <head>
     
@@ -17,15 +17,13 @@ Boolean useMaskCode = (Boolean)request.getAttribute("useMaskCode");
 	
 	
 	<jsp:include page="common/top.jsp" flush="true" />
+	<link rel="stylesheet" href="css/indexStyle.css">
 
   </head>
   
-    <script language="javascript">
+    <script >
 		function setFocus(){
 			document.login.username.focus();
-		}
-		function submit(){//点击登录按钮提交
-			submitForm();
 		}
 		function resetForm(){
 			document.login.reset();
@@ -33,15 +31,6 @@ Boolean useMaskCode = (Boolean)request.getAttribute("useMaskCode");
 		}
 		function changeimage(obj,path){
 		    obj.src=path;
-		}
-		function submitLoginForm(){//回车提交
-		 if(event.keyCode==13)
-			 submitForm();
-		}
-		//提交表单方法
-		function submitForm()
-		{
-			
 		}
 		
 		$(document).ready(function()
@@ -60,6 +49,12 @@ Boolean useMaskCode = (Boolean)request.getAttribute("useMaskCode");
 							$("#err").html(msg);
 						}
 					
+					$(document).keydown(function(event){ 
+							if(event.keyCode==13){ 
+								$("#submit").click();
+							} 
+						}); 
+						
 				});
 		
 </script>
@@ -70,14 +65,34 @@ Boolean useMaskCode = (Boolean)request.getAttribute("useMaskCode");
 		color:white;
 		cursor:pointer; 
 	}
+	
+	
 </style>
 
 </head>
-<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" >
+<body  style=" background-image: url('images/1.jpg'); background-repeat: repeat;width:100%;height:100%; margin:0; padding:0;"><!-- leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="background-image: url('images/bg_01.gif');background-repeat: repeat;" -->
+	<!-- bgcolor="#FFFFFF" -->
 	
-<center>
-  <form method="post" name="login" style="margin:0px" action="<%=request.getContextPath() %>/menu/getNewPage.action"><!-- <%=request.getContextPath() %>/account/Login.action -->
-    <table id="__01" width="1000" height="600" border="0" cellpadding="0" cellspacing="0" background="images/bg_01.gif">
+	<div  id="top">
+		<div style="margin-top:10px;margin-left:20px;">后台数据管理平台</div>
+		
+	</div>
+    <section class="container">
+	    <div class="login">
+	      <h1>用户登录</h1>
+	      <form method="post" id="form1" name="login" action="<%=request.getContextPath() %>/menu/getNewPage.action">
+	        <p><input type="text" name="code" id="username" placeholder="用户名"></p>
+	        <p><input type="password" id="password" name="password"  placeholder="密码"></p>
+	       <div id="err" align="center"  id="error" style="color: red;float:right;font-weight:bold; font-size: 12px; height: 16px; "></div>
+	        <p class="submit"><input type="submit"  name="submit" id="submit" value="登录"></p>
+	      </form>
+	    </div>
+    </section>
+    <div style="text-align:center;" id="footer">
+		<div style="margin-top: 20px;">Copyright © 2015 - 2016  by our company</div>
+	</div>
+ <%--  <form method="post" name="login" style="margin:0px" action="<%=request.getContextPath() %>/menu/getNewPage.action"><!-- <%=request.getContextPath() %>/account/Login.action -->
+    <table id="__01" width="1000" height="600" border="0" cellpadding="0" cellspacing="0" >
       <tr>
         <td colspan="3" height="100">&nbsp;</td>
       </tr>
@@ -136,8 +151,7 @@ Boolean useMaskCode = (Boolean)request.getAttribute("useMaskCode");
         <td colspan="3">&nbsp;</td>
       </tr>
     </table>
-  </form>
-</center>
+  </form> --%>
 </body>
   </body>
 </html>

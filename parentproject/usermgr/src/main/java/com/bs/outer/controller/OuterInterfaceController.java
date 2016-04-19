@@ -962,7 +962,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			
 			QueryResult<Advertisement> adQueryResult = outerInterfaceService.
 					getAdvertisementOfStaAndApp(Advertisement.class, buffer.toString(), params.toArray(),
-							orderBy, pageable, ugroupArr.toString(), province, city,appId,lotteryType);
+							orderBy, pageable, ugroupArr.toString(), province, city,appId,lotteryType,stationId);
 			 
 			List<Advertisement> advertisements = adQueryResult.getResultList();
 			

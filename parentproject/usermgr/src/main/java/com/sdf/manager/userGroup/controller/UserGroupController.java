@@ -132,7 +132,7 @@ public class UserGroupController // extends GlobalExceptionHandler
 			
 			//排序
 			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
-			orderBy.put("id", "desc");
+			orderBy.put("createrTime", "desc");
 			
 			QueryResult<UserGroup> userGrouplist = userGroupService.getAppversionList(UserGroup.class,
 					buffer.toString(), params.toArray(),orderBy, pageable);

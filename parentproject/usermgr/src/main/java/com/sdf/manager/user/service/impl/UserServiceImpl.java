@@ -74,6 +74,9 @@ public class UserServiceImpl implements UserService {
 				user.setProvinceCode(accountBean.getProvince());
 				user.setCityCode(accountBean.getCity());
 				
+				//date:2016-4-18添加账户的彩种字段
+				user.setLotteryType(accountBean.getLotteryType());
+				
 				//  暂时去掉md5加密   user.setPassword(MD5Util.MD5(accountBean.getPassword()));
 				user.setPassword(accountBean.getPassword());
 				user.setIsDeleted(Constants.IS_NOT_DELETED);
@@ -97,6 +100,9 @@ public class UserServiceImpl implements UserService {
 			//date:2016-01-29添加账户中维护区域信息
 			user.setProvinceCode(accountBean.getProvince());
 			user.setCityCode(accountBean.getCity());
+			
+			//date:2016-4-18添加账户的彩种字段
+			user.setLotteryType(accountBean.getLotteryType());
 			
 			user.setModify("admin");
 			user.setModifyTime(new Date());
@@ -135,6 +141,7 @@ public class UserServiceImpl implements UserService {
 			accountBean.setCode(user.getCode());
 			accountBean.setName(user.getName());
 			accountBean.setStatus(user.getStatus());
+			accountBean.setLotteryType(user.getLotteryType());//date：2016-4-18日添加彩种返回值
 			accountBean.setTelephone(user.getTelephone());
 			accountBean.setCreater(user.getCreater());
 			accountBean.setCreaterTime(DateUtil.formatDate(user.getCreaterTime(), DateUtil.FULL_DATE_FORMAT));
