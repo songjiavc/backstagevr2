@@ -112,6 +112,25 @@ public class GenericRepositoryImpl<T, ID extends Serializable> extends SimpleJpa
         qr.setTotalCount(Integer.parseInt(query.getSingleResult().toString()));
 		return qr;
 	}
+	
+	public QueryResult<T> getScrollDataByGroupBySql(Class<T> entityClass,String sql, Object[] queryParams, Pageable pageable) {
+		//查询记录数
+		QueryResult<T> qr = new QueryResult<T>();
+		Query query = em.createNativeQuery(sql,entityClass);
+		setQueryParams(query, queryParams);
+		if(pageable.getPageNumber()!=-1 && pageable.getPageSize()!=-1)
+        	query.setFirstResult(pageable.getPageNumber()*pageable.getPageSize()).setMaxResults(pageable.getPageSize());
+		qr.setResultList(query.getResultList());
+		//
+//		String from = getFromClause(sql);
+		//查询总记录数
+	   query = em.createNativeQuery("select count(*) from (" + sql+" ) t1"); /*带group by的语句如果去掉group by之后查询总的数据条数是不准确的，
+	   																			因为要统计的结果是group by分组后的组数，这个是总的数据条数*/
+        setQueryParams(query, queryParams);
+        qr.setTotalCount(Integer.parseInt(query.getSingleResult().toString()));
+		return qr;
+	}
+	
 	/* (non-Javadoc)
 	 * @see com.sdf.manager.common.repository.GenericRepository#getEntityBySql(java.lang.Class, java.lang.String, java.lang.Object[])
 	 */
