@@ -192,29 +192,20 @@ public class stationAdController extends GlobalExceptionHandler
 			StringBuffer buffer = new StringBuffer();
 			List<Object> params = new ArrayList<Object>();
 			
-			//只查询未删除数据
-			params.add("1");//只查询有效的数据
-			buffer.append(" isDeleted = ?").append(params.size());
-			
-			if(null != adName && !"".equals(adName))
-			{
-				params.add("%"+adName+"%");//根据订单名称模糊查询
-				buffer.append(" and appAdName like ?").append(params.size());
-			}
 			
 			
 			//排序
 			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
-			orderBy.put("id", "desc");
 			
-			/*TODO:获取当前市中心管辖下的站点的应用广告列表，并列出应用广告的审批状态，站点广告，addType=0，
+			/*TODO:获取当前市中心管辖下的通行证发布的最新的应用广告列表，并列出应用广告的审批状态，站点广告，addType=0，
 			不能获取市中心可以管理的其他应用广告数据.且获取到的应用广告数据应该是creatorStationd的值不是空值的*/
 			
 			
+			
 			QueryResult<Advertisement> adverlist = stationAdService.getAdvertisementOfStaApply(Advertisement.class,
-					buffer.toString(), params.toArray(),orderBy, pageable,uProvince,uCity,lotteryType);
+					buffer.toString(), params.toArray(),orderBy, pageable,uProvince,uCity,lotteryType,null);
 			List<Advertisement> ads = adverlist.getResultList();
-			Long totalrow = adverlist.getTotalRecord();
+			int totalrow = adverlist.getTotalCount();
 			
 			//将实体转换为dto
 			List<AdvertisementDTO> advertisementDTOs = advertisementService.toRDTOS(ads);
@@ -223,6 +214,49 @@ public class stationAdController extends GlobalExceptionHandler
 			returnData.put("total", totalrow);
 			
 			return returnData;
+		}
+	 
+	 /**
+	  * 
+	  * @Title: getFbAdvertisement
+	  * @Description: TODO
+	  * @author:banna
+	  * @return: List<Advertisement>
+	  */
+	 private List<Advertisement> getFbAdvertisement(String stationId)
+	 {
+			
+			//获取当前登录人员的省份和市信息
+			
+			//放置分页参数
+			Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);
+			
+			//参数
+			StringBuffer buffer = new StringBuffer();
+			List<Object> params = new ArrayList<Object>();
+			
+			//只查询未删除数据
+			params.add("1");//只查询有效的数据
+			buffer.append(" isDeleted = ?").append(params.size());
+			
+			params.add("1");//只查询有效的数据
+			buffer.append(" and adStatus = ?").append(params.size());
+			
+			params.add(stationId);//只查询有效的数据
+			buffer.append(" and creatorStation = ?").append(params.size());
+			
+			
+			
+			//排序
+			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
+			
+			
+			
+			QueryResult<Advertisement> adverlist = advertisementService.getAdvertisementList(Advertisement.class,
+					buffer.toString(), params.toArray(),orderBy, pageable);
+			List<Advertisement> ads = adverlist.getResultList();
+			
+			return ads;
 		}
 	 
 	 
@@ -554,7 +588,13 @@ public class stationAdController extends GlobalExceptionHandler
 		    	advertisement.setAdStatus("1");//若市中心审批通过则置通行证发布的这个应用广告为发布状态
 		    	
 		    	//TODO:同时要设置之前通行证申请发布的应用广告为无效，且不可以展示，因为通行证在一个应用上只能发布一个应用广告！！！
-			   
+		    	List<Advertisement> ads = this.getFbAdvertisement(advertisement.getCreatorStation());
+		    	for (Advertisement advertisement2 : ads) {
+		    		advertisement2.setAdStatus("0");
+		    		advertisement2.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
+		    		advertisement2.setModifyTime(new Timestamp(System.currentTimeMillis()));
+		    		advertisementService.update(advertisement2);
+				}
 			  
 		    }
 		    else if(stationAdController.PAGE_OPERORTYPE_REJECT.equals(operortype))

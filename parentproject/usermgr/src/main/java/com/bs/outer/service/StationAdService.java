@@ -1,9 +1,11 @@
 package com.bs.outer.service;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 
+import com.sdf.manager.ad.dto.AdvertisementDTO;
 import com.sdf.manager.ad.entity.Advertisement;
 import com.sdf.manager.common.util.QueryResult;
 
@@ -19,5 +21,6 @@ public interface StationAdService {
 	public QueryResult<Advertisement> getAdvertisementOfStaApply(
 			Class<Advertisement> entityClass, String whereJpql,
 			Object[] queryParams, LinkedHashMap<String, String> orderby,
-			Pageable pageable,String province,String city,String lotteryType);
+			Pageable pageable,String province,String city,String lotteryType,String adStatus);
+	
 }
