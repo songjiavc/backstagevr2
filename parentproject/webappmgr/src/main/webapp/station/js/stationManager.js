@@ -241,7 +241,7 @@ function initDatagrid()
 				{field:'stationStyle',title:'站点类型',width:'10%',align:'center'},
 				{field:'name',title:'站主名称',width:'10%',align:'center'},
 				{field:'telephone',title:'站主电话',width:'10%',align:'center'},
-				{field:'stationCode',title:'登录帐号',width:'10%',align:'center'},
+//				{field:'stationCode',title:'登录帐号',width:'10%',align:'center'},
 				{field:'createTime',title:'录入时间',width:'10%',align:'center'},
 				{field:'opt',title:'操作',width:'130',align:'center', 
 		            formatter:function(value,row,index){
@@ -258,6 +258,11 @@ function initDatagrid()
 	        $('.delcls').linkbutton({plain:true,iconCls:'icon-remove'});
 	        $('.connectApp').linkbutton({plain:true,iconCls:'icon-filter'});
 //	        $('.setOrder').linkbutton({plain:true,iconCls:'icon-search'});
+	        
+	        if(data.rows.length==0){
+				var body = $(this).data().datagrid.dc.body2;
+				body.find('table tbody').append('<tr><td width="'+body.width()+'" style="height: 25px; text-align: center;" colspan="10">没有数据</td></tr>');
+			}
 	    }  
 	});
 }
