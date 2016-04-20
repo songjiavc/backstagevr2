@@ -234,7 +234,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		if(StringUtils.isEmpty(issueNumber)){
 			where = " ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
 		}else{
-			where = " WHERE  "+ issueNumber +" <  (SELECT ISSUE_NUMBER FROM "+ tableName +"ORDER BY ISSUE_NUMBER DESC LIMIT 1)  ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
+			where = " WHERE  "+ issueNumber +" <  (SELECT ISSUE_NUMBER FROM "+ tableName +" ORDER BY ISSUE_NUMBER DESC LIMIT 1)  ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
 		}
 		String execSql = "SELECT * FROM "+tableName + where;
 		Object[] queryParams = new Object[]{
@@ -250,7 +250,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		if(siMaId == 0){
 			where = " ORDER BY ID DESC LIMIT 10 ";
 		}else{
-			where = " WHERE "+ siMaId +"  <  (SELECT ID FROM "+ tableName +"ORDER BY ID DESC LIMIT 1)  ORDER BY ID DESC LIMIT 10 ";
+			where = " WHERE "+ siMaId +"  <  (SELECT ID FROM "+ tableName +" ORDER BY ID DESC LIMIT 1)  ORDER BY ID DESC LIMIT 10 ";
 		}
 		String execSql = "SELECT * FROM "+tableName + where;
 		Object[] queryParams = new Object[]{
@@ -266,7 +266,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		if(StringUtils.isEmpty(issueNumber)){
 			where = " ORDER BY CURRENT_ISSUE DESC LIMIT 10 ";
 		}else{
-			where = " WHERE "+ issueNumber +"  <  (SELECT CURRENT_ISSUE FROM "+ tableName +"ORDER BY CURRENT_ISSUE DESC LIMIT 1)  ORDER BY CURRENT_ISSUE DESC LIMIT 10  ";
+			where = " WHERE "+ issueNumber +"  <  (SELECT CURRENT_ISSUE FROM "+ tableName +" ORDER BY CURRENT_ISSUE DESC LIMIT 1)  ORDER BY CURRENT_ISSUE DESC LIMIT 10  ";
 		}
 		String execSql = "SELECT * FROM "+tableName + where;
 		Object[] queryParams = new Object[]{

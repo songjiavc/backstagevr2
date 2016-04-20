@@ -18,6 +18,9 @@ public class Fast3Same{
 	@Column(name="LOTTORY_NUMBER")
 	private String lottoryNumber;
 	
+	@Column(name="NEXT_ISSUE")
+	private String nextIssue;
+	
 	@Column(name="NEXT_LOTTORY_NUMBER")
 	private String nextLottoryNumber;
 	
@@ -46,6 +49,14 @@ public class Fast3Same{
 
 	public void setLottoryNumber(String lottoryNumber) {
 		this.lottoryNumber = lottoryNumber;
+	}
+	
+	public String getNextIssue() {
+		return nextIssue;
+	}
+
+	public void setNextIssue(String nextIssue) {
+		this.nextIssue = nextIssue;
 	}
 
 	public String getNextLottoryNumber() {
