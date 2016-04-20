@@ -10,6 +10,7 @@ import com.bs.outer.entity.Fast3Analysis;
 import com.bs.outer.entity.Fast3DanMa;
 import com.bs.outer.entity.Fast3Same;
 import com.bs.outer.entity.Fast3SiMa;
+import com.bs.outer.entity.Ln5In12Bean;
 import com.sdf.manager.ad.entity.Advertisement;
 import com.sdf.manager.announcement.entity.Announcement;
 import com.sdf.manager.common.util.QueryResult;
@@ -108,9 +109,28 @@ public interface OuterInterfaceService {
 	 */
 	public List<Fast3DanMa> getInitDanmaList(String issueNumber,String provinceNumber);
 	
+	/**
+	 * @param siMaId
+	 * @param provinceNumber
+	 * @return 获取四码复式列表
+	 */
 	public List<Fast3SiMa> getInitSimaList(int siMaId,String provinceNumber);
 	
+	/**
+	 * @param issueNumber
+	 * @param provinceNumber
+	 * @return 获取相同号码统计列表
+	 */
 	public List<Fast3Same> getInitSameList(String issueNumber,String provinceNumber);
 	
+	/**
+	 * @return 获取辽宁12选5列表
+	 */
+	public List<Ln5In12Bean> getLn5In12Last3DaysList();
 	
+    /**
+     * @param issueNumber
+     * @return 根据期号找到比这个期号更大的期
+     */
+    public Ln5In12Bean getLn5In12EntityByIssueNumber(String issueNumber);
 }
