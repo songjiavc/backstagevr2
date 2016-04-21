@@ -182,6 +182,7 @@ function closeDialog()
 {
 	$("#addComnotice").dialog('close');
 	$("#updateComnotice").dialog('close');
+	$("#detailComnotice").dialog('close');
 }
 
 
@@ -235,14 +236,16 @@ function initDatagrid()
 				{field:'opt',title:'操作',width:'23%',align:'center',  
 			            formatter:function(value,row,index){  
 			                var btn = '<a class="editcls" onclick="updateComnotice(&quot;'+row.id+'&quot;,&quot;'+row.comnoticeStatus+'&quot;)" href="javascript:void(0)">编辑</a>'
-			                	+'<a class="deleterole" onclick="deleteComnotice(&quot;'+row.id+'&quot;,&quot;'+row.comnoticeStatus+'&quot;)" href="javascript:void(0)">删除</a>';
+			                	+'<a class="deleterole" onclick="deleteComnotice(&quot;'+row.id+'&quot;,&quot;'+row.comnoticeStatus+'&quot;)" href="javascript:void(0)">删除</a>'
+			                	+'<a class="detailrole" onclick="detailComnotice(&quot;'+row.id+'&quot;,&quot;'+row.comnoticeStatus+'&quot;)" href="javascript:void(0)">查看详情</a>';
 			                return btn;  
 			            }  
 			        }  
 		    ]],  
 	    onLoadSuccess:function(data){  
 	        $('.editcls').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'}); 
-	        $('.deleterole').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});  
+	        $('.deleterole').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'}); 
+	        $('.detailrole').linkbutton({text:'查看详情',plain:true,iconCls:'icon-filter'}); 
 	        
 	        if(data.rows.length==0){
 				var body = $(this).data().datagrid.dc.body2;
@@ -361,7 +364,8 @@ function initCities(cityId,pcode)
 function initStationGList(id,stationDataGridId)
 {
 	var params = new Object();
-	if('stationDataGridU' == stationDataGridId)
+	stationGList = new map();
+	if('stationDataGridU' == stationDataGridId || 'stationDataGridD' == stationDataGridId)
 	{
 		
 		var ugroups = checkStations(id, stationDataGridId);
@@ -494,7 +498,75 @@ function clearLists()
 	areaList = new map();
 }
 
+/**
+ * 查看公司公告详情
+ * @param id
+ * @param status
+ */
+function detailComnotice(id,status)
+{
+		$("#detailComnotice").dialog('open');
+		var url = contextPath + '/companynotice/getDetailCompanynotice.action';
+		var data1 = new Object();
+		data1.id=id;//应用的id
+		
+			$.ajax({
+				async: false,   //设置为同步获取数据形式
+		        type: "get",
+		        url: url,
+		        data:data1,
+		        dataType: "json",
+		        success: function (data) {
+		        	
+						$('#ffDetail').form('load',{
+							id:data.id,
+							comnoticeName:data.comnoticeName,
+							startTime:data.startTimestr,
+							endTime:data.endTimestr,//通行证组描述
+							comnoticeContent:data.comnoticeContent,
+							lotteryType:data.lotteryType//彩种
+						});
+						//初始化通行证列表数据
+						initStationGList(id, 'stationDataGridD')
+						//初始化区域树
+						initAreaData('areaDataGridD');
+						//选中当前应用广告发布的区域
+						var zTree = $.fn.zTree.getZTreeObj("areaDataGridD");
+						var node;//ztree树节点变量
+						var cityIds = checkAreas(id);
+						$.each(cityIds,function(j,cityId){
+							areaList.put(cityId, cityId);
+							node = zTree.getNodeByParam("id",cityId);
+							if(null != node)
+							{
+								zTree.checkNode(node, true, true);//设置树节点被选中
+							}
+							zTree.setChkDisabled(node, false);
+		    			});
+						
+							//只显示彩种名称
+							$("#lDI").show();
+							if('1' == data.lotteryType)
+							{
+								$("#ldiLName").val("体彩");
+							}
+							else if('2' == data.lotteryType)
+							{
+								$("#ldiLName").val("福彩");
+							}
+							$("#lDS").hide();
+						
+						
+		        	
+		        },
+		        error: function (XMLHttpRequest, textStatus, errorThrown) {
+		            window.parent.location.href = contextPath + "/error.jsp";
+		        }
+			});
 
+	
+		
+}
 
 /**
  *公司公告修改

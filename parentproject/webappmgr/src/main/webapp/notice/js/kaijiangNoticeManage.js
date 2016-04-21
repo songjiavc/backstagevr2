@@ -113,6 +113,7 @@ function closeDialog()
 {
 	$("#addKaijiangNotice").dialog('close');
 	$("#updateKaijiangNotice").dialog('close');
+	$("#detailKaijiangNotice").dialog('close');
 }
 
 
@@ -165,7 +166,8 @@ function initDatagrid()
 				{field:'opt',title:'操作',width:160,align:'center',  
 			            formatter:function(value,row,index){  
 			                var btn = '<a class="editcls" onclick="updatKjnotice(&quot;'+row.id+'&quot;,&quot;'+row.noticeStatus+'&quot;)" href="javascript:void(0)">编辑</a>'
-			                	+'<a class="deleterole" onclick="deleteKjnotice(&quot;'+row.id+'&quot;,&quot;'+row.noticeStatus+'&quot;)" href="javascript:void(0)">删除</a>';
+			                	+'<a class="deleterole" onclick="deleteKjnotice(&quot;'+row.id+'&quot;,&quot;'+row.noticeStatus+'&quot;)" href="javascript:void(0)">删除</a>'
+			                	+'<a class="detailrole" onclick="detailKjNotice(&quot;'+row.id+'&quot;)" href="javascript:void(0)">查看详情</a>';
 			                return btn;  
 			            }  
 			        }  
@@ -173,7 +175,7 @@ function initDatagrid()
 	    onLoadSuccess:function(data){  
 	        $('.editcls').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'}); 
 	        $('.deleterole').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});  
-	        
+	        $('.detailrole').linkbutton({text:'查看详情',plain:true,iconCls:'icon-filter'}); 
 	        if(data.rows.length==0){
 				var body = $(this).data().datagrid.dc.body2;
 				body.find('table tbody').append('<tr><td width="'+body.width()+'" style="height: 25px; text-align: center;" colspan="8">没有数据</td></tr>');
@@ -293,6 +295,63 @@ function clearLists()
 	areaList = new map();
 }
 
+/**
+ * 查看开奖公告详情
+ * @param id
+ */
+function detailKjNotice(id)
+{
+	$("#detailKaijiangNotice").dialog('open');
+	var url = contextPath + '/notice/getDetailNotice.action';
+	var data1 = new Object();
+	data1.id=id;//应用的id
+	
+		$.ajax({
+			async: false,   //设置为同步获取数据形式
+	        type: "get",
+	        url: url,
+	        data:data1,
+	        dataType: "json",
+	        success: function (data) {
+	        	
+					$('#ffDetail').form('load',{
+						id:data.id,
+						appNoticeName:data.appNoticeName,
+						appNoticeWord:data.appNoticeWord,
+						lotteryType:data.lotteryType//彩种
+					});
+					
+					if('1' == data.lotteryType)
+					{
+						$("#ldiLName").val("体彩");
+					}
+					else if('2' == data.lotteryType)
+					{
+						$("#ldiLName").val("福彩");
+					}
+					
+					//初始化区域树
+					initAreaData('areaDataGridD');
+					//选中当前应用广告发布的区域
+					var zTree = $.fn.zTree.getZTreeObj("areaDataGridD");
+					var node;//ztree树节点变量
+					var cityIds = checkAreas(id);
+					$.each(cityIds,function(j,cityId){
+						areaList.put(cityId, cityId);
+						node = zTree.getNodeByParam("id",cityId);
+						if(null != node)
+						{
+							zTree.checkNode(node, true, true);//设置树节点被选中
+						}
+	    			});
+					
+	        	
+	        },
+	        error: function (XMLHttpRequest, textStatus, errorThrown) {
+	            window.parent.location.href = contextPath + "/error.jsp";
+	        }
+		});
+}
 
 
 /**

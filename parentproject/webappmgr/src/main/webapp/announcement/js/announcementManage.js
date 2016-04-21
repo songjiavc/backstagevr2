@@ -118,6 +118,7 @@ function closeDialog()
 	$("#addAnnouncement").dialog('close');
 	$("#updateAnnouncement").dialog('close');
 	$('#checkAReceipt').dialog('close');
+	$('#detailAnnouncement').dialog('close');
 }
 
 
@@ -172,7 +173,8 @@ function initDatagrid()
 			            formatter:function(value,row,index){  
 			                var btn = '<a class="editcls" onclick="updateAnnouncement(&quot;'+row.id+'&quot;,&quot;'+row.announceStatus+'&quot;)" href="javascript:void(0)">编辑</a>'
 			                		+'<a class="deleterole" onclick="deleteAnnouncement(&quot;'+row.id+'&quot;,&quot;'+row.announceStatus+'&quot;)" href="javascript:void(0)">删除</a>'
-			                	+'<a class="checkReceipt" onclick="checkReceipts(&quot;'+row.id+'&quot;)" href="javascript:void(0)">回执查看</a>';
+			                	+'<a class="checkReceipt" onclick="checkReceipts(&quot;'+row.id+'&quot;)" href="javascript:void(0)">回执查看</a>'
+			                	+'<a class="detailrole" onclick="detailAnnouncement(&quot;'+row.id+'&quot;,&quot;'+row.announceStatus+'&quot;)" href="javascript:void(0)">查看详情</a>';
 			                return btn;  
 			            }  
 			        }  
@@ -181,6 +183,7 @@ function initDatagrid()
 	        $('.editcls').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'}); 
 	        $('.deleterole').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});  
 	        $('.checkReceipt').linkbutton({text:'回执查看',plain:true,iconCls:'icon-remove'});  
+	        $('.detailrole').linkbutton({text:'查看详情',plain:true,iconCls:'icon-filter'}); 
 	        
 	        if(data.rows.length==0){
 				var body = $(this).data().datagrid.dc.body2;
@@ -429,7 +432,8 @@ function initCities(cityId,pcode)
 function initStationGList(id,stationDataGridId)
 {
 	var params = new Object();
-	if('stationDataGridU' == stationDataGridId)
+	stationGList = new map();
+	if('stationDataGridU' == stationDataGridId || 'stationDataGridD' == stationDataGridId)
 	{
 		
 		var ugroups = checkStations(id, stationDataGridId);
@@ -560,6 +564,111 @@ function clearLists()
 	stationGList = new map();
 	areaList = new map();
 }
+
+/**
+ * 查看通告详情
+ * @param id
+ * @param status
+ */
+function detailAnnouncement(id,status)
+{
+	$("#detailAnnouncement").dialog('open');
+	var url = contextPath + '/announcement/getDetailAnnouncement.action';
+	var data1 = new Object();
+	data1.id=id;//应用的id
+	
+		$.ajax({
+			async: false,   //设置为同步获取数据形式
+	        type: "get",
+	        url: url,
+	        data:data1,
+	        dataType: "json",
+	        success: function (data) {
+	        	
+					$('#ffDetail').form('load',{
+						id:data.id,
+						announcementName:data.announcementName,
+						startTime:data.startTimestr,
+						endTime:data.endTimestr,//通行证组描述
+						announcementContent:data.announcementContent,
+						lotteryType:data.lotteryType//彩种
+					});
+					//初始化通行证列表数据
+					initStationGList(id, 'stationDataGridD');
+					
+					//初始化区域树
+					var roleArr = getLoginuserRole();
+				  	var isCityManager = roleArr[0];//是否拥有市中心角色
+					var isProvinceManager = roleArr[1];//是否拥有省中心角色
+					var currentcode = roleArr[2];
+					var province = roleArr[3];
+					var lotteryType = roleArr[5];
+					
+					if(!isCityManager)
+					{
+						$("#areaDivD").show();// id="areaDivA"
+						//展示所有的区域信息，树的形式
+					  	initAreaData('areaDataGridD',isProvinceManager,province);
+						//选中当前应用广告发布的区域
+						var zTree = $.fn.zTree.getZTreeObj("areaDataGridD");
+						var node;//ztree树节点变量
+						var cityIds = checkAreas(id);
+						$.each(cityIds,function(j,cityId){
+							areaList.put(cityId, cityId);
+							node = zTree.getNodeByParam("id",cityId);
+							if(null != node)
+							{
+								zTree.checkNode(node, true, true);//设置树节点被选中
+							}
+		    			});
+						
+							$("#lDI").show();
+							$("#lDS").hide();
+							if('1' == data.lotteryType)
+								{
+									$("#ldiLName").val("体彩");
+								}
+							else if('2' == data.lotteryType)
+								{
+									$("#ldiLName").val("福彩");
+								}
+						
+						
+					}
+					else
+					{
+						$("#areaDivD").hide();
+						/*var cityIds = checkAreas(id);
+						$.each(cityIds,function(j,cityId){
+							areaList.put(cityId, cityId);
+		    			});*/
+						
+						$("#lDI").show();
+						$("#lDS").hide();
+						if('1' == data.lotteryType)
+							{
+								$("#ldiLName").val("体彩");
+							}
+						else if('2' == data.lotteryType)
+							{
+								$("#ldiLName").val("福彩");
+							}
+							
+					}
+					
+					
+				
+	        	
+	        },
+	        error: function (XMLHttpRequest, textStatus, errorThrown) {
+	            window.parent.location.href = contextPath + "/error.jsp";
+	        }
+		});
+	
+		
+		
+}
+
 
 
 

@@ -4,9 +4,13 @@
 <head>
     <title>应用公告管理</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <link href="<%=request.getContextPath() %>/css/ztree/zTreeStyle.css" rel="stylesheet" type="text/css" />
+   
+   <link href="<%=request.getContextPath() %>/css/ztree/zTreeStyle.css" rel="stylesheet" type="text/css" />
     <jsp:include page="../common/top.jsp" flush="true" /> 
-    <script src="<%=request.getContextPath() %>/notice/js/noticeManage.js" type="text/javascript"></script>
+    
+      <script src="<%=request.getContextPath() %>/notice/js/noticeManage.js" type="text/javascript"></script>
+      <script src="<%=request.getContextPath() %>/js/ztree/jquery.ztree.core-3.5.js" type="text/javascript"></script>	
+    <script src="<%=request.getContextPath() %>/js/ztree/jquery.ztree.excheck-3.5.js" type="text/javascript"></script>
     
     <script type="text/javascript">
   	var toolbar = [{
@@ -89,12 +93,12 @@
     		}
 		</style>
 	
-	<!-- 上传文件引入start -->	
-	
-	<!-- 上传文件引入end -->
 	 
 </head>
 <body class="easyui-layout">
+
+
+
 	<!-- 模糊查询 -->
 	<div   data-options="region:'north'" style="height:90px;border:1px solid #95b8e7; background-color:white;">
 	    	<table style="border: none;height: 80px;">
@@ -146,20 +150,205 @@
 		    		</td> -->
 		    		
 		    		<td class="td_font" width="12%">
-		    			<input style="cursor:pointer;background-color: #e0ecff;border-radius:5px;float:left" type="button" value="查询" onclick="initDatagrid()">
+		    			<input style="cursor:pointer;background-color: #e0ecff;border-radius:5px;float:left" id="search" type="button" value="查询" onclick="initDatagrid()">
 		    			<input style="cursor:pointer;background-color: #e0ecff;border-radius:5px;float:left;margin-left:5px;" type="button" value="重置" onclick="reset()">
 		    		</td>
 		    	</tr>
 	    	</table>	
 	</div>
-
-    <div  data-options="region:'center'" data-options="border:false" >
-    	 <table id="datagrid" class="easyui-datagrid"  title="应用广告列表" >
-			</table>
- 	</div>  
+		<!-- 占位用的，没有实际意义s -->
+		<div id="hiddenNotice" class="easyui-dialog" fit="true" title="应用广告信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;">
+			 <table id="hiddendatagrid" class="easyui-datagrid"  title="测试列表" ></table>
+		</div>
+    	
+ 		 <!-- 占位用的，没有实际意义e -->
   
-  
-    <!-- 添加应用公告弹框 -->
+     <!-- 修改应用弹框 -->
+     <div id="updateNotice" class="easyui-dialog" fit="true" title="修改应用广告信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+            data-options="
+                iconCls: 'icon-save',
+                buttons: [{
+                    text:'保存',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        submitUpdateNotice('0');
+                    }
+                },{
+                    text:'发布',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        submitUpdateNotice('1');
+                    }
+                },{
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:function(){
+                        $('#updateNotice').dialog('close');
+                    }
+                }]
+            ">
+	    <div class="easyui-layout" style="height:100%;padding:0;" >
+	    	 	<div region="north" style="height:25%;" title="应用广告基本内容" hide="false">
+	    	 		<form id="ffUpdate" method="get" novalidate style="margin-top:5px;">
+		    	 		<div class="ftitle">
+				            <label for="codeU">公告名称:</label>
+				            <input type="hidden" name="id" id="idU"/>
+				            <input type="hidden" name="appCategory" id="appCategoryhiddenU"/>
+				            <input class="easyui-validatebox commonInput" type="text" id="appNoticeNameU" name="appNoticeName" style="width:200px"  
+				             data-options="required:true" validType="length[1,15]" invalidMessage="名称字数最多可输入15个字"   missingMessage="公告名称不可以为空" ></input>
+				        </div>
+				        <div class="ftitle">
+				            <label for="priceA">有效开始时间:</label>
+				            <div style="float:left;margin-left:30px;">
+						            <input class="easyui-datebox commonInput" type="text" id="startTimeU" name="startTime" data-options="required:true,editable:false" 
+						           ></input>
+					          </div>
+				        </div>
+				        <div class="ftitle">
+				            <label for="priceA">有效结束时间:</label>
+				            <div style="float:left;margin-left:30px;">
+					            <input class="easyui-datebox commonInput" type="text" id="endTimeU" validType="md['#startTimeU']" name="endTime" data-options="required:true,editable:false" 
+					             ></input>
+					         </div>
+				        </div>
+				        <div class="ftitle">
+				            <label for="lotteryTypeU">彩种分类:</label>
+				             <div id="lUI" style="float : left;margin-left:30px;">
+				             		<input id="luiLName"  type="text" style="width:200px;" readonly="readonly">
+				             </div>
+				             <div id="lUS" style="float : left;margin-left:30px;">
+				             	 <select class="easyui-combobox " id="lotteryTypeU" name="lotteryType"  
+					          	  data-options="editable:false" style="width:200px;" >
+					          	  <option value="1" >体彩</option>
+					          	  <option value="2" >福彩</option>
+								</select>
+				             </div>
+				           
+				        </div>
+				         
+				        
+				         <div id="appCatoryDivU" class="ftitlenot">
+				            <label for="appCategoryU">公告类型:</label>
+				             <div style="float : left;margin-left:30px;">
+				             	 <select class="easyui-combobox " id="appCategoryU"  data-options="editable:false" style="width:200px;" >
+						          	  <option value="2" >普通公告</option>
+						          	  <!-- <option value="3" >开奖公告</option> -->
+						          	  <option value="4" >预测信息公告</option>
+								</select>
+				             </div>
+				           
+				        </div>
+				        <div class="ftitlenot">
+				            <label for="priceA">公告内容:</label>
+				            <textarea id="appNoticeWordU" name="appNoticeWord" class="easyui-validatebox" data-options="required:true" missingMessage="广告内容不可以为空"	
+				         	 validType="length[0,100]" style="resize:none;width:400px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
+				        </div>
+				       
+				        
+				      </form>
+	    	 	</div>
+	    	 	<div region="center" style="height:75%;padding:0;" >
+	    	 		<div style="width:100%;min-height:30%;">
+	    	 			<table id="appDataGridU" class="easyui-datagrid" style="width:100%;height:100%;" title="选择发布应用"></table>
+	    	 		</div>
+	    	 		<div id="txzDivU" style="width:100%;height:30%;">
+	    	 			<table id="stationDataGridU" class="easyui-datagrid" style="width:100%;height:100%;" title="选择发布广告的通行证组" ></table>
+	    	 		</div>
+	    	 		<div id="forecastDivU" style="width:100%;height:30%;">
+	    	 			<table id="forcastDataGridU" class="easyui-datagrid" style="width:100%;height:100%;" title="选择预测信息" ></table>
+	    	 		</div>
+	    	 		<div style="width:100%;height:10%;" id="areaDivU">
+	    	 			<label for="areaDataGridU">选择发布的区域:</label>
+	    	 			<ul id="areaDataGridU" class="ztree"></ul>
+	    	 		</div>
+	    	 		
+	    	 		
+	    	 	</div>
+    		</div>
+    </div>
+    
+     <!-- 查看应用公告详情 -->
+     <div id="detailNotice" class="easyui-dialog" fit="true" title="查看应用广告详情" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+            data-options="
+                iconCls: 'icon-save',
+                buttons: [{
+                    text:'关闭',
+                    iconCls:'icon-cancel',
+                    handler:function(){
+                        $('#detailNotice').dialog('close');
+                    }
+                }]
+            ">
+	    <div class="easyui-layout" style="height:100%;padding:0;" >
+	    	 	<div region="center" style="height:100%;" title="应用广告基本内容" hide="false">
+	    	 		<form id="ffDetail" method="get" novalidate style="margin-top:5px;height:25%;">
+		    	 		<div class="ftitle">
+				            <label for="codeU">公告名称:</label>
+				            <input type="hidden" name="id" id="idD"/>
+				            <input type="hidden" name="appCategory" id="appCategoryhiddenD"/>
+				            <input class="easyui-validatebox commonInput" type="text" id="appNoticeNameD" name="appNoticeName" style="width:200px"  
+				             readonly="readonly"></input>
+				        </div>
+				        <div class="ftitle">
+				            <label for="priceA">有效开始时间:</label>
+				            <div style="float:left;margin-left:30px;">
+						            <input class="easyui-datebox commonInput" type="text" id="startTimeU" name="startTime"readonly="readonly"
+						           ></input>
+					          </div>
+				        </div>
+				        <div class="ftitle">
+				            <label for="priceA">有效结束时间:</label>
+				            <div style="float:left;margin-left:30px;">
+					            <input class="easyui-datebox commonInput" type="text" id="endTimeD" readonly="readonly" name="endTime" 
+					             ></input>
+					         </div>
+				        </div>
+				        <div class="ftitle">
+				            <label for="lotteryTypeD">彩种分类:</label>
+				             <div id="lDI" style="float : left;margin-left:30px;">
+				             		<input id="ldiLName"  type="text" style="width:200px;" readonly="readonly">
+				             </div>
+				           
+				        </div>
+				         
+				        
+				         <div id="appCatoryDivD" class="ftitlenot">
+				            <label for="appCategoryD">公告类型:</label>
+				             <div style="float : left;margin-left:30px;">
+				             <input id="appCategoryD"  type="text" style="width:200px;" readonly="readonly">
+				             </div>
+				           
+				        </div>
+				        <div class="ftitlenot">
+				            <label for="priceA">公告内容:</label>
+				            <textarea id="appNoticeWordD" name="appNoticeWord" class="easyui-validatebox" 	
+				         	 readonly="readonly" style="resize:none;width:400px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
+				        </div>
+				       
+				        
+				      </form>
+	    	 	<!-- </div>
+	    	 	<div id="downDDiv" region="center" style="height:75%;padding:0;width:95%;" > -->
+	    	 		<div style="width:100%;height:25%;">
+	    	 			<table id="appDataGridD" class="easyui-datagrid" style="width:100%;height:100%;" title="发布应用"></table>
+	    	 		</div>
+	    	 		 <div id="txzDivD" style="height:25%;">
+	    	 			<table id="stationDataGridD" class="easyui-datagrid" style="width:100%;height:100%;" title="发布广告的通行证组" ></table>
+	    	 		</div>
+	    	 		<div id="forecastDivD" style="height:25%;">
+	    	 			<table id="forcastDataGridD" class="easyui-datagrid" style="width:100%;height:100%;" title="预测信息" ></table>
+	    	 		</div>
+	    	 		<div style="width:100%;height:10%;" id="areaDivD">
+	    	 			<label for="areaDataGridD">选择发布的区域:</label>
+	    	 			<ul id="areaDataGridD" class="ztree"></ul>
+	    	 		</div>
+	    	 		
+	    	 		
+	    	 	</div>
+    		</div>
+    </div> 
+    
+      <!-- 添加应用公告弹框 -->
   <div id="addNotice" class="easyui-dialog" fit="true" title="添加应用公告" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
@@ -235,7 +424,7 @@
 				             <div style="float : left;margin-left:30px;">
 				             	 <select class="easyui-combobox " id="appCategoryA" data-options="editable:false" style="width:200px;" >
 						          	  <option value="2" >普通公告</option>
-						          	  <option value="3" >开奖公告</option>
+						          	  <!-- <option value="3" >开奖公告</option> -->
 						          	  <option value="4" >预测信息公告</option>
 								</select>
 				             </div>
@@ -273,115 +462,15 @@
     		
 	     
     </div>
-     <!-- 修改应用弹框 -->
-     <div id="updateNotice" class="easyui-dialog" fit="true" title="修改应用广告信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
-            data-options="
-                iconCls: 'icon-save',
-                buttons: [{
-                    text:'保存',
-                    iconCls:'icon-ok',
-                    handler:function(){
-                        submitUpdateNotice('0');
-                    }
-                },{
-                    text:'发布',
-                    iconCls:'icon-ok',
-                    handler:function(){
-                        submitUpdateNotice('1');
-                    }
-                },{
-                    text:'取消',
-                    iconCls:'icon-cancel',
-                    handler:function(){
-                        $('#updateNotice').dialog('close');
-                    }
-                }]
-            ">
-	    <div class="easyui-layout" style="height:100%;padding:0;" >
-	    	 	<div region="north" style="height:25%;" title="应用广告基本内容" hide="false">
-	    	 		<form id="ffUpdate" method="get" novalidate style="margin-top:5px;">
-		    	 		<div class="ftitle">
-				            <label for="codeU">公告名称:</label>
-				            <input type="hidden" name="id" id="idU"/>
-				            <input type="hidden" name="appCategory" id="appCategoryhiddenU"/>
-				            <input class="easyui-validatebox commonInput" type="text" id="appNoticeNameU" name="appNoticeName" style="width:200px"  
-				             data-options="required:true" validType="length[1,15]" invalidMessage="名称字数最多可输入15个字"   missingMessage="公告名称不可以为空" ></input>
-				        </div>
-				        <div class="ftitle">
-				            <label for="priceA">有效开始时间:</label>
-				            <div style="float:left;margin-left:30px;">
-						            <input class="easyui-datebox commonInput" type="text" id="startTimeU" name="startTime" data-options="required:true,editable:false" 
-						           ></input>
-					          </div>
-				        </div>
-				        <div class="ftitle">
-				            <label for="priceA">有效结束时间:</label>
-				            <div style="float:left;margin-left:30px;">
-					            <input class="easyui-datebox commonInput" type="text" id="endTimeU" validType="md['#startTimeU']" name="endTime" data-options="required:true,editable:false" 
-					             ></input>
-					         </div>
-				        </div>
-				        <div class="ftitle">
-				            <label for="lotteryTypeU">彩种分类:</label>
-				             <div id="lUI" style="float : left;margin-left:30px;">
-				             		<input id="luiLName"  type="text" style="width:200px;" readonly="readonly">
-				             </div>
-				             <div id="lUS" style="float : left;margin-left:30px;">
-				             	 <select class="easyui-combobox " id="lotteryTypeU" name="lotteryType"  
-					          	  data-options="editable:false" style="width:200px;" >
-					          	  <option value="1" >体彩</option>
-					          	  <option value="2" >福彩</option>
-								</select>
-				             </div>
-				           
-				        </div>
-				         
-				        
-				         <div id="appCatoryDivU" class="ftitlenot">
-				            <label for="appCategoryU">公告类型:</label>
-				             <div style="float : left;margin-left:30px;">
-				             	 <select class="easyui-combobox " id="appCategoryU"  data-options="editable:false" style="width:200px;" >
-						          	  <option value="2" >普通公告</option>
-						          	  <option value="3" >开奖公告</option>
-						          	  <option value="4" >预测信息公告</option>
-								</select>
-				             </div>
-				           
-				        </div>
-				        <div class="ftitlenot">
-				            <label for="priceA">公告内容:</label>
-				            <textarea id="appNoticeWordU" name="appNoticeWord" class="easyui-validatebox" data-options="required:true" missingMessage="广告内容不可以为空"	
-				         	 validType="length[0,100]" style="resize:none;width:400px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
-				        </div>
-				       
-				        
-				      </form>
-	    	 	</div>
-	    	 	<div region="center" style="height:75%;padding:0;" >
-	    	 		<div style="width:100%;min-height:30%;">
-	    	 			<table id="appDataGridU" class="easyui-datagrid" style="width:100%;height:100%;" title="选择发布应用"></table>
-	    	 		</div>
-	    	 		<div id="txzDivU" style="width:100%;height:30%;">
-	    	 			<table id="stationDataGridU" class="easyui-datagrid" style="width:100%;height:100%;" title="选择发布广告的通行证组" ></table>
-	    	 		</div>
-	    	 		<div id="forecastDivU" style="width:100%;height:30%;">
-	    	 			<table id="forcastDataGridU" class="easyui-datagrid" style="width:100%;height:100%;" title="选择预测信息" ></table>
-	    	 		</div>
-	    	 		<div style="width:100%;height:10%;" id="areaDivU">
-	    	 			<label for="areaDataGridU">选择发布的区域:</label>
-	    	 			<ul id="areaDataGridU" class="ztree"></ul>
-	    	 		</div>
-	    	 		
-	    	 		
-	    	 	</div>
-    		</div>
-    </div>
     
+    <div  data-options="region:'center'" data-options="border:false" >
+    	 <table id="datagrid" class="easyui-datagrid"  title="应用公告列表" >
+			</table>
+ 	</div>  
     
-    
-
+   
+   
 </body>
-	  <script src="<%=request.getContextPath() %>/js/ztree/jquery.ztree.core-3.5.js" type="text/javascript"></script>	
-    <script src="<%=request.getContextPath() %>/js/ztree/jquery.ztree.excheck-3.5.js" type="text/javascript"></script>
+ 	
 	
 </html>

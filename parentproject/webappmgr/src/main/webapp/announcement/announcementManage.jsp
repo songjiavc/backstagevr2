@@ -339,6 +339,73 @@
     		</div>
     </div>
     
+     <!-- 查看通告详情弹框 -->
+     <div id="detailAnnouncement" class="easyui-dialog" fit="true" title="查看通告信息详情" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+            data-options="
+                iconCls: 'icon-save',
+                buttons: [{
+                    text:'关闭',
+                    iconCls:'icon-cancel',
+                    handler:function(){
+                        $('#detailAnnouncement').dialog('close');
+                    }
+                }]
+            ">
+	    <div class="easyui-layout" style="height:100%;padding:0;" >
+	    	 	<div region="north" style="height:40%;" title="通告基本内容" hide="false">
+	    	 		<form id="ffDetail" method="get" novalidate style="margin-top:5px;">
+		    	 		<div class="ftitle">
+				            <label for="codeU">通告名称:</label>
+				            <input type="hidden" name="id" id="idD"/>
+				            <input class="easyui-validatebox commonInput" type="text" id="announcementNameD" name="announcementName" style="width:200px"  
+				             readonly="readonly" ></input>
+				        </div>
+				         <div class="ftitle">
+				            <label for="priceA">有效开始时间:</label>
+				            <div style="float:left;margin-left:30px;">
+						            <input class="easyui-datebox commonInput" type="text" id="startTimeD" name="startTime" readonly="readonly"
+						           ></input>
+					          </div>
+				        </div>
+				        <div class="ftitle">
+				            <label for="priceA">有效结束时间:</label>
+				            <div style="float:left;margin-left:30px;">
+					            <input class="easyui-datebox commonInput" type="text" id="endTimeU"  name="endTime" readonly="readonly"
+					             ></input>
+					         </div>
+				        </div>
+				        <div class="ftitle">
+				            <label for="lotteryTypeU">彩种分类:</label>
+				             <div id="lDI" style="float : left;margin-left:30px;">
+				             		<input id="ldiLName"  type="text" style="width:200px;" readonly="readonly">
+				             </div>
+				           
+				        </div>
+				        
+				        
+				        <div class="ftitlenot">
+				            <label for="priceA">通告内容:</label>
+				            <textarea id="announcementContentU" name="announcementContent" class="easyui-validatebox" 
+				         	 readonly="readonly" style="resize:none;width:400px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
+				        </div>
+				       
+				        
+				      </form>
+	    	 	</div>
+	    	 	<div region="center" style="height:60%;padding:0;" >
+	    	 		<div id="txzDivA" style="width:100%;height:50%;">
+	    	 			<table id="stationDataGridD" class="easyui-datagrid" style="width:100%;height:100%;" title="选择发布通告的通行证组" ></table>
+	    	 		</div>
+	    	 		<div style="width:100%;height:50%;"  id="areaDivD">
+	    	 			<label for="areaDataGridD">选择发布的区域:</label>
+	    	 			<ul id="areaDataGridD" class="ztree"></ul>
+	    	 		</div>
+	    	 		
+	    	 		
+	    	 	</div>
+    		</div>
+    </div>
+    
      <div id="checkAReceipt" class="easyui-dialog" title="查看通告回执信息" style="width:800px;height:400px;padding:0px;border:0;"
    		  data-options="
                 iconCls: 'icon-save',

@@ -237,8 +237,9 @@
     </div>
     
     <!-- 图片预览弹框 -->
-    <div id="uploadShowAimgPreview" title="图片预览" class="easyui-dialog" fit="true" style="width:500px; height:400px;"> </div>
-    <div id="uploadShowUimgPreview" title="图片预览" class="easyui-dialog" fit="true" style="width:500px; height:400px;"> </div>
+    <div id="uploadShowAimgPreview" title="图片预览" class="easyui-dialog"  style="width:500px; height:400px;"> </div>
+    <div id="uploadShowUimgPreview" title="图片预览" class="easyui-dialog"  style="width:500px; height:400px;"> </div>
+    <div id="uploadShowDimgPreview" title="图片预览" class="easyui-dialog"  style="width:500px; height:400px;"> </div>
     
      <!-- 修改应用弹框 -->
      <div id="updateAd" class="easyui-dialog" fit="true" title="修改应用广告信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
@@ -324,6 +325,84 @@
 	    	 		<div style="width:100%;min-height:20;" id="areaDivU">
 	    	 			<label for="areaDataGridU">选择发布的区域:</label>
 	    	 			<ul id="areaDataGridU" class="ztree"></ul>
+	    	 		</div>
+	    	 		
+	    	 		
+	    	 	</div>
+    		</div>
+    </div>
+    
+    <!-- 查看应用广告弹框详情 -->
+     <div id="detailAd" class="easyui-dialog" fit="true" title="查看应用广告信息详情" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+            data-options="
+                iconCls: 'icon-save',
+                buttons: [{
+                    text:'关闭',
+                    iconCls:'icon-cancel',
+                    handler:function(){
+                        $('#detailAd').dialog('close');
+                    }
+                }]
+            ">
+	    <div class="easyui-layout" style="height:100%;padding:0;" >
+	    	 	<div region="north" style="height:40%;" title="应用广告基本内容" hide="false">
+	    	 		<form id="ffDetail" method="get" novalidate style="margin-top:5px;">
+		    	 		<div class="ftitle">
+				            <label for="codeA">广告名称:</label>
+				            <input type="hidden" name="id" id="idD"/>
+				            <input type="hidden" name="imgOrWord" id="imgOrWordD"/>
+				            <input class="easyui-validatebox commonInput" type="text" id="appAdNameD" name="appAdName" style="width:200px"  
+				             readonly="readonly" ></input>
+				        </div>
+				         <div class="ftitle">
+				            <label for="priceA">有效开始时间:</label>
+				            <div style="float:left;margin-left:30px;">
+						            <input class="easyui-datebox commonInput" type="text" id="startTimeD" name="startTime" readonly="readonly"
+						           ></input>
+					          </div>
+				        </div>
+				        <div class="ftitle">
+				            <label for="priceA">有效结束时间:</label>
+				            <div style="float:left;margin-left:30px;">
+					            <input class="easyui-datebox commonInput" type="text" id="endTimeD"  name="endTime" readonly="readonly"
+					             ></input>
+					         </div>
+				        </div>
+				        <!-- tabs -->
+				        <div id="ttD" class="easyui-tabs" style="width:100%;height:150px;">
+							<div title="图片广告" style="padding:10px;">
+								  <div class="ftitle">
+							            <label for="appImgUrl">广告图片:</label>
+							            <input type="hidden" id="appImgUrlD" name="appImgUrl"/>
+							        	<div id="uploadShowD">
+				                    		<ul>
+				                    			
+				                    		</ul>
+				                    	</div>
+				                    	
+							        </div>
+							</div>
+							<div title="文字广告" style="padding:10px;">
+								 <div class="ftitle">
+						            <label for="priceA">广告内容:</label>
+						            <textarea id="addWordD" name="addWord" class="easyui-validatebox" 
+						         	 readonly="readonly" style="resize:none;width:400px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
+						        </div>
+							</div>
+						</div>
+				        
+				      </form>
+	    	 	</div>
+	    	 	<div region="center" style="height:60%;padding:0;" >
+	    	 		<div style="width:100%;min-height:40%;">
+	    	 			<table id="appDataGridD" class="easyui-datagrid" style="width:100%;height:100%;" title="发布应用"></table>
+	    	 		</div>
+	    	 		<div id="txzDivD" style="width:100%;height:40%;">
+	    	 			<table id="stationDataGridD" class="easyui-datagrid" style="width:100%;height:100%;" title="发布广告的通行证组" ></table>
+	    	 		</div>
+	    	 		<div style="width:100%;min-height:20%;" id="areaDivD">
+	    	 			<label for="areaDataGridD">发布的区域:</label>
+	    	 			<ul id="areaDataGridD" class="ztree"></ul>
 	    	 		</div>
 	    	 		
 	    	 		

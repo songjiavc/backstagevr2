@@ -132,6 +132,8 @@ function closeDialog()
 	//关闭图片预览弹框
 	$("#uploadShowAimgPreview").dialog('close');
 	$("#uploadShowUimgPreview").dialog('close');
+	$("#uploadShowDimgPreview").dialog('close');
+	$('#detailAd').dialog('close');
 }
 
 /**
@@ -212,7 +214,8 @@ function initDatagrid()
 				{field:'opt',title:'操作',width:'15%',align:'center',  
 			            formatter:function(value,row,index){  
 			                var btn = '<a class="editcls" onclick="updateAd(&quot;'+row.id+'&quot;,&quot;'+row.adStatus+'&quot;)" href="javascript:void(0)">编辑</a>'
-			                	+'<a class="deleterole" onclick="deleteAd(&quot;'+row.id+'&quot;,&quot;'+row.adStatus+'&quot;)" href="javascript:void(0)">删除</a>';
+			                	+'<a class="deleterole" onclick="deleteAd(&quot;'+row.id+'&quot;,&quot;'+row.adStatus+'&quot;)" href="javascript:void(0)">删除</a>'
+			                	+'<a class="detailrole" onclick="detailAd(&quot;'+row.id+'&quot;,&quot;'+row.adStatus+'&quot;)" href="javascript:void(0)">查看详情</a>';
 			                return btn;  
 			            }  
 			        }  
@@ -220,7 +223,7 @@ function initDatagrid()
 	    onLoadSuccess:function(data){  
 	        $('.editcls').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'}); 
 	        $('.deleterole').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});  
-	        
+	        $('.detailrole').linkbutton({text:'查看详情',plain:true,iconCls:'icon-filter'}); 
 	        if(data.rows.length==0){
 				var body = $(this).data().datagrid.dc.body2;
 				body.find('table tbody').append('<tr><td width="'+body.width()+'" style="height: 25px; text-align: center;" colspan="7">没有数据</td></tr>');
@@ -264,6 +267,7 @@ function getLoginArea()
 function initAppDatagrid(adId,appDatagridId)
 {
 	var params = new Object();
+	appList = new map();
 	params.appType = '1';//只对已经上架的应用发布广告
 	
 	var areamsg = getLoginArea();
@@ -288,7 +292,7 @@ function initAppDatagrid(adId,appDatagridId)
 		}
 	
 	
-	if('appDataGridU' == appDatagridId)
+	if('appDataGridU' == appDatagridId || 'appDataGridD' == appDatagridId)
 		{
 			var apps = getAppsOfAd(adId);
 			var appId;
@@ -545,7 +549,8 @@ function dosearch(addOrUpdate)
 function initStationGList(id,stationDataGridId)
 {
 	var params = new Object();
-	if('stationDataGridU' == stationDataGridId)
+	stationGList = new map();
+	if('stationDataGridU' == stationDataGridId || 'stationDataGridD' == stationDataGridId)
 	{
 		
 		var ugroups = checkStations(id, stationDataGridId);
@@ -715,7 +720,99 @@ function addAppad()
   	
 }
 
-
+/**
+ * 查看应用广告详情
+ * @param id
+ * @param adStatus
+ */
+function detailAd(id,adStatus)
+{
+	var updateFlag = true;
+	$("#detailAd").dialog('open');
+	var url = contextPath + '/advertisement/getDetailAdvertisement.action';
+	var data1 = new Object();
+	data1.id=id;//应用的id
+	
+		$.ajax({
+			async: false,   //设置为同步获取数据形式
+	        type: "get",
+	        url: url,
+	        data:data1,
+	        dataType: "json",
+	        success: function (data) {
+	        	
+					$('#ffDetail').form('load',{
+						id:data.id,
+						appAdName:data.appAdName,
+						startTime:data.startTimestr,
+						endTime:data.endTimestr,//通行证组描述
+//							appImgUrl:data.appImgUrl,//读取的是图片附件id
+//							addWord:data.addWord,
+						imgOrWord:data.imgOrWord//当前的广告形式
+					});
+					if('1' == data.imgOrWord)
+						{//文字形式的广告填充文字内容
+							$("#addWordD").val(data.addWord);
+							$("#ttD").tabs('select',1);//title 或  index(默认从0开始) 
+							$("#uploadShowD ul").html("");//清空上一次的图片显示列表
+						}
+					else
+						{
+							$("#appImgUrlD").val(data.appImgUrl);
+							$("#ttD").tabs('select',0);//title 或  index(默认从0开始) 
+							/*初始化附件列表*/
+							initImgList(data.appImgUrl,'uploadShowD');
+							$("#addWordD").val('');//清空上一次的文字广告
+						}
+					//初始化通行证列表数据
+					checkUseUgroup('txzDivD', id, 'stationDataGridD');//判断当前用户是否为市中心用户，若为市中心用户则加载通行证组数据
+					initAppDatagrid(id,'appDataGridD');
+					//初始化区域树
+					//初始化区域树
+					var roleArr = getLoginuserRole();
+				  	var isCityManager = roleArr[0];//是否拥有市中心角色
+					var isProvinceManager = roleArr[1];//是否拥有省中心角色
+					var currentcode = roleArr[2];
+					var province = roleArr[3];
+					
+					if(!isCityManager)
+					{
+						$("#areaDivD").show();// id="areaDivA"
+						//展示所有的区域信息，树的形式
+					  	initAreaData('areaDataGridD',isProvinceManager,province);
+						//选中当前应用广告发布的区域
+						var zTree = $.fn.zTree.getZTreeObj("areaDataGridD");
+						var node;//ztree树节点变量
+						var cityIds = checkAreas(id);
+						$.each(cityIds,function(j,cityId){
+							areaList.put(cityId, cityId);
+							node = zTree.getNodeByParam("id",cityId);
+							if(null != node)
+							{
+								zTree.checkNode(node, true, true);//设置树节点被选中
+							}
+		    			});
+						
+					}
+					else
+					{
+						$("#areaDivD").hide();
+					}
+					
+					
+						
+					
+	        	
+	        },
+	        error: function (XMLHttpRequest, textStatus, errorThrown) {
+	            window.parent.location.href = contextPath + "/error.jsp";
+	        }
+		});
+	
+	
+		
+		
+}
 
 /**
  *应用广告修改

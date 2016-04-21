@@ -275,6 +275,55 @@
     		</div>
     </div>
     
+     <!-- 查看开奖公告详情 -->
+     <div id="detailKaijiangNotice" class="easyui-dialog" fit="true" title="查看开奖公告详情" style="width:800px;height:550px;padding:0px;border:0;"
+            data-options="
+                iconCls: 'icon-save',
+                buttons: [{
+                    text:'关闭',
+                    iconCls:'icon-cancel',
+                    handler:function(){
+                        $('#detailKaijiangNotice').dialog('close');
+                    }
+                }]
+            ">
+	    <div class="easyui-layout" style="height:100%;padding:0;" >
+	    	 	<div region="north" style="height:50%;" title="开奖公告基本内容" hide="false">
+	    	 		<form id="ffDetail" method="get" novalidate style="margin-top:5px;">
+		    	 		<div class="ftitle"> 
+		    	 			<label>开奖公告名称:</label>
+				            <input type="hidden" name="id" id="idU"/>
+				            <input class="easyui-validatebox commonInput" type="text" id="appNoticeNameD" name="appNoticeName" style="width:200px"  
+				             readonly="readonly" ></input>
+				        </div>
+				        <div class="ftitle">
+				            <label for="lDI">彩种分类:</label>
+				            <div id="lDI" style="float : left;margin-left:30px;">
+				             		<input id="ldiLName"  type="text" style="width:200px;" readonly="readonly">
+				             </div>
+				           
+				        </div>
+				        
+				        <div class="ftitlenot">
+				            <label for="priceA">开奖公告内容:</label>
+				            <textarea id="appNoticeWordD" name="appNoticeWord" class="easyui-validatebox" 
+				         	 readonly="readonly" style="resize:none;width:400px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
+				        </div>
+				       
+				        
+				      </form>
+	    	 	</div>
+	    	 	<div region="center" style="height:50%;padding:0;" >
+	    	 		<div style="width:100%;height:100%;">
+	    	 			<label for="areaDataGridD">选择发布的区域:</label>
+	    	 			<ul id="areaDataGridD" class="ztree"></ul>
+	    	 		</div>
+	    	 		
+	    	 		
+	    	 	</div>
+    		</div>
+    </div>
+    
     
     
 

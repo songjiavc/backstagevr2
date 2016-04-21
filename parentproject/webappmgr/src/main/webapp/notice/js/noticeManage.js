@@ -4,13 +4,21 @@ var appList = new map();//选中的应用数组集合
 var areaList = new map();
 var forecastList = new map();
 
-$(document).ready(function(){
+$(window).load(function(){
 	
 			closeDialog();//页面加载时关闭弹框
 			/*initQueryProvince();//初始化模糊查询的省份
-*/			initDatagrid();//初始化数据列表
+*/			
 			clearLists();
 			bindComboboxChange();//为通行证的模糊查询的省份条件绑定下拉框级联事件
+			//初始化数据列表
+			initDatagrid();
+			
+			/*setTimeout(function(){
+				alert("1");
+				initDatagrid();
+			}, 3000);*/
+			
 		});
 
 
@@ -193,6 +201,8 @@ function closeDialog()
 {
 	$("#addNotice").dialog('close');
 	$("#updateNotice").dialog('close');
+	$("#detailNotice").dialog('close');
+	$("#hiddenNotice").dialog('close');//隐藏占位dialog弹框
 }
 
 /**
@@ -263,7 +273,7 @@ function initDatagrid()
 				{field:'ck',checkbox:true},
 				{field:'id',hidden:true},
 				{field:'noticeStatus',hidden:true},
-				{field:'appNoticeName',title:'应用公告名称',width:'15%',align:'center'},
+				{field:'appNoticeName',title:'应用公告名称',width:'13%',align:'center'},
 				{field:'noticeStatusName',title:'应用公告状态',width:'8%',align:'center'},
 				{field:'lotteryType',width:'7%',title:'彩种',align:'center',  
 		            formatter:function(value,row,index){  
@@ -278,10 +288,11 @@ function initDatagrid()
 		        {field:'startTimestr',width:'15%',title:'有效开始时间',align:'center'},
 				{field:'endTimestr',title:'有效结束时间',width:'15%',align:'center'},
 				{field:'createTime',title:'创建时间',width:'15%',align:'center'},
-				{field:'opt',title:'操作',width:'23%',align:'center',  
+				{field:'opt',title:'操作',width:'25%',align:'center',  
 			            formatter:function(value,row,index){  
 			                var btn = '<a class="editcls" onclick="updateNotice(&quot;'+row.id+'&quot;,&quot;'+row.noticeStatus+'&quot;)" href="javascript:void(0)">编辑</a>'
-			                	+'<a class="deleterole" onclick="deleteNotice(&quot;'+row.id+'&quot;,&quot;'+row.noticeStatus+'&quot;)" href="javascript:void(0)">删除</a>';
+			                	+'<a class="deleterole" onclick="deleteNotice(&quot;'+row.id+'&quot;,&quot;'+row.noticeStatus+'&quot;)" href="javascript:void(0)">删除</a>'
+			                	+'<a class="detailrole" onclick="detailNotice(&quot;'+row.id+'&quot;)" href="javascript:void(0)">查看详情</a>';
 			                return btn;  
 			            }  
 			        }  
@@ -289,7 +300,7 @@ function initDatagrid()
 	    onLoadSuccess:function(data){  
 	        $('.editcls').linkbutton({text:'编辑',plain:true,iconCls:'icon-edit'}); 
 	        $('.deleterole').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});  
-	        
+	        $('.detailrole').linkbutton({text:'查看详情',plain:true,iconCls:'icon-filter'}); 
 	        if(data.rows.length==0){
 				var body = $(this).data().datagrid.dc.body2;
 				body.find('table tbody').append('<tr><td width="'+body.width()+'" style="height: 25px; text-align: center;" colspan="8">没有数据</td></tr>');
@@ -427,8 +438,8 @@ function initAppDatagrid(noticeId,appDatagridId)
 				}
 		}
 	
-	
-	if('appDataGridU' == appDatagridId)
+	appList = new map();
+	if('appDataGridU' == appDatagridId ||'appDataGridD' == appDatagridId)
 		{
 			var apps = getAppsOfNotice(noticeId);
 			var appId;
@@ -437,11 +448,6 @@ function initAppDatagrid(noticeId,appDatagridId)
 				appId = apps[i].id;
 				appList.put(appId, appId);
 			}
-			/*params.lotteryType = $("#lotteryTypeU").combobox('getValue');*/
-		}
-	else
-		{
-			/*params.lotteryType = $("#lotteryTypeA").combobox('getValue');*/
 		}
 	
 	$('#'+appDatagridId).datagrid({
@@ -677,7 +683,8 @@ function initCities(cityId,pcode)
 function initStationGList(id,stationDataGridId)
 {
 	var params = new Object();
-	if('stationDataGridU' == stationDataGridId)
+	stationGList = new map();
+	if('stationDataGridU' == stationDataGridId || 'stationDataGridD' == stationDataGridId)
 	{
 		
 		var ugroups = checkStations(id, stationDataGridId);
@@ -849,7 +856,141 @@ function clearAppAndForecastLists()
 	forecastList = new map();
 }
 
-
+/**
+ * 查看应用公告详情
+ * @param id
+ * @param noticeStatus
+ */
+function detailNotice(id)
+{
+	$("#detailNotice").dialog('open');
+	var url = contextPath + '/notice/getDetailNotice.action';
+	var data1 = new Object();
+	data1.id=id;//应用的id
+	
+		$.ajax({
+			async: false,   //设置为同步获取数据形式
+	        type: "get",
+	        url: url,
+	        data:data1,
+	        dataType: "json",
+	        success: function (data) {
+	        	
+					$('#ffDetail').form('load',{
+						id:data.id,
+						appNoticeName:data.appNoticeName,
+						startTime:data.startTimestr,
+						endTime:data.endTimestr,//通行证组描述
+						appNoticeWord:data.appNoticeWord,
+						lotteryType:data.lotteryType,//彩种
+						appCategory:data.appCategory//公告类别
+					});
+					//初始化通行证列表数据
+					checkNoticeUseUgroup('txzDivD', id, 'stationDataGridD');//判断当前用户是否为市中心用户，若为市中心用户则加载通行证组数据
+					initAppDatagrid(id,'appDataGridD');
+					
+					
+					
+					//初始化区域树
+					var roleArr = getLoginuserRole();
+				  	var isCityManager = roleArr[0];//是否拥有市中心角色
+					var isProvinceManager = roleArr[1];//是否拥有省中心角色
+					var currentcode = roleArr[2];
+					var province = roleArr[3];
+					var lotteryType = roleArr[5];
+					
+					if(!isCityManager)
+					{
+						$("#areaDivD").show();// id="areaDivA"
+						//展示所有的区域信息，树的形式
+					  	initAreaData('areaDataGridD',isProvinceManager,province);
+						//选中当前应用广告发布的区域
+						var zTree = $.fn.zTree.getZTreeObj("areaDataGridD");
+						var node;//ztree树节点变量
+						var cityIds = checkAreas(id);
+						$.each(cityIds,function(j,cityId){
+							areaList.put(cityId, cityId);
+							node = zTree.getNodeByParam("id",cityId);
+							if(null != node)
+							{
+								zTree.checkNode(node, true, true);//设置树节点被选中
+							}
+		    			});
+						
+					}
+					else
+					{
+						$("#areaDivD").hide();
+					}
+					
+					//设置公告类型div显示
+//							var areamsg = getLoginArea();
+					var appcategory = data.appCategory;//areamsg.appcategory;
+					if('1'!=appcategory &&'0'!=appcategory)//在登录用户不是市中心且不是省中心用户时赋予区域
+						{
+							$("#appCatoryDivD").show();
+							//若显示则赋值
+							if('2' == appcategory)
+								{
+									$("#appCategoryD").val("普通公告");
+								}
+							else if('3' == appcategory)
+								{
+									$("#appCategoryD").val("开奖公告");
+								}
+							if('4' == appcategory)
+								{//预测类公告
+									$("#forecastDivD").show();
+									$("#appCategoryD").val("预测信息公告");
+									initForecastDatagird('forcastDataGridD');
+								}
+							else
+								{
+									$("#forecastDivD").hide();
+								}
+							
+									
+								$("#lDI").show();
+								$("#lDS").hide();
+								if('1' == data.lotteryType)
+								{
+									$("#ldiLName").val("体彩");
+								}
+								else if('2' == data.lotteryType)
+								{
+									$("#ldiLName").val("福彩");
+								}
+						
+						}
+					else
+						{
+							$("#appCatoryDivD").hide();
+							$("#forecastDivD").hide();
+							
+							$("#lDI").show();
+							$("#lDS").hide();
+							if('1' == data.lotteryType)
+								{
+									$("#ldiLName").val("体彩");
+								}
+							else if('2' == data.lotteryType)
+								{
+									$("#ldiLName").val("福彩");
+								}
+								
+						}
+						
+					
+	        	
+	        },
+	        error: function (XMLHttpRequest, textStatus, errorThrown) {
+	            window.parent.location.href = contextPath + "/error.jsp";
+	        }
+		});
+	
+		
+		
+}
 
 /**
  *应用公告修改
@@ -1017,9 +1158,17 @@ function initForecastDatagird(forecastDatagirdId)
 	forecastList = new map();
 	//?※应用的区域应该对预测信息的显示有限制吗？？？目前代码中没有约束，TODO:之后把应用和预测信息做成级联
 	var params = new Object();
-	if('forcastDataGridU' == forecastDatagirdId)
+	if('forcastDataGridU' == forecastDatagirdId || 'forcastDataGridD' == forecastDatagirdId)
 	{
-		var id = $("#idU").val();
+		var id = '';
+		if('forcastDataGridU' == forecastDatagirdId)
+			{
+				id = $("#idU").val();
+			}
+		else
+			{
+				id = $("#idD").val();
+			}
 		var forecasts = checkForecast(id, forecastDatagirdId);
 		var forecastId;
 		for (var i = 0; i < forecasts.length; i++) {
