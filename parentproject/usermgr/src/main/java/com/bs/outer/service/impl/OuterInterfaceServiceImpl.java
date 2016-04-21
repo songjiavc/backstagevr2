@@ -15,11 +15,13 @@ import com.bs.outer.entity.Fast3Analysis;
 import com.bs.outer.entity.Fast3DanMa;
 import com.bs.outer.entity.Fast3Same;
 import com.bs.outer.entity.Fast3SiMa;
+import com.bs.outer.entity.Ln5In12Bean;
 import com.bs.outer.repository.Fast3AnalysisRepository;
 import com.bs.outer.repository.Fast3DanMaRepository;
 import com.bs.outer.repository.Fast3NumberRepository;
 import com.bs.outer.repository.Fast3SameRepository;
 import com.bs.outer.repository.Fast3SiMaRepository;
+import com.bs.outer.repository.Ln5In12Repository;
 import com.bs.outer.service.OuterInterfaceService;
 import com.sdf.manager.ad.entity.Advertisement;
 import com.sdf.manager.ad.repository.AdvertisementRepository;
@@ -63,7 +65,8 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	@Autowired
 	private Fast3SameRepository fast3SameRepository;
 	
-	
+	@Autowired
+	private Ln5In12Repository ln5In12Repository;
 	
 	//TODO:未完成
 	public QueryResult<Announcement> getAnnouncementOfSta(Class<Announcement> entityClass, String whereJpql, Object[] queryParams, 
@@ -260,6 +263,9 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see com.bs.outer.service.OuterInterfaceService#getInitSameList(java.lang.String, java.lang.String)
+	 */
 	public List<Fast3Same> getInitSameList(String issueNumber, String provinceNumber) {
 		String tableName = "analysis.T_ANHUI_KUAI3_SAMENUMBER";
 		String where = null;
@@ -274,5 +280,24 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		List<Fast3Same> fast3SameList = fast3SameRepository.getEntityListBySql(Fast3Same.class,execSql, queryParams);
 		return fast3SameList;
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see com.bs.outer.service.OuterInterfaceService#getLn5In12Last3DaysList()
+	 */
+	public List<Ln5In12Bean> getLn5In12Last3DaysList(){
+		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM analysis.T_LN_5IN12_NUMBER WHERE CREATE_TIME >= date_add(CURDATE(),INTERVAL -3 DAY)";
+		Object[] queryParams = new Object[]{
+		};
+		List<Ln5In12Bean> ln5In12List =ln5In12Repository.getEntityListBySql(Ln5In12Bean.class,execSql, queryParams);
+		return ln5In12List;
+	}
+	
+	public Ln5In12Bean getLn5In12EntityByIssueNumber(String issueNumber){
+		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM analysis.T_LN_5IN12_NUMBER WHERE ISSUE_NUMBER > '" +issueNumber+ "'" ;
+		Object[] queryParams = new Object[]{
+		};
+		Ln5In12Bean ln5In12 =ln5In12Repository.getEntityBySql(Ln5In12Bean.class,execSql, queryParams);
+		return ln5In12;
+	}
+	
 }
