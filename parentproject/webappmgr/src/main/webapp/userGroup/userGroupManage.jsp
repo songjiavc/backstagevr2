@@ -149,7 +149,7 @@
 	     
     </div>
      <!-- 修改应用弹框 -->
-     <div id="updateUgroup" class="easyui-dialog" fit="true" title="修改应用信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+     <div id="updateUgroup" class="easyui-dialog" fit="true" title="修改通行证组信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
