@@ -157,14 +157,14 @@
 	    	</table>	
 	</div>
 		<!-- 占位用的，没有实际意义s -->
-		<div id="hiddenNotice" class="easyui-dialog" fit="true" title="应用广告信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;">
+		<div id="hiddenNotice" class="easyui-dialog" fit="true" title="应用公告信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;">
 			 <table id="hiddendatagrid" class="easyui-datagrid"  title="测试列表" ></table>
 		</div>
     	
  		 <!-- 占位用的，没有实际意义e -->
   
      <!-- 修改应用弹框 -->
-     <div id="updateNotice" class="easyui-dialog" fit="true" title="修改应用广告信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+     <div id="updateNotice" class="easyui-dialog" fit="true" title="修改应用公告信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -188,7 +188,7 @@
                 }]
             ">
 	    <div class="easyui-layout" style="height:100%;padding:0;" >
-	    	 	<div region="north" style="height:25%;" title="应用广告基本内容" hide="false">
+	    	 	<div region="north" style="height:25%;" title="应用公告基本内容" hide="false">
 	    	 		<form id="ffUpdate" method="get" novalidate style="margin-top:5px;">
 		    	 		<div class="ftitle">
 				            <label for="codeU">公告名称:</label>
@@ -240,7 +240,7 @@
 				        </div>
 				        <div class="ftitlenot">
 				            <label for="priceA">公告内容:</label>
-				            <textarea id="appNoticeWordU" name="appNoticeWord" class="easyui-validatebox" data-options="required:true" missingMessage="广告内容不可以为空"	
+				            <textarea id="appNoticeWordU" name="appNoticeWord" class="easyui-validatebox" data-options="required:true" missingMessage="公告内容不可以为空"	
 				         	 validType="length[0,100]" style="resize:none;width:400px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
 				        </div>
 				       
@@ -252,7 +252,7 @@
 	    	 			<table id="appDataGridU" class="easyui-datagrid" style="width:100%;height:100%;" title="选择发布应用"></table>
 	    	 		</div>
 	    	 		<div id="txzDivU" style="width:100%;height:30%;">
-	    	 			<table id="stationDataGridU" class="easyui-datagrid" style="width:100%;height:100%;" title="选择发布广告的通行证组" ></table>
+	    	 			<table id="stationDataGridU" class="easyui-datagrid" style="width:100%;height:100%;" title="选择发布公告的通行证组" ></table>
 	    	 		</div>
 	    	 		<div id="forecastDivU" style="width:100%;height:30%;">
 	    	 			<table id="forcastDataGridU" class="easyui-datagrid" style="width:100%;height:100%;" title="选择预测信息" ></table>
@@ -268,7 +268,7 @@
     </div>
     
      <!-- 查看应用公告详情 -->
-     <div id="detailNotice" class="easyui-dialog" fit="true" title="查看应用广告详情" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+     <div id="detailNotice" class="easyui-dialog" fit="true" title="查看应用公告详情" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -280,7 +280,7 @@
                 }]
             ">
 	    <div class="easyui-layout" style="height:100%;padding:0;" >
-	    	 	<div region="center" style="height:100%;" title="应用广告基本内容" hide="false">
+	    	 	<div region="center" style="height:100%;" title="应用公告基本内容" hide="false">
 	    	 		<form id="ffDetail" method="get" novalidate style="margin-top:5px;height:25%;">
 		    	 		<div class="ftitle">
 				            <label for="codeU">公告名称:</label>
@@ -333,7 +333,7 @@
 	    	 			<table id="appDataGridD" class="easyui-datagrid" style="width:100%;height:100%;" title="发布应用"></table>
 	    	 		</div>
 	    	 		 <div id="txzDivD" style="height:25%;">
-	    	 			<table id="stationDataGridD" class="easyui-datagrid" style="width:100%;height:100%;" title="发布广告的通行证组" ></table>
+	    	 			<table id="stationDataGridD" class="easyui-datagrid" style="width:100%;height:100%;" title="发布公告的通行证组" ></table>
 	    	 		</div>
 	    	 		<div id="forecastDivD" style="height:25%;">
 	    	 			<table id="forcastDataGridD" class="easyui-datagrid" style="width:100%;height:100%;" title="预测信息" ></table>
@@ -445,7 +445,7 @@
 	    	 			<table id="appDataGridA" class="easyui-datagrid" style="width:100%;height:100%;" title="选择发布应用"></table>
 	    	 		</div>
 	    	 		<div id="txzDivA" style="width:100%;height:30%;">
-	    	 			<table id="stationDataGridA" class="easyui-datagrid" style="width:100%;height:100%;" title="选择发布广告的通行证组" ></table>
+	    	 			<table id="stationDataGridA" class="easyui-datagrid" style="width:100%;height:100%;" title="选择发布公告的通行证组" ></table>
 	    	 		</div>
 	    	 		<div id="forecastDivA" style="width:100%;height:30%;">
 	    	 			<table id="forcastDataGridA" class="easyui-datagrid" style="width:100%;height:100%;" title="选择预测信息" ></table>
