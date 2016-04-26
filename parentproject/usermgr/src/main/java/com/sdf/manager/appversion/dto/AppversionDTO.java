@@ -33,7 +33,17 @@ public class AppversionDTO {
 	
 	private String appId;//所属应用id
 	
+	private String versionDescription;//版本描述 addDate：2016-4-26
 	
+	
+
+	public String getVersionDescription() {
+		return versionDescription;
+	}
+
+	public void setVersionDescription(String versionDescription) {
+		this.versionDescription = versionDescription;
+	}
 
 	public String getAppId() {
 		return appId;

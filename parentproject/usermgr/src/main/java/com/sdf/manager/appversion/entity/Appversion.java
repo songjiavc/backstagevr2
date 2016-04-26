@@ -74,6 +74,10 @@ public class Appversion extends BaseEntiry{
 	@Column(name="COUNTRY", length=45)
 	private String country;
 	
+	//版本描述
+	@Column(name="VERSION_DESCRIPTION", length=600)
+	private String versionDescription;//版本描述 addDate：2016-4-26
+	
 	@ManyToOne  
     @JoinColumn(name = "APP_ID", referencedColumnName = "id")
 	private App app;
@@ -88,6 +92,14 @@ public class Appversion extends BaseEntiry{
 	
 	
 	
+
+	public String getVersionDescription() {
+		return versionDescription;
+	}
+
+	public void setVersionDescription(String versionDescription) {
+		this.versionDescription = versionDescription;
+	}
 
 	public String getProvince() {
 		return province;

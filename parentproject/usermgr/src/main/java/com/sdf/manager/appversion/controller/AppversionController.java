@@ -196,6 +196,7 @@ public class AppversionController extends GlobalExceptionHandler {
 				@RequestParam(value="appVersionStatus",required=false) String appVersionStatus,
 				@RequestParam(value="appDeveloper",required=false) String appDeveloper,
 				@RequestParam(value="appId",required=false) String appId,
+				@RequestParam(value="versionDescription",required=false) String versionDescription,//版本描述 addDate：2016-4-26
 				ModelMap model,HttpSession httpSession) throws Exception
 		{
 		   ResultBean resultBean = new ResultBean ();
@@ -215,6 +216,7 @@ public class AppversionController extends GlobalExceptionHandler {
 			   appversion.setAppVersionStatus(appVersionStatus);
 			   appversion.setAppDeveloper(appDeveloper);
 			   appversion.setVersionCode(versionCode);
+			   appversion.setVersionDescription(versionDescription);//AddDate:2016-4-26
 			   
 			   appversion.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
 			   appversion.setModifyTime(new Timestamp(System.currentTimeMillis()));
@@ -242,6 +244,7 @@ public class AppversionController extends GlobalExceptionHandler {
 			   appversion.setVersionCode(versionCode);
 			   String versionFlowId = this.generateFlowId(appId);
 			   appversion.setVersionFlowId(versionFlowId);
+			   appversion.setVersionDescription(versionDescription);//AddDate:2016-4-26
 			   
 			   appversion.setCreater(LoginUtils.getAuthenticatedUserCode(httpSession));
 			   appversion.setCreaterTime(new Timestamp(System.currentTimeMillis()));

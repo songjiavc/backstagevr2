@@ -115,7 +115,7 @@ function initDatagrid()
 				{field:'createTime',title:'创建时间',width:130,align:'center'},
 				{field:'opt',title:'操作',width:160,align:'center',  
 			            formatter:function(value,row,index){  
-			                var btn = '<a class="editcls" onclick="updateAppVersion(&quot;'+row.id+'&quot;)" href="javascript:void(0)">编辑</a>'
+			                var btn = '<a class="editcls" onclick="updateAppVersion(&quot;'+row.id+'&quot;,&quot;'+row.appVersionStatus+'&quot)" href="javascript:void(0)">编辑</a>'
 			                	+'<a class="deleterole" onclick="deleteAppVersion(&quot;'+row.id+'&quot;,&quot;'+row.appVersionStatus+'&quot;)" href="javascript:void(0)">删除</a>';
 			                return btn;  
 			            }  
@@ -198,44 +198,56 @@ function initParentAppList(appId,addOrUpdate,oldValue,isAll)
 /**
  *应用版本修改
  */
-function updateAppVersion(id)
+function updateAppVersion(id,appversionStatus)
 {
 	var url = contextPath + '/appversion/getDetailAppversion.action';
 	var data1 = new Object();
 	data1.id=id;//应用的id
+	var updateFlag = true;
 	
-		$.ajax({
-			async: false,   //设置为同步获取数据形式
-	        type: "get",
-	        url: url,
-	        data:data1,
-	        dataType: "json",
-	        success: function (data) {
-	        	
-					$('#ffUpdate').form('load',{
-						id:data.id,
-						appVersionCode:data.appVersionCode,
-						appVersionName:data.appVersionName,
-						versionCode:data.versionCode,
-						appVersionUrl:data.appVersionUrl,
-						appDeveloper:data.appDeveloper,
-						appVersionStatus:data.appVersionStatus
-					});
-					
-					initApkList(data.appVersionUrl,'appVersionUrlU');
-					
-					var appId = data.appId;//所属的应用id
-					$("#codeU").textbox('setText',data.appVersionCode);
-					initParentAppList('appIdU','update',appId,false);
-	        	
-	        },
-	        error: function (XMLHttpRequest, textStatus, errorThrown) {
-	            window.parent.location.href = contextPath + "/error.jsp";
-	        }
-		});
+	if('1' == appversionStatus)//应用当前状态为“上架”
+	{
+		$.messager.alert('提示',"当前待编辑应用版本已上架,不可编辑!");
+		updateFlag = false;
+	}
+	if(updateFlag)
+		{
+			$.ajax({
+				async: false,   //设置为同步获取数据形式
+		        type: "get",
+		        url: url,
+		        data:data1,
+		        dataType: "json",
+		        success: function (data) {
+		        	
+						$('#ffUpdate').form('load',{
+							id:data.id,
+							appVersionCode:data.appVersionCode,
+							appVersionName:data.appVersionName,
+							versionCode:data.versionCode,
+							appVersionUrl:data.appVersionUrl,
+							appDeveloper:data.appDeveloper,
+							appVersionStatus:data.appVersionStatus/*,
+							versionDescription:data.versionDescription //版本描述为之后要添加的字段，用来存储应用版本描述*/
+						});
+						
+						initApkList(data.appVersionUrl,'appVersionUrlU');
+						
+						var appId = data.appId;//所属的应用id
+						$("#codeU").textbox('setText',data.appVersionCode);
+						initParentAppList('appIdU','update',appId,false);
+		        	
+		        },
+		        error: function (XMLHttpRequest, textStatus, errorThrown) {
+		            window.parent.location.href = contextPath + "/error.jsp";
+		        }
+			});
+			
+			
+			$("#updateAppVersion").dialog('open');
+		}
+	
 		
-		
-		$("#updateAppVersion").dialog('open');
 	
 		
 }

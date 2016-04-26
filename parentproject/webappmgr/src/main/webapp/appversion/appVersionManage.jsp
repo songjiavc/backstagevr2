@@ -111,7 +111,7 @@
   
   
     <!-- 添加应用版本弹框 -->
-  <div id="addAppVersion" class="easyui-dialog" title="添加应用版本" style="width:500px;height:430px;padding:10px;top:1px;"
+  <div id="addAppVersion" class="easyui-dialog" title="添加应用版本" style="width:600px;height:430px;padding:10px;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -182,12 +182,19 @@
 	        		<input class="easyui-validatebox" style="margin-left:7px;" type="radio" name="appVersionStatus" value="3" >更新</input>
 	        	</div>
 	        </div>
+	        <!--版本描述是之后要添加的应用版本描述部分 addDate：2016-4-26  -->
+	       <!--
+	         <div class="ftitle">
+	            <label for="versionDescriptionA">版本描述:</label>
+	            <textarea id="versionDescriptionA" name="versionDescription" class="easyui-validatebox" 
+	         	 validType="length[0,500]" style="resize:none;width:350px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
+	        </div> -->
 	        
 	        
 	      </form>
     </div>
      <!-- 修改应用弹框 -->
-     <div id="updateAppVersion" class="easyui-dialog" title="修改应用版本信息" style="width:500px;height:430px;padding:10px;top:1px;"
+     <div id="updateAppVersion" class="easyui-dialog" title="修改应用版本信息" style="width:600px;height:430px;padding:10px;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -259,6 +266,13 @@
 	        		<input class="easyui-validatebox" style="margin-left:7px;" type="radio" name="appVersionStatus" value="3" >更新</input>
 	        	</div>
 	        </div>
+	        <!--版本描述是之后要添加的应用版本描述部分 addDate：2016-4-26  -->
+	         <!-- <div class="ftitle">
+	            <label for="priceA">版本描述:</label>
+	            <textarea id="versionDescriptionU" name="versionDescription" class="easyui-validatebox" 
+	         	 validType="length[0,500]" style="resize:none;width:350px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
+	        </div> -->
+	        
 	         
 	      </form>
     </div>
