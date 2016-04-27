@@ -2,101 +2,122 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>市中心通行证应用广告管理</title>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <link href="<%=request.getContextPath() %>/css/ztree/zTreeStyle.css" rel="stylesheet" type="text/css" />
-    <jsp:include page="../common/top.jsp" flush="true" /> 
-    <script src="<%=request.getContextPath() %>/stationAppAdManage/js/stationAppAdManage.js" type="text/javascript"></script>
-    
-    <script type="text/javascript">
-  	var toolbar = [{
-  	   /*  text:'批量删除订单',
-  	    iconCls:'icon-remove',
-  	    handler:function(){
-  	    	deleteOrdersList();
-  	    	} */
-  	}];
-  	  
-  	
-		
-	</script>
-		<style type="text/css">
-			.ztree li button.switch {visibility:hidden; width:1px;}
-			.ztree li button.switch.roots_docu {visibility:visible; width:16px;}
-			.ztree li button.switch.center_docu {visibility:visible; width:16px;}
-			.ztree li button.switch.bottom_docu {visibility:visible; width:16px;}
-			
-			 .ftitle{
-	  			width:100%;
-	  			float : left;
-	  			margin-bottom: 20px;
-	  			font-family:'微软雅黑';
-	  		}
-	  		
-	  		.ftable{
-	  			width:100%;
-	  			float : left;
-	  			margin-bottom: 20px;
-	  			font-family:'微软雅黑';
-	  		}
-	  		
-	  		.ftitle label{
-	  			float : left;
-	  			margin-left: 30px;
-	  			width:75px;
-	  		}
-	  		.ftitle .commonInput{
-	  			float : left;
-	  			width: 200px;
-	  			margin-left: 30px;
-	  			border-radius : 5px;
-	  		}
-	  		
-	  		.td_font{
-	  			font-weight:bold;
-	  		}
-	  		
-	  		.input_border{
-	  			width:150px;
-	  			border-radius : 5px;
-	  		}
-	  		
-	  		#main-layout{     min-width:1050px;     min-height:240px;     overflow:hidden; }
-		</style>
-		
-	 
+<title>市中心通行证应用广告管理</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<link href="<%=request.getContextPath()%>/css/ztree/zTreeStyle.css"
+	rel="stylesheet" type="text/css" />
+<jsp:include page="../common/top.jsp" flush="true" />
+<script
+	src="<%=request.getContextPath()%>/stationAppAdManage/js/stationAppAdManage.js"
+	type="text/javascript"></script>
+
+<script type="text/javascript">
+	var toolbar = [ {
+	/*  text:'批量删除订单',
+	 iconCls:'icon-remove',
+	 handler:function(){
+	 	deleteOrdersList();
+	 	} */
+	} ];
+</script>
+<style type="text/css">
+.ztree li button.switch {
+	visibility: hidden;
+	width: 1px;
+}
+
+.ztree li button.switch.roots_docu {
+	visibility: visible;
+	width: 16px;
+}
+
+.ztree li button.switch.center_docu {
+	visibility: visible;
+	width: 16px;
+}
+
+.ztree li button.switch.bottom_docu {
+	visibility: visible;
+	width: 16px;
+}
+
+.ftitle {
+	width: 100%;
+	float: left;
+	margin-bottom: 20px;
+	font-family: '微软雅黑';
+}
+
+.ftable {
+	width: 100%;
+	float: left;
+	margin-bottom: 20px;
+	font-family: '微软雅黑';
+}
+
+.ftitle label {
+	float: left;
+	margin-left: 30px;
+	width: 75px;
+}
+
+.ftitle .commonInput {
+	float: left;
+	width: 200px;
+	margin-left: 30px;
+	border-radius: 5px;
+}
+
+.td_font {
+	font-weight: bold;
+}
+
+.input_border {
+	width: 150px;
+	border-radius: 5px;
+}
+
+#main-layout {
+	min-width: 1050px;
+	min-height: 240px;
+	overflow: hidden;
+}
+</style>
+
+
 </head>
-<body  class="easyui-layout">
+<body class="easyui-layout">
 	<!-- 模糊查询 -->
-	<div   data-options="region:'north'" style="height:90px;border:1px solid #95b8e7;background-color:white;">
-	    	<table style="border: none;height: 80px;">
-		    	<tr>
-		    		<td width="7%" class="td_font">广告名称：</td>
-		    		<td width="15%">
-		    			<input id="orderNameC" class="input_border"  type="text" name="orderNameC"  />  
-		    		</td>
-		    		<!-- <td width="7%" class="td_font">商品编码：</td>
+	<div data-options="region:'north'"
+		style="height: 90px; border: 1px solid #95b8e7; background-color: white;">
+		<table style="border: none; height: 80px;">
+			<tr>
+				<td width="7%" class="td_font">广告名称：</td>
+				<td width="15%"><input id="orderNameC" class="input_border"
+					type="text" name="orderNameC" /></td>
+				<!-- <td width="7%" class="td_font">商品编码：</td>
 		    		<td width="15%">
 		    			<input type="text" class="input_border"  name="goodscodeC" id="goodscodeC" >
 		    		</td> -->
-		    		
-		    		<td class="td_font" width="12%">
-		    			<input style="cursor:pointer;background-color: #e0ecff;border-radius:5px;float:left" type="button" value="查询" onclick="initDatagrid()">
-		    			<input style="cursor:pointer;background-color: #e0ecff;border-radius:5px;float:left;margin-left:5px;" type="button" value="重置" onclick="reset()">
-		    		</td>
-		    	</tr>
-	    	</table>	
+
+				<td class="td_font" width="12%"><input
+					style="cursor: pointer; background-color: #e0ecff; border-radius: 5px; float: left"
+					type="button" value="查询" onclick="initDatagrid()"> <input
+					style="cursor: pointer; background-color: #e0ecff; border-radius: 5px; float: left; margin-left: 5px;"
+					type="button" value="重置" onclick="reset()"></td>
+			</tr>
+		</table>
 	</div>
 
-    <div  data-options="region:'center'" data-options="border:false" >
-    	 <table id="datagrid" class="easyui-datagrid"  title="通行证应用广告列表" >
-			</table>
- 	</div>  
-  
-  
-  
-     <!-- 修改订单弹框 -->
-    <!--  <div id="updateOrders" class="easyui-dialog" title="修改订单信息" style="width:500px;height:450px;padding:10px;top:40px;"
+	<div data-options="region:'center'" data-options="border:false">
+		<table id="datagrid" class="easyui-datagrid" title="通行证应用广告列表">
+		</table>
+	</div>
+
+
+
+	<!-- 修改订单弹框 -->
+	<!--  <div id="updateOrders" class="easyui-dialog" title="修改订单信息" style="width:500px;height:450px;padding:10px;top:40px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -164,10 +185,14 @@
 	        </div>
 	      </form>
     </div> -->
-    <div id="uploadShowUimgPreview" title="图片预览" class="easyui-dialog" data-options="modal:true" style="width:500px; height:400px;"> </div>
-    
-     <div id="detailOrders" class="easyui-dialog" title="订单详情" data-options="modal:true" style="width:500px;height:450px;padding:10px;top:40px;"
-            data-options="
+	<div id="uploadShowUimgPreview" title="图片预览" class="easyui-dialog"
+		data-options="modal:true" style="width: 500px; height: 400px;">
+	</div>
+
+	<div id="detailOrders" class="easyui-dialog" title="订单详情"
+		data-options="modal:true"
+		style="width: 580px; height: 400px; padding: 10px; top: 40px;"
+		data-options="
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'审批通过',
@@ -196,29 +221,30 @@
                 }]
             ">
 		<form id="ffDetail" method="get" novalidate>
-	    	 <div class="ftitle">
-		            <label for="codeA">广告名称:</label>
-		            <input type="hidden" name="id" id="idU"/>
-		            <input type="hidden" name="imgOrWord" id="imgOrWordU"/>
-		            <input class="easyui-validatebox commonInput" type="text" id="appAdNameU" name="appAdName" style="width:200px"  
-		             data-options="editable:false" readonly="readonly">
-		        </div>
-		         <div class="ftitle">
-		            <label for="priceA">有效开始时间:</label>
-		            <div style="float:left;margin-left:30px;">
-				            <input class="easyui-datebox commonInput" type="text" id="startTimeU" name="startTime" data-options="editable:false" readonly="readonly"
-				           ></input>
-			          </div>
-		        </div>
-		        <div class="ftitle">
-		            <label for="priceA">有效结束时间:</label>
-		            <div style="float:left;margin-left:30px;">
-			            <input class="easyui-datebox commonInput" type="text" id="endTimeU" name="endTime" data-options="editable:false" readonly="readonly"
-			             ></input>
-			         </div>
-		        </div>
-		        <!-- tabs -->
-					<div class="ftitle">
+			<div class="ftitle">
+				<label for="codeA">广告名称:</label> <input type="hidden" name="id"
+					id="idU" /> <input type="hidden" name="imgOrWord" id="imgOrWordU" />
+				<input class="easyui-validatebox commonInput" type="text"
+					id="appAdNameU" name="appAdName" style="width: 200px"
+					data-options="editable:false" readonly="readonly">
+			</div>
+			<div class="ftitle">
+				<label for="priceA">有效开始时间:</label>
+				<div style="float: left; margin-left: 30px;">
+					<input class="easyui-datebox commonInput" type="text"
+						id="startTimeU" name="startTime" data-options="editable:false"
+						readonly="readonly"></input>
+				</div>
+			</div>
+			<div class="ftitle">
+				<label for="priceA">有效结束时间:</label>
+				<div style="float: left; margin-left: 30px;">
+					<input class="easyui-datebox commonInput" type="text" id="endTimeU"
+						name="endTime" data-options="editable:false" readonly="readonly"></input>
+				</div>
+			</div>
+			<!-- tabs -->
+			<!-- <div class="ftitle">
 						<label for="priceA">广告图片:</label>
 						 	 <input type="hidden" id="appImgUrlU" name="appImgUrl"/>
 					        	<div id="uploadShowU">
@@ -227,14 +253,23 @@
 		                    		</ul>
 		                    	</div>
 		                    	
-					</div>
-		        
-		      </form>
-    </div>
-    
-     <!-- 普通用户订单详情弹框 -->
-    <div id="detailPTOrders" class="easyui-dialog" data-options="modal:true" title="订单详情" style="width:500px;height:450px;padding:10px;top:40px;"
-            data-options="
+					</div> -->
+			<div class="ftitle">
+				<label for="addWordA">广告内容:</label>
+				<textarea id="addWordA" name="addWord" class="easyui-validatebox"
+					validType="length[0,100]" readonly="readonly"
+					style="resize: none; width: 400px; height: 100px; border-radius: 5px; margin-left: 30px;"></textarea>
+			</div>
+
+
+		</form>
+	</div>
+
+	<!-- 普通用户订单详情弹框 -->
+	<div id="detailPTOrders" class="easyui-dialog"
+		data-options="modal:true" title="订单详情"
+		style="width: 580px; height: 400px; padding: 10px; top: 40px;"
+		data-options="
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'取消',
@@ -246,29 +281,30 @@
                 }]
             ">
 		<form id="ffPTDetail" method="get" novalidate>
-	          <div class="ftitle">
-		            <label for="codeA">广告名称:</label>
-		            <input type="hidden" name="id" id="idU"/>
-		            <input type="hidden" name="imgOrWord" id="imgOrWordU"/>
-		            <input class="easyui-validatebox commonInput" type="text" id="appAdNameU" name="appAdName" style="width:200px"  
-		             data-options="editable:false" readonly="readonly">
-		        </div>
-		         <div class="ftitle">
-		            <label for="priceA">有效开始时间:</label>
-		            <div style="float:left;margin-left:30px;">
-				            <input class="easyui-datebox commonInput" type="text" id="startTimeU" name="startTime" data-options="editable:false" readonly="readonly"
-				           ></input>
-			          </div>
-		        </div>
-		        <div class="ftitle">
-		            <label for="priceA">有效结束时间:</label>
-		            <div style="float:left;margin-left:30px;">
-			            <input class="easyui-datebox commonInput" type="text" id="endTimeU" name="endTime" data-options="editable:false" readonly="readonly"
-			             ></input>
-			         </div>
-		        </div>
-		        <!-- tabs -->
-					<div class="ftitle">
+			<div class="ftitle">
+				<label for="codeA">广告名称:</label> <input type="hidden" name="id"
+					id="idU" /> <input type="hidden" name="imgOrWord" id="imgOrWordU" />
+				<input class="easyui-validatebox commonInput" type="text"
+					id="appAdNameU" name="appAdName" style="width: 200px"
+					data-options="editable:false" readonly="readonly">
+			</div>
+			<div class="ftitle">
+				<label for="priceA">有效开始时间:</label>
+				<div style="float: left; margin-left: 30px;">
+					<input class="easyui-datebox commonInput" type="text"
+						id="startTimeU" name="startTime" data-options="editable:false"
+						readonly="readonly"></input>
+				</div>
+			</div>
+			<div class="ftitle">
+				<label for="priceA">有效结束时间:</label>
+				<div style="float: left; margin-left: 30px;">
+					<input class="easyui-datebox commonInput" type="text" id="endTimeU"
+						name="endTime" data-options="editable:false" readonly="readonly"></input>
+				</div>
+			</div>
+			<!-- tabs -->
+			<!-- <div class="ftitle">
 						<label for="priceA">广告图片:</label>
 						 	 <input type="hidden" id="appImgUrlU" name="appImgUrl"/>
 					        	<div id="uploadShowU">
@@ -277,11 +313,18 @@
 		                    		</ul>
 		                    	</div>
 		                    	
-					</div>
-	      </form>
-    </div>
-    
+					</div> -->
+			<div class="ftitle">
+				<label for="addWordA">广告内容:</label>
+				<textarea id="addWordA" name="addWord" class="easyui-validatebox"
+					validType="length[0,100]" readonly="readonly"
+					style="resize: none; width: 400px; height: 100px; border-radius: 5px; margin-left: 30px;"></textarea>
+			</div>
+
+		</form>
+	</div>
+
 </body>
-	
-	
+
+
 </html>

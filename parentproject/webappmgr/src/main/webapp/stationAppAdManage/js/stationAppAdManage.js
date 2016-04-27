@@ -330,14 +330,16 @@ function viewOrdersDetail(orderId)
 						id:data.id,
 						appAdName:data.appAdName,
 						startTime:data.startTimestr,
-						endTime:data.endTimestr//通行证组描述
+						endTime:data.endTimestr,//通行证组描述
+						addWord:data.addWord
+						
 					});
 					
-					/*初始化附件列表*/
+					/*初始化附件列表
 					$("#appImgUrlU").val(data.appImgUrl);
 					initImgList(data.appImgUrl,'uploadShowU');
 					$("#addWordU").val('');//清空上一次的文字广告
-					
+*/					
 					
 	        },
 	        error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -374,14 +376,15 @@ function viewPTOrdersDetail(id)
 						id:data.id,
 						appAdName:data.appAdName,
 						startTime:data.startTimestr,
-						endTime:data.endTimestr//通行证组描述
+						endTime:data.endTimestr,//通行证组描述
+						addWord:data.addWord
 					});
 					
-					/*初始化附件列表*/
+					/*初始化附件列表
 					$("#appImgUrlU").val(data.appImgUrl);
 					initImgList(data.appImgUrl,'uploadShowU');
 					$("#addWordU").val('');//清空上一次的文字广告
-					
+*/					
 			
 					
 	        },
