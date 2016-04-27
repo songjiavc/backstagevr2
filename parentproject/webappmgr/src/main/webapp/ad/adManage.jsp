@@ -143,7 +143,7 @@
   
   
     <!-- 添加应用广告弹框 --> 
-  <div id="addAd" class="easyui-dialog" fit="true" title="添加应用广告" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+  <div id="addAd" class="easyui-dialog" data-options="modal:true" fit="true" title="添加应用广告" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -237,12 +237,12 @@
     </div>
     
     <!-- 图片预览弹框 -->
-    <div id="uploadShowAimgPreview" title="图片预览" class="easyui-dialog"  style="width:500px; height:400px;"> </div>
-    <div id="uploadShowUimgPreview" title="图片预览" class="easyui-dialog"  style="width:500px; height:400px;"> </div>
-    <div id="uploadShowDimgPreview" title="图片预览" class="easyui-dialog"  style="width:500px; height:400px;"> </div>
+    <div id="uploadShowAimgPreview" title="图片预览" class="easyui-dialog" data-options="modal:true"  style="width:500px; height:400px;"> </div>
+    <div id="uploadShowUimgPreview" title="图片预览" class="easyui-dialog" data-options="modal:true"  style="width:500px; height:400px;"> </div>
+    <div id="uploadShowDimgPreview" title="图片预览" class="easyui-dialog" data-options="modal:true"  style="width:500px; height:400px;"> </div>
     
      <!-- 修改应用弹框 -->
-     <div id="updateAd" class="easyui-dialog" fit="true" title="修改应用广告信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+     <div id="updateAd" class="easyui-dialog" fit="true" data-options="modal:true" title="修改应用广告信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -333,7 +333,7 @@
     </div>
     
     <!-- 查看应用广告弹框详情 -->
-     <div id="detailAd" class="easyui-dialog" fit="true" title="查看应用广告信息详情" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+     <div id="detailAd" class="easyui-dialog" data-options="modal:true" fit="true" title="查看应用广告信息详情" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{

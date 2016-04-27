@@ -158,7 +158,7 @@
   
   
     <!-- 添加公司公告弹框 -->
-  <div id="addComnotice" class="easyui-dialog" fit="true" title="添加公司公告" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+  <div id="addComnotice" class="easyui-dialog" data-options="modal:true" fit="true" title="添加公司公告" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -255,7 +255,7 @@
 	     
     </div>
      <!-- 修改公司公告弹框 -->
-     <div id="updateComnotice" class="easyui-dialog" fit="true" title="修改公司公告信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+     <div id="updateComnotice" class="easyui-dialog" data-options="modal:true" fit="true" title="修改公司公告信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -343,7 +343,7 @@
     		</div>
     </div>
      <!-- 查看详情公司公告弹框 -->
-     <div id="detailComnotice" class="easyui-dialog" fit="true" title="查看公司公告信息详情" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+     <div id="detailComnotice" class="easyui-dialog" data-options="modal:true" fit="true" title="查看公司公告信息详情" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{

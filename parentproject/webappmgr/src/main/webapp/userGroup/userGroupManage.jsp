@@ -100,7 +100,7 @@
   
   
     <!-- 添加通行证组弹框 -->
-  <div id="addUgroup" class="easyui-dialog" fit="true" title="添加通行证组" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+  <div id="addUgroup" class="easyui-dialog" data-options="modal:true" fit="true" title="添加通行证组" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -149,7 +149,7 @@
 	     
     </div>
      <!-- 修改应用弹框 -->
-     <div id="updateUgroup" class="easyui-dialog" fit="true" title="修改通行证组信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+     <div id="updateUgroup" class="easyui-dialog" data-options="modal:true" fit="true" title="修改通行证组信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{

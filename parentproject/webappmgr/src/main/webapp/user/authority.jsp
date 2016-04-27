@@ -67,7 +67,7 @@
     
      
        <!-- 添加权限弹框 -->
-  <div id="addAuth" class="easyui-dialog" title="添加权限" style="width:400px;height:310px;padding:10px"
+  <div id="addAuth" class="easyui-dialog" data-options="modal:true" title="添加权限" style="width:400px;height:310px;padding:10px"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -125,7 +125,7 @@
     </div> 
     
     <!-- 修改权限弹框 -->
-    <div id="updateAuth" class="easyui-dialog" title="修改权限" style="width:400px;height:310px;padding:10px"
+    <div id="updateAuth" class="easyui-dialog" data-options="modal:true" title="修改权限" style="width:400px;height:310px;padding:10px"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{

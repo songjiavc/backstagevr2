@@ -96,7 +96,7 @@
 		</table>
 	</div>
 	    <!-- 添加代理 -->
-  	<div id="addOrUpdateAgent" class="easyui-dialog" title="代理编辑" style="width:480px;height:530px;padding:20px;"
+  	<div id="addOrUpdateAgent" class="easyui-dialog" data-options="modal:true" title="代理编辑" style="width:480px;height:530px;padding:20px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -160,6 +160,6 @@
           </form>
      </div> www
      <!-- 添加权限弹框 -->
-  	 <div id="setAgentScope" class="easyui-dialog" title="设定代理范围" style="width:480px;height:450px;padding:20px;" ></div>
+  	 <div id="setAgentScope" class="easyui-dialog" data-options="modal:true" title="设定代理范围" style="width:480px;height:450px;padding:20px;" ></div>
 </body>
 </html>

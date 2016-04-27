@@ -60,7 +60,7 @@
   
   
   <!-- 权限设置弹框 -->
-  <div id="w" class="easyui-dialog" title="权限设置" style="width:400px;height:300px;padding:10px"
+  <div id="w" class="easyui-dialog" data-options="modal:true" title="权限设置" style="width:400px;height:300px;padding:10px"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -84,7 +84,7 @@
     </div>
     
     <!-- 添加角色弹框 -->
-  <div id="addRole" class="easyui-dialog" title="添加角色" style="width:400px;height:300px;padding:10px"
+  <div id="addRole" class="easyui-dialog" data-options="modal:true" title="添加角色" style="width:400px;height:300px;padding:10px"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -133,7 +133,7 @@
 	      </form>
     </div>
      <!-- 修改角色弹框 -->
-     <div id="updateRole" class="easyui-dialog" title="修改角色" style="width:400px;height:300px;padding:10px"
+     <div id="updateRole" class="easyui-dialog" data-options="modal:true" title="修改角色" style="width:400px;height:300px;padding:10px"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{

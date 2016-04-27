@@ -141,7 +141,7 @@
   
   
     <!-- 添加公司公告弹框 -->
-  <div id="addKaijiangNotice" class="easyui-dialog" fit="true" title="添加开奖公告" style="width:800px;height:550px;padding:0px;border:0;"
+  <div id="addKaijiangNotice" class="easyui-dialog" data-options="modal:true" fit="true" title="添加开奖公告" style="width:800px;height:550px;padding:0px;border:0;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -212,7 +212,7 @@
 	     
     </div>
      <!-- 修改开奖公告弹框 -->
-     <div id="updateKaijiangNotice" class="easyui-dialog" fit="true" title="修改开奖公告信息" style="width:800px;height:550px;padding:0px;border:0;"
+     <div id="updateKaijiangNotice" class="easyui-dialog" data-options="modal:true" fit="true" title="修改开奖公告信息" style="width:800px;height:550px;padding:0px;border:0;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -276,7 +276,7 @@
     </div>
     
      <!-- 查看开奖公告详情 -->
-     <div id="detailKaijiangNotice" class="easyui-dialog" fit="true" title="查看开奖公告详情" style="width:800px;height:550px;padding:0px;border:0;"
+     <div id="detailKaijiangNotice" class="easyui-dialog" data-options="modal:true" fit="true" title="查看开奖公告详情" style="width:800px;height:550px;padding:0px;border:0;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{

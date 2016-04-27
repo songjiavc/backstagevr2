@@ -61,7 +61,7 @@
 	<table id="accountDataGrid" class="easyui-datagrid" title="用户列表" 
 			data-options="toolbar:toolbar" ></table>
 	    <!-- 添加权限弹框 -->
-  	<div id="addAccount" class="easyui-dialog" title="添加用户" style="width:500px;height:400px;padding:10px;top:40px;"
+  	<div id="addAccount" class="easyui-dialog" data-options="modal:true" title="添加用户" style="width:500px;height:400px;padding:10px;top:40px;"
             data-options="
                 iconCls: 'icon-save',
                 buttons: [{
@@ -132,7 +132,7 @@
           </form>
      </div>  
      <!-- 修改权限弹框 -->
-    <div id="updateAccount" class="easyui-dialog" title="修改用户" style="width:500px;height:400px;padding:10px;"
+    <div id="updateAccount" class="easyui-dialog" data-options="modal:true" title="修改用户" style="width:500px;height:400px;padding:10px;"
             data-options=" 
                 iconCls: 'icon-save',
                 buttons: [{
@@ -205,7 +205,7 @@
        </div>
        
        
-    <div id="selectRoleDiv" class="easyui-dialog"  title="角色选择" style="width:800px;height:600px;padding:0px;border:0;" data-options="
+    <div id="selectRoleDiv" class="easyui-dialog" data-options="modal:true"  title="角色选择" style="width:800px;height:600px;padding:0px;border:0;" data-options="
                 iconCls: 'icon-search',
                  onBeforeClose:function(){
         			  selectRoleBeforeClose();
