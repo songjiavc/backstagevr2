@@ -292,11 +292,12 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		return ln5In12List;
 	}
 	
-	public Ln5In12Bean getLn5In12EntityByIssueNumber(String issueNumber){
-		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM analysis.T_LN_5IN12_NUMBER WHERE ISSUE_NUMBER > '" +issueNumber+ "'" ;
+	public List<Ln5In12Bean> getLn5In12ListByIssueNumber(String issueNumber){
+		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM analysis.T_LN_5IN12_NUMBER WHERE ISSUE_NUMBER > ?  LIMIT 300" ;
 		Object[] queryParams = new Object[]{
+				issueNumber
 		};
-		Ln5In12Bean ln5In12 =ln5In12Repository.getEntityBySql(Ln5In12Bean.class,execSql, queryParams);
+		List<Ln5In12Bean> ln5In12 =ln5In12Repository.getEntityListBySql(Ln5In12Bean.class,execSql, queryParams);
 		return ln5In12;
 	}
 	

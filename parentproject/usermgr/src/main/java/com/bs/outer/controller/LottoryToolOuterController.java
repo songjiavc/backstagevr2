@@ -100,11 +100,17 @@ public class LottoryToolOuterController
 	 * @return  彩民工具获取辽宁12选5列表数据
 	 */
 	@RequestMapping(value="/getLn5In12List",method = RequestMethod.GET)
-	public @ResponseBody Map<String,Object> getLn5In12List()
+	public @ResponseBody Map<String,Object> getLn5In12List(@RequestParam(value="issueNumber",required=false) String issueNumber)
 	{
 		Map<String,Object> rtnMap = new HashMap<String,Object>();
+		List<Ln5In12Bean> ln5In12List = null;
 		try{
-			List<Ln5In12Bean> ln5In12List =outerInterfaceService.getLn5In12Last3DaysList();
+			if(issueNumber == null){
+				ln5In12List =outerInterfaceService.getLn5In12Last3DaysList();
+			}else{
+				ln5In12List=outerInterfaceService.getLn5In12ListByIssueNumber(issueNumber);
+			}
+			
 			if(ln5In12List.size() == 0 ){
 				rtnMap.put("message","failure");
 				rtnMap.put("status", "0");
@@ -122,26 +128,4 @@ public class LottoryToolOuterController
 		}
 	}
 	
-	@RequestMapping(value="/getLn5In12Entity",method = RequestMethod.GET)
-	public @ResponseBody Map<String,Object> getLn5In12Entity(@RequestParam(value="issueNumber",required=true) String issueNumber)
-	{
-		Map<String,Object> rtnMap = new HashMap<String,Object>();
-		try{
-			Ln5In12Bean ln5In12 =outerInterfaceService.getLn5In12EntityByIssueNumber(issueNumber);
-			if(ln5In12 == null ){
-				rtnMap.put("message","failure");
-				rtnMap.put("status", "0");
-			}else{
-				rtnMap.put("message","success");
-				rtnMap.put("status", "1");
-				rtnMap.put("ln5In12", ln5In12);
-			}
-		}catch(Exception ex){
-			logger.error("彩民工具获取辽宁12选5数据错误！");
-			rtnMap.put("message","failure");
-			rtnMap.put("status", "0");
-		}finally{
-			return rtnMap;
-		}
-	}
 }
