@@ -56,7 +56,7 @@ public class Fast3Analysis{
 		return groupNumber;
 	}
 
-	public void setGroupNum(int groupNumber) {
+	public void setGroupNum(String groupNumber) {
 		this.groupNumber = groupNumber;
 	}
 
