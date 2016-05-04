@@ -21,7 +21,7 @@ public class Fast3Analysis{
 	private String issueNumber;
 	
 	@Column(name="GROUP_NUMBER")
-	private int groupNumber;
+	private String groupNumber;
 	
 	@Column(name="CURRENT_MISS")
 	private Integer currentMiss;
@@ -40,7 +40,7 @@ public class Fast3Analysis{
 		this.id = id;
 	}
 
-	public void setGroupNumber(int groupNumber) {
+	public void setGroupNumber(String groupNumber) {
 		this.groupNumber = groupNumber;
 	}
 
@@ -52,7 +52,7 @@ public class Fast3Analysis{
 		this.issueNumber = issueNumber;
 	}
 
-	public int getGroupNumber() {
+	public String getGroupNumber() {
 		return groupNumber;
 	}
 
