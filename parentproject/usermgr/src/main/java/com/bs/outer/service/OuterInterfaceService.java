@@ -132,5 +132,5 @@ public interface OuterInterfaceService {
      * @param issueNumber
      * @return 根据期号找到比这个期号更大的期
      */
-    public Ln5In12Bean getLn5In12EntityByIssueNumber(String issueNumber);
+    public List<Ln5In12Bean> getLn5In12ListByIssueNumber(String issueNumber);
 }

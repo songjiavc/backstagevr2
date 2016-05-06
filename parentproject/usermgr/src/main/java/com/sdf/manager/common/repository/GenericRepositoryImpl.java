@@ -146,7 +146,7 @@ public class GenericRepositoryImpl<T, ID extends Serializable> extends SimpleJpa
 	public List<T> getEntityListBySql(Class<T> entityClass,String sql,Object[] queryParams){
 		Query query = em.createNativeQuery(sql,entityClass);
 		setQueryParams(query, queryParams);
-		return query.getResultList();
+		return  (List<T>)query.getResultList();
 	}
 	
 	private String getCountField(Class<T> clazz) {

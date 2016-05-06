@@ -223,7 +223,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	
 	public List<Fast3Analysis> getAnalysisListByIssueNumber(String issueNumber,String provinceNumber){
 		String tableName = "analysis.T_ANHUI_KUAI3_MISSANALYSIS";
-		String execSql = "SELECT u.* FROM "+tableName +" u  WHERE ISSUE_NUMBER >  ?  ";
+		String execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM "+tableName +" WHERE ISSUE_NUMBER > ? ORDER BY TYPE,CURRENT_MISS DESC; ";
 		Object[] queryParams = new Object[]{
 				issueNumber
 		};
@@ -292,11 +292,12 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		return ln5In12List;
 	}
 	
-	public Ln5In12Bean getLn5In12EntityByIssueNumber(String issueNumber){
-		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM analysis.T_LN_5IN12_NUMBER WHERE ISSUE_NUMBER > '" +issueNumber+ "'" ;
+	public List<Ln5In12Bean> getLn5In12ListByIssueNumber(String issueNumber){
+		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM analysis.T_LN_5IN12_NUMBER WHERE ISSUE_NUMBER > ?  LIMIT 300" ;
 		Object[] queryParams = new Object[]{
+				issueNumber
 		};
-		Ln5In12Bean ln5In12 =ln5In12Repository.getEntityBySql(Ln5In12Bean.class,execSql, queryParams);
+		List<Ln5In12Bean> ln5In12 =ln5In12Repository.getEntityListBySql(Ln5In12Bean.class,execSql, queryParams);
 		return ln5In12;
 	}
 	

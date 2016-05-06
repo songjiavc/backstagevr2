@@ -13,12 +13,15 @@ import javax.persistence.Id;
   */
 @Entity
 public class Fast3Analysis{
-	@Id
+    @Id
+    @Column(name="ID")
+    private int id;
+    
 	@Column(name="ISSUE_NUMBER")
 	private String issueNumber;
 	
 	@Column(name="GROUP_NUMBER")
-	private int groupNumber;
+	private String groupNumber;
 	
 	@Column(name="CURRENT_MISS")
 	private Integer currentMiss;
@@ -29,6 +32,18 @@ public class Fast3Analysis{
 	@Column(name="TYPE")
 	private int type;
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setGroupNumber(String groupNumber) {
+		this.groupNumber = groupNumber;
+	}
+
 	public String getIssueNumber() {
 		return issueNumber;
 	}
@@ -37,11 +52,11 @@ public class Fast3Analysis{
 		this.issueNumber = issueNumber;
 	}
 
-	public int getGroupNumber() {
+	public String getGroupNumber() {
 		return groupNumber;
 	}
 
-	public void setGroupNum(int groupNumber) {
+	public void setGroupNum(String groupNumber) {
 		this.groupNumber = groupNumber;
 	}
 
