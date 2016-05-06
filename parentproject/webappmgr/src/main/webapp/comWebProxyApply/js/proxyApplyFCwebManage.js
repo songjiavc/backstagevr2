@@ -215,8 +215,8 @@ function initDatagrid()
 			        }  
 		    ]],  
 	    onLoadSuccess:function(data){  
-	        $('.editcls').linkbutton({text:'详情',plain:true,iconCls:'icon-detail'}); 
-	        $('.deleterole').linkbutton({text:'删除',plain:true,iconCls:'icon-filter'}); 
+	    	 $('.deleterole').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});  
+		        $('.editcls').linkbutton({text:'查看详情',plain:true,iconCls:'icon-filter'}); 
 	        if(data.rows.length==0){
 				var body = $(this).data().datagrid.dc.body2;
 				body.find('table tbody').append('<tr><td width="'+body.width()+'" style="height: 25px; text-align: center;" colspan="8">没有数据</td></tr>');
@@ -256,7 +256,8 @@ function detailApplyProxy(id)
 						appAreaProvince:data.appAreaProvince,
 						provinceName:data.provinceName,
 						cityName:data.cityName,
-						isConnectName:data.isConnectName
+						isConnectName:data.isConnectName,
+						remark:data.remark
 						
 					});
 					

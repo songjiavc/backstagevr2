@@ -44,7 +44,7 @@
 	  		.ftitle label{
 	  			float : left;
 	  			margin-left: 30px;
-	  			width:100px;
+	  			width:150px;
 	  		}
 	  		.ftitle .commonInput{
 	  			float : left;
@@ -111,8 +111,9 @@
   
    
      <!-- 代理申请详情 -->
-     <div id="detailApplyProxy" class="easyui-dialog" data-options="modal:true" title="代理申请信息列表" style="width:600px;height:500px;padding:10px;top:1px;"
+     <div id="detailApplyProxy" class="easyui-dialog"  title="代理申请信息列表" style="width:600px;height:500px;padding:10px;top:1px;"
             data-options="
+            modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'取消',
@@ -126,68 +127,56 @@
 	        <div class="ftitle">
 	            <label for="codeA">姓名:</label>
 	            <input type="hidden" name="id" id="idU"/>
-	            <div style="float:left;margin-left: 30px;">
+	             <div style="float:left;margin-left:30px;">
 		            <input class="easyui-textbox " type="text" id="nameU" name="name"  style="width:200px"  
 		               readonly="readonly"/>
-		        </div>
+		         </div>
 	        </div>
 	        <div class="ftitle">
 	            <label for="subject">地址:</label>
 	             <div style="float:left;margin-left:30px;">
-	           		 <div style="float:left;margin-left: 30px;">
 		            <input class="easyui-textbox " type="text" id="addressU" name="address"  style="width:200px"  
 		               readonly="readonly"/>
-		        	</div>
 		        </div>
 		     </div>
 		     
 		     <div class="ftitle">
 	            <label for="subject">是否从事彩票相关工作:</label>
 	             <div style="float:left;margin-left:30px;">
-	           		 <div style="float:left;margin-left: 30px;">
 		            <input class="easyui-textbox " type="text" id="isConnectNameU" name=isConnectName  style="width:200px"  
 		               readonly="readonly"/>
-		        	</div>
 		        </div>
 		     </div>
 		     
 		     <div class="ftitle">
 	            <label for="subject">手机:</label>
 	             <div style="float:left;margin-left:30px;">
-	           		 <div style="float:left;margin-left: 30px;">
 		            <input class="easyui-textbox " type="text" id="telephoneU" name="telephone"  style="width:200px"  
 		               readonly="readonly"/>
-		        	</div>
 		        </div>
 		     </div>
 		     
 		      <div class="ftitle">
 	            <label for="subject">状态:</label>
 	             <div style="float:left;margin-left:30px;">
-	           		 <div style="float:left;margin-left: 30px;">
 		            <input class="easyui-textbox " type="text" id="statusNameU" name="statusName"  style="width:200px"  
 		               readonly="readonly"/>
-		        	</div>
 		        </div>
 		     </div>
 	        
 	         <div class="ftitle">
-	            <label for="subject">地域:</label>
+	            <label for="subject" style="width:50px;">地域:</label>
 	             <div style="float:left;margin-left:30px;">
-	           		 <div style="float:left;margin-left: 30px;">
 		            <input class="easyui-textbox " type="text" id="procinveU" name="provinceName"  style="width:200px"  
 		               readonly="readonly"/>
-		        	</div>
-					 <div style="float:left;margin-left: 30px;">
 		            <input class="easyui-textbox " type="text" id="cityU" name="cityName"  style="width:200px"  
 		               readonly="readonly"/>
-		        </div>
 	            </div>
 	        </div>
 	         <div class="ftitle">
-	         	 <label for="forecastContentA">备注:</label>
+	         	 <label for="forecastContentA" style="width:50px;">备注:</label>
 	         	 <!-- ※textarea两个标签间有空格时焦点会不落在首字符上※ -->
-	         	 <textarea id="remarkU" name="remark" class="easyui-validatebox" data-options="required:true,editable:false" missingMessage="预测信息内容不可以为空"
+	         	 <textarea id="remarkU" name="remark" class="easyui-validatebox" data-options="editable:false"
 	         	 validType="length[0,300]" style="resize:none;width:400px;height:100px;border-radius:5px;margin-left:30px;"></textarea>
 	         </div>
 	         
