@@ -96,8 +96,9 @@
 		</table>
 	</div>
 	    <!-- 添加代理 -->
-  	<div id="addOrUpdateAgent" class="easyui-dialog" data-options="modal:true" title="代理编辑" style="width:480px;height:530px;padding:20px;"
+  	<div id="addOrUpdateAgent" class="easyui-dialog" title="代理编辑" style="width:480px;height:530px;padding:20px;"
             data-options="
+           	modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'提交',

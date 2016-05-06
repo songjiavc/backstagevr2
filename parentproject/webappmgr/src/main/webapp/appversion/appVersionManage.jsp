@@ -111,8 +111,9 @@
   
   
     <!-- 添加应用版本弹框 -->
-  <div id="addAppVersion" class="easyui-dialog" data-options="modal:true" title="添加应用版本" style="width:600px;height:430px;padding:10px;top:1px;"
+  <div id="addAppVersion" class="easyui-dialog"  title="添加应用版本" style="width:600px;height:430px;padding:10px;top:1px;"
             data-options="
+            modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'提交',
@@ -194,8 +195,9 @@
 	      </form>
     </div>
      <!-- 修改应用弹框 -->
-     <div id="updateAppVersion" class="easyui-dialog" data-options="modal:true" title="修改应用版本信息" style="width:600px;height:430px;padding:10px;top:1px;"
+     <div id="updateAppVersion" class="easyui-dialog" title="修改应用版本信息" style="width:600px;height:430px;padding:10px;top:1px;"
             data-options="
+            modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'提交',

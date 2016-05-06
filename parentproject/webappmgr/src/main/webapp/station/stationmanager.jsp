@@ -153,8 +153,9 @@
 	</div>
 	
 	<!-- 通行证应用版本配置弹框 -->
-  <div id="w" class="easyui-dialog" data-options="modal:true" title="通行证应用版本配置" style="width:700px;height:600px;padding:0px"
+  <div id="w" class="easyui-dialog"  title="通行证应用版本配置" style="width:700px;height:600px;padding:0px"
             data-options="
+            modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'取消',
@@ -175,8 +176,9 @@
     </div>
 	
 	    <!-- 添加站点 -->
-  	<div id="addOrUpdateStation" class="easyui-dialog" data-options="modal:true" title="站点编辑" style="width:480px;height:530px;padding:20px;"
+  	<div id="addOrUpdateStation" class="easyui-dialog"  title="通行证编辑" style="width:480px;height:530px;padding:20px;"
             data-options="
+            modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'提交',
@@ -252,8 +254,9 @@
           </form>
      </div> 
      <!-- 站点商品配置弹框-->
-  	 <div id="setOrder" class="easyui-dialog" data-options="modal:true" title="购买商品" style="width:800px;height:500px;padding:10px;top:40px;"
+  	 <div id="setOrder" class="easyui-dialog"  title="购买商品" style="width:800px;height:500px;padding:10px;top:40px;"
             data-options="
+            modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'保存',

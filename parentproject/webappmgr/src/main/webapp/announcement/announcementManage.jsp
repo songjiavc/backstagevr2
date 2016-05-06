@@ -158,8 +158,9 @@
   
   
     <!-- 添加通告弹框 -->
-  <div id="addAnnouncement" class="easyui-dialog" data-options="modal:true" fit="true" title="添加通告" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+  <div id="addAnnouncement" class="easyui-dialog" fit="true" title="添加通告" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
+            modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'保存',
@@ -254,8 +255,9 @@
 	     
     </div>
      <!-- 修改通告弹框 -->
-     <div id="updateAnnouncement" class="easyui-dialog" data-options="modal:true" fit="true" title="修改通告信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+     <div id="updateAnnouncement" class="easyui-dialog"  fit="true" title="修改通告信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
+            modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'保存',
@@ -340,8 +342,9 @@
     </div>
     
      <!-- 查看通告详情弹框 -->
-     <div id="detailAnnouncement" class="easyui-dialog" data-options="modal:true" fit="true" title="查看通告信息详情" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+     <div id="detailAnnouncement" class="easyui-dialog"  fit="true" title="查看通告信息详情" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
+            modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'关闭',
@@ -406,8 +409,9 @@
     		</div>
     </div>
     
-     <div id="checkAReceipt" class="easyui-dialog" data-options="modal:true" title="查看通告回执信息" style="width:800px;height:400px;padding:0px;border:0;"
+     <div id="checkAReceipt" class="easyui-dialog" title="查看通告回执信息" style="width:800px;height:400px;padding:0px;border:0;"
    		  data-options="
+   		  modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'取消',

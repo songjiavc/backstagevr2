@@ -102,8 +102,9 @@
   
   
     <!-- 添加预测信息弹框 -->
-  <div id="addForecast" class="easyui-dialog" data-options="modal:true" title="添加预测信息" style="width:600px;height:500px;padding:10px;top:1px;"
+  <div id="addForecast" class="easyui-dialog"  title="添加预测信息" style="width:600px;height:500px;padding:10px;top:1px;"
             data-options="
+            modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'提交',
@@ -178,8 +179,9 @@
 	      </form>
     </div>
      <!-- 修改应用弹框 -->
-     <div id="updateForecast" class="easyui-dialog" data-options="modal:true" title="修改预测信息" style="width:600px;height:500px;padding:10px;top:1px;"
+     <div id="updateForecast" class="easyui-dialog"  title="修改预测信息" style="width:600px;height:500px;padding:10px;top:1px;"
             data-options="
+            modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'提交',

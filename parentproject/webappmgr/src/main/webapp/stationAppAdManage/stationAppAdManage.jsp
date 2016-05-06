@@ -190,9 +190,10 @@
 	</div>
 
 	<div id="detailOrders" class="easyui-dialog" title="订单详情"
-		data-options="modal:true"
+		
 		style="width: 580px; height: 400px; padding: 10px; top: 40px;"
 		data-options="
+		modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'审批通过',
@@ -267,9 +268,10 @@
 
 	<!-- 普通用户订单详情弹框 -->
 	<div id="detailPTOrders" class="easyui-dialog"
-		data-options="modal:true" title="订单详情"
+		 title="订单详情"
 		style="width: 580px; height: 400px; padding: 10px; top: 40px;"
 		data-options="
+		modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'取消',

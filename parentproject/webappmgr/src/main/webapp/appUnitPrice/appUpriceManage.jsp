@@ -94,8 +94,9 @@
   
   
     <!-- 添加应用区域单价弹框 -->
-  <div id="addAppUnitPrice" class="easyui-dialog" data-options="modal:true" title="添加应用区域单价" style="width:500px;height:300px;padding:10px;top:40px;"
+  <div id="addAppUnitPrice" class="easyui-dialog"  title="添加应用区域单价" style="width:500px;height:300px;padding:10px;top:40px;"
             data-options="
+            modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'提交',
@@ -145,8 +146,9 @@
 	      </form>
     </div>
      <!-- 修改应用区域单价弹框 -->
-     <div id="updateAppUnitPrice" class="easyui-dialog" data-options="modal:true" title="修改应用区域单价信息" style="width:500px;height:300px;padding:10px;top:40px;"
+     <div id="updateAppUnitPrice" class="easyui-dialog"  title="修改应用区域单价信息" style="width:500px;height:300px;padding:10px;top:40px;"
             data-options="
+            modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'提交',

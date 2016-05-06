@@ -96,8 +96,9 @@
   
   
      <!-- 修改订单弹框 -->
-     <div id="updateOrders" class="easyui-dialog" data-options="modal:true" title="修改订单信息" style="width:500px;height:450px;padding:10px;top:40px;"
+     <div id="updateOrders" class="easyui-dialog"  title="修改订单信息" style="width:500px;height:450px;padding:10px;top:40px;"
             data-options="
+            modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'保存',
@@ -165,8 +166,9 @@
 	      </form>
     </div>
     
-     <div id="detailOrders" class="easyui-dialog" data-options="modal:true" title="订单详情" style="width:500px;height:450px;padding:10px;top:40px;"
+     <div id="detailOrders" class="easyui-dialog"  title="订单详情" style="width:500px;height:450px;padding:10px;top:40px;"
             data-options="
+            modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'审批通过',
@@ -233,8 +235,9 @@
     </div>
     
      <!-- 普通用户订单详情弹框 -->
-    <div id="detailPTOrders" class="easyui-dialog" data-options="modal:true" title="订单详情" style="width:500px;height:450px;padding:10px;top:40px;"
+    <div id="detailPTOrders" class="easyui-dialog"  title="订单详情" style="width:500px;height:450px;padding:10px;top:40px;"
             data-options="
+            modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'取消',

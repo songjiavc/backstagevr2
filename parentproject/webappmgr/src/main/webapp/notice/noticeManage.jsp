@@ -164,8 +164,9 @@
  		 <!-- 占位用的，没有实际意义e -->
   
      <!-- 修改应用弹框 -->
-     <div id="updateNotice" class="easyui-dialog" data-options="modal:true" fit="true" title="修改应用公告信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+     <div id="updateNotice" class="easyui-dialog"  fit="true" title="修改应用公告信息" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
+            modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'保存',
@@ -268,8 +269,9 @@
     </div>
     
      <!-- 查看应用公告详情 -->
-     <div id="detailNotice" class="easyui-dialog" data-options="modal:true" fit="true" title="查看应用公告详情" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+     <div id="detailNotice" class="easyui-dialog"  fit="true" title="查看应用公告详情" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
+            modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'关闭',
@@ -349,8 +351,9 @@
     </div> 
     
       <!-- 添加应用公告弹框 -->
-  <div id="addNotice" class="easyui-dialog" data-options="modal:true" fit="true" title="添加应用公告" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
+  <div id="addNotice" class="easyui-dialog"  fit="true" title="添加应用公告" style="width:800px;height:600px;padding:0px;border:0;top:1px;"
             data-options="
+            modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'保存',

@@ -110,8 +110,9 @@
   
   
     <!-- 添加商品弹框 -->
-  <div id="addApp" class="easyui-dialog" data-options="modal:true" title="添加应用" style="width:500px;height:400px;padding:10px;top:1px;"
+  <div id="addApp" class="easyui-dialog"  title="添加应用" style="width:500px;height:400px;padding:10px;top:1px;"
             data-options="
+            modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'提交',
@@ -187,8 +188,9 @@
 	      </form>
     </div>
      <!-- 修改应用弹框 -->
-     <div id="updateApp" class="easyui-dialog" data-options="modal:true"  title="修改应用信息" style="width:500px;height:400px;padding:10px;top:1px;"
+     <div id="updateApp" class="easyui-dialog"  title="修改应用信息" style="width:500px;height:400px;padding:10px;top:1px;"
             data-options="
+               modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
                     text:'提交',
