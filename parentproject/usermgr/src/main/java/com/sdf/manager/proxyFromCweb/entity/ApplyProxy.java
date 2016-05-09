@@ -60,11 +60,22 @@ public class ApplyProxy extends BaseEntiry implements Serializable
 	@Column(name="TELEPHONE",length=100)
 	private String telephone;
 	
+	@Column(name="PROXY_ID",length=100)
+	private String proxyId;//若回访符合后则要生成对应的代理信息
+	
 	@Column(name="STATUS",length=10)
 	private String status;//代理申请数据状态，0：未回访 1：回访不符合 2：回访符合 
 	
 	
 	
+
+	public String getProxyId() {
+		return proxyId;
+	}
+
+	public void setProxyId(String proxyId) {
+		this.proxyId = proxyId;
+	}
 
 	public String getStatus() {
 		return status;

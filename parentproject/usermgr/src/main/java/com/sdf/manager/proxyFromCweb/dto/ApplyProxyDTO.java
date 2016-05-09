@@ -35,8 +35,18 @@ public class ApplyProxyDTO {
 	
 	private String isConnectName;
 	
+	private String proxyId;
 	
 	
+	
+
+	public String getProxyId() {
+		return proxyId;
+	}
+
+	public void setProxyId(String proxyId) {
+		this.proxyId = proxyId;
+	}
 
 	public String getStatusName() {
 		return statusName;

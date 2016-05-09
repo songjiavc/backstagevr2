@@ -22,12 +22,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sdf.manager.common.bean.ResultBean;
+import com.sdf.manager.common.exception.BizException;
 import com.sdf.manager.common.util.Constants;
 import com.sdf.manager.common.util.LoginUtils;
 import com.sdf.manager.common.util.QueryResult;
 import com.sdf.manager.proxyFromCweb.dto.ApplyProxyDTO;
 import com.sdf.manager.proxyFromCweb.entity.ApplyProxy;
 import com.sdf.manager.proxyFromCweb.service.ApplyProxyService;
+import com.sdf.manager.user.dto.AddAgentForm;
+import com.sdf.manager.user.entity.User;
+import com.sdf.manager.user.service.UserService;
 
 
 @Controller
@@ -39,6 +43,9 @@ public class CwebProxyApplyController
 	
 	@Autowired
 	private ApplyProxyService applyProxyService;
+	
+	@Autowired
+	private UserService userService;
 	
 	
 	public static final String NOT_REVRIW_STATUS = "0";//代理申请数据状态，0：未回访
@@ -103,6 +110,49 @@ public class CwebProxyApplyController
 				 
 		 
 	 }
+	 
+	 /**
+	  * 
+	  * @Title: saveOrUpdateProxy
+	  * @Description: 保存或修改代理信息
+	  * @author:banna
+	  * @return: ResultBean
+	  */
+	 @SuppressWarnings("finally")
+	 @RequestMapping(value = "/saveOrUpdateProxy", method = RequestMethod.POST)
+		public @ResponseBody ResultBean saveOrUpdateProxy(
+				AddAgentForm addAgentForm,
+				@RequestParam(value="applyProxyId",required=false) String applyProxyId,//代理申请信息id
+				ModelMap model,HttpSession httpSession)   {
+				ResultBean resultBean = new ResultBean();
+				try{
+					String userId = LoginUtils.getAuthenticatedUserCode(httpSession);
+					userService.saveOrUpdate(addAgentForm,userId);
+					resultBean.setMessage("操作成功!");
+					resultBean.setStatus("success");
+					
+					//填充代理id放入到代理申请信息id中
+					User user = userService.getUserByCode(addAgentForm.getAddFormAgentCode());
+					
+					ApplyProxy applyProxy = applyProxyService.getApplyProxyById(applyProxyId);
+					applyProxy.setProxyId(user.getId());
+					applyProxy.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
+			 		applyProxy.setModifyTime(new Timestamp(System.currentTimeMillis()));
+			 		applyProxyService.update(applyProxy);
+					
+				}catch(BizException bizEx){
+					resultBean.setMessage(bizEx.getMessage());
+					resultBean.setStatus("failure");
+				}
+				catch (Exception e) {
+					resultBean.setMessage("操作异常!");
+					resultBean.setStatus("failure");
+					e.printStackTrace();
+				}finally{
+					return resultBean;
+				}
+		}
+		
 	 
 	 /**
 	  * 
