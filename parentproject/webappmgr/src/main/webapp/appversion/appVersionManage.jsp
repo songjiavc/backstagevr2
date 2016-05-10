@@ -184,12 +184,12 @@
 	        	</div>
 	        </div>
 	        <!--版本描述是之后要添加的应用版本描述部分 addDate：2016-4-26  -->
-	       <!--
+	       
 	         <div class="ftitle">
 	            <label for="versionDescriptionA">版本描述:</label>
 	            <textarea id="versionDescriptionA" name="versionDescription" class="easyui-validatebox" 
 	         	 validType="length[0,500]" style="resize:none;width:350px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
-	        </div> -->
+	        </div>
 	        
 	        
 	      </form>
@@ -269,11 +269,11 @@
 	        	</div>
 	        </div>
 	        <!--版本描述是之后要添加的应用版本描述部分 addDate：2016-4-26  -->
-	         <!-- <div class="ftitle">
+	         <div class="ftitle">
 	            <label for="priceA">版本描述:</label>
 	            <textarea id="versionDescriptionU" name="versionDescription" class="easyui-validatebox" 
 	         	 validType="length[0,500]" style="resize:none;width:350px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
-	        </div> -->
+	        </div>
 	        
 	         
 	      </form>

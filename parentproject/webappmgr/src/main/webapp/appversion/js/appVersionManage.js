@@ -227,8 +227,8 @@ function updateAppVersion(id,appversionStatus)
 							versionCode:data.versionCode,
 							appVersionUrl:data.appVersionUrl,
 							appDeveloper:data.appDeveloper,
-							appVersionStatus:data.appVersionStatus/*,
-							versionDescription:data.versionDescription //版本描述为之后要添加的字段，用来存储应用版本描述*/
+							appVersionStatus:data.appVersionStatus,
+							versionDescription:data.versionDescription //版本描述为之后要添加的字段，用来存储应用版本描述
 						});
 						
 						initApkList(data.appVersionUrl,'appVersionUrlU');
