@@ -139,6 +139,7 @@ public class TimingQuarzMethodController {
 			city = station.getCityCode();
 			lotteryType = station.getStationType();//1；体彩2：福彩
 			
+			logger.info("1:获取通行证id为："+station.getId()+"的可以展示的通告数据");
 			
 			//放置分页参数
 			Pageable pageableStation = new PageRequest(0,Integer.MAX_VALUE);//查询所有的数据
@@ -184,6 +185,8 @@ public class TimingQuarzMethodController {
 				
 				announcementReceipts.add(announcementReceipt);
 			}
+			
+			logger.info("2：通行证id为："+station.getId()+"的可以展示的通告数据数量为="+announcements.size());
 			
 		}
 		
