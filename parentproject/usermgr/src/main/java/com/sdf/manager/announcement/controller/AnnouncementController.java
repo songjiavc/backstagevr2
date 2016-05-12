@@ -564,48 +564,55 @@ public class AnnouncementController {
 			
 			Station station = stationService.getSationById(announcementReceipt.getStationId());
 			
-			if(OuterInterfaceController.ANNOUNCEMENT_NOT_READ.equals(announcementReceipt.getStatus()))
+			if(null!=station)
 			{
-				receiptStationDTO.setStatusName("未读");
-			}
-			else
-				if(OuterInterfaceController.ANNOUNCEMENT_ALREADY_READ.equals(announcementReceipt.getStatus()))
+				if(OuterInterfaceController.ANNOUNCEMENT_NOT_READ.equals(announcementReceipt.getStatus()))
 				{
-					receiptStationDTO.setStatusName("已读");
-				}
-			//放入更新状态时间
-			receiptStationDTO.setStatusTime(DateUtil.formatTimestampToString(announcementReceipt.getStatusTime()));
-			
-			receiptStationDTO.setName(station.getOwner());//站主名称
-			
-			if(null != station.getProvinceCode())//省级区域
-			{
-				Province province = new Province();
-				province = provinceService.getProvinceByPcode(station.getProvinceCode());
-				receiptStationDTO.setProvinceName(null != province?province.getPname():"");
-			}
-			if(null != station.getCityCode())//市级区域
-			{
-				if(Constants.CITY_ALL.equals(station.getCityCode()))
-				{
-					receiptStationDTO.setCityName(Constants.CITY_ALL_NAME);
+					receiptStationDTO.setStatusName("未读");
 				}
 				else
+					if(OuterInterfaceController.ANNOUNCEMENT_ALREADY_READ.equals(announcementReceipt.getStatus()))
+					{
+						receiptStationDTO.setStatusName("已读");
+					}
+				//放入更新状态时间
+				receiptStationDTO.setStatusTime(DateUtil.formatTimestampToString(announcementReceipt.getStatusTime()));
+				
+				receiptStationDTO.setName(null!=station.getOwner()?station.getOwner():"");//站主名称
+				
+				if(null != station.getProvinceCode())//省级区域
 				{
-					City city = new City();
-					city = cityService.getCityByCcode(station.getCityCode());
-					receiptStationDTO.setCityName(null != city?city.getCname():"");
+					Province province = new Province();
+					province = provinceService.getProvinceByPcode(station.getProvinceCode());
+					receiptStationDTO.setProvinceName(null != province?province.getPname():"");
+				}
+				if(null != station.getCityCode())//市级区域
+				{
+					if(Constants.CITY_ALL.equals(station.getCityCode()))
+					{
+						receiptStationDTO.setCityName(Constants.CITY_ALL_NAME);
+					}
+					else
+					{
+						City city = new City();
+						city = cityService.getCityByCcode(station.getCityCode());
+						receiptStationDTO.setCityName(null != city?city.getCname():"");
+					}
+					
 				}
 				
+				receiptStationDTO.setStationStyle(station.getStationType());//站点类型
+				
+				receiptStationDTO.setTelephone(station.getOwnerTelephone());//站主电话
+				
+				receiptStationDTO.setStationNumber(station.getStationNumber());//站点号
+				
+				receiptStationDTO.setStationCode(station.getCode());
+				
+				receiptStationDTOs.add(receiptStationDTO);
 			}
 			
-			receiptStationDTO.setStationStyle(station.getStationType());//站点类型
 			
-			receiptStationDTO.setTelephone(station.getOwnerTelephone());//站主电话
-			
-			receiptStationDTO.setStationNumber(station.getStationNumber());//站点号
-			
-			receiptStationDTOs.add(receiptStationDTO);
 		}
 		
 		returnData.put("rows", receiptStationDTOs);

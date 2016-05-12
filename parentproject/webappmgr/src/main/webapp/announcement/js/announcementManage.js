@@ -223,12 +223,22 @@ function checkReceipts(id)
 		pageList:[5,10,15],
 		columns:[[
 //				{field:'id',checkbox:true},
-				{field:'stationNumber',title:'站点号',width:'12%',align:'center'},
-				{field:'statusName',title:'回执状态',width:'12%',align:'center'},
-				{field:'statusTime',title:'回执时间',width:'20%',align:'center'},
+				{field:'stationCode',title:'登录帐号',width:'9%',align:'center'},
+				{field:'stationNumber',title:'站点号',width:'9%',align:'center'},
+				{field:'statusName',title:'回执状态',width:'11%',align:'center'},
+				{field:'statusTime',title:'回执时间',width:'17%',align:'center'},
 				{field:'provinceName',title:'省',width:'10%',align:'center'},
 				{field:'cityName',title:'市',width:'10%',align:'center'},
-				{field:'stationStyle',title:'站点类型',width:'10%',align:'center'},
+				{field:'stationStyle',title:'站点类型',width:'10%',align:'center',  
+		            formatter:function(value,row,index){  
+		            	var lotteryTypeName ='';
+		            	switch(value)
+		            	{
+		            		case '1':lotteryTypeName='体彩';break;
+		            		case '2':lotteryTypeName='福彩';break;
+		            	}
+		            	return lotteryTypeName;  
+		            }},
 				{field:'name',title:'站主名称',width:'11%',align:'center'},
 				{field:'telephone',title:'站主电话',width:'15%',align:'center'}
 				
@@ -237,7 +247,7 @@ function checkReceipts(id)
 	    	
 	    	if(data.rows.length==0){
 				var body = $(this).data().datagrid.dc.body2;
-				body.find('table tbody').append('<tr><td width="'+body.width()+'" style="height: 25px; text-align: center;" colspan="8">没有数据</td></tr>');
+				body.find('table tbody').append('<tr><td width="'+body.width()+'" style="height: 25px; text-align: center;" colspan="9">没有数据</td></tr>');
 			}
 	    	
 	    	
