@@ -1164,22 +1164,34 @@ function initForecastDatagird(forecastDatagirdId)
 		if('forcastDataGridU' == forecastDatagirdId)
 			{
 				id = $("#idU").val();
+				var forecasts = checkForecast(id, forecastDatagirdId);
+				var forecastId;
+				for (var i = 0; i < forecasts.length; i++) {
+					
+					forecastId = forecasts[i].id;
+					forecastList.put(forecastId, forecastId);
+				}
+				params.lottertyType = $("#lotteryTypeU").combobox('getValue');
+				
+				params.startTime = $("#startTimeU").datebox('getValue');
+				params.endTime = $("#endTimeU").datebox('getValue');
 			}
 		else
 			{
 				id = $("#idD").val();
+				var forecasts = checkForecast(id, forecastDatagirdId);
+				var forecastId;
+				for (var i = 0; i < forecasts.length; i++) {
+					
+					forecastId = forecasts[i].id;
+					forecastList.put(forecastId, forecastId);
+				}
+				params.lottertyType = $("#lotteryTypeD").val();
+				
+				params.startTime = $("#startTimeD").datebox('getValue');
+				params.endTime = $("#endTimeD").datebox('getValue');
 			}
-		var forecasts = checkForecast(id, forecastDatagirdId);
-		var forecastId;
-		for (var i = 0; i < forecasts.length; i++) {
-			
-			forecastId = forecasts[i].id;
-			forecastList.put(forecastId, forecastId);
-		}
-		params.lottertyType = $("#lotteryTypeU").combobox('getValue');
 		
-		params.startTime = $("#startTimeU").datebox('getValue');
-		params.endTime = $("#endTimeU").datebox('getValue');
 	}
 	else
 		{

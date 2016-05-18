@@ -294,7 +294,7 @@
 				        <div class="ftitle">
 				            <label for="priceA">有效开始时间:</label>
 				            <div style="float:left;margin-left:30px;">
-						            <input class="easyui-datebox commonInput" type="text" id="startTimeU" name="startTime"readonly="readonly"
+						            <input class="easyui-datebox commonInput" type="text" id="startTimeD" name="startTime"readonly="readonly"
 						           ></input>
 					          </div>
 				        </div>
@@ -308,6 +308,7 @@
 				        <div class="ftitle">
 				            <label for="lotteryTypeD">彩种分类:</label>
 				             <div id="lDI" style="float : left;margin-left:30px;">
+				          		    <input type="hidden" name="lotteryType" id="lotteryTypeD"/>
 				             		<input id="ldiLName"  type="text" style="width:200px;" readonly="readonly">
 				             </div>
 				           
