@@ -579,13 +579,13 @@ function deleteKjnotice(id,status)
 			$.messager.alert('提示',"请选择数据后操作!");
 			deleteFlag = false;
 		}
-	else
+	/*else
 		if('1' == status)
 		{//若为发布状态的应用公告，则不可以删除
 			$.messager.alert('提示',"当前开奖公告已经发布,不可以进行删除操作!");
 			deleteFlag = false;
 		}
-	
+	*/
 	
 	if(deleteFlag)
 	{
@@ -631,13 +631,13 @@ function deleteKjnoticeList(operaType)
 	for(var i=0; i<rows.length; i++)
 	{
 		codearr.push(rows[i].id);//code
-		var comnoticeStatus = rows[i].comnoticeStatus;
+		/*var comnoticeStatus = rows[i].comnoticeStatus;
 		if('1' == comnoticeStatus)
 			{
 				$.messager.alert('提示',"当前id为"+rows[i].id+"的开奖公告已经发布,不可以进行删除操作!");
 				deleteFlag = false;
 				break;
-			}
+			}*/
 		
 	}
 	

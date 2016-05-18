@@ -1375,12 +1375,12 @@ function deleteAd(id,adStatus)
 			$.messager.alert('提示',"请选择数据后操作!");
 			deleteFlag = false;
 		}
-	else
+	/*else
 		if('1' == adStatus)
 		{
 			deleteFlag =false;
 			$.messager.alert('提示',"当前应用广告已经发布,不可以进行修改操作!");
-		}
+		}*/
 	
 	
 	if(deleteFlag)
@@ -1427,13 +1427,13 @@ function deleteAdList(operaType)
 	for(var i=0; i<rows.length; i++)
 	{
 		codearr.push(rows[i].id);//code
-		var adStatus= rows[i].adStatus;
+		/*var adStatus= rows[i].adStatus;
 			if('1' == adStatus)
 			{
 				deleteFlag =false;
 				$.messager.alert('提示',"当前id为"+rows[i].id+"的应用广告已经发布,不可以进行修改操作!");
 				break;
-			}
+			}*/
 		
 	}
 	

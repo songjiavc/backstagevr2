@@ -801,7 +801,12 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
     			 Announcement announcement = new Announcement();
     			 announcement = announcementService.getAnnouncementById(announcementReceipt.getAnnouncementId());
     			 
-    			 announcements.add(announcement);
+    			 if(null!=announcement)//若通告数据已删除，但是已经生成回执表的数据，则根据通告id获取通告数据的返回值是空的
+    			 {
+    				 announcements.add(announcement);
+    			 }
+    			 
+    			
     			 
 			}
 			

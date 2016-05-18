@@ -1637,13 +1637,13 @@ function deleteNotice(id,noticeStatus)
 			$.messager.alert('提示',"请选择数据后操作!");
 			deleteFlag = false;
 		}
-	else
+	/*else
 		if('1' == noticeStatus)
 		{//若为发布状态的应用公告，则不可以删除
 			$.messager.alert('提示',"当前应用公告已经发布,不可以进行删除操作!");
 			deleteFlag = false;
 		}
-	
+	*/
 	
 	if(deleteFlag)
 	{
@@ -1724,13 +1724,13 @@ function deleteNoticeList(operaType)
 	for(var i=0; i<rows.length; i++)
 	{
 		codearr.push(rows[i].id);//code
-		var noticeStatus = rows[i].noticeStatus;
+		/*var noticeStatus = rows[i].noticeStatus;
 		if('1' == noticeStatus)
 			{
 				$.messager.alert('提示',"当前id为"+rows[i].id+"的应用公告已经发布,不可以进行删除操作!");
 				deleteFlag = false;
 				break;
-			}
+			}*/
 		
 	}
 	
