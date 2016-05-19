@@ -194,6 +194,8 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			{
 				//TODO:1.返回登录的通行证信息
 				StationDto stationDto = stationController.toDto(station);
+				stationDto.setProvinceCode(station.getProvinceCode());//返回省编码
+				stationDto.setCityCode(station.getCityCode());//返回市编码
 				returnResult.put("stationDto", stationDto);
 				//TODO:2.返回通行证对应的通告,调用获取通行证的通告数据的接口,返回的是dto数据
 				List<AnnouncementDTO> announcement = new ArrayList<AnnouncementDTO>();
@@ -920,6 +922,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	 */
 	@RequestMapping(value="/getAdsOfStationAndApp",method = RequestMethod.GET)
 	public @ResponseBody Map<String,Object> getAdsOfStationAndApp(@RequestParam(value="stationId",required=true) String stationId,
+			/*@RequestParam(value="appName",required=true) String appName*/
 													@RequestParam(value="appId",required=true) String appId	)
 	{
 		Map<String,Object> result = new HashMap<String, Object>();
@@ -928,6 +931,8 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 		String province;
 		String city;
 		String lotteryType;
+		
+		
 		try
 		{
 			Station station = stationService.getSationById(stationId);
