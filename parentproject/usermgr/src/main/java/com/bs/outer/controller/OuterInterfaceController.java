@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bs.outer.dto.AppListDTO;
+import com.bs.outer.dto.StationOuterDTO;
 import com.bs.outer.entity.AnnouncementReceipt;
 import com.bs.outer.entity.Fast3;
 import com.bs.outer.entity.Fast3Analysis;
@@ -192,11 +194,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			//登录成功还要返回的内容
 			if(loginFlag)
 			{
-				//TODO:1.返回登录的通行证信息
-				StationDto stationDto = stationController.toDto(station);
-				stationDto.setProvinceCode(station.getProvinceCode());//返回省编码
-				stationDto.setCityCode(station.getCityCode());//返回市编码
-				returnResult.put("stationDto", stationDto);
+				
 				//TODO:2.返回通行证对应的通告,调用获取通行证的通告数据的接口,返回的是dto数据
 				List<AnnouncementDTO> announcement = new ArrayList<AnnouncementDTO>();
 				announcement = this.getAnnouncementOfStation(station.getId());
@@ -213,6 +211,27 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 				List<AppversionDTO> appversionDTOs = new ArrayList<AppversionDTO>();
 				appversionDTOs = this.getAppversionsOfStationCouldUse(station.getId());
 				returnResult.put("couldUseAppversions", appversionDTOs);
+				
+				//TODO:1.返回登录的通行证信息
+				StationOuterDTO stationDto = outerInterfaceService.toDto(station);
+				stationDto.setProvinceCode(station.getProvinceCode());//返回省编码
+				stationDto.setCityCode(station.getCityCode());//返回市编码
+				
+				List<AppListDTO> appList = new ArrayList<AppListDTO>();
+				
+				for (AppversionDTO appversionDTO : appversionDTOs) 
+				{
+					AppListDTO appListDTO = new AppListDTO();
+					
+					appListDTO.setAppId(appversionDTO.getAppId());
+					appListDTO.setAppName(appversionDTO.getAppName());
+					
+					appList.add(appListDTO);
+				}
+				
+				stationDto.setAppList(appList);
+				
+				returnResult.put("stationDto", stationDto);
 				
 			}
 			logger.info("访问登录接口成功 stationCode="+stationCode+"&&password="+password);
