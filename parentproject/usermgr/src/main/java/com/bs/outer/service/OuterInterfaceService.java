@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 
+import com.bs.outer.dto.StationOuterDTO;
 import com.bs.outer.entity.Fast3;
 import com.bs.outer.entity.Fast3Analysis;
 import com.bs.outer.entity.Fast3DanMa;
@@ -16,6 +17,7 @@ import com.sdf.manager.announcement.entity.Announcement;
 import com.sdf.manager.common.util.QueryResult;
 import com.sdf.manager.companyNotice.entity.CompanyNotice;
 import com.sdf.manager.notice.entity.Notice;
+import com.sdf.manager.station.entity.Station;
 
 public interface OuterInterfaceService {
 	
@@ -133,4 +135,13 @@ public interface OuterInterfaceService {
      * @return 根据期号找到比这个期号更大的期
      */
     public List<Ln5In12Bean> getLn5In12ListByIssueNumber(String issueNumber);
+    
+    /**
+     * 
+     * @Title: toDto
+     * @Description: 实体和接口dto转换方法
+     * @author:banna
+     * @return: StationOuterDTO
+     */
+    public StationOuterDTO toDto(	Station station);
 }

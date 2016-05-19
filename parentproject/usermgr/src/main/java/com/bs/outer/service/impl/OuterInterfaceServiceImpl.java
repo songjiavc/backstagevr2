@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.bs.outer.dto.StationOuterDTO;
 import com.bs.outer.entity.Fast3;
 import com.bs.outer.entity.Fast3Analysis;
 import com.bs.outer.entity.Fast3DanMa;
@@ -27,12 +28,20 @@ import com.sdf.manager.ad.entity.Advertisement;
 import com.sdf.manager.ad.repository.AdvertisementRepository;
 import com.sdf.manager.announcement.entity.Announcement;
 import com.sdf.manager.announcement.repository.AnnouncementRepository;
+import com.sdf.manager.common.util.Constants;
+import com.sdf.manager.common.util.DateUtil;
 import com.sdf.manager.common.util.QueryResult;
 import com.sdf.manager.companyNotice.entity.CompanyNotice;
 import com.sdf.manager.companyNotice.repository.CompanynoticeRepository;
 import com.sdf.manager.notice.controller.NoticeController;
 import com.sdf.manager.notice.entity.Notice;
 import com.sdf.manager.notice.repository.NoticeRepository;
+import com.sdf.manager.product.entity.City;
+import com.sdf.manager.product.entity.Province;
+import com.sdf.manager.product.service.CityService;
+import com.sdf.manager.product.service.ProvinceService;
+import com.sdf.manager.station.application.dto.StationDto;
+import com.sdf.manager.station.entity.Station;
 
 @Service("outerInterfaceService")
 @Transactional(propagation = Propagation.REQUIRED)
@@ -67,6 +76,12 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	
 	@Autowired
 	private Ln5In12Repository ln5In12Repository;
+	
+	@Autowired
+	private ProvinceService provinceService;
+
+	@Autowired
+	private CityService cityService;
 	
 	//TODO:未完成
 	public QueryResult<Announcement> getAnnouncementOfSta(Class<Announcement> entityClass, String whereJpql, Object[] queryParams, 
@@ -301,4 +316,39 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		return ln5In12;
 	}
 	
+	
+	public StationOuterDTO toDto(	Station station){
+		StationOuterDTO stationDto = new StationOuterDTO();
+		stationDto.setId(station.getId());
+		stationDto.setStationCode(station.getCode());
+		stationDto.setStationNumber(station.getStationNumber());
+		stationDto.setName(station.getOwner());
+		stationDto.setTelephone(station.getOwnerTelephone());
+		stationDto.setStationStyle("1".equals(station.getStationType()) ?"体彩":"福彩");
+		//处理实体中的特殊转换值
+		if(null != station.getCreaterTime())//创建时间
+		{
+			stationDto.setCreateTime(DateUtil.formatDate(station.getCreaterTime(), DateUtil.FULL_DATE_FORMAT));
+		}
+		if(null != station.getProvinceCode())//省级区域
+		{
+			Province province = new Province();
+			province = provinceService.getProvinceByPcode(station.getProvinceCode());
+			stationDto.setProvince(null != province?province.getPname():"");
+		}
+		if(null != station.getCityCode())//市级区域
+		{
+			if(Constants.CITY_ALL.equals(station.getCityCode()))
+			{
+				stationDto.setCity(Constants.CITY_ALL_NAME);
+			}
+			else
+			{
+				City city = new City();
+				city = cityService.getCityByCcode(station.getCityCode());
+				stationDto.setCity(null != city?city.getCname():"");
+			}
+		}
+		return stationDto;
+	}
 }
