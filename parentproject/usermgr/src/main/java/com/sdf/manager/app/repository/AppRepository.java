@@ -19,4 +19,14 @@ public interface AppRepository extends GenericRepository<App, String>{
 	 */
 	@Query("select u from App u where u.isDeleted='1' and u.id =?1")
 	public App getAppById(String id);
+	
+	/**
+	 * 
+	 * @Title: getAppByAppName
+	 * @Description: 根据app名称获取应用数据
+	 * @author:banna
+	 * @return: App
+	 */
+	@Query("select u from App u where u.isDeleted='1' and u.appName =?1")
+	public App getAppByAppName(String appName);
 }

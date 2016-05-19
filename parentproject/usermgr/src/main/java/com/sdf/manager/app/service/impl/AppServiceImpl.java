@@ -240,5 +240,9 @@ public class AppServiceImpl implements AppService {
 		}
 		return dtos;
 	}
+
+	public App getAppByAppName(String appName) {
+		return appRepository.getAppByAppName(appName);
+	}
 			
 }

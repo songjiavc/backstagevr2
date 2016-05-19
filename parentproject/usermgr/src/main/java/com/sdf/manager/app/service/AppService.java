@@ -61,4 +61,13 @@ public interface AppService {
 			String whereJpql, Object[] queryParams,
 			LinkedHashMap<String, String> orderby, Pageable pageable,String province,String city,String lotteryType,String installappIds);
 	
+	/**
+	 * 
+	 * @Title: getAppByAppName
+	 * @Description: 根据应用名称获取应用数据详情
+	 * @author:banna
+	 * @return: App
+	 */
+	public App getAppByAppName(String appName);
+	
 }
