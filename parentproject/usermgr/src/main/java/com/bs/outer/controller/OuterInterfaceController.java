@@ -28,6 +28,9 @@ import com.bs.outer.entity.Fast3Analysis;
 import com.bs.outer.entity.Fast3DanMa;
 import com.bs.outer.entity.Fast3Same;
 import com.bs.outer.entity.Fast3SiMa;
+import com.bs.outer.entity.QiLeCai;
+import com.bs.outer.entity.ShuangSQ;
+import com.bs.outer.entity.ThreeD;
 import com.bs.outer.service.AnnouncementReceiptService;
 import com.bs.outer.service.OuterInterfaceService;
 import com.sdf.manager.ad.controller.AdvertisementController;
@@ -70,7 +73,6 @@ import com.sdf.manager.product.entity.City;
 import com.sdf.manager.product.entity.Province;
 import com.sdf.manager.product.service.CityService;
 import com.sdf.manager.product.service.ProvinceService;
-import com.sdf.manager.station.application.dto.StationDto;
 import com.sdf.manager.station.controller.StationController;
 import com.sdf.manager.station.entity.Station;
 import com.sdf.manager.station.service.StationService;
@@ -1601,4 +1603,34 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			return rtnMap;
 		}
 	}
+	/**
+	 * 
+	 * @Title: getLotteryNum
+	 * @Description:  获取遗漏统计内容
+	 * * 对应的返回json数据结构：
+	 * @author:songjia
+	 * @return: Fast3
+	 */
+	@RequestMapping(value="/getLFInfo",method = RequestMethod.GET)
+	public @ResponseBody Map<String,Object> getLFInfo(@RequestParam(value="shuangSQIssueNumber",required=true) String shuangSQIssueNumber ,@RequestParam(value="threeDIssueNumber",required=true) String threeDIssueNumber ,@RequestParam(value="qiLeCaiIssueNumber",required=true) String qiLeCaiIssueNumber )
+	{
+		Map<String,Object> rtnMap = new HashMap<String,Object>();
+		try{
+			List<ShuangSQ> shuangSQList =outerInterfaceService.getShuangSQNumByIssueNumber(shuangSQIssueNumber);
+			List<ThreeD> threeDList = outerInterfaceService.get3DNumByIssueNumber(threeDIssueNumber);
+			List<QiLeCai> qiLeCaiList = outerInterfaceService.getQiLeCaiNumByIssueNumber(qiLeCaiIssueNumber);
+			rtnMap.put("message","success");
+			rtnMap.put("status", "1");
+			rtnMap.put("shuangSQList", shuangSQList);
+			rtnMap.put("threeDList", threeDList);
+			rtnMap.put("qiLeCaiList", qiLeCaiList);
+		}catch(Exception ex){
+			logger.error("获取遗漏统计结果集错误！");
+			rtnMap.put("message","failure");
+			rtnMap.put("status", "0");
+		}finally{
+			return rtnMap;
+		}
+	}
+	
 }

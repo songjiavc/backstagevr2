@@ -17,17 +17,24 @@ import com.bs.outer.entity.Fast3DanMa;
 import com.bs.outer.entity.Fast3Same;
 import com.bs.outer.entity.Fast3SiMa;
 import com.bs.outer.entity.Ln5In12Bean;
+import com.bs.outer.entity.QiLeCai;
+import com.bs.outer.entity.ShuangSQ;
+import com.bs.outer.entity.ThreeD;
 import com.bs.outer.repository.Fast3AnalysisRepository;
 import com.bs.outer.repository.Fast3DanMaRepository;
 import com.bs.outer.repository.Fast3NumberRepository;
 import com.bs.outer.repository.Fast3SameRepository;
 import com.bs.outer.repository.Fast3SiMaRepository;
 import com.bs.outer.repository.Ln5In12Repository;
+import com.bs.outer.repository.QiLeCaiRepository;
+import com.bs.outer.repository.ShuangSQRepository;
+import com.bs.outer.repository.ThreeDRepository;
 import com.bs.outer.service.OuterInterfaceService;
 import com.sdf.manager.ad.entity.Advertisement;
 import com.sdf.manager.ad.repository.AdvertisementRepository;
 import com.sdf.manager.announcement.entity.Announcement;
 import com.sdf.manager.announcement.repository.AnnouncementRepository;
+import com.sdf.manager.common.service.cache.GlobalCacheService;
 import com.sdf.manager.common.util.Constants;
 import com.sdf.manager.common.util.DateUtil;
 import com.sdf.manager.common.util.QueryResult;
@@ -40,7 +47,6 @@ import com.sdf.manager.product.entity.City;
 import com.sdf.manager.product.entity.Province;
 import com.sdf.manager.product.service.CityService;
 import com.sdf.manager.product.service.ProvinceService;
-import com.sdf.manager.station.application.dto.StationDto;
 import com.sdf.manager.station.entity.Station;
 
 @Service("outerInterfaceService")
@@ -78,10 +84,22 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	private Ln5In12Repository ln5In12Repository;
 	
 	@Autowired
+	private QiLeCaiRepository qiLeCaiRepository;
+	
+	@Autowired
+	private ThreeDRepository threeDRepository;
+
+	@Autowired
+	private ShuangSQRepository shuangSQRepository;
+	
+	@Autowired
 	private ProvinceService provinceService;
 
 	@Autowired
 	private CityService cityService;
+	
+	@Autowired
+	private GlobalCacheService globalCacheService;
 	
 	//TODO:未完成
 	public QueryResult<Announcement> getAnnouncementOfSta(Class<Announcement> entityClass, String whereJpql, Object[] queryParams, 
@@ -227,7 +245,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 * @see com.bs.outer.service.OuterInterfaceService#getKaiJiangNumberByIssueId(java.lang.Class, java.lang.String, java.lang.String)
 	 */
 	public Fast3 getKaiJiangNumberByIssueId(String issueNumber,String provinceNumber) {
-		String tableName = "analysis.T_ANHUI_KUAI3_NUMBER";
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[0];
 		String execSql = "SELECT u.* FROM "+tableName +" u  WHERE ISSUE_NUMBER > ? LIMIT 1 ";
 		Object[] queryParams = new Object[]{
 				issueNumber
@@ -237,7 +255,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	}
 	
 	public List<Fast3Analysis> getAnalysisListByIssueNumber(String issueNumber,String provinceNumber){
-		String tableName = "analysis.T_ANHUI_KUAI3_MISSANALYSIS";
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[1];
 		String execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM "+tableName +" WHERE ISSUE_NUMBER > ? ORDER BY TYPE,CURRENT_MISS DESC; ";
 		Object[] queryParams = new Object[]{
 				issueNumber
@@ -247,7 +265,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	}
 
 	public List<Fast3DanMa> getInitDanmaList(String issueNumber,String provinceNumber){
-		String tableName = "analysis.T_ANHUI_KUAI3_DANMA";
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[2];
 		String where = null;
 		if(StringUtils.isEmpty(issueNumber)){
 			where = " ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
@@ -263,7 +281,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 
 
 	public List<Fast3SiMa> getInitSimaList(int siMaId, String provinceNumber) {
-		String tableName = "analysis.T_ANHUI_KUAI3_SIMA";
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[3];
 		String where = null;
 		if(siMaId == 0){
 			where = " ORDER BY ID DESC LIMIT 10 ";
@@ -282,7 +300,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 * @see com.bs.outer.service.OuterInterfaceService#getInitSameList(java.lang.String, java.lang.String)
 	 */
 	public List<Fast3Same> getInitSameList(String issueNumber, String provinceNumber) {
-		String tableName = "analysis.T_ANHUI_KUAI3_SAMENUMBER";
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[4];
 		String where = null;
 		if(StringUtils.isEmpty(issueNumber)){
 			where = " ORDER BY CURRENT_ISSUE DESC LIMIT 10 ";
@@ -351,4 +369,39 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		}
 		return stationDto;
 	}
+	
+	 public List<ShuangSQ> getShuangSQNumByIssueNumber(String issueNumber){
+		 String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5,NO6,NO7 FROM analysis.T_DATA_BASE_SHUANG WHERE ISSUE_NUMBER > ?  LIMIT 300" ;
+			Object[] queryParams = new Object[]{
+					issueNumber
+			};
+			List<ShuangSQ> shuangSQList = shuangSQRepository.getEntityListBySql(ShuangSQ.class,execSql, queryParams);
+			return shuangSQList;
+	 }
+	   
+	   /**
+	 * @param issueNumber
+	 * @return
+	 */ 
+	  public List<ThreeD> get3DNumByIssueNumber(String issueNumber){
+		  String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3 FROM analysis.T_DATA_BASE_3D WHERE ISSUE_NUMBER > ?   ORDER BY ID ASC LIMIT 300" ;
+			Object[] queryParams = new Object[]{
+					issueNumber
+			};
+			List<ThreeD> threeDList =threeDRepository.getEntityListBySql(ThreeD.class,execSql, queryParams);
+			return threeDList;
+	  }
+	   
+	   /**
+	    * @param issueNumber
+	    * @return
+	    */
+	  public List<QiLeCai> getQiLeCaiNumByIssueNumber(String issueNumber){
+		    String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5,NO6,NO7 FROM analysis.T_DATA_BASE_QILECAI WHERE ISSUE_NUMBER > ?   ORDER BY ID ASC LIMIT 300" ;
+			Object[] queryParams = new Object[]{
+					issueNumber
+			};
+			List<QiLeCai> qiLeCaieDList =qiLeCaiRepository.getEntityListBySql(QiLeCai.class,execSql, queryParams);
+			return qiLeCaieDList;
+	  }
 }

@@ -12,6 +12,9 @@ import com.bs.outer.entity.Fast3DanMa;
 import com.bs.outer.entity.Fast3Same;
 import com.bs.outer.entity.Fast3SiMa;
 import com.bs.outer.entity.Ln5In12Bean;
+import com.bs.outer.entity.QiLeCai;
+import com.bs.outer.entity.ShuangSQ;
+import com.bs.outer.entity.ThreeD;
 import com.sdf.manager.ad.entity.Advertisement;
 import com.sdf.manager.announcement.entity.Announcement;
 import com.sdf.manager.common.util.QueryResult;
@@ -144,4 +147,24 @@ public interface OuterInterfaceService {
      * @return: StationOuterDTO
      */
     public StationOuterDTO toDto(	Station station);
+    
+   /**
+ * @param issueNumber
+ * @return
+ */
+  public List<ShuangSQ> getShuangSQNumByIssueNumber(String issueNumber);
+   
+   /**
+ * @param issueNumber
+ * @return
+ */ 
+  public List<ThreeD> get3DNumByIssueNumber(String issueNumber);
+   
+   /**
+    * @param issueNumber
+    * @return
+    */
+  public List<QiLeCai> getQiLeCaiNumByIssueNumber(String issueNumber);
+   
+   
 }
