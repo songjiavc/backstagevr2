@@ -53,6 +53,7 @@ import com.sdf.manager.appversion.service.AppversionService;
 import com.sdf.manager.common.bean.ResultBean;
 import com.sdf.manager.common.bean.ResultBeanData;
 import com.sdf.manager.common.bean.ResultBeanDataList;
+import com.sdf.manager.common.service.cache.GlobalCacheService;
 import com.sdf.manager.common.util.Constants;
 import com.sdf.manager.common.util.DateUtil;
 import com.sdf.manager.common.util.QueryResult;
@@ -146,6 +147,9 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	 
 	 @Autowired
 	 private AnnouncementReceiptService announcementReceiptService;//通告回执表业务层
+	 
+	 @Autowired
+	private GlobalCacheService globalCacheService;
 	 
 	 //静态变量
 	 public static final String DEFAULT_FREE_USE_DAY_OF_YEARS = "365";//免费使用时间天数的默认值
@@ -1508,6 +1512,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			fast3Bean.setMessage("success");
 			fast3Bean.setEntity(fast3);
 		}catch(Exception ex){
+			logger.error("获取单条开奖结果数据错误！issueNumber="+issueNumber + "&&provinceNumber="+provinceNumber);
 			fast3Bean.setStatus("0");
 			fast3Bean.setMessage("failure");
 		}finally{
@@ -1534,7 +1539,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			resultList.setMessage("success");
 			resultList.setStatus("1");
 		}catch(Exception ex){
-			logger.error("获取初始化开奖号码结果集错误！");
+			logger.error("初始化开奖结果数据错误！provinceNumber="+provinceNumber);
 			resultList.setMessage("failure");
 			resultList.setStatus("0");
 		}finally{
@@ -1560,7 +1565,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			resultList.setMessage("success");
 			resultList.setStatus("1");
 		}catch(Exception ex){
-			logger.error("获取遗漏统计结果集错误！");
+			logger.error("获取遗漏统计结果集错误！issueNumber="+issueNumber+"&&provinceNumber="+provinceNumber);
 			resultList.setMessage("failure");
 			resultList.setStatus("0");
 		}finally{
@@ -1596,7 +1601,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 				rtnMap.put("sameList", sameList);
 			}
 		}catch(Exception ex){
-			logger.error("获取遗漏统计结果集错误！");
+			logger.error("获取统计附表数据接口错误！provinceNumber="+provinceNumber);
 			rtnMap.put("message","failure");
 			rtnMap.put("status", "0");
 		}finally{
@@ -1625,7 +1630,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			rtnMap.put("threeDList", threeDList);
 			rtnMap.put("qiLeCaiList", qiLeCaiList);
 		}catch(Exception ex){
-			logger.error("获取遗漏统计结果集错误！");
+			logger.error("获取低频数据接口错误！shuangSQIssueNumber="+shuangSQIssueNumber+"&&threeDIssueNumber="+threeDIssueNumber+"&&qiLeCaiIssueNumber="+qiLeCaiIssueNumber);
 			rtnMap.put("message","failure");
 			rtnMap.put("status", "0");
 		}finally{
