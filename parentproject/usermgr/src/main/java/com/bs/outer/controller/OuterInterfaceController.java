@@ -53,7 +53,6 @@ import com.sdf.manager.appversion.service.AppversionService;
 import com.sdf.manager.common.bean.ResultBean;
 import com.sdf.manager.common.bean.ResultBeanData;
 import com.sdf.manager.common.bean.ResultBeanDataList;
-import com.sdf.manager.common.service.cache.GlobalCacheService;
 import com.sdf.manager.common.util.Constants;
 import com.sdf.manager.common.util.DateUtil;
 import com.sdf.manager.common.util.QueryResult;
@@ -147,9 +146,6 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	 
 	 @Autowired
 	 private AnnouncementReceiptService announcementReceiptService;//通告回执表业务层
-	 
-	 @Autowired
-	private GlobalCacheService globalCacheService;
 	 
 	 //静态变量
 	 public static final String DEFAULT_FREE_USE_DAY_OF_YEARS = "365";//免费使用时间天数的默认值
