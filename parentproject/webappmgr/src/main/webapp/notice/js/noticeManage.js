@@ -426,16 +426,31 @@ function initAppDatagrid(noticeId,appDatagridId)
 				{//若当前登录用户是市中心用户时，则也赋予市级区域信息
 					params.city=areamsg.city;
 				}
-			
+				
 			params.lotteryType = lotteryType;
 			$("#lotteryTypeA").combobox('setValue',lotteryType);
 		}
 	else
 		{
-			if('0'!=lotteryType&&''!=lotteryType)
+			if('appDataGridU' == appDatagridId)
+				{
+					params.lotteryType = $("#lotteryTypeU").combobox('getValue');
+				}
+			else
+				if('appDataGridD' == appDatagridId)
+				{
+					params.lotteryType = $("#lotteryTypeD").val();
+				}
+				else
+					if('appDataGridA' == appDatagridId)
+					{
+						params.lotteryType = $("#lotteryTypeA").combobox('getValue');
+					}
+			
+			/*if('0'!=lotteryType&&''!=lotteryType)
 				{
 					params.lotteryType = lotteryType;
-				}
+				}*/
 		}
 	
 	appList = new map();
