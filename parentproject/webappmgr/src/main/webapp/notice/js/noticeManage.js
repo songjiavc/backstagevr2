@@ -332,10 +332,12 @@ function initAddPage()
 		if('1' == lotteryType)
 		{
 			$("#laiLName").val("体彩");
+			$("#lotteryTypeA").combobox('setValue',lotteryType);
 		}
 		else if('2' == lotteryType)
 		{
 			$("#laiLName").val("福彩");
+			$("#lotteryTypeA").combobox('setValue',lotteryType);
 		}
 		$("#lA").hide();
 	}
@@ -367,6 +369,7 @@ function initAddPage()
 					{
 						$("#laiLName").val("福彩");
 					}
+					$("#lotteryTypeA").combobox('setValue',lotteryType);
 					$("#lA").hide();
 				}
 			else
