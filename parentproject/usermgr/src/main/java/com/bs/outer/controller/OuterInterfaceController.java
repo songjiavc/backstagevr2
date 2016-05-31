@@ -1612,6 +1612,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	 * @author:songjia
 	 * @return: Fast3
 	 */
+	/*
 	@RequestMapping(value="/getLFInfo",method = RequestMethod.GET)
 	public @ResponseBody Map<String,Object> getLFInfo(@RequestParam(value="shuangSQIssueNumber",required=true) String shuangSQIssueNumber ,@RequestParam(value="threeDIssueNumber",required=true) String threeDIssueNumber ,@RequestParam(value="qiLeCaiIssueNumber",required=true) String qiLeCaiIssueNumber )
 	{
@@ -1627,6 +1628,36 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			rtnMap.put("qiLeCaiList", qiLeCaiList);
 		}catch(Exception ex){
 			logger.error("获取低频数据接口错误！shuangSQIssueNumber="+shuangSQIssueNumber+"&&threeDIssueNumber="+threeDIssueNumber+"&&qiLeCaiIssueNumber="+qiLeCaiIssueNumber);
+			rtnMap.put("message","failure");
+			rtnMap.put("status", "0");
+		}finally{
+			return rtnMap;
+		}
+	}
+	*/
+	/**
+	 * 
+	 * @Title: getLotteryNum
+	 * @Description:  获取遗漏统计内容
+	 * * 对应的返回json数据结构：
+	 * @author:songjia
+	 * @return: Fast3
+	 */
+	@RequestMapping(value="/getLFInfoList",method = RequestMethod.GET)
+	public @ResponseBody Map<String,Object> getLFInfo( )
+	{
+		Map<String,Object> rtnMap = new HashMap<String,Object>();
+		try{
+			List<ShuangSQ> shuangSQList =outerInterfaceService.getShuangSQNumByIssueNumber();
+			List<ThreeD> threeDList = outerInterfaceService.get3DNumByIssueNumber();
+			List<QiLeCai> qiLeCaiList = outerInterfaceService.getQiLeCaiNumByIssueNumber();
+			rtnMap.put("message","success");
+			rtnMap.put("status", "1");
+			rtnMap.put("shuangSQList", shuangSQList);
+			rtnMap.put("threeDList", threeDList);
+			rtnMap.put("qiLeCaiList", qiLeCaiList);
+		}catch(Exception ex){
+			//logger.error("获取低频数据接口错误！shuangSQIssueNumber="+shuangSQIssueNumber+"&&threeDIssueNumber="+threeDIssueNumber+"&&qiLeCaiIssueNumber="+qiLeCaiIssueNumber);
 			rtnMap.put("message","failure");
 			rtnMap.put("status", "0");
 		}finally{

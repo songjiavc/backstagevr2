@@ -33,6 +33,8 @@ public class QiLeCai {
 	private int no6;
 	@Column(name="NO7")
 	private int no7;
+	@Column(name="NO8")
+	private int no8;
 
 	public String getIssueNumber() {
 		return issueNumber;
@@ -104,6 +106,14 @@ public class QiLeCai {
 
 	public void setNo7(int no7) {
 		this.no7 = no7;
+	}
+
+	public int getNo8() {
+		return no8;
+	}
+
+	public void setNo8(int no8) {
+		this.no8 = no8;
 	}
 	
 	

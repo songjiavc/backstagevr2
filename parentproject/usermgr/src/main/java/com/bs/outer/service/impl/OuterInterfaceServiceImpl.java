@@ -370,10 +370,9 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		return stationDto;
 	}
 	
-	 public List<ShuangSQ> getShuangSQNumByIssueNumber(String issueNumber){
-		 String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5,NO6,NO7 FROM analysis.T_DATA_BASE_SHUANG WHERE ISSUE_NUMBER > ?  LIMIT 300" ;
+	 public List<ShuangSQ> getShuangSQNumByIssueNumber(){
+		 String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5,NO6,NO7 FROM analysis.T_DATA_BASE_SHUANG ORDER BY ISSUE_NUMBER DESC  LIMIT 300" ;
 			Object[] queryParams = new Object[]{
-					issueNumber
 			};
 			List<ShuangSQ> shuangSQList = shuangSQRepository.getEntityListBySql(ShuangSQ.class,execSql, queryParams);
 			return shuangSQList;
@@ -383,10 +382,9 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 * @param issueNumber
 	 * @return
 	 */ 
-	  public List<ThreeD> get3DNumByIssueNumber(String issueNumber){
-		  String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3 FROM analysis.T_DATA_BASE_3D WHERE ISSUE_NUMBER > ?   ORDER BY ID ASC LIMIT 300" ;
+	  public List<ThreeD> get3DNumByIssueNumber(){
+		  String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,TEST_NUM FROM analysis.T_DATA_BASE_3D ORDER BY ISSUE_NUMBER DESC LIMIT 300" ;
 			Object[] queryParams = new Object[]{
-					issueNumber
 			};
 			List<ThreeD> threeDList =threeDRepository.getEntityListBySql(ThreeD.class,execSql, queryParams);
 			return threeDList;
@@ -396,10 +394,9 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	    * @param issueNumber
 	    * @return
 	    */
-	  public List<QiLeCai> getQiLeCaiNumByIssueNumber(String issueNumber){
-		    String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5,NO6,NO7 FROM analysis.T_DATA_BASE_QILECAI WHERE ISSUE_NUMBER > ?   ORDER BY ID ASC LIMIT 300" ;
+	  public List<QiLeCai> getQiLeCaiNumByIssueNumber(){
+		    String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5,NO6,NO7,NO8 FROM analysis.T_DATA_BASE_QILECAI ORDER BY ISSUE_NUMBER DESC LIMIT 300" ;
 			Object[] queryParams = new Object[]{
-					issueNumber
 			};
 			List<QiLeCai> qiLeCaieDList =qiLeCaiRepository.getEntityListBySql(QiLeCai.class,execSql, queryParams);
 			return qiLeCaieDList;

@@ -25,6 +25,8 @@ public class ThreeD {
 	private int no2;
 	@Column(name="NO3")
 	private int no3;
+	@Column(name="TEST_NUM")
+	private String testNum;
 
 	public String getIssueNumber() {
 		return issueNumber;
@@ -57,5 +59,15 @@ public class ThreeD {
 	public void setNo3(int no3) {
 		this.no3 = no3;
 	}
+
+	public String getTestNum() {
+		return testNum;
+	}
+
+	public void setTestNum(String testNum) {
+		this.testNum = testNum;
+	}
+	
+	
 
 }

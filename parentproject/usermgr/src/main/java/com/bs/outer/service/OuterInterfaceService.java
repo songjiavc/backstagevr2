@@ -152,19 +152,19 @@ public interface OuterInterfaceService {
  * @param issueNumber
  * @return
  */
-  public List<ShuangSQ> getShuangSQNumByIssueNumber(String issueNumber);
+  public List<ShuangSQ> getShuangSQNumByIssueNumber();
    
    /**
  * @param issueNumber
  * @return
  */ 
-  public List<ThreeD> get3DNumByIssueNumber(String issueNumber);
+  public List<ThreeD> get3DNumByIssueNumber();
    
    /**
     * @param issueNumber
     * @return
     */
-  public List<QiLeCai> getQiLeCaiNumByIssueNumber(String issueNumber);
+  public List<QiLeCai> getQiLeCaiNumByIssueNumber();
    
    
 }
