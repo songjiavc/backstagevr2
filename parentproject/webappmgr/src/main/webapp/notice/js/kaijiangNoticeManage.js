@@ -148,9 +148,9 @@ function initDatagrid()
 				{field:'ck',checkbox:true},
 				{field:'id',hidden:true},
 				{field:'noticeStatus',hidden:true},
-				{field:'appNoticeName',title:'应用公告名称',width:150,align:'center'},
-				{field:'noticeStatusName',title:'应用公告状态',width:150,align:'center'},
-				{field:'lotteryType',width:50,title:'彩种',align:'center',  
+				{field:'appNoticeName',title:'开奖公告名称',width:'20%',align:'center'},
+				{field:'noticeStatusName',title:'开奖公告状态',width:'20%',align:'center'},
+				{field:'lotteryType',width:'10%',title:'彩种',align:'center',  
 		            formatter:function(value,row,index){  
 		            	var lotteryTypeName ='';
 		            	switch(value)
@@ -160,10 +160,10 @@ function initDatagrid()
 		            	}
 		            	return lotteryTypeName;  
 		            }  },
-		        {field:'startTimestr',width:120,title:'有效开始时间',align:'center'},
-				{field:'endTimestr',title:'有效结束时间',width:120,align:'center'},
-				{field:'createTime',title:'创建时间',width:120,align:'center'},
-				{field:'opt',title:'操作',width:160,align:'center',  
+		       /* {field:'startTimestr',width:120,title:'有效开始时间',align:'center'},
+				{field:'endTimestr',title:'有效结束时间',width:120,align:'center'},*/
+				{field:'createTime',title:'创建时间',width:'20%',align:'center'},
+				{field:'opt',title:'操作',width:'25%',align:'center',  
 			            formatter:function(value,row,index){  
 			                var btn = '<a class="editcls" onclick="updatKjnotice(&quot;'+row.id+'&quot;,&quot;'+row.noticeStatus+'&quot;)" href="javascript:void(0)">编辑</a>'
 			                	+'<a class="deleterole" onclick="deleteKjnotice(&quot;'+row.id+'&quot;,&quot;'+row.noticeStatus+'&quot;)" href="javascript:void(0)">删除</a>'
@@ -477,16 +477,16 @@ function submitAddKaijiangNotice(operatype)
 			param.areadata = JSON.stringify(areaList);
 			
 			
-			if($('#ff').form('enableValidation').form('validate')&&areaList.keys.length>0)
+			if($('#ff').form('enableValidation').form('validate'))
 				{
 					flag = true;
 				}
-			else
+			/*else
 				if(areaList.keys.length==0)
 				{
 					flag = false;
 					$.messager.alert('提示', "请选择开奖公告要发布给哪些区域!");
-				}
+				}*/
 			return flag;
 		},
 	    success:function(data){
@@ -495,6 +495,7 @@ function submitAddKaijiangNotice(operatype)
 	    	$("#addKaijiangNotice").dialog('close');//初始化添加通行证组弹框关闭
 	    	$('#ff').form('clear');//清空表单内容
 	    	$("#lotteryTypeA").combobox('setValue',"1");
+	    	$("#appNoticeNameA").combobox('setValue',"3D");
 	    	
 	    	initDatagrid();
 	    	
@@ -535,16 +536,16 @@ function submitUpdateKaijiangNotice(operatype)
 			
 			
 			
-			if($('#ffUpdate').form('enableValidation').form('validate') &&areaList.keys.length>0 )
+			if($('#ffUpdate').form('enableValidation').form('validate') )
 				{
 					flag = true;
 				}
-			else
+			/*else
 				if(areaList.keys.length==0)
 				{
 					flag = false;
 					$.messager.alert('提示', "请选择开奖公告要发布给哪些区域!");
-				}
+				}*/
 			return flag;
 		},
 	    success:function(data){

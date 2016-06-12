@@ -175,8 +175,15 @@
 		    	 		<div class="ftitle">
 				            <label for="codeA">开奖公告名称:</label>
 				            <input type="hidden" name="id" id="idA"/>
-				            <input class="easyui-validatebox commonInput" type="text" id="appNoticeNameA" name="appNoticeName" style="width:200px"  
-				             data-options="required:true" validType="length[1,15]" invalidMessage="名称字数最多可输入15个字"   missingMessage="开奖公告名称不可以为空" ></input>
+				             <div style="float:left;margin-left:30px;">
+				            <select class="easyui-combobox" id="appNoticeNameA" name="appNoticeName" style="width:200px;">
+								<option value="3D">3D</option>
+								<option value="双色球" >双色球</option>
+								<option value="七乐彩">七乐彩</option>
+							</select>
+							</div>
+				            <!-- <input class="easyui-validatebox commonInput" type="text" id="appNoticeNameA" name="appNoticeName" style="width:200px"  
+				             data-options="required:true" validType="length[1,15]" invalidMessage="名称字数最多可输入15个字"   missingMessage="开奖公告名称不可以为空" ></input> -->
 				        </div>
 				        <div class="ftitle">
 				            <label for="lotteryTypeA">彩种分类:</label>
@@ -243,8 +250,13 @@
 		    	 		<div class="ftitle"> 
 		    	 			<label>开奖公告名称:</label>
 				            <input type="hidden" name="id" id="idU"/>
-				            <input class="easyui-validatebox commonInput" type="text" id="appNoticeNameU" name="appNoticeName" style="width:200px"  
-				             data-options="required:true" validType="length[1,15]" invalidMessage="名称字数最多可输入15个字"   missingMessage="开奖公告名称不可以为空" ></input>
+				             <div style="float:left;margin-left:30px;">
+				             <select class="easyui-combobox" id="appNoticeNameU" name="appNoticeName" style="width:200px;">
+								<option value="3D">3D</option>
+								<option value="双色球" >双色球</option>
+								<option value="七乐彩">七乐彩</option>
+							</select>
+							</div>
 				        </div>
 				        <div class="ftitle">
 				            <label for="lotteryTypeA">彩种分类:</label>
