@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bs.outer.service.OuterInterfaceService;
 import com.sdf.manager.ad.controller.AdvertisementController;
 import com.sdf.manager.app.dto.AppDTO;
 import com.sdf.manager.app.entity.App;
@@ -86,6 +87,9 @@ public class NoticeController {
 	
 	@Autowired
 	private ForecastService forecastService;
+	
+	@Autowired
+	private OuterInterfaceService outerInterfaceService;
 	
 	public static final String NOTICE_STATUS_FB="1";//应用公告发布状态位
 	public static final String NOTICE_STATUS_BC="0";//应用公告保存状态位
@@ -501,7 +505,7 @@ public class NoticeController {
 		{
 		   ResultBean resultBean = new ResultBean ();
 		   
-		   
+		   List<AppNoticeAndArea> appnoticeAndAreas = new ArrayList<AppNoticeAndArea>();
 		   Notice notice = noticeService.getNoticeById(id);
 		   
 		   //TODO:提取绑定的区域数据
@@ -511,6 +515,24 @@ public class NoticeController {
 		   
 		   if(null != notice)
 		   {//开奖公告数据不为空，则进行修改操作
+			   
+			   //若当前开奖公告为发布状态，则要清理之前的开奖公告
+			   if(NoticeController.NOTICE_STATUS_FB.equals(noticeStatus))
+			   {
+				   List<Notice> lastlist = outerInterfaceService.getLastKjNoticeOfNoticename(appNoticeName).getResultList();
+		        	for (Notice noticelast : lastlist) {
+		        		noticelast.setIsDeleted("0");
+		        		noticelast.setModify("sysauto");
+		        		noticelast.setModifyTime(new Timestamp(System.currentTimeMillis()));
+		    	 		
+				 		
+		        		noticelast.setAppNoticeAndAreas(appnoticeAndAreas);
+		    	 		noticeService.update(noticelast);
+		    	 		logger.info("删除开奖公告数据--id="+notice.getId()+"--操作人=sysauto");
+		    		}
+			   }
+				
+			   
 			   
 			   notice.setAppNoticeName(appNoticeName);
 			   
@@ -522,8 +544,7 @@ public class NoticeController {
 			   //！！！当前系统默认有效期为一天
 			   Date st = DateUtil.formatStringToDate(DateUtil.formatCurrentDateWithYMD(), DateUtil.SIMPLE_DATE_FORMAT);//注意：在将string转换为date时，转换的格式一定要与string的格式统一，否则无法转换，eg：“2016-03-21”转换为date类型，只能使用DateUtil.SIMPLE_DATE_FORMAT转换，否则抛出异常
 			   notice.setStartTime(DateUtil.formatDateToTimestamp(st, DateUtil.FULL_DATE_FORMAT));
-			   Date et = DateUtil.formatStringToDate(DateUtil.formatCurrentDateWithYMD(), DateUtil.SIMPLE_DATE_FORMAT);
-			   notice.setEndTime(DateUtil.formatDateToTimestamp(et, DateUtil.FULL_DATE_FORMAT));
+			   Date et = DateUtil.getNextDayOfCurrentTime(new Timestamp(System.currentTimeMillis()), 365);
 			   
 			   notice.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
 			   notice.setModifyTime(new Timestamp(System.currentTimeMillis()));
@@ -559,8 +580,7 @@ public class NoticeController {
 			   
 				   
 				   
-			   
-				
+			  
 			   
 			   
 			   
@@ -575,6 +595,22 @@ public class NoticeController {
 		   }
 		   else
 		   {
+			   //若当前开奖公告为发布状态，则要清理之前的开奖公告
+			   if(NoticeController.NOTICE_STATUS_FB.equals(noticeStatus))
+			   {
+				   List<Notice> lastlist = outerInterfaceService.getLastKjNoticeOfNoticename(appNoticeName).getResultList();
+		        	for (Notice noticelast : lastlist) {
+		        		noticelast.setIsDeleted("0");
+		        		noticelast.setModify("sysauto");
+		        		noticelast.setModifyTime(new Timestamp(System.currentTimeMillis()));
+		    	 		
+				 		
+		        		noticelast.setAppNoticeAndAreas(appnoticeAndAreas);
+		    	 		noticeService.update(noticelast);
+		    	 		logger.info("删除开奖公告数据--id="+noticelast.getId()+"--操作人=sysauto");
+		    		}
+			   }
+			   
 			   notice = new Notice();
 			   notice.setId(UUID.randomUUID().toString());
 			   notice.setAppNoticeName(appNoticeName);
@@ -588,8 +624,7 @@ public class NoticeController {
 			   //！！！当前系统默认有效期为一天
 			   Date st = DateUtil.formatStringToDate(DateUtil.formatCurrentDateWithYMD(), DateUtil.SIMPLE_DATE_FORMAT);
 			   notice.setStartTime(DateUtil.formatDateToTimestamp(st, DateUtil.FULL_DATE_FORMAT));
-			   Date et = DateUtil.formatStringToDate(DateUtil.formatCurrentDateWithYMD(), DateUtil.SIMPLE_DATE_FORMAT);
-			   notice.setEndTime(DateUtil.formatDateToTimestamp(et, DateUtil.FULL_DATE_FORMAT));
+			   Date et = DateUtil.getNextDayOfCurrentTime(new Timestamp(System.currentTimeMillis()), 365);
 			   
 			   notice.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
 			   notice.setModifyTime(new Timestamp(System.currentTimeMillis()));
@@ -599,6 +634,9 @@ public class NoticeController {
 			   
 			   //设置开奖类公告字体颜色
 			   notice.setNoticeFontColor("#1E90FF");
+			   
+			 
+			   
 			   
 			   noticeService.save(notice);//保存应用公告数据
 			   

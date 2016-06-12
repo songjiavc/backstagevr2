@@ -1,9 +1,15 @@
 package com.bs.outer.service.impl;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -222,15 +228,131 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	public QueryResult<Notice> getKaijiangNoticeOfStaAndApp(Class<Notice> entityClass,
 			String whereJpql, Object[] queryParams,
 			LinkedHashMap<String, String> orderby, Pageable pageable,String ugroups,String province,String city,String appId,String lotteryType) {
-		StringBuffer sql = new StringBuffer("SELECT u.* FROM ((T_BS_APP_NOTICE u LEFT JOIN RELA_BS_NOTICE_AND_APP app ON u.ID=app.APP_NOTICE_ID) "+
+		StringBuffer sql = new StringBuffer(" select atable.* from  (SELECT u.* FROM ((T_BS_APP_NOTICE u LEFT JOIN RELA_BS_NOTICE_AND_APP app ON u.ID=app.APP_NOTICE_ID) "+
 				"    LEFT JOIN RELA_BS_NOTICE_AND_UGROUP au ON u.ID=au.APP_NOTICE_ID) LEFT JOIN RELA_BS_NOTICE_AND_AERA aarea ON u.id = aarea.NOTICE_ID WHERE u.IS_DELETED='1' "+
 				"   AND u.NOTICE_STATUS='1' AND  u.APP_CATEGORY='"+NoticeController.APP_CATEGORY_COMPANY_KAIJIANG+"' "+
-				"   AND u.NOTICE_ENDTIME>=CURDATE() AND u.NOTICE_STARTTIME<=CURDATE() AND u.LOTTERY_TYPE='"+lotteryType+"'");
-			sql.append(" AND aarea.PROVINCE='"+province+"' AND aarea.CITY='"+city+"' GROUP BY u.id");
+//				"   AND u.NOTICE_ENDTIME>=CURDATE() AND u.NOTICE_STARTTIME<=CURDATE() "
+				 " AND u.LOTTERY_TYPE='"+lotteryType+"'  AND aarea.PROVINCE='"+province+"' AND aarea.CITY='"+city+"'  "
+				 		+ "UNION "+
+				 "   SELECT a.*  FROM T_BS_APP_NOTICE a LEFT JOIN RELA_BS_NOTICE_AND_AERA rarea ON a.ID=rarea.NOTICE_ID "+
+				 "	WHERE rarea.NOTICE_ID IS NULL AND a.IS_DELETED='1'    AND a.NOTICE_STATUS='1' "
+				 + "AND  a.APP_CATEGORY='"+NoticeController.APP_CATEGORY_COMPANY_KAIJIANG+"'  "
+				 		+ "  AND a.LOTTERY_TYPE='"+lotteryType+"' ) atable ");
 		QueryResult<Notice> userObj = noticeRepository.
 			getScrollDataBySql(Notice.class,sql.toString(), queryParams, pageable);
 		return userObj;
 	}
+	
+	/**
+	 * 
+	 * @Title: getNoticeByAppNoticeName
+	 * @Description: TODO:获取当前彩种开奖公告的最近一次生成时间
+	 * @author:banna
+	 */
+	public Date getNoticeByAppNoticeName(String appNoticeName)
+	{
+		List<Object> params = new ArrayList<Object>();
+		Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);//查询所有的数据
+		
+		StringBuffer sql = new StringBuffer("SELECT MAX(n.CREATER_TIME) AS CREATER_TIME,n.ID,n.CREATER,n.IS_DELETED,n.MODIFY,"
+				+ "n.MODIFY_TIME,n.APP_CATEGORY,n.APP_NOTICE_NAME,n.APP_NOTICE_WORD,n.NOTICE_ENDTIME,n.LOTTERY_TYPE,n.NOTICE_STATUS,n.NOTICE_STARTTIME,n.NOTICE_FONT_COLOR   FROM T_BS_APP_NOTICE n WHERE n.IS_DELETED='1' "+
+					" AND n.APP_CATEGORY='3' AND n.NOTICE_STATUS='1' AND n.APP_NOTICE_NAME LIKE '%"+appNoticeName+"%'");
+		QueryResult<Notice> userObj = noticeRepository.
+				getScrollDataBySql(Notice.class,sql.toString(), params.toArray(), pageable);
+		if(0 == userObj.getTotalCount())
+		{
+		 
+			Date finalDate = null;
+				
+			return finalDate;
+		}
+		else
+		{
+			System.out.println(userObj.getResultList().get(0).getCreaterTime());
+			return userObj.getResultList().get(0).getCreaterTime();
+		}
+		
+		
+		
+				
+	}
+	
+	public QueryResult<Notice> getLastKjNoticeOfNoticename(String appNoticeName)
+	{
+		String ct = "";
+		List<Object> params = new ArrayList<Object>();
+		Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);//查询所有的数据
+		
+		StringBuffer sql = new StringBuffer("SELECT n.CREATER_TIME,n.ID,n.CREATER,n.IS_DELETED,n.MODIFY,"
+				+ "n.MODIFY_TIME,n.APP_CATEGORY,n.APP_NOTICE_NAME,n.APP_NOTICE_WORD,n.NOTICE_ENDTIME,n.LOTTERY_TYPE,n.NOTICE_STATUS,n.NOTICE_STARTTIME,n.NOTICE_FONT_COLOR   FROM T_BS_APP_NOTICE n WHERE n.IS_DELETED='1' "+
+					" AND n.APP_CATEGORY='3' AND n.NOTICE_STATUS='1' AND n.APP_NOTICE_NAME LIKE '%"+appNoticeName+"%'");
+		QueryResult<Notice> userObj = noticeRepository.
+				getScrollDataBySql(Notice.class,sql.toString(), params.toArray(), pageable);
+		
+		
+		return userObj;
+				
+	}
+	
+	/**
+	 * 
+	 * @Title: getQiLeCaiKaijiang
+	 * @Description: TODO:获取“七乐彩”的最新开奖数据
+	 * @author:banna
+	 * @return: List<QiLeCai>
+	 */
+	 public List<QiLeCai> getQiLeCaiKaijiang(Date ct){
+		    StringBuffer execSql = new StringBuffer("SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5,NO6,NO7,NO8 FROM analysis.T_DATA_BASE_QILECAI ");
+		    		if(null != ct)
+		    		{
+		    			execSql.append(" WHERE CREATE_TIME>'"+ct+"' ");
+		    		}
+		    		execSql.append(" ORDER BY ISSUE_NUMBER DESC LIMIT 300");
+			Object[] queryParams = new Object[]{
+			};
+		    List<QiLeCai> qiLeCaieDList =qiLeCaiRepository.getEntityListBySql(QiLeCai.class,execSql.toString(), queryParams);
+			return qiLeCaieDList;
+	  }
+	 
+	 /**
+		 * 
+		 * @Title: get3DNumKaijiang
+		 * @Description: TODO:获取“3D”的最新开奖数据
+		 * @author:banna
+		 * @return: List<QiLeCai>
+		 */
+	 public List<ThreeD> get3DNumKaijiang(Date ct){
+		 StringBuffer execSql = new StringBuffer("SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,TEST_NUM FROM analysis.T_DATA_BASE_3D ");
+			 if(null != ct)
+	 		{
+	 			execSql.append(" WHERE CREATE_TIME>'"+ct+"' ");
+	 		}
+	 		execSql.append(" ORDER BY ISSUE_NUMBER DESC LIMIT 300");
+			Object[] queryParams = new Object[]{
+			};
+			List<ThreeD> threeDList =threeDRepository.getEntityListBySql(ThreeD.class,execSql.toString(), queryParams);
+			return threeDList;
+	  }
+	 
+	 /**
+		 * 
+		 * @Title: getShuangSQKaijiang
+		 * @Description: TODO:获取“双色球”的最新开奖数据
+		 * @author:banna
+		 * @return: List<QiLeCai>
+		 */
+	 public List<ShuangSQ> getShuangSQKaijiang(Date ct){
+		 StringBuffer execSql = new StringBuffer("SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5,NO6,NO7 FROM analysis.T_DATA_BASE_SHUANG ");
+		 if(null != ct)
+	 		{
+	 			execSql.append(" WHERE CREATE_TIME>'"+ct+"' ");
+	 		}
+	 		execSql.append(" ORDER BY ISSUE_NUMBER DESC LIMIT 300");
+			Object[] queryParams = new Object[]{
+			};
+			List<ShuangSQ> shuangSQList = shuangSQRepository.getEntityListBySql(ShuangSQ.class,execSql.toString(), queryParams);
+			return shuangSQList;
+	 }
 
 	public List<Fast3> getKaijiangNumberListByProvinceNumber(String provinceNumber){
 		String tableName = "analysis.T_ANHUI_KUAI3_NUMBER";
