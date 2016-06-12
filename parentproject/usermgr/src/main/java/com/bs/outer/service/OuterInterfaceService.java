@@ -1,5 +1,7 @@
 package com.bs.outer.service;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -71,6 +73,17 @@ public interface OuterInterfaceService {
 	 */
 	public QueryResult<Notice> getNoticeOfStaAndApp(Class<Notice> entityClass, String whereJpql, Object[] queryParams, 
 			LinkedHashMap<String, String> orderby, Pageable pageable,String ugroups,String province,String city,String appId,String lotteryType);
+	
+	public Date getNoticeByAppNoticeName(String appNoticeName);
+	
+	
+	public List<QiLeCai> getQiLeCaiKaijiang(Date ct);
+	
+	public List<ThreeD> get3DNumKaijiang(Date ct);
+	
+	public List<ShuangSQ> getShuangSQKaijiang(Date ct);
+	
+	public QueryResult<Notice> getLastKjNoticeOfNoticename(String appNoticeName);
 	
 	/**
 	 * 
