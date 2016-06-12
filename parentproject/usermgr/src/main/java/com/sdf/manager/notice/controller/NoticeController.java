@@ -152,8 +152,12 @@ public class NoticeController {
 			buffer.append(" isDeleted = ?").append(params.size());
 			
 			//只查询当前登录用户创建的应用公告数据
-			params.add(LoginUtils.getAuthenticatedUserCode(httpSession));
-			buffer.append(" and creater = ?").append(params.size());
+			if(null == appcategory ||!appcategory.equals(NoticeController.APP_CATEGORY_COMPANY_KAIJIANG))
+			{
+				params.add(LoginUtils.getAuthenticatedUserCode(httpSession));
+				buffer.append(" and creater = ?").append(params.size());
+			}
+			
 			
 			/*if(null != province && !"".equals(province.trim())&&!Constants.PROVINCE_ALL.equals(province))
 			{
