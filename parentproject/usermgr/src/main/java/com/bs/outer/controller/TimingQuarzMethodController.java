@@ -223,9 +223,12 @@ public class TimingQuarzMethodController {
      * @author:banna
      * @return: void
      */
-    @Scheduled(cron = "0 0 0,7 * * ? ")  //每天上午7点执行0 0 0,7 * * ? ;0 0/2 0/1 * * ? 
+    @Scheduled(cron = "0 0 7 * * ? ")  //每天上午7点执行0 0 7 * * ? ;0 0/2 0/1 * * ? 
   	public void addKjNotices()
   	{
+    	
+    	logger.info("addKjNotices：开始采集开奖数据作为开奖公告数据！");
+    	
     	//1.analysis.T_DATA_BASE_QILECAI(七乐彩)
     	//①获取上一次的生成时间，根据“开奖公告名称”模糊查询
     	String qilecai = "七乐彩";
@@ -237,6 +240,7 @@ public class TimingQuarzMethodController {
     	
     	if(null!=list && list.size()>0)
     	{
+    		logger.info("addKjNotices：开始生成七乐彩开奖公告！");
     		//③替换之前此彩种的开奖公告
         	List<Notice> lastlist = outerInterfaceService.getLastKjNoticeOfNoticename(qilecai).getResultList();
         	for (Notice notice : lastlist) {
@@ -276,7 +280,7 @@ public class TimingQuarzMethodController {
     				// TODO Auto-generated catch block
     				e.printStackTrace();
     				System.out.println("时间转换错误");
-    				logger.error("addKjNotices方法内，时间转换错误!");
+    				logger.error("addKjNotices方法内转换七乐彩开奖公告时间转换错误!");
     			}
     		 
     		   
@@ -306,6 +310,7 @@ public class TimingQuarzMethodController {
     	
     	if(null!=threelist && threelist.size()>0)
     	{
+    		logger.info("addKjNotices：开始生成3D开奖公告！");
     		//③替换之前此彩种的开奖公告
         	List<Notice> lastlist = outerInterfaceService.getLastKjNoticeOfNoticename(threeD).getResultList();
         	for (Notice notice : lastlist) {
@@ -344,7 +349,7 @@ public class TimingQuarzMethodController {
     				// TODO Auto-generated catch block
     				e.printStackTrace();
     				System.out.println("时间转换错误");
-    				logger.error("addKjNotices方法内，时间转换错误!");
+    				logger.error("addKjNotices方法内3D开奖公告时间转换错误!");
     			}
     		 
     		   
@@ -373,6 +378,7 @@ public class TimingQuarzMethodController {
     	
     	if(null!=shuangSQlist && shuangSQlist.size()>0)
     	{
+    		logger.info("addKjNotices：开始生成双色球开奖公告！");
     		//③替换之前此彩种的开奖公告
         	List<Notice> lastlist = outerInterfaceService.getLastKjNoticeOfNoticename(shuangSQ).getResultList();
         	for (Notice notice : lastlist) {
@@ -412,7 +418,7 @@ public class TimingQuarzMethodController {
     				// TODO Auto-generated catch block
     				e.printStackTrace();
     				System.out.println("时间转换错误");
-    				logger.error("addKjNotices方法内，时间转换错误!");
+    				logger.error("addKjNotices方法内双色球开奖公告时间转换错误!");
     			}
     		 
     		   
