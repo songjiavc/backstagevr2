@@ -231,7 +231,8 @@ function initDatagrid()
 		                	else*/ if(isCityManager && '11'==status)//当前角色为“市中心”且订单状态为“提交市中心审批”时，显示以下按钮
 	                			{
 	                				btn=btn+'<a class="detailcls" onclick="viewOrdersDetail(&quot;'+row.id+'&quot;)" href="javascript:void(0)" title="查看详情">详情</a>'//市中心可以查看订单详情但是不可以修改内容，可以审批
-				                	+'<a class="rejectOrder" onclick="approveStationAds(&quot;'+row.id+'&quot;,3)" href="javascript:void(0)" title="审批驳回">驳回</a>'//市中心驳回
+////因为微信没有修改站点广告的功能，所以暂时去掉驳回功能				    
+//	                				+'<a class="rejectOrder" onclick="approveStationAds(&quot;'+row.id+'&quot;,3)" href="javascript:void(0)" title="审批驳回">驳回</a>'//市中心驳回
 				                	+'<a class="stopOrder" onclick="approveStationAds(&quot;'+row.id+'&quot;,4)" href="javascript:void(0)" title="不通过">不通过</a>'//市中心不通过，终止订单的审批流程且流程不可恢复
 				                	+'<a class="throughOrder" onclick="approveStationAds(&quot;'+row.id+'&quot;,2)" href="javascript:void(0)" title="审批通过">通过</a>';//市中心审批通过
 	                			}
