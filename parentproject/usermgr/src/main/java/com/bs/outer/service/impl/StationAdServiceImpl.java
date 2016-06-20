@@ -47,7 +47,7 @@ public class StationAdServiceImpl implements StationAdService {
 				 " FROM ((T_BS_APP_AD u LEFT JOIN RELA_BS_APPAD_AND_APP app ON u.ID=app.APP_AD_ID)  "+
 			"	 LEFT JOIN RELA_BS_APPAD_AND_UGROUP au ON u.ID=au.APP_AD_ID) LEFT JOIN T_SDF_STATIONS aarea ON u.CREATOR_STATION = aarea.ID WHERE u.IS_DELETED='1'  "+
 			"	  AND u.AD_TYPE='0' "+
-			"   AND u.AD_END_TIME>=CURDATE() AND u.AD_START_TIME<=CURDATE() AND aarea.STATION_TYPE='"+lotteryType+"' ");//
+			"   AND u.AD_END_TIME>=CURDATE() AND u.AD_START_TIME<=NOW() AND aarea.STATION_TYPE='"+lotteryType+"' ");//
 	
 		if(null!=adStatus&&!"".equals(adStatus))
 		{
