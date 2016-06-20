@@ -246,7 +246,6 @@ public class stationAdController extends GlobalExceptionHandler
 			buffer.append(" and creatorStation = ?").append(params.size());
 			
 			
-			
 			//排序
 			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
 			
@@ -409,7 +408,7 @@ public class stationAdController extends GlobalExceptionHandler
 			   {
 				   //根据当前状态获取下一状态
 				   StationAdNextStatus stationAdNextStatus = stationAdStatusService.
-						   getStationAdNextStatusBycurrentStatusId(advertisement.getStationAdStatus(), "1");
+						   getStationAdNextStatusBycurrentStatusId(currentStatus, "1");
 				   currentStatus = stationAdNextStatus.getNextStatusId();//通行证保存并提交应用广告
 				   
 			   }
@@ -587,13 +586,28 @@ public class stationAdController extends GlobalExceptionHandler
 				   
 		    	advertisement.setAdStatus("1");//若市中心审批通过则置通行证发布的这个应用广告为发布状态
 		    	
-		    	//TODO:同时要设置之前通行证申请发布的应用广告为无效，且不可以展示，因为通行证在一个应用上只能发布一个应用广告！！！
+		    	
+		    	List<App> app1 = advertisement.getApps();
+		    	//2016-06-16   待测试！！！TODO:同时要设置之前通行证申请的这个应用的发布的应用广告为无效，且不可以展示，因为通行证在一个应用上只能发布一个应用广告！！！
 		    	List<Advertisement> ads = this.getFbAdvertisement(advertisement.getCreatorStation());
 		    	for (Advertisement advertisement2 : ads) {
-		    		advertisement2.setAdStatus("0");
-		    		advertisement2.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
-		    		advertisement2.setModifyTime(new Timestamp(System.currentTimeMillis()));
-		    		advertisementService.update(advertisement2);
+		    		List<App> app2 = advertisement2.getApps();
+		    		
+		    		for (App app1Entity : app1) 
+		    		{
+		    			for (App app2Entity : app2) 
+			    		{
+							if(app2Entity.getId().equals(app1Entity.getId()))
+							{//如果待发布的应用之前被发布过站点广告，则要进行状态置无效操作
+								advertisement2.setAdStatus("0");
+					    		advertisement2.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
+					    		advertisement2.setModifyTime(new Timestamp(System.currentTimeMillis()));
+					    		advertisementService.update(advertisement2);
+							}
+						}
+					}
+		    		
+		    		
 				}
 			  
 		    }
