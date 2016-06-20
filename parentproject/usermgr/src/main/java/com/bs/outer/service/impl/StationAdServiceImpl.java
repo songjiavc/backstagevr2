@@ -59,7 +59,7 @@ public class StationAdServiceImpl implements StationAdService {
 			sql.append("  AND u.APP_AD_NAME like '%"+adName+"%' ");
 		}
 	
-		sql.append(" AND aarea.PROVINCE_CODE='"+province+"' AND aarea.CITY_CODE='"+city+"' GROUP BY u.CREATOR_STATION ) m  "
+		sql.append(" AND aarea.PROVINCE_CODE='"+province+"' AND aarea.CITY_CODE='"+city+"' GROUP BY u.CREATOR_STATION,app.APP_ID) m  "
 				+ " LEFT JOIN T_BS_APP_AD ad ON  m.CREATER_TIME= ad.CREATER_TIME AND m.CREATOR_STATION = ad.CREATOR_STATION");
 			
 		QueryResult<Advertisement> userObj = advertisementRepository.
