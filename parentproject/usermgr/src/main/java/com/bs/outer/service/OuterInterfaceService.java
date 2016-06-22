@@ -146,7 +146,65 @@ public interface OuterInterfaceService {
 	 */
 	public List<Ln5In12Bean> getLn5In12Last3DaysList();
 	
-    /**
+	/**
+	 * @return 获取通用12选5列表
+	 */
+	public List<Ln5In12Bean> get5In12LastRecord100List(String provinceNumber);
+	
+	
+	/**
+	 * @param issueNumber
+	 * @param provinceNumber
+	 * @return
+	 */
+	public List<Ln5In12Bean> get5In12ListByIssueNumber(String issueNumber,String provinceNumber);
+	
+	/**
+	 * @return 获取通用11选5列表
+	 */
+	public List<Ln5In12Bean> get5In11LastRecord100List(String provinceNumber);
+	
+	
+	/**
+	 * @param issueNumber
+	 * @param provinceNumber
+	 * @return
+	 */
+	public List<Ln5In12Bean> get5In11ListByIssueNumber(String issueNumber,String provinceNumber);
+	
+	/**
+	 * add by songjia 获取11选5遗漏统计前三名
+	 * @param issueNumber
+	 * @param provinceNumber
+	 * @return
+	 */
+	public List<Fast3Analysis> get5In11MissAnalysisTop3(String issueNumber,String provinceNumber);
+	
+	
+	/**
+	 * add by songjia 获取11选5遗漏统计类型
+	 * @param type
+	 * @param group
+	 * @return
+	 */
+	public Fast3Analysis get5In11MissAnalysisByTypeAndGroup(String type,String group,String provinceNumber);
+	
+	/**
+	 * add by songjia 获取11选5遗漏统计类型
+	 * @param type
+	 * @param group
+	 * @return
+	 */
+	public Fast3Analysis get5In12MissAnalysisByTypeAndGroup(String type,String group,String provinceNumber);
+	/**
+	 * add by songjia 获取11选5遗漏统计前三名
+	 * @param issueNumber
+	 * @param provinceNumber
+	 * @return
+	 */
+	public List<Fast3Analysis> get5In12MissAnalysisTop3(String issueNumber,String provinceNumber);
+	
+	/**
      * @param issueNumber
      * @return 根据期号找到比这个期号更大的期
      */

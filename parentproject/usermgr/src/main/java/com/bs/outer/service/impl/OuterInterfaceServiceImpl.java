@@ -1,8 +1,5 @@
 package com.bs.outer.service.impl;
 
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -447,6 +444,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		return ln5In12List;
 	}
 	
+	
 	public List<Ln5In12Bean> getLn5In12ListByIssueNumber(String issueNumber){
 		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM analysis.T_LN_5IN12_NUMBER WHERE ISSUE_NUMBER > ?  LIMIT 300" ;
 		Object[] queryParams = new Object[]{
@@ -456,6 +454,153 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		return ln5In12;
 	}
 	
+	
+	/* (non-Javadoc)
+	 * @see com.bs.outer.service.OuterInterfaceService#getLn5In12Last3DaysList()
+	 */
+	public List<Ln5In12Bean> get5In12LastRecord100List(String provinceNumber){
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[2];
+		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM "+ tableName+" ORDER BY ISSUE_NUMBER DESC LIMIT 300";
+		Object[] queryParams = new Object[]{
+		};
+		List<Ln5In12Bean> ln5In12List =ln5In12Repository.getEntityListBySql(Ln5In12Bean.class,execSql, queryParams);
+		return ln5In12List;
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see com.bs.outer.service.OuterInterfaceService#getLn5In12Last3DaysList()
+	 */
+	public List<Ln5In12Bean> get5In11LastRecord100List(String provinceNumber){
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[0];
+		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM "+ tableName+" ORDER BY ISSUE_NUMBER DESC LIMIT 300";
+		Object[] queryParams = new Object[]{
+		};
+		List<Ln5In12Bean> ln5In12List =ln5In12Repository.getEntityListBySql(Ln5In12Bean.class,execSql, queryParams);
+		return ln5In12List;
+	}
+	
+	public List<Ln5In12Bean> get5In12ListByIssueNumber(String issueNumber,String provinceNumber){
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[2];
+		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM " + tableName + " WHERE ISSUE_NUMBER > ?  LIMIT 300" ;
+		Object[] queryParams = new Object[]{
+				issueNumber
+		};
+		List<Ln5In12Bean> ln5In12 =ln5In12Repository.getEntityListBySql(Ln5In12Bean.class,execSql, queryParams);
+		return ln5In12;
+	}
+	
+	public List<Ln5In12Bean> get5In11ListByIssueNumber(String issueNumber,String provinceNumber){
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[0];
+		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM " + tableName + " WHERE ISSUE_NUMBER > ?  LIMIT 300" ;
+		Object[] queryParams = new Object[]{
+				issueNumber
+		};
+		List<Ln5In12Bean> ln5In12 =ln5In12Repository.getEntityListBySql(Ln5In12Bean.class,execSql, queryParams);
+		return ln5In12;
+	}
+	
+	/**
+	 *    获取当前遗漏值最大的n个记录，掐尖
+	 */
+	public List<Fast3Analysis> get5In11MissAnalysisTop3(String issueNumber,String provinceNumber){
+		List<Fast3Analysis>  rtnList = new ArrayList<Fast3Analysis>();
+		List<Fast3Analysis> allMissList = this.get5In11AllMissAnalysis(issueNumber, provinceNumber);
+		int n = 0;
+		int type = 0;
+		for(Fast3Analysis fast3Analysis :allMissList ){
+			if(type != fast3Analysis.getType()){
+				if(n < 3){
+					rtnList.add(fast3Analysis);
+					n++;
+				}else if(n == 3){
+					n = 0;
+					type = fast3Analysis.getType();
+				}else{
+					continue;
+				}
+			}
+		}
+		return rtnList;
+	}
+	/* (non-Javadoc)
+	 * @see com.bs.outer.service.OuterInterfaceService#get5In11MissAnalysisByTypeAndGroup(java.lang.String, java.lang.String)
+	 */
+	public Fast3Analysis get5In11MissAnalysisByTypeAndGroup(String type,String group,String provinceNumber){
+		Fast3Analysis fast3Analysis = null;
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[1];
+		String execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = ? AND GROUP_NUMBER =  ?  ;"  ;
+		Object[] queryParams = new Object[]{
+				type,group
+		};
+		fast3Analysis = fast3AnalysisRepository.getEntityBySql(Fast3Analysis.class,execSql, queryParams);
+		return fast3Analysis;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.bs.outer.service.OuterInterfaceService#get5In11MissAnalysisByTypeAndGroup(java.lang.String, java.lang.String)
+	 */
+	public Fast3Analysis get5In12MissAnalysisByTypeAndGroup(String type,String group,String provinceNumber){
+		Fast3Analysis fast3Analysis = null;
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[3];
+		String execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = ? AND GROUP_NUMBER =  ?  ;"  ;
+		Object[] queryParams = new Object[]{
+				type,group
+		};
+		fast3Analysis = fast3AnalysisRepository.getEntityBySql(Fast3Analysis.class,execSql, queryParams);
+		return fast3Analysis;
+	}
+	/**
+	 *    获取所有的遗漏统计结果
+	 */
+	private List<Fast3Analysis> get5In11AllMissAnalysis(String issueNumber,String provinceNumber){
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[1];
+		//String tableName = "analysis.T_LN_5IN11_MISSANALYSIS";
+		String execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE ISSUE_NUMBER > ?  ORDER BY TYPE,CURRENT_MISS DESC;"  ;
+		Object[] queryParams = new Object[]{
+				issueNumber
+		};
+		List<Fast3Analysis> rtnList = fast3AnalysisRepository.getEntityListBySql(Fast3Analysis.class,execSql, queryParams);
+		return rtnList;
+	}
+	
+	/**
+	 *    获取当前遗漏值最大的n个记录，掐尖
+	 */
+	public List<Fast3Analysis> get5In12MissAnalysisTop3(String issueNumber,String provinceNumber){
+		List<Fast3Analysis>  rtnList = new ArrayList<Fast3Analysis>();
+		List<Fast3Analysis> allMissList = this.get5In12AllMissAnalysis(issueNumber, provinceNumber);
+		int n = 0;
+		int type = 0;
+		for(Fast3Analysis fast3Analysis :allMissList ){
+			if(type != fast3Analysis.getType()){
+				if(n < 3){
+					rtnList.add(fast3Analysis);
+					n++;
+				}else if(n == 3){
+					n = 0;
+					type = fast3Analysis.getType();
+				}else{
+					continue;
+				}
+			}
+		}
+		return rtnList;
+	}
+	
+	/**
+	 *    获取所有的遗漏统计结果
+	 */
+	private List<Fast3Analysis> get5In12AllMissAnalysis(String issueNumber,String provinceNumber){
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[3];
+		//String tableName = "analysis.T_LN_5IN11_MISSANALYSIS";
+		String execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE ISSUE_NUMBER > ?  ORDER BY TYPE,CURRENT_MISS DESC;"  ;
+		Object[] queryParams = new Object[]{
+				issueNumber
+		};
+		List<Fast3Analysis> rtnList = fast3AnalysisRepository.getEntityListBySql(Fast3Analysis.class,execSql, queryParams);
+		return rtnList;
+	}
 	
 	public StationOuterDTO toDto(	Station station){
 		StationOuterDTO stationDto = new StationOuterDTO();

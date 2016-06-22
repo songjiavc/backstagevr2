@@ -128,4 +128,145 @@ public class LottoryToolOuterController
 		}
 	}
 	
+	/**
+	 * @return  彩民工具获取辽宁12选5列表数据
+	 */
+	@RequestMapping(value="/get5In12ListByProvinceNumber",method = RequestMethod.GET)
+	public @ResponseBody Map<String,Object> get5In12ListByProvinceNumber(@RequestParam(value="issueNumber",required=false) String issueNumber,@RequestParam(value="provinceNumber",required=true) String provinceNumber)
+	{
+		Map<String,Object> rtnMap = new HashMap<String,Object>();
+		List<Ln5In12Bean> ln5In12List = null;
+		try{
+			if(issueNumber == null){
+				ln5In12List =outerInterfaceService.get5In12LastRecord100List(provinceNumber);
+			}else{
+				ln5In12List=outerInterfaceService.get5In12ListByIssueNumber(issueNumber,provinceNumber);
+			}
+			
+			if(ln5In12List.size() == 0 ){
+				rtnMap.put("message","failure");
+				rtnMap.put("status", "0");
+			}else{
+				rtnMap.put("message","success");
+				rtnMap.put("status", "1");
+				rtnMap.put("ln5In12List", ln5In12List);
+			}
+		}catch(Exception ex){
+			logger.error("12选5应用获取应用数据错误！"+ex.getMessage());
+			rtnMap.put("message","failure");
+			rtnMap.put("status", "0");
+		}finally{
+			return rtnMap;
+		}
+	}
+	
+	/**
+	 * @return  彩民工具获取辽宁12选5列表数据
+	 */
+	@RequestMapping(value="/get5In11ListByProvinceNumber",method = RequestMethod.GET)
+	public @ResponseBody Map<String,Object> get5In11ListByProvinceNumber(@RequestParam(value="issueNumber",required=false) String issueNumber,@RequestParam(value="provinceNumber",required=true) String provinceNumber)
+	{
+		Map<String,Object> rtnMap = new HashMap<String,Object>();
+		List<Ln5In12Bean> ln5In12List = null;
+		try{
+			if(issueNumber == null){
+				ln5In12List =outerInterfaceService.get5In11LastRecord100List(provinceNumber);
+			}else{
+				ln5In12List=outerInterfaceService.get5In11ListByIssueNumber(issueNumber, provinceNumber);
+			}
+			
+			if(ln5In12List.size() == 0 ){
+				rtnMap.put("message","failure");
+				rtnMap.put("status", "0");
+			}else{
+				rtnMap.put("message","success");
+				rtnMap.put("status", "1");
+				rtnMap.put("ln5In12List", ln5In12List);
+			}
+		}catch(Exception ex){
+			logger.error("11选5应用获取应用数据错误！"+ex.getMessage());
+			rtnMap.put("message","failure");
+			rtnMap.put("status", "0");
+		}finally{
+			return rtnMap;
+		}
+	}
+	
+	/**
+	 * @return  彩民工具获取辽宁12选5列表数据
+	 */
+	@RequestMapping(value="/get5In11MissAnalysisTop3",method = RequestMethod.GET)
+	public @ResponseBody Map<String,Object> get5In11MissAnalysisTop3(@RequestParam(value="issueNumber",required=false) String issueNumber,@RequestParam(value="provinceNumber",required=true) String provinceNumber)
+	{
+		Map<String,Object> rtnMap = new HashMap<String,Object>();
+		List<Fast3Analysis> fast3AnalysisList = null;
+		try{
+			fast3AnalysisList = outerInterfaceService.get5In11MissAnalysisTop3(issueNumber, provinceNumber);
+			if(fast3AnalysisList.size() == 0 ){
+				rtnMap.put("message","failure");
+				rtnMap.put("status", "0");
+			}else{
+				rtnMap.put("message","success");
+				rtnMap.put("status", "1");
+				rtnMap.put("analysisList", fast3AnalysisList);
+			}
+		}catch(Exception ex){
+			logger.error("11选5遗漏统计结果错误！"+ex.getMessage()+"\nissueNumber="+issueNumber+"provinceNumber="+provinceNumber);
+			rtnMap.put("message","failure");
+			rtnMap.put("status", "0");
+		}finally{
+			return rtnMap;
+		}
+	}
+	
+	/**
+	 * @return  彩民工具获取辽宁12选5列表数据
+	 */
+	@RequestMapping(value="/get5In12MissAnalysisTop3",method = RequestMethod.GET)
+	public @ResponseBody Map<String,Object> get5In12MissAnalysisTop3(@RequestParam(value="issueNumber",required=false) String issueNumber,@RequestParam(value="provinceNumber",required=true) String provinceNumber)
+	{
+		Map<String,Object> rtnMap = new HashMap<String,Object>();
+		List<Fast3Analysis> fast3AnalysisList = null;
+		try{
+			fast3AnalysisList = outerInterfaceService.get5In12MissAnalysisTop3(issueNumber, provinceNumber);
+			if(fast3AnalysisList.size() == 0 ){
+				rtnMap.put("message","failure");
+				rtnMap.put("status", "0");
+			}else{
+				rtnMap.put("message","success");
+				rtnMap.put("status", "1");
+				rtnMap.put("analysisList", fast3AnalysisList);
+			}
+		}catch(Exception ex){
+			logger.error("12选5遗漏统计结果错误！"+ex.getMessage()+"\nissueNumber="+issueNumber+"provinceNumber="+provinceNumber);
+			rtnMap.put("message","failure");
+			rtnMap.put("status", "0");
+		}finally{
+			return rtnMap;
+		}
+	}
+	
+	/**
+	 * @return  彩民工具获取辽宁12选5列表数据
+	 */
+	@RequestMapping(value="/get5In12MissAnalysisByTypeAndGroup",method = RequestMethod.GET)
+	public @ResponseBody ResultBeanData<Fast3Analysis> get5In12MissAnalysisByTypeAndGroup(
+			@RequestParam(value="provinceNumber",required=true) String provinceNumber,
+			@RequestParam(value="type",required=true) String type,
+			@RequestParam(value="group",required=true) String group)
+	{
+		ResultBeanData<Fast3Analysis> result = new ResultBeanData<Fast3Analysis>();
+		try{
+			Fast3Analysis fast3Analysis = outerInterfaceService.get5In12MissAnalysisByTypeAndGroup(type,group, provinceNumber);
+			result.setStatus("success");
+			result.setMessage("遗漏数据查询成功！");
+			result.setEntity(fast3Analysis);
+		}catch(Exception ex){
+			logger.error("12选5遗漏数据查询失败！"+ex.getMessage()+"\type="+type+"group="+group+"provinceNumber="+provinceNumber);
+			result.setStatus("failure");
+			result.setMessage("遗漏数据查询失败！");
+		}finally{
+			return result;
+		}
+	}
 }
