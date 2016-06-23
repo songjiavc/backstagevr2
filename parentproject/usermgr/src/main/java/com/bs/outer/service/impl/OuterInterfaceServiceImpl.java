@@ -73,6 +73,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	
 	@Autowired
 	private Fast3AnalysisRepository fast3AnalysisRepository;
+
 	
 	@Autowired
 	private Fast3DanMaRepository fast3DanMaRepository;
@@ -529,9 +530,43 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	public Fast3Analysis get5In11MissAnalysisByTypeAndGroup(String type,String group,String provinceNumber){
 		Fast3Analysis fast3Analysis = null;
 		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[1];
-		String execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = ? AND GROUP_NUMBER =  ?  ;"  ;
+		String execSql = null;
+		int groupLength = group.length();
+		if("1".equals(type)){
+			execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = 12 AND GROUP_NUMBER =  ?  ;"  ;
+		}else if("2".equals(type)){
+			if(groupLength == 3){
+				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = 11 AND GROUP_NUMBER =  ?  ;"  ;
+			}else{
+				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,THREECODE_COMPOUND AS CURRENT_MISS,THREECODE_COMPOUND_MAXMISS AS MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = "+ groupLength +" AND GROUP_NUMBER =  ?  ;"  ;
+			}
+		}else if("3".equals(type)){
+			//前二值
+			execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = 9 AND GROUP_NUMBER =  ?  ;"  ;
+		}else if("4".equals(type)){
+			//前二组
+			if(groupLength == 2){
+				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = 10 AND GROUP_NUMBER =  ?  ;"  ;
+			}else{
+				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,TWOCODE_COMPOUND AS CURRENT_MISS,TWOCODE_COMPOUND_MAXMISS AS MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = "+ groupLength +" AND GROUP_NUMBER =  ?  ;"  ;
+			}
+		}else if("5".equals(type)){
+			if(groupLength == 3){
+				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = "+ groupLength +"  AND GROUP_NUMBER =  ?  ;"  ;
+			}else{
+				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,OPTIONAL_COMPOUND AS CURRENT_MISS,OPTIONAL_COMPOUND_MAXMISS AS MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = "+ groupLength +"  AND GROUP_NUMBER =  ?  ;"  ;
+			}
+		}else if("6".equals(type)){
+			if(groupLength == 4){
+				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = "+ groupLength +"  AND GROUP_NUMBER =  ?  ;"  ;
+			}else{
+				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,OPTIONAL_COMPOUND AS CURRENT_MISS,OPTIONAL_COMPOUND_MAXMISS AS MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = "+ groupLength +"  AND GROUP_NUMBER =  ?  ;"  ;
+			}
+		}else{
+			execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = "+ groupLength +"  AND GROUP_NUMBER =  ?  ;"  ;
+		}
 		Object[] queryParams = new Object[]{
-				type,group
+				group
 		};
 		fast3Analysis = fast3AnalysisRepository.getEntityBySql(Fast3Analysis.class,execSql, queryParams);
 		return fast3Analysis;
@@ -543,9 +578,43 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	public Fast3Analysis get5In12MissAnalysisByTypeAndGroup(String type,String group,String provinceNumber){
 		Fast3Analysis fast3Analysis = null;
 		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[3];
-		String execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = ? AND GROUP_NUMBER =  ?  ;"  ;
+		String execSql = null;
+		int groupLength = group.length();
+		if("1".equals(type)){
+			execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = 12 AND GROUP_NUMBER =  ?  ;"  ;
+		}else if("2".equals(type)){
+			if(groupLength == 3){
+				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = 10 AND GROUP_NUMBER =  ?  ;"  ;
+			}else{
+				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,THREECODE_COMPOUND AS CURRENT_MISS,THREECODE_COMPOUND_MAXMISS AS MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = "+ groupLength +" AND GROUP_NUMBER =  ?  ;"  ;
+			}
+		}else if("3".equals(type)){
+			//前二值
+			execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = 11 AND GROUP_NUMBER =  ?  ;"  ;
+		}else if("4".equals(type)){
+			//前二组
+			if(groupLength == 2){
+				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = 9 AND GROUP_NUMBER =  ?  ;"  ;
+			}else{
+				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,TWOCODE_COMPOUND AS CURRENT_MISS,TWOCODE_COMPOUND_MAXMISS AS MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = "+ groupLength +" AND GROUP_NUMBER =  ?  ;"  ;
+			}
+		}else if("5".equals(type)){
+			if(groupLength == 3){
+				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = "+ groupLength +"  AND GROUP_NUMBER =  ?  ;"  ;
+			}else{
+				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,OPTIONAL_COMPOUND AS CURRENT_MISS,OPTIONAL_COMPOUND_MAXMISS AS MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = "+ groupLength +"  AND GROUP_NUMBER =  ?  ;"  ;
+			}
+		}else if("6".equals(type)){
+			if(groupLength == 4){
+				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = "+ groupLength +"  AND GROUP_NUMBER =  ?  ;"  ;
+			}else{
+				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,OPTIONAL_COMPOUND AS CURRENT_MISS,OPTIONAL_COMPOUND_MAXMISS AS MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = "+ groupLength +"  AND GROUP_NUMBER =  ?  ;"  ;
+			}
+		}else{
+			execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = "+ groupLength +"  AND GROUP_NUMBER =  ?  ;"  ;
+		}
 		Object[] queryParams = new Object[]{
-				type,group
+				group
 		};
 		fast3Analysis = fast3AnalysisRepository.getEntityBySql(Fast3Analysis.class,execSql, queryParams);
 		return fast3Analysis;

@@ -1,82 +1,22 @@
 package com.bs.outer.controller;
 
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bs.outer.entity.AnnouncementReceipt;
-import com.bs.outer.entity.Fast3;
 import com.bs.outer.entity.Fast3Analysis;
-import com.bs.outer.entity.Fast3DanMa;
-import com.bs.outer.entity.Fast3Same;
-import com.bs.outer.entity.Fast3SiMa;
 import com.bs.outer.entity.Ln5In12Bean;
-import com.bs.outer.service.AnnouncementReceiptService;
 import com.bs.outer.service.OuterInterfaceService;
-import com.sdf.manager.ad.controller.AdvertisementController;
-import com.sdf.manager.ad.dto.AdvertisementDTO;
-import com.sdf.manager.ad.entity.Advertisement;
-import com.sdf.manager.ad.entity.Uploadfile;
-import com.sdf.manager.ad.service.AdvertisementService;
-import com.sdf.manager.ad.service.UploadfileService;
-import com.sdf.manager.announcement.dto.AnnouncementDTO;
-import com.sdf.manager.announcement.entity.Announcement;
-import com.sdf.manager.announcement.service.AnnouncementService;
-import com.sdf.manager.app.entity.App;
-import com.sdf.manager.app.service.AppService;
-import com.sdf.manager.appUnitPrice.entity.AppUnitPrice;
-import com.sdf.manager.appUnitPrice.service.AppUPriceService;
-import com.sdf.manager.appversion.controller.AppversionController;
-import com.sdf.manager.appversion.dto.AppversionDTO;
-import com.sdf.manager.appversion.entity.Appversion;
-import com.sdf.manager.appversion.service.AppversionService;
-import com.sdf.manager.common.bean.ResultBean;
 import com.sdf.manager.common.bean.ResultBeanData;
-import com.sdf.manager.common.bean.ResultBeanDataList;
-import com.sdf.manager.common.util.Constants;
-import com.sdf.manager.common.util.DateUtil;
-import com.sdf.manager.common.util.QueryResult;
-import com.sdf.manager.companyNotice.dto.ComnoticeDTO;
-import com.sdf.manager.companyNotice.entity.CompanyNotice;
-import com.sdf.manager.companyNotice.service.CompanynoticeService;
-import com.sdf.manager.notice.controller.NoticeController;
-import com.sdf.manager.notice.dto.NoticeDTO;
-import com.sdf.manager.notice.entity.ForecastMessage;
-import com.sdf.manager.notice.entity.Notice;
-import com.sdf.manager.notice.service.NoticeService;
-import com.sdf.manager.order.dto.RenewAppDTO;
-import com.sdf.manager.order.entity.RelaBsStationAndApp;
-import com.sdf.manager.order.entity.RelaBsStationAndAppHis;
-import com.sdf.manager.order.service.RelaBsStaAppHisService;
-import com.sdf.manager.order.service.RelaBsStaAppService;
-import com.sdf.manager.product.entity.City;
-import com.sdf.manager.product.entity.Province;
-import com.sdf.manager.product.service.CityService;
-import com.sdf.manager.product.service.ProvinceService;
-import com.sdf.manager.station.application.dto.StationDto;
-import com.sdf.manager.station.controller.StationController;
-import com.sdf.manager.station.entity.Station;
-import com.sdf.manager.station.service.StationService;
-import com.sdf.manager.user.bean.AccountBean;
-import com.sdf.manager.user.entity.User;
-import com.sdf.manager.user.service.UserService;
-import com.sdf.manager.userGroup.entity.UserGroup;
 
 
 /**
@@ -262,7 +202,33 @@ public class LottoryToolOuterController
 			result.setMessage("遗漏数据查询成功！");
 			result.setEntity(fast3Analysis);
 		}catch(Exception ex){
+			ex.printStackTrace();
 			logger.error("12选5遗漏数据查询失败！"+ex.getMessage()+"\type="+type+"group="+group+"provinceNumber="+provinceNumber);
+			result.setStatus("failure");
+			result.setMessage("遗漏数据查询失败！");
+		}finally{
+			return result;
+		}
+	}
+	
+	/**
+	 * @return  彩民工具获取辽宁11选5列表数据
+	 */
+	@RequestMapping(value="/get5In11MissAnalysisByTypeAndGroup",method = RequestMethod.GET)
+	public @ResponseBody ResultBeanData<Fast3Analysis> get5In11MissAnalysisByTypeAndGroup(
+			@RequestParam(value="provinceNumber",required=true) String provinceNumber,
+			@RequestParam(value="type",required=true) String type,
+			@RequestParam(value="group",required=true) String group)
+	{
+		ResultBeanData<Fast3Analysis> result = new ResultBeanData<Fast3Analysis>();
+		try{
+			Fast3Analysis fast3Analysis = outerInterfaceService.get5In11MissAnalysisByTypeAndGroup(type,group, provinceNumber);
+			result.setStatus("success");
+			result.setMessage("遗漏数据查询成功！");
+			result.setEntity(fast3Analysis);
+		}catch(Exception ex){
+			ex.printStackTrace();
+			logger.error("11选5遗漏数据查询失败！"+ex.getMessage()+"\type="+type+"group="+group+"provinceNumber="+provinceNumber);
 			result.setStatus("failure");
 			result.setMessage("遗漏数据查询失败！");
 		}finally{
