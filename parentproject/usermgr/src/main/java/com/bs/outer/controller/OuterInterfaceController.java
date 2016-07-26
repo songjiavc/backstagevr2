@@ -1173,7 +1173,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			StringBuffer buffer = new StringBuffer();
 			List<Object> params = new ArrayList<Object>();
 			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
-			
+			orderBy.put("appNoticeName", "asc");
 			QueryResult<Notice> nQueryResult = outerInterfaceService.
 					getKaijiangNoticeOfStaAndApp(Notice.class, buffer.toString(), params.toArray(),
 							orderBy, pageable, ugroupArr.toString(), province, city,appId,lotteryType);
