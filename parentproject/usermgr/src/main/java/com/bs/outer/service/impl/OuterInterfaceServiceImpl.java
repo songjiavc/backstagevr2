@@ -406,7 +406,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		if(siMaId == 0){
 			where = " ORDER BY ID DESC LIMIT 10 ";
 		}else{
-			where = " WHERE "+ siMaId +"  <  (SELECT ID FROM "+ tableName +" ORDER BY ID DESC LIMIT 1)  ORDER BY ID DESC LIMIT 10 ";
+			where = " WHERE "+ siMaId +"  <>  (SELECT ID*DROWN_CYCLE FROM "+ tableName +" ORDER BY ID DESC LIMIT 1)  ORDER BY ID DESC LIMIT 10 ";
 		}
 		String execSql = "SELECT * FROM "+tableName + where;
 		Object[] queryParams = new Object[]{
