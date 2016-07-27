@@ -65,6 +65,19 @@ public interface OuterInterfaceService {
 	
 	/**
 	 * 
+	 * @Title: getStationAdvertisementOfStaAndApp
+	 * @Description: 获取应用广告的站点类别的数据
+	 * @author:banna
+	 * @return: QueryResult<Advertisement>
+	 */
+	public QueryResult<Advertisement> getStationAdvertisementOfStaAndApp(
+			Class<Advertisement> entityClass, String whereJpql,
+			Object[] queryParams, LinkedHashMap<String, String> orderby,
+			Pageable pageable,String ugroups,String province,String city,String appId,String lotteryType,String stationId);
+	
+	
+	/**
+	 * 
 	 * @Title: getAdvertisementOfSta
 	 * @Description: TODO根据通行证组和应用id还有通行证的区域信息获取应用公告数据
 	 * @author:banna
