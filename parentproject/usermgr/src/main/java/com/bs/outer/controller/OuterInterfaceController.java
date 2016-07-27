@@ -1589,7 +1589,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			fast3Bean.setMessage("success");
 			fast3Bean.setEntity(fast3);
 		}catch(Exception ex){
-			logger.error("获取单条开奖结果数据错误！issueNumber="+issueNumber + "&&provinceNumber="+provinceNumber);
+			logger.debug("get base data wrong！issueNumber="+issueNumber + "&&provinceNumber="+provinceNumber);
 			fast3Bean.setStatus("0");
 			fast3Bean.setMessage("failure");
 		}finally{
@@ -1642,7 +1642,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			resultList.setMessage("success");
 			resultList.setStatus("1");
 		}catch(Exception ex){
-			logger.error("获取遗漏统计结果集错误！issueNumber="+issueNumber+"&&provinceNumber="+provinceNumber);
+			logger.debug("获取遗漏统计结果集错误！issueNumber="+issueNumber+"&&provinceNumber="+provinceNumber);
 			resultList.setMessage("failure");
 			resultList.setStatus("0");
 		}finally{
