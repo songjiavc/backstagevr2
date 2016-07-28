@@ -421,11 +421,12 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[3];
 		String where = null;
 		if(siMaId == 0){
-			where = " ORDER BY ID DESC LIMIT 10 ";
+			where = " ORDER BY CREATE_TIME DESC LIMIT 10 ";
 		}else{
-			where = " WHERE "+ siMaId +"  <  (SELECT ID FROM "+ tableName +" ORDER BY ID DESC LIMIT 1)  ORDER BY ID DESC LIMIT 10 ";
+			where = " WHERE "+ siMaId +"  <>  (SELECT ID*DROWN_CYCLE FROM "+ tableName +" ORDER BY ID DESC LIMIT 1)  ORDER BY CREATE_TIME DESC LIMIT 10 ";
 		}
-		String execSql = "SELECT * FROM "+tableName + where;
+		
+		String execSql = "SELECT ID*DROWN_CYCLE AS ID,YUCE_ISSUE_START,YUCE_ISSUE_STOP,DROWN_PLAN,DROWN_ISSUE_NUMBER,DROWN_NUMBER,DROWN_CYCLE,STATUS,CREATE_TIME FROM "+tableName + where;
 		Object[] queryParams = new Object[]{
 		};
 		List<Fast3SiMa> fast3SiMaList = fast3SiMaRepository.getEntityListBySql(Fast3SiMa.class,execSql, queryParams);
