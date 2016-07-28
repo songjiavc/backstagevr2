@@ -252,7 +252,8 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 				 "   SELECT a.*  FROM T_BS_APP_NOTICE a LEFT JOIN RELA_BS_NOTICE_AND_AERA rarea ON a.ID=rarea.NOTICE_ID "+
 				 "	WHERE rarea.NOTICE_ID IS NULL AND a.IS_DELETED='1'    AND a.NOTICE_STATUS='1' "
 				 + "AND  a.APP_CATEGORY='"+NoticeController.APP_CATEGORY_COMPANY_KAIJIANG+"'  "
-				 		+ "  AND a.LOTTERY_TYPE='"+lotteryType+"' ) atable ");
+				 		+ "  AND a.LOTTERY_TYPE='"+lotteryType+"' ) atable  ORDER BY atable.APP_NOTICE_NAME ASC");
+		//getScrollDataBySql参数不传排序参数，所以order by要写在sql里
 		QueryResult<Notice> userObj = noticeRepository.
 			getScrollDataBySql(Notice.class,sql.toString(), queryParams, pageable);
 		return userObj;
