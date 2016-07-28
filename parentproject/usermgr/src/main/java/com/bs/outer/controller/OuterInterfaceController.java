@@ -310,7 +310,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	{
 		
 		//放置分页参数
-		Pageable pageable = new PageRequest(0,100000);
+		Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);
 		List<RenewAppDTO> renewAppDTOs = new ArrayList<RenewAppDTO>();
 		
 		try
@@ -881,7 +881,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			ugroups = station.getUserGroups();//获取通行证组数据
 			
 			//放置分页参数
-			Pageable pageable = new PageRequest(0,1000000);//查询所有的数据
+			Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);//查询所有的数据
 			
 			StringBuffer ugroupArr = new StringBuffer();
 			if(ugroups.size()>0)
@@ -967,7 +967,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			ugroups = station.getUserGroups();//获取通行证组数据
 			
 			//放置分页参数
-			Pageable pageable = new PageRequest(0,1000000);//查询所有的数据
+			Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);//查询所有的数据
 			
 			StringBuffer ugroupArr = new StringBuffer();
 			if(ugroups.size()>0)
@@ -1031,6 +1031,87 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	
 	/**
 	 * 
+	 * @Title: getStaAdsOfStationAndApp
+	 * @Description: TODO:根据通行证id和应用id获取这个通行证的应用广告的站点广告类别数据
+	 * @author:banna
+	 * @return: List<AdvertisementDTO>
+	 */
+	@RequestMapping(value="/getStaAdsOfStationAndApp",method = RequestMethod.GET)
+	public @ResponseBody Map<String,Object> getStaAdsOfStationAndApp(
+			@RequestParam(value="stationId",required=true) String stationId,
+			@RequestParam(value="appId",required=true) String appId	)
+	{
+		Map<String,Object> result = new HashMap<String, Object>();
+		List<AdvertisementDTO> advertisementDTOs = new ArrayList<AdvertisementDTO>();
+		String province;
+		String city;
+		String lotteryType;
+		
+		
+		try
+		{
+			Station station = stationService.getSationById(stationId);
+			
+			App app = appService.getAppById(appId);
+			lotteryType = app.getLotteryType();
+			
+			province = station.getProvinceCode();
+			city = station.getCityCode();
+			
+			StringBuffer ugroupArr = new StringBuffer();
+			
+			//放置分页参数
+			Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);//查询所有的数据
+			
+			
+			//参数
+			StringBuffer buffer = new StringBuffer();
+			List<Object> params = new ArrayList<Object>();
+			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
+			
+			//调用获取应用广告的站点广告类别的广告数据
+			QueryResult<Advertisement> adQueryResult = outerInterfaceService.
+					getStationAdvertisementOfStaAndApp(Advertisement.class, buffer.toString(), params.toArray(),
+							orderBy, pageable, ugroupArr.toString(), province, city,appId,lotteryType,stationId);
+			 
+			List<Advertisement> advertisements = adQueryResult.getResultList();
+			
+			for (Advertisement advertisement : advertisements) 
+			{
+				if(AdvertisementController.AD_IMG.equals(advertisement.getImgOrWord()))//若为图片广告，则将图片的路径整理到
+				{
+					StringBuffer imgUrl = new StringBuffer();
+					
+					Uploadfile uploadfile = uploadfileService.getUploadfileByNewsUuid(advertisement.getAppImgUrl());
+					
+					imgUrl.append(uploadfile.getUploadfilepath()+uploadfile.getUploadRealName());
+					
+					advertisement.setAppImgUrl(imgUrl.toString());
+				}
+			}
+			
+			advertisementDTOs = advertisementService.toRDTOS(advertisements);
+			
+			
+			result.put("advertisementDTOs", advertisementDTOs);
+			result.put("status", "1");
+			result.put("message", "数据获取成功！");
+		}
+		catch(Exception e)
+		{
+			logger.error("获取应用广告的站点广告类别数据时报错！stationId="+stationId+"&& appId="+appId);
+			result.put("status", "0");
+			result.put("message", "数据获取失败！");
+		}
+	
+	
+	
+		return result;
+		
+	}
+	
+	/**
+	 * 
 	 * @Title: getNoticesOfStationAndApp
 	 * @Description: TODO:根据通行证id和应用id获取这个通行证在这个应用中可以展示的普通应用公告数据
 	 * @author:banna
@@ -1063,7 +1144,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			ugroups = station.getUserGroups();//获取通行证组数据
 			
 			//放置分页参数
-			Pageable pageable = new PageRequest(0,1000000);//查询所有的数据
+			Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);//查询所有的数据
 			
 			StringBuffer ugroupArr = new StringBuffer();
 			if(ugroups.size()>0)
@@ -1578,40 +1659,6 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	 * @author:songjia
 	 * @return: Fast3
 	 */
-	@RequestMapping(value="/getStatisticsInfo",method = RequestMethod.GET)
-	public @ResponseBody Map<String,Object> getStatisticsInfo(@RequestParam(value="danMaIssueNumber",required=true) String danMaIssueNumber ,@RequestParam(value="siMaId",required=true) String siMaId ,@RequestParam(value="sameIssueNumber",required=true) String sameIssueNumber ,@RequestParam(value="provinceNumber",required=true) String provinceNumber)
-	{
-		Map<String,Object> rtnMap = new HashMap<String,Object>();
-		try{
-			List<Fast3DanMa> danMaList =outerInterfaceService.getInitDanmaList(danMaIssueNumber, provinceNumber);
-			List<Fast3SiMa> simaList = outerInterfaceService.getInitSimaList(Integer.parseInt(siMaId), provinceNumber);
-			List<Fast3Same> sameList = outerInterfaceService.getInitSameList(sameIssueNumber, provinceNumber);
-			if(danMaList.size() == 0 || simaList.size() == 0 || sameList.size() == 0){
-				rtnMap.put("message","failure");
-				rtnMap.put("status", "0");
-			}else{
-				rtnMap.put("message","success");
-				rtnMap.put("status", "1");
-				rtnMap.put("danMaList", danMaList);
-				rtnMap.put("simaList", simaList);
-				rtnMap.put("sameList", sameList);
-			}
-		}catch(Exception ex){
-			logger.error("获取统计附表数据接口错误！provinceNumber="+provinceNumber);
-			rtnMap.put("message","failure");
-			rtnMap.put("status", "0");
-		}finally{
-			return rtnMap;
-		}
-	}
-	/**
-	 * 
-	 * @Title: getLotteryNum
-	 * @Description:  获取遗漏统计内容
-	 * * 对应的返回json数据结构：
-	 * @author:songjia
-	 * @return: Fast3
-	 */
 	/*
 	@RequestMapping(value="/getLFInfo",method = RequestMethod.GET)
 	public @ResponseBody Map<String,Object> getLFInfo(@RequestParam(value="shuangSQIssueNumber",required=true) String shuangSQIssueNumber ,@RequestParam(value="threeDIssueNumber",required=true) String threeDIssueNumber ,@RequestParam(value="qiLeCaiIssueNumber",required=true) String qiLeCaiIssueNumber )
@@ -1658,6 +1705,41 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			rtnMap.put("qiLeCaiList", qiLeCaiList);
 		}catch(Exception ex){
 			//logger.error("获取低频数据接口错误！shuangSQIssueNumber="+shuangSQIssueNumber+"&&threeDIssueNumber="+threeDIssueNumber+"&&qiLeCaiIssueNumber="+qiLeCaiIssueNumber);
+			rtnMap.put("message","failure");
+			rtnMap.put("status", "0");
+		}finally{
+			return rtnMap;
+		}
+	}
+
+	/**
+	 * 
+	 * @Title: getLotteryNum
+	 * @Description:  获取遗漏统计内容
+	 * * 对应的返回json数据结构：
+	 * @author:songjia
+	 * @return: Fast3
+	 */
+	@RequestMapping(value="/getStatisticsInfo",method = RequestMethod.GET)
+	public @ResponseBody Map<String,Object> getStatisticsInfo(@RequestParam(value="danMaIssueNumber",required=true) String danMaIssueNumber ,@RequestParam(value="siMaId",required=true) String siMaId ,@RequestParam(value="sameIssueNumber",required=true) String sameIssueNumber ,@RequestParam(value="provinceNumber",required=true) String provinceNumber)
+	{
+		Map<String,Object> rtnMap = new HashMap<String,Object>();
+		try{
+			List<Fast3DanMa> danMaList =outerInterfaceService.getInitDanmaList(danMaIssueNumber, provinceNumber);
+			List<Fast3SiMa> simaList = outerInterfaceService.getInitSimaList(Integer.parseInt(siMaId), provinceNumber);
+			List<Fast3Same> sameList = outerInterfaceService.getInitSameList(sameIssueNumber, provinceNumber);
+			if(danMaList.size() == 0 || simaList.size() == 0 || sameList.size() == 0){
+				rtnMap.put("message","failure");
+				rtnMap.put("status", "0");
+			}else{
+				rtnMap.put("message","success");
+				rtnMap.put("status", "1");
+				rtnMap.put("danMaList", danMaList);
+				rtnMap.put("simaList", simaList);
+				rtnMap.put("sameList", sameList);
+			}
+		}catch(Exception ex){
+			logger.error("获取统计附表数据接口错误！provinceNumber="+provinceNumber);
 			rtnMap.put("message","failure");
 			rtnMap.put("status", "0");
 		}finally{

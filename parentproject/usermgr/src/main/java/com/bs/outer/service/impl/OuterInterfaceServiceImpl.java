@@ -201,6 +201,23 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 			getScrollDataBySql(Advertisement.class,sql.toString(), queryParams, pageable);
 		return userObj;
 	}
+	
+	
+	public QueryResult<Advertisement> getStationAdvertisementOfStaAndApp(
+			Class<Advertisement> entityClass, String whereJpql,
+			Object[] queryParams, LinkedHashMap<String, String> orderby,
+			Pageable pageable, String ugroups, String province, String city,
+			String appId, String lotteryType, String stationId) {
+		StringBuffer sql = new StringBuffer("SELECT u.* FROM ((T_BS_APP_AD u LEFT JOIN RELA_BS_APPAD_AND_APP app ON u.ID=app.APP_AD_ID)  "+
+				"	 LEFT JOIN RELA_BS_APPAD_AND_UGROUP au ON u.ID=au.APP_AD_ID) LEFT JOIN RELA_BS_APPAD_AND_AREA aarea ON u.id = aarea.APP_AD_ID WHERE u.IS_DELETED='1'  "+
+				"	AND u.AD_STATUS='1' AND app.APP_ID='"+appId+"'"+
+				"   AND u.AD_END_TIME>=CURDATE() AND u.AD_START_TIME<=NOW() ");//AND u.LOTTERY_TYPE='"+lotteryType+"'"
+		//查询应用广告类别站点应用广告
+		sql.append("	AND u.CREATOR_STATION='"+stationId+"' AND u.STATION_AD_STATUS='21' ");
+		QueryResult<Advertisement> userObj = advertisementRepository.
+			getScrollDataBySql(Advertisement.class,sql.toString(), queryParams, pageable);
+		return userObj;
+	}
 
 
 	public QueryResult<Notice> getNoticeOfStaAndApp(Class<Notice> entityClass,
@@ -254,7 +271,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		
 		StringBuffer sql = new StringBuffer("SELECT MAX(n.CREATER_TIME) AS CREATER_TIME,n.ID,n.CREATER,n.IS_DELETED,n.MODIFY,"
 				+ "n.MODIFY_TIME,n.APP_CATEGORY,n.APP_NOTICE_NAME,n.APP_NOTICE_WORD,n.NOTICE_ENDTIME,n.LOTTERY_TYPE,n.NOTICE_STATUS,n.NOTICE_STARTTIME,n.NOTICE_FONT_COLOR   FROM T_BS_APP_NOTICE n WHERE n.IS_DELETED='1' "+
-					" AND n.APP_CATEGORY='3' AND n.NOTICE_STATUS='1' AND n.APP_NOTICE_NAME LIKE '%"+appNoticeName+"%'");
+					" AND n.APP_CATEGORY='3' AND n.NOTICE_STATUS='1' AND n.APP_NOTICE_NAME = '"+appNoticeName+"'");
 		QueryResult<Notice> userObj = noticeRepository.
 				getScrollDataBySql(Notice.class,sql.toString(), params.toArray(), pageable);
 		if(0 == userObj.getTotalCount())
@@ -737,5 +754,5 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 			};
 			List<QiLeCai> qiLeCaieDList =qiLeCaiRepository.getEntityListBySql(QiLeCai.class,execSql, queryParams);
 			return qiLeCaieDList;
-	  }
+	  }	
 }
