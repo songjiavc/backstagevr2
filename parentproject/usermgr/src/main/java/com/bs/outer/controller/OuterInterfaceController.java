@@ -1012,7 +1012,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			}
 			
 			advertisementDTOs = advertisementService.toRDTOS(advertisements);
-			
+			logger.info("获取应用广告数据接口调用成功getAdsOfStationAndApp！访问接口的传入stationId："+stationId+";获取数据数量="+advertisementDTOs.size());
 			result.put("advertisementDTOs", advertisementDTOs);
 			result.put("status", "1");
 			result.put("message", "数据获取成功！");
@@ -1092,7 +1092,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			
 			advertisementDTOs = advertisementService.toRDTOS(advertisements);
 			
-			
+			logger.info("获取站点类别应用广告数据接口调用成功getStaAdsOfStationAndApp！访问接口的传入stationId："+stationId+";获取数据数量="+advertisementDTOs.size());
 			result.put("advertisementDTOs", advertisementDTOs);
 			result.put("status", "1");
 			result.put("message", "数据获取成功！");
@@ -1197,7 +1197,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			}
 			
 			noticeDTOs = noticeService.toRDTOS(notices);
-			
+			logger.info("获取应用公告数据接口调用成功getNoticesOfStationAndApp！访问接口的传入stationId："+stationId+";获取数据数量="+noticeDTOs.size());
 			result.put("noticeDTOs", noticeDTOs);
 			result.put("status", "1");
 			result.put("message", "数据获取成功！");
@@ -1265,7 +1265,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			
 			noticeDTOs = noticeService.toRDTOS(notices);
 			
-			
+			logger.info("获取低频开奖类别应用公告数据接口调用成功getKaijiangNoticesOfStationAndApp！访问接口的传入stationId："+stationId+";获取数据数量="+noticeDTOs.size());
 			result.put("KaijiangnoticeDTOs", noticeDTOs);
 			result.put("status", "1");
 			result.put("message", "数据获取成功！");
