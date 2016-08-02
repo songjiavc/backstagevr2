@@ -539,7 +539,7 @@ public class AnnouncementController {
 		List<Object> params = new ArrayList<Object>();
 		
 		LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
-		orderBy.put("id", "desc");
+		orderBy.put("status", "asc");
 		
 		params.add(id);//只查询有效的数据
 		buffer.append(" announcementId = ?").append(params.size());

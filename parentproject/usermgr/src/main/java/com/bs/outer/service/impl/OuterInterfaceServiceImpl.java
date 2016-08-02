@@ -252,7 +252,8 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 				 "   SELECT a.*  FROM T_BS_APP_NOTICE a LEFT JOIN RELA_BS_NOTICE_AND_AERA rarea ON a.ID=rarea.NOTICE_ID "+
 				 "	WHERE rarea.NOTICE_ID IS NULL AND a.IS_DELETED='1'    AND a.NOTICE_STATUS='1' "
 				 + "AND  a.APP_CATEGORY='"+NoticeController.APP_CATEGORY_COMPANY_KAIJIANG+"'  "
-				 		+ "  AND a.LOTTERY_TYPE='"+lotteryType+"' ) atable ");
+				 		+ "  AND a.LOTTERY_TYPE='"+lotteryType+"' ) atable  ORDER BY atable.APP_NOTICE_NAME ASC");
+		//getScrollDataBySql参数不传排序参数，所以order by要写在sql里
 		QueryResult<Notice> userObj = noticeRepository.
 			getScrollDataBySql(Notice.class,sql.toString(), queryParams, pageable);
 		return userObj;
@@ -300,7 +301,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		
 		StringBuffer sql = new StringBuffer("SELECT n.CREATER_TIME,n.ID,n.CREATER,n.IS_DELETED,n.MODIFY,"
 				+ "n.MODIFY_TIME,n.APP_CATEGORY,n.APP_NOTICE_NAME,n.APP_NOTICE_WORD,n.NOTICE_ENDTIME,n.LOTTERY_TYPE,n.NOTICE_STATUS,n.NOTICE_STARTTIME,n.NOTICE_FONT_COLOR   FROM T_BS_APP_NOTICE n WHERE n.IS_DELETED='1' "+
-					" AND n.APP_CATEGORY='3' AND n.NOTICE_STATUS='1' AND n.APP_NOTICE_NAME LIKE '%"+appNoticeName+"%'");
+					" AND n.APP_CATEGORY='3' AND n.NOTICE_STATUS='1' AND n.APP_NOTICE_NAME = '"+appNoticeName+"'");
 		QueryResult<Notice> userObj = noticeRepository.
 				getScrollDataBySql(Notice.class,sql.toString(), params.toArray(), pageable);
 		
