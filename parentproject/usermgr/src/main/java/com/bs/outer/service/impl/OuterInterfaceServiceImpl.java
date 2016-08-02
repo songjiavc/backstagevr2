@@ -529,10 +529,10 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		int type = 0;
 		for(Fast3Analysis fast3Analysis :allMissList ){
 			if(type != fast3Analysis.getType()){
-				if(n < 3){
+				if(n < 4){
 					rtnList.add(fast3Analysis);
 					n++;
-				}else if(n == 3){
+				}else if(n == 4){
 					n = 0;
 					type = fast3Analysis.getType();
 				}else{
@@ -661,10 +661,10 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		int type = 0;
 		for(Fast3Analysis fast3Analysis :allMissList ){
 			if(type != fast3Analysis.getType()){
-				if(n < 3){
+				if(n < 4){
 					rtnList.add(fast3Analysis);
 					n++;
-				}else if(n == 3){
+				}else if(n == 4){
 					n = 0;
 					type = fast3Analysis.getType();
 				}else{
