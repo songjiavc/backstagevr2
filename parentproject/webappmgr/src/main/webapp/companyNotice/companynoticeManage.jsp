@@ -233,7 +233,7 @@
 				        <div class="ftitlenot">
 				            <label for="priceA">公司公告内容:</label>
 				            <textarea id="comnoticeContentA" name="comnoticeContent" class="easyui-validatebox" data-options="required:true" missingMessage="公司公告内容不可以为空"
-				         	 validType="length[0,100]" style="resize:none;width:400px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
+				         	 validType="length[0,50]" style="resize:none;width:400px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
 				        </div>
 				       
 				        
@@ -325,7 +325,7 @@
 				        <div class="ftitlenot">
 				            <label for="priceA">公司公告内容:</label>
 				            <textarea id="comnoticeContentU" name="comnoticeContent" class="easyui-validatebox" data-options="required:true" missingMessage="公司公告内容不可以为空"
-				         	 validType="length[0,100]" style="resize:none;width:400px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
+				         	 validType="length[0,50]" style="resize:none;width:400px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
 				        </div>
 				       
 				        
