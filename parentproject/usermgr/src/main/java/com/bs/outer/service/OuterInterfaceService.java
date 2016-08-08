@@ -4,18 +4,10 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import com.bs.outer.entity.*;
 import org.springframework.data.domain.Pageable;
 
 import com.bs.outer.dto.StationOuterDTO;
-import com.bs.outer.entity.Fast3;
-import com.bs.outer.entity.Fast3Analysis;
-import com.bs.outer.entity.Fast3DanMa;
-import com.bs.outer.entity.Fast3Same;
-import com.bs.outer.entity.Fast3SiMa;
-import com.bs.outer.entity.Ln5In12Bean;
-import com.bs.outer.entity.QiLeCai;
-import com.bs.outer.entity.ShuangSQ;
-import com.bs.outer.entity.ThreeD;
 import com.sdf.manager.ad.entity.Advertisement;
 import com.sdf.manager.announcement.entity.Announcement;
 import com.sdf.manager.common.util.QueryResult;
@@ -200,7 +192,57 @@ public interface OuterInterfaceService {
 	 * @return
 	 */
 	public Fast3Analysis get5In11MissAnalysisByTypeAndGroup(String type,String group,String provinceNumber);
-	
+
+
+	/**
+	 * @param issueNumber
+	 * @param provinceNumber
+	 * @return 如果期号为空则认为是初始化内容，不为空则判断是否有更新的记录然后返回
+	 */
+	public List<Fast3DanMa> get5In11InitDanmaList(String issueNumber,String provinceNumber);
+
+	/**
+	 * @param issueNumber
+	 * @param provinceNumber
+	 * @return 如果期号为空则认为是初始化内容，不为空则判断是否有更新的记录然后返回
+	 */
+	public List<Fast3DanMa> get5In12InitDanmaList(String issueNumber,String provinceNumber);
+
+	/**
+	 * @param siMaId
+	 * @param provinceNumber
+	 * @return 获取四码复式列表
+	 */
+	public List<Fast3SiMa> get5In11InitSimaList(int siMaId,String provinceNumber);
+	/**
+	 * @param siMaId
+	 * @param provinceNumber
+	 * @return 获取四码复式列表
+	 */
+	public List<Fast3SiMa> get5In12InitSimaList(int siMaId,String provinceNumber);
+
+	/**
+	 * @param issueNumber
+	 * @param provinceNumber
+	 * @return 获取相同号码统计列表
+	 */
+	public List<Fast3Same> get5In11InitSameList(String issueNumber,String provinceNumber);
+
+
+	/**
+	 * 获取号码所应对的冷热号码
+	 * @param issueNumber  根据期号判断是否产生新的数据
+	 * @param provinceNumber
+	 * @return
+	 */
+	public List<HotCoolBean> getHotCoolList(String issueNumber,String provinceNumber);
+	/**
+	 * @param issueNumber
+	 * @param provinceNumber
+	 * @return 获取相同号码统计列表
+	 */
+	public List<Fast3Same> get5In12InitSameList(String issueNumber,String provinceNumber);
+
 	/**
 	 * add by songjia 获取11选5遗漏统计类型
 	 * @param type

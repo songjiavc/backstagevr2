@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.bs.outer.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bs.outer.entity.Fast3Analysis;
-import com.bs.outer.entity.Ln5In12Bean;
 import com.bs.outer.service.OuterInterfaceService;
 import com.sdf.manager.common.bean.ResultBeanData;
 
@@ -233,6 +232,48 @@ public class LottoryToolOuterController
 			result.setMessage("遗漏数据查询失败！");
 		}finally{
 			return result;
+		}
+	}
+
+	/**
+	 *
+	 * @Title: getLotteryNum
+	 * @Description:  获取遗漏统计内容
+	 * * 对应的返回json数据结构：
+	 * @author:songjia
+	 * @return: Fast3
+	 */
+	@RequestMapping(value="/get5In11StatisticsInfo",method = RequestMethod.GET)
+	public @ResponseBody Map<String,Object> get5In11StatisticsInfo(@RequestParam(value="danMaIssueNumber",required=true) String danMaIssueNumber ,
+																   @RequestParam(value="siMaId",required=true) String siMaId ,
+																   @RequestParam(value="sameIssueNumber",required=true) String sameIssueNumber ,
+																   @RequestParam(value="followIssueNumber",required=true) String followIssueNumber,
+																   @RequestParam(value="provinceNumber",required=true) String provinceNumber
+																   )
+	{
+		Map<String,Object> rtnMap = new HashMap<String,Object>();
+		try{
+			List<Fast3DanMa> danMaList =outerInterfaceService.get5In11InitDanmaList(danMaIssueNumber, provinceNumber);
+			List<Fast3SiMa> simaList = outerInterfaceService.get5In11InitSimaList(Integer.parseInt(siMaId), provinceNumber);
+			List<Fast3Same> sameList = outerInterfaceService.get5In11InitSameList(sameIssueNumber, provinceNumber);
+			List<HotCoolBean> hotList = outerInterfaceService.getHotCoolList(followIssueNumber,provinceNumber);
+			if(danMaList.size() == 0 || simaList.size() == 0 || sameList.size() == 0 || hotList.size() == 0){
+				rtnMap.put("message","failure");
+				rtnMap.put("status", "0");
+			}else{
+				rtnMap.put("message","success");
+				rtnMap.put("status", "1");
+				rtnMap.put("danMaList", danMaList);
+				rtnMap.put("simaList", simaList);
+				rtnMap.put("sameList", sameList);
+				rtnMap.put("hotList",hotList);
+			}
+		}catch(Exception ex){
+			logger.error("获取统计附表数据接口错误！provinceNumber="+provinceNumber);
+			rtnMap.put("message","failure");
+			rtnMap.put("status", "0");
+		}finally{
+			return rtnMap;
 		}
 	}
 }

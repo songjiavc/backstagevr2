@@ -1,37 +1,8 @@
 package com.bs.outer.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-
 import com.bs.outer.dto.StationOuterDTO;
-import com.bs.outer.entity.Fast3;
-import com.bs.outer.entity.Fast3Analysis;
-import com.bs.outer.entity.Fast3DanMa;
-import com.bs.outer.entity.Fast3Same;
-import com.bs.outer.entity.Fast3SiMa;
-import com.bs.outer.entity.Ln5In12Bean;
-import com.bs.outer.entity.QiLeCai;
-import com.bs.outer.entity.ShuangSQ;
-import com.bs.outer.entity.ThreeD;
-import com.bs.outer.repository.Fast3AnalysisRepository;
-import com.bs.outer.repository.Fast3DanMaRepository;
-import com.bs.outer.repository.Fast3NumberRepository;
-import com.bs.outer.repository.Fast3SameRepository;
-import com.bs.outer.repository.Fast3SiMaRepository;
-import com.bs.outer.repository.Ln5In12Repository;
-import com.bs.outer.repository.QiLeCaiRepository;
-import com.bs.outer.repository.ShuangSQRepository;
-import com.bs.outer.repository.ThreeDRepository;
+import com.bs.outer.entity.*;
+import com.bs.outer.repository.*;
 import com.bs.outer.service.OuterInterfaceService;
 import com.sdf.manager.ad.entity.Advertisement;
 import com.sdf.manager.ad.repository.AdvertisementRepository;
@@ -51,6 +22,15 @@ import com.sdf.manager.product.entity.Province;
 import com.sdf.manager.product.service.CityService;
 import com.sdf.manager.product.service.ProvinceService;
 import com.sdf.manager.station.entity.Station;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
+import java.util.*;
 
 @Service("outerInterfaceService")
 @Transactional(propagation = Propagation.REQUIRED)
@@ -95,7 +75,13 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 
 	@Autowired
 	private ShuangSQRepository shuangSQRepository;
-	
+
+	@Autowired
+	private FollowNumberRepository followNumberRepository;
+
+	@Autowired
+	private FollowLastIssueRepository followLastIssueRepository;
+
 	@Autowired
 	private ProvinceService provinceService;
 
@@ -402,6 +388,12 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		return fast3AnalysisList;
 	}
 
+	/**
+	 *
+	 * @param issueNumber
+	 * @param provinceNumber
+	 * @return
+	 */
 	public List<Fast3DanMa> getInitDanmaList(String issueNumber,String provinceNumber){
 		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[2];
 		String where = null;
@@ -417,6 +409,49 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		return fast3AnalysisList;
 	}
 
+	/**
+	 *
+	 * @param issueNumber
+	 * @param provinceNumber
+	 * @return
+	 */
+	public List<Fast3DanMa> get5In11InitDanmaList(String issueNumber,String provinceNumber){
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[4];
+		String where = null;
+		if(StringUtils.isEmpty(issueNumber)){
+			where = " ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
+		}else{
+			where = " WHERE  "+ issueNumber +" <  (SELECT ISSUE_NUMBER FROM "+ tableName +" ORDER BY ISSUE_NUMBER DESC LIMIT 1)  ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
+		}
+		String execSql = "SELECT * FROM "+tableName + where;
+		Object[] queryParams = new Object[]{
+		};
+		List<Fast3DanMa> fast3AnalysisList = fast3DanMaRepository.getEntityListBySql(Fast3DanMa.class,execSql, queryParams);
+		return fast3AnalysisList;
+	}
+
+	/**
+	 *
+	 * @param issueNumber
+	 * @param provinceNumber
+	 * @return
+	 */
+	public List<Fast3DanMa> get5In12InitDanmaList(String issueNumber,String provinceNumber){
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[8];
+		String where = null;
+		if(StringUtils.isEmpty(issueNumber)){
+			where = " ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
+		}else{
+			where = " WHERE  "+ issueNumber +" <  (SELECT ISSUE_NUMBER FROM "+ tableName +" ORDER BY ISSUE_NUMBER DESC LIMIT 1)  ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
+		}
+		String execSql = "SELECT * FROM "+tableName + where;
+		Object[] queryParams = new Object[]{
+		};
+		List<Fast3DanMa> fast3AnalysisList = fast3DanMaRepository.getEntityListBySql(Fast3DanMa.class,execSql, queryParams);
+		return fast3AnalysisList;
+	}
+
+
 
 	public List<Fast3SiMa> getInitSimaList(int siMaId, String provinceNumber) {
 		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[3];
@@ -424,9 +459,53 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		if(siMaId == 0){
 			where = " ORDER BY CREATE_TIME DESC LIMIT 10 ";
 		}else{
-			where = " WHERE "+ siMaId +"  <>  (SELECT ID*DROWN_CYCLE FROM "+ tableName +" ORDER BY ID DESC LIMIT 1)  ORDER BY CREATE_TIME DESC LIMIT 10 ";
+			where = " WHERE "+ siMaId +"  <>  (SELECT ID*(DROWN_CYCLE+1) FROM "+ tableName +" ORDER BY ID DESC LIMIT 1)  ORDER BY CREATE_TIME DESC LIMIT 10 ";
 		}
 		
+		String execSql = "SELECT ID*(DROWN_CYCLE+1) AS ID,YUCE_ISSUE_START,YUCE_ISSUE_STOP,DROWN_PLAN,DROWN_ISSUE_NUMBER,DROWN_NUMBER,DROWN_CYCLE,STATUS,CREATE_TIME FROM "+tableName + where;
+		Object[] queryParams = new Object[]{
+		};
+		List<Fast3SiMa> fast3SiMaList = fast3SiMaRepository.getEntityListBySql(Fast3SiMa.class,execSql, queryParams);
+		return fast3SiMaList;
+	}
+
+	/**
+	 * 初始化sima复式预测列表
+	 * @param siMaId
+	 * @param provinceNumber
+	 * @return
+	 */
+	public List<Fast3SiMa> get5In11InitSimaList(int siMaId, String provinceNumber) {
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[5];
+		String where = null;
+		if(siMaId == 0){
+			where = " ORDER BY CREATE_TIME DESC LIMIT 10 ";
+		}else{
+			where = " WHERE "+ siMaId +"  <>  (SELECT ID*(DROWN_CYCLE+1) FROM "+ tableName +" ORDER BY ID DESC LIMIT 1)  ORDER BY CREATE_TIME DESC LIMIT 10 ";
+		}
+
+		String execSql = "SELECT ID*(DROWN_CYCLE+1) AS ID,YUCE_ISSUE_START,YUCE_ISSUE_STOP,DROWN_PLAN,DROWN_ISSUE_NUMBER,DROWN_NUMBER,DROWN_CYCLE,STATUS,CREATE_TIME FROM "+tableName + where;
+		Object[] queryParams = new Object[]{
+		};
+		List<Fast3SiMa> fast3SiMaList = fast3SiMaRepository.getEntityListBySql(Fast3SiMa.class,execSql, queryParams);
+		return fast3SiMaList;
+	}
+
+	/**
+	 * 初始化sima复式预测列表
+	 * @param siMaId
+	 * @param provinceNumber
+	 * @return
+	 */
+	public List<Fast3SiMa> get5In12InitSimaList(int siMaId, String provinceNumber) {
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[9];
+		String where = null;
+		if(siMaId == 0){
+			where = " ORDER BY CREATE_TIME DESC LIMIT 10 ";
+		}else{
+			where = " WHERE "+ siMaId +"  <>  (SELECT ID*DROWN_CYCLE FROM "+ tableName +" ORDER BY ID DESC LIMIT 1)  ORDER BY CREATE_TIME DESC LIMIT 10 ";
+		}
+
 		String execSql = "SELECT ID*DROWN_CYCLE AS ID,YUCE_ISSUE_START,YUCE_ISSUE_STOP,DROWN_PLAN,DROWN_ISSUE_NUMBER,DROWN_NUMBER,DROWN_CYCLE,STATUS,CREATE_TIME FROM "+tableName + where;
 		Object[] queryParams = new Object[]{
 		};
@@ -439,6 +518,133 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 * @see com.bs.outer.service.OuterInterfaceService#getInitSameList(java.lang.String, java.lang.String)
 	 */
 	public List<Fast3Same> getInitSameList(String issueNumber, String provinceNumber) {
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[4];
+		String where = null;
+		if(StringUtils.isEmpty(issueNumber)){
+			where = " ORDER BY CURRENT_ISSUE DESC LIMIT 10 ";
+		}else{
+			where = " WHERE "+ issueNumber +"  <  (SELECT CURRENT_ISSUE FROM "+ tableName +" ORDER BY CURRENT_ISSUE DESC LIMIT 1)  ORDER BY CURRENT_ISSUE DESC LIMIT 10  ";
+		}
+		String execSql = "SELECT * FROM "+tableName + where;
+		Object[] queryParams = new Object[]{
+		};
+		List<Fast3Same> fast3SameList = fast3SameRepository.getEntityListBySql(Fast3Same.class,execSql, queryParams);
+		return fast3SameList;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.bs.outer.service.OuterInterfaceService#getInitSameList(java.lang.String, java.lang.String)
+	 */
+	public List<Fast3Same> get5In11InitSameList(String issueNumber, String provinceNumber) {
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[10];
+		String where = null;
+		if(StringUtils.isEmpty(issueNumber)){
+			where = " ORDER BY CURRENT_ISSUE DESC LIMIT 10 ";
+		}else{
+			where = " WHERE "+ issueNumber +"  <  (SELECT CURRENT_ISSUE FROM "+ tableName +" ORDER BY CURRENT_ISSUE DESC LIMIT 1)  ORDER BY CURRENT_ISSUE DESC LIMIT 10  ";
+		}
+		String execSql = "SELECT * FROM "+tableName + where;
+		Object[] queryParams = new Object[]{
+		};
+		List<Fast3Same> fast3SameList = fast3SameRepository.getEntityListBySql(Fast3Same.class,execSql, queryParams);
+		return fast3SameList;
+	}
+
+	public List<HotCoolBean> getHotCoolList(String issueNumber, String provinceNumber) {
+		List<HotCoolBean> hotList = new ArrayList<HotCoolBean>();
+		String tbName1 = "analysis."+globalCacheService.getCacheMap(provinceNumber)[12];
+		String selSql = "SELECT ISSUE_NUMBER FROM " + tbName1;
+		Object[] queryParams = new Object[]{
+		};
+		FollowLastIssueBean dsIssueNumber = followLastIssueRepository.getEntityBySql(FollowLastIssueBean.class,selSql,queryParams);
+		if(StringUtils.isEmpty(issueNumber) || !dsIssueNumber.equals(issueNumber)){
+			//获取所有follow列表，而后进行加工
+			String tbName2 = "analysis."+globalCacheService.getCacheMap(provinceNumber)[7];
+			String selSql2 = "SELECT * FROM " + tbName2;
+			Object[] param = new Object[]{
+			};
+			List<FollowNumberBean> allList = followNumberRepository.getEntityListBySql(FollowNumberBean.class,selSql2,param);
+			List<FollowNumberBean> temp = null;
+			for(int i = 1;i <= 11;i++){
+				temp = allList.subList((i-1)*10,i*10);
+				List<List<FollowNumberTempBean>> rtnList = this.initSortList(temp);
+				HotCoolBean hotCoolBean = new HotCoolBean();
+				hotCoolBean.setNumber(i);
+				hotCoolBean.setFollow(translate(rtnList.get(0).get(0).followNumber)+translate(rtnList.get(0).get(1).followNumber)+translate(rtnList.get(0).get(2).followNumber));
+				hotCoolBean.setNoFollow(translate(rtnList.get(1).get(0).followNumber)+translate(rtnList.get(1).get(1).followNumber)+translate(rtnList.get(1).get(2).followNumber));
+				hotCoolBean.setThreeFollow(translate(rtnList.get(2).get(0).followNumber)+translate(rtnList.get(2).get(1).followNumber)+translate(rtnList.get(2).get(2).followNumber));
+				hotCoolBean.setThreeNoFollow(translate(rtnList.get(3).get(0).followNumber)+translate(rtnList.get(3).get(1).followNumber)+translate(rtnList.get(3).get(2).followNumber));
+				hotList.add(hotCoolBean);
+			}
+		}
+		return hotList;
+	}
+
+
+	private static String translate(int num){
+		//将数字进行转义方便前台控制读取
+		if(num == 10){
+			return "A";
+		}else if(num == 11){
+			return "J";
+		}else if(num == 12){
+			return "Q";
+		}else{
+			return Integer.toString(num);
+		}
+
+	}
+
+
+	private List<List<FollowNumberTempBean>> initSortList(List<FollowNumberBean> temp){
+		List<List<FollowNumberTempBean>> rtnList = new ArrayList<List<FollowNumberTempBean>>();
+		List<FollowNumberTempBean> followList = new ArrayList<FollowNumberTempBean>();
+		List<FollowNumberTempBean> noFollowList = new ArrayList<FollowNumberTempBean>();
+		List<FollowNumberTempBean> threeFollowList = new ArrayList<FollowNumberTempBean>();
+		List<FollowNumberTempBean> threeNoFollowList = new ArrayList<FollowNumberTempBean>();
+		FollowNumberTempBean follow = null;
+		FollowNumberTempBean noFollow = null;
+		FollowNumberTempBean threeFollow = null;
+		FollowNumberTempBean threeNoFollow = null;
+		for(FollowNumberBean followNumberBean : temp){
+			follow = new FollowNumberTempBean();
+			noFollow = new FollowNumberTempBean();
+			threeFollow = new FollowNumberTempBean();
+			threeNoFollow = new FollowNumberTempBean();
+			follow.setNumber(followNumberBean.getNumber());
+			follow.setFollowNumber(followNumberBean.getFollowNumber());
+			follow.setFollowCount(followNumberBean.getFollowCount());
+			followList.add(follow);
+			noFollow.setNumber(followNumberBean.getNumber());
+			noFollow.setFollowNumber(followNumberBean.getFollowNumber());
+			noFollow.setFollowCount(followNumberBean.getNoFollowCount());
+			noFollowList.add(noFollow);
+			threeFollow.setNumber(followNumberBean.getNumber());
+			threeFollow.setFollowNumber(followNumberBean.getFollowNumber());
+			threeFollow.setFollowCount(followNumberBean.getThreeFollowCount());
+			threeFollowList.add(threeFollow);
+			threeNoFollow.setNumber(followNumberBean.getNumber());
+			threeNoFollow.setFollowNumber(followNumberBean.getFollowNumber());
+			threeNoFollow.setFollowCount(followNumberBean.getThreeNoFollowCount());
+			threeNoFollowList.add(threeNoFollow);
+		}
+		Collections.sort(followList);
+		Collections.sort(noFollowList);
+		Collections.sort(threeFollowList);
+		Collections.sort(threeNoFollowList);
+		rtnList.add(followList);
+		rtnList.add(noFollowList);
+		rtnList.add(threeFollowList);
+		rtnList.add(threeNoFollowList);
+
+		return rtnList;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see com.bs.outer.service.OuterInterfaceService#getInitSameList(java.lang.String, java.lang.String)
+	 */
+	public List<Fast3Same> get5In12InitSameList(String issueNumber, String provinceNumber) {
 		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[4];
 		String where = null;
 		if(StringUtils.isEmpty(issueNumber)){
