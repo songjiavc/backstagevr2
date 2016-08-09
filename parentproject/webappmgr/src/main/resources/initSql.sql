@@ -37,6 +37,11 @@ insert  into `T_SDF_ROLES`(`ID`,`CREATER`,`CREATER_TIME`,`IS_DELETED`,`MODIFY`,`
 values ('3','admin','2015-10-13 14:53:00','1','admin','2015-10-20 10:20:38','4','省中心','0','超级管理员','1');
 insert  into `T_SDF_ROLES`(`ID`,`CREATER`,`CREATER_TIME`,`IS_DELETED`,`MODIFY`,`MODIFY_TIME`,`CODE`,`NAME`,`PARENT_ROLE`,`PARENT_ROLENAME`,`ISSYSTEM`) 
 values ('4','admin','2015-10-13 14:53:00','1','admin','2015-10-20 10:20:38','5','市中心','0','超级管理员','1');
+/*2016-8-9日添加两个角色，“公司补录员”，“对外补录员”*/
+insert  into `T_SDF_ROLES`(`ID`,`CREATER`,`CREATER_TIME`,`IS_DELETED`,`MODIFY`,`MODIFY_TIME`,`CODE`,`NAME`,`PARENT_ROLE`,`PARENT_ROLENAME`,`ISSYSTEM`) 
+values ('5','admin','2016-08-06 14:53:00','1','admin','2015-10-20 10:20:38','6','公司补录员','0','超级管理员','1');
+insert  into `T_SDF_ROLES`(`ID`,`CREATER`,`CREATER_TIME`,`IS_DELETED`,`MODIFY`,`MODIFY_TIME`,`CODE`,`NAME`,`PARENT_ROLE`,`PARENT_ROLENAME`,`ISSYSTEM`) 
+values ('6','admin','2015-08-06 14:53:00','1','admin','2015-10-20 10:20:38','7','对外补录员','0','超级管理员','1');
 
 insert  into `T_SDF_ROLES`(`ID`,`CREATER`,`CREATER_TIME`,`IS_DELETED`,`MODIFY`,`MODIFY_TIME`,`CODE`,`NAME`,`PARENT_ROLE`,`PARENT_ROLENAME`,`ISSYSTEM`) 
 values ('ff808181514698fb015146a02eaf0000', 'admin', '2015-11-27 09:48:01', '1', 'admin', '2015-11-27 09:48:01', 'SC_ZJ', '市场总监', '0', '超级管理员', '0');
