@@ -111,7 +111,7 @@
 	</div>
 
     <div  data-options="region:'center'" data-options="border:false" >
-    	 <table id="datagrid" class="easyui-datagrid"  title="常见问题数据列表" >
+    	 <table id="datagrid" class="easyui-datagrid"  title="补录信息数据列表" >
 			</table>
  	</div>  
   

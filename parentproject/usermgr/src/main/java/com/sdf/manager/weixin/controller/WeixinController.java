@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sdf.manager.app.entity.App;
 import com.sdf.manager.common.bean.ResultBean;
 import com.sdf.manager.common.exception.GlobalExceptionHandler;
+import com.sdf.manager.common.util.Constants;
 import com.sdf.manager.common.util.LoginUtils;
 import com.sdf.manager.common.util.QueryResult;
 import com.sdf.manager.weixin.dto.LotteryPlayBuluPlanDTO;
@@ -491,7 +492,7 @@ public class WeixinController extends GlobalExceptionHandler
 				buffer.append(" and name like ?").append(params.size());
 			}
 			
-			if(null != provinceCode && !"".equals(provinceCode))
+			if(null != provinceCode && !"".equals(provinceCode)&& !Constants.PROVINCE_ALL.equals(provinceCode))
 			{
 				params.add(provinceCode);
 				buffer.append(" and province = ?").append(params.size());
