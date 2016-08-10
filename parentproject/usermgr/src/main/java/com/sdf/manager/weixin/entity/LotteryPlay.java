@@ -54,6 +54,8 @@ public class LotteryPlay extends BaseEntiry implements Serializable
 	@Column(name="LOTTERY_NUMBER", length=45)
 	private String lotteryNumber;//开奖号码个数(例如：11选5，开奖号码是5个号码，这个字段就是5)
 	
+	@Column(name="ISSUENUM_NUMBER_LEN", length=45)
+	private String issueNumLen;//期号长度
 	
 	@Column(name="LOTTERY_TYPE", length=45)
 	private String lotteryType;//彩种，1：体彩，2：福彩  
@@ -62,6 +64,16 @@ public class LotteryPlay extends BaseEntiry implements Serializable
 	@ManyToOne  
     @JoinColumn(name = "LP_ID", referencedColumnName = "id")
 	private LotteryPlayBulufangan lotteryPlayBulufangan;
+	
+	
+
+	public String getIssueNumLen() {
+		return issueNumLen;
+	}
+
+	public void setIssueNumLen(String issueNumLen) {
+		this.issueNumLen = issueNumLen;
+	}
 
 	public String getId() {
 		return id;

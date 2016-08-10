@@ -552,6 +552,7 @@ public class WeixinController extends GlobalExceptionHandler
 				@RequestParam(value="lotteryNumber",required=false) String lotteryNumber,//开奖号码个数
 				@RequestParam(value="lotteryType",required=false) String lotteryType,//彩种，体彩/福彩
 				@RequestParam(value="lpbuId",required=false) String lpbuId,//补录方案id
+				@RequestParam(value="issueNumLen",required=false) String issueNumLen,//期号长度
 				ModelMap model,HttpSession httpSession) throws Exception
 		{
 		   ResultBean resultBean = new ResultBean ();
@@ -568,6 +569,7 @@ public class WeixinController extends GlobalExceptionHandler
 			   lotteryPlay.setCorrespondingTable(correspondingTable);
 			   lotteryPlay.setLotteryNumber(lotteryNumber);
 			   lotteryPlay.setLotteryType(lotteryType);
+			   lotteryPlay.setIssueNumLen(issueNumLen);
 			   
 			   LotteryPlayBulufangan lotteryPlayBulufangan = lotteryPlayBuLuPlanService.getLotteryPlayBulufanganById(lpbuId);
 			   
@@ -595,6 +597,7 @@ public class WeixinController extends GlobalExceptionHandler
 			   lotteryPlay.setCorrespondingTable(correspondingTable);
 			   lotteryPlay.setLotteryNumber(lotteryNumber);
 			   lotteryPlay.setLotteryType(lotteryType);
+			   lotteryPlay.setIssueNumLen(issueNumLen);
 			   
 			   LotteryPlayBulufangan lotteryPlayBulufangan = lotteryPlayBuLuPlanService.getLotteryPlayBulufanganById(lpbuId);
 			   

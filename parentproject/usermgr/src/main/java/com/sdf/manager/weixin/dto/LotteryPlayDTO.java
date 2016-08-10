@@ -22,6 +22,8 @@ public class LotteryPlayDTO
 	
 	private String lotteryNumber;//开奖号码个数(例如：11选5，开奖号码是5个号码，这个字段就是5)
 	
+	private String issueNumLen;//期号长度
+	
 	
 	private String lotteryType;//彩种，1：体彩，2：福彩  
 	
@@ -35,6 +37,14 @@ public class LotteryPlayDTO
 	
 	
 
+
+	public String getIssueNumLen() {
+		return issueNumLen;
+	}
+
+	public void setIssueNumLen(String issueNumLen) {
+		this.issueNumLen = issueNumLen;
+	}
 
 	public String getProvinceName() {
 		return provinceName;

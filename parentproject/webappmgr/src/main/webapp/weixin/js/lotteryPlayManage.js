@@ -129,6 +129,7 @@ function initDatagrid()
 		            }  },
 				{field:'correspondingTable',title:'对应的补录表',width:'15%',align:'center'},
 				{field:'lotteryNumber',title:'开奖号码个数',width:'10%',align:'center'},
+				{field:'issueNumLen',title:'期号长度',width:'5%',align:'center'},
 				{field:'createTime',title:'创建时间',width:'15%',align:'center'},
 				{field:'opt',title:'操作',width:'15%',align:'center',  
 			            formatter:function(value,row,index){  
@@ -187,7 +188,8 @@ function updateLotteryPlay(id)
 					province:data.province,
 					correspondingTable:data.correspondingTable,
 					lotteryNumber:data.lotteryNumber,
-					lotteryType:data.lotteryType
+					lotteryType:data.lotteryType,
+					issueNumLen:data.issueNumLen
 					
 				});
 				

@@ -167,6 +167,11 @@
 				            <input class="easyui-numberbox" precision="0" type="text" id="lotteryNumberA" name="lotteryNumber" style="width:200px"  
 				             data-options="required:true"   validType="number" missingMessage="请输入开奖号码个数" invalidMessage="请输入数字"></input>
 				        </div>
+				         <div class="ftitle">
+				            <label for="priceA">期号长度:</label>
+				            <input class="easyui-numberbox" precision="0" type="text" id="issueNumLenA" name="issueNumLen" style="width:200px"  
+				             data-options="required:true"   validType="number" missingMessage="请输入期号长度" invalidMessage="请输入数字"></input>
+				        </div>
 				        <div class="ftitle">
 				            <label for="priceA">彩种分类:</label>
 				            <select class="easyui-combobox" id="lotteryTypeA" name="lotteryType" style="width:200px;">
@@ -232,6 +237,11 @@
 				            <label for="lotteryNumberU">开奖号码个数:</label>
 				            <input class="easyui-numberbox" precision="0" type="text" id="lotteryNumberU" name="lotteryNumber" style="width:200px"  
 				             data-options="required:true"   ></input>
+				        </div>
+				         <div class="ftitle">
+				            <label for="priceA">期号长度:</label>
+				            <input class="easyui-numberbox" precision="0" type="text" id="issueNumLenA" name="issueNumLen" style="width:200px"  
+				             data-options="required:true"   validType="number" missingMessage="请输入期号长度" invalidMessage="请输入数字"></input>
 				        </div>
 				        <div class="ftitle">
 				            <label for="lotteryTypeU">彩种分类:</label>
