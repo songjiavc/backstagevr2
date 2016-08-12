@@ -162,6 +162,11 @@
 				            <textarea id="otherPlanA" name="otherPlan" class="easyui-validatebox" 
 					         	 validType="length[0,500]" style="resize:none;width:350px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
 					        </div>
+					       <div class="ftitle" >
+				            <label for="otherNumA">其他需要计算的字段:</label>
+				            <textarea id="otherNumA" name="otherNum" class="easyui-validatebox" placeholder="请输入调用方法名和字段名，以‘,’分隔"
+					         	 validType="length[0,500]" style="resize:none;width:350px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
+					        </div>
 				       </form>
 				       
 				     </div>
@@ -222,6 +227,11 @@
 				            <textarea id="otherPlanU" name="otherPlan" class="easyui-validatebox" 
 					         	 validType="length[0,500]" style="resize:none;width:350px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
 					     </div>
+					     <div class="ftitle" >
+				            <label for="otherNumU">其他需要计算的字段:</label>
+				            <textarea id="otherNumU" name="otherNum" class="easyui-validatebox" placeholder="请输入调用方法名和字段名，以‘,’分隔"
+					         	 validType="length[0,500]" style="resize:none;width:350px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
+				        </div>
 				 </form>
 				</div>
     		</div>

@@ -3,16 +3,21 @@ package com.sdf.manager.weixin.entity;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.sdf.manager.ad.entity.Advertisement;
 import com.sdf.manager.user.entity.BaseEntiry;
 
 
@@ -55,16 +60,49 @@ public class LotteryPlayBulufangan extends BaseEntiry implements Serializable
 	@Column(name="OTHER_PLAN", length=255)
 	private String otherPlan;//若为其他玩法类型，存储其方案
 	
+	@Column(name="OTHER_NUM", length=255)
+	private String otherNum;//其他需要计算的字段和方法
+	
 	
 	
 	//与“补录方案表”关联
 	@OneToMany(mappedBy = "lotteryPlayBulufangan", fetch = FetchType.LAZY) 
 	private List<LotteryPlay> lotteryPlays;
 
+	/**
+	 * 一个方案对应多个补录计算字段的关联关系
+	 *//*
+	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(name = "RELA_BYL_LP_AND_LPOTHERNUM", 
+    joinColumns = {  @JoinColumn(name = "LP_ID", referencedColumnName = "id")  }, 
+    inverseJoinColumns = {@JoinColumn(name = "LP_OTHERNUM_ID", referencedColumnName = "id") })
+	private List<LotteryPlayOtherNum> lotteryPlayOtherNums;
 	
 	
+	
+	
+	public List<LotteryPlayOtherNum> getLotteryPlayOtherNums() {
+		return lotteryPlayOtherNums;
+	}
+
+	public void setLotteryPlayOtherNums(
+			List<LotteryPlayOtherNum> lotteryPlayOtherNums) {
+		this.lotteryPlayOtherNums = lotteryPlayOtherNums;
+	}*/
+	
+	
+	
+
 	public String getPlanName() {
 		return planName;
+	}
+
+	public String getOtherNum() {
+		return otherNum;
+	}
+
+	public void setOtherNum(String otherNum) {
+		this.otherNum = otherNum;
 	}
 
 	public void setPlanName(String planName) {

@@ -167,7 +167,8 @@ function updateLotteryPlayBuluPlan(id)
 					numOrChar:data.numOrChar,
 					startNumber:data.startNumber,
 					endNumber:data.endNumber,
-					otherPlan:data.otherPlan
+					otherPlan:data.otherPlan,
+					otherNum:data.otherNum
 					
 				});
 				$("#numOrCharU").combobox('select',data.numOrChar);

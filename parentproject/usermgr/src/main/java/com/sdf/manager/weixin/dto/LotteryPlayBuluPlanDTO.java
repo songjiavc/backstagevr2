@@ -22,12 +22,23 @@ public class LotteryPlayBuluPlanDTO
 	
 	private String otherPlan;
 	
+	
+	private String otherNum;//其他需要计算的字段和方法
+	
 	private String createTime;//创建时间
 	
 	private String creater;//创建人
 	
 	
 	
+
+	public String getOtherNum() {
+		return otherNum;
+	}
+
+	public void setOtherNum(String otherNum) {
+		this.otherNum = otherNum;
+	}
 
 	public String getPlanName() {
 		return planName;

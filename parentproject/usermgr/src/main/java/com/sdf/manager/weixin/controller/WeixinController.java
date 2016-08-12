@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sdf.manager.app.entity.App;
 import com.sdf.manager.common.bean.ResultBean;
 import com.sdf.manager.common.exception.GlobalExceptionHandler;
 import com.sdf.manager.common.util.Constants;
@@ -735,6 +734,7 @@ public class WeixinController extends GlobalExceptionHandler
 			//排序
 			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
 			orderBy.put("numOrChar", "asc");
+			orderBy.put("createrTime", "desc");
 			
 			QueryResult<LotteryPlayBulufangan> lQueryResult = lotteryPlayBuLuPlanService
 					.getLotteryPlayBulufanganList(LotteryPlayBulufangan.class,
@@ -777,6 +777,7 @@ public class WeixinController extends GlobalExceptionHandler
 				@RequestParam(value="endNumber",required=false) String endNumber,
 				@RequestParam(value="numOrChar",required=false) String numOrChar,
 				@RequestParam(value="otherPlan",required=false) String otherPlan,
+				@RequestParam(value="otherNum",required=false) String otherNum,
 				ModelMap model,HttpSession httpSession) throws Exception
 		{
 		   ResultBean resultBean = new ResultBean ();
@@ -791,6 +792,7 @@ public class WeixinController extends GlobalExceptionHandler
 			   lotteryPlayBulufangan.setEndNumber(endNumber);
 			   lotteryPlayBulufangan.setNumOrChar(numOrChar);
 			   lotteryPlayBulufangan.setOtherPlan(otherPlan);
+			   lotteryPlayBulufangan.setOtherNum(otherNum);
 			   
 			   
 			   lotteryPlayBulufangan.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
@@ -815,6 +817,7 @@ public class WeixinController extends GlobalExceptionHandler
 			   lotteryPlayBulufangan.setEndNumber(endNumber);
 			   lotteryPlayBulufangan.setNumOrChar(numOrChar);
 			   lotteryPlayBulufangan.setOtherPlan(otherPlan);
+			   lotteryPlayBulufangan.setOtherNum(otherNum);
 			   
 			   
 			   lotteryPlayBulufangan.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
