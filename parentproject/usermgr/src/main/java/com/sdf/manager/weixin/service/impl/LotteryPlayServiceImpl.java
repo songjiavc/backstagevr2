@@ -3,6 +3,7 @@ package com.sdf.manager.weixin.service.impl;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import com.sdf.manager.common.util.DateUtil;
 import com.sdf.manager.common.util.QueryResult;
 import com.sdf.manager.product.entity.Province;
 import com.sdf.manager.product.service.ProvinceService;
+import com.sdf.manager.weixin.dao.WeixinDao;
 import com.sdf.manager.weixin.dto.LotteryPlayDTO;
 import com.sdf.manager.weixin.entity.LotteryPlay;
 import com.sdf.manager.weixin.repository.LotteryPlayPlanRepository;
@@ -34,6 +36,9 @@ public class LotteryPlayServiceImpl implements LotteryPlayService
 	
 	@Autowired
 	private ProvinceService provinceService;
+	
+	@Autowired
+	private WeixinDao weixinDao;
 
 
 	public void save(LotteryPlay entity) {
@@ -55,6 +60,22 @@ public class LotteryPlayServiceImpl implements LotteryPlayService
 				orderby, pageable);
 		
 		return qResult;
+	}
+	
+	
+	public QueryResult<LotteryPlay> getProvinceOfLotteryPlayList(Class<LotteryPlay> entityClass, String whereJpql, Object[] queryParams, 
+			LinkedHashMap<String, String> orderby, Pageable pageable)
+	{
+		
+		StringBuffer sql = new StringBuffer("SELECT u.* FROM T_BYL_LOTTERYPLAY u WHERE u.IS_DELETED='1'  GROUP BY u.PROVINCE");
+		QueryResult<LotteryPlay> userObj = lotteryPlayRepository.
+			getScrollDataBySql(LotteryPlay.class,sql.toString(), queryParams, pageable);
+		return userObj;
+	}
+	
+	public List<LotteryPlay> getLotteryPlayByProvinceAndLotteryType(String city,
+			String lotteryType) {
+		return lotteryPlayRepository.getLotteryPlayByProvinceAndLotteryType(city, lotteryType);
 	}
 
 
@@ -107,6 +128,16 @@ public class LotteryPlayServiceImpl implements LotteryPlayService
 
 	public LotteryPlay getLotteryPlayById(String id) {
 		return lotteryPlayRepository.getLotteryPlayById(id);
+	}
+
+
+	public Map<String,Object> findALL(int page,int rows,String tableName) {
+		return weixinDao.findALL(page, rows, tableName);
+	}
+
+
+	public boolean deleteById(String tableName, String id) {
+		return weixinDao.deleteById(tableName, id);
 	}
 	
 	

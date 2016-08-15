@@ -1,7 +1,9 @@
 package com.sdf.manager.weixin.controller;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -24,8 +26,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sdf.manager.common.bean.ResultBean;
 import com.sdf.manager.common.exception.GlobalExceptionHandler;
 import com.sdf.manager.common.util.Constants;
+import com.sdf.manager.common.util.DateUtil;
 import com.sdf.manager.common.util.LoginUtils;
 import com.sdf.manager.common.util.QueryResult;
+import com.sdf.manager.product.entity.Province;
+import com.sdf.manager.product.service.ProvinceService;
 import com.sdf.manager.weixin.dto.LotteryPlayBuluPlanDTO;
 import com.sdf.manager.weixin.dto.LotteryPlayDTO;
 import com.sdf.manager.weixin.dto.WXCommonProblemDTO;
@@ -61,6 +66,10 @@ public class WeixinController extends GlobalExceptionHandler
 	@Autowired
 	private LotteryPlayBuLuPlanService lotteryPlayBuLuPlanService;
 	
+	
+	
+	@Autowired
+	private ProvinceService proviceService;
 	
 	/******1.常见问题管理模块******/
 	
@@ -940,6 +949,222 @@ public class WeixinController extends GlobalExceptionHandler
 			{
 				resultBean.setExist(false);
 			}
+			
+			return resultBean;
+			
+		}
+	 
+	 
+	 /**3.补录数据管理模块**/
+	 
+	 /**
+		 * 获取省份数据
+		 * @param provinceCode
+		 * @param model
+		 * @return
+		 */
+		@RequestMapping(value = "/getProvinceList", method = RequestMethod.POST)
+		public @ResponseBody List<Province> getProvinceList(@RequestParam(value="provinceCode",required=false) String provinceCode,
+				ModelMap model)
+		{
+			List<Province> provinces = new ArrayList<Province>();
+			
+			//放置分页参数
+			Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);
+			
+			//参数
+			StringBuffer buffer = new StringBuffer();
+			List<Object> params = new ArrayList<Object>();
+			
+			
+			//排序
+			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
+			
+			QueryResult<LotteryPlay> result = lotteryPlayService.getProvinceOfLotteryPlayList(LotteryPlay.class,
+					buffer.toString(), params.toArray(),orderBy, pageable);
+					
+			List<LotteryPlay> lpList = result.getResultList();
+			
+			for (LotteryPlay lotteryPlay : lpList) 
+			{
+				Province province = proviceService.getProvinceByPcode(lotteryPlay.getProvince());
+				provinces.add(province);
+			}
+			
+			return provinces;
+		}
+		
+		
+		//根据省份和类型（体彩、福彩）获取关联的彩票玩法数据
+		@RequestMapping(value = "/getContactLottery", method = RequestMethod.POST)
+		public @ResponseBody List<LotteryPlayDTO> getContactLottery(
+				@RequestParam(value="province",required=false) String province,
+				@RequestParam(value="lotteryType",required=false) String lotteryType,
+				ModelMap model,HttpSession httpSession) throws Exception
+		{
+			List<LotteryPlayDTO> lotteryPlays = new ArrayList<LotteryPlayDTO>();
+			
+			List<LotteryPlay> list = lotteryPlayService.getLotteryPlayByProvinceAndLotteryType(province, lotteryType);
+			
+			lotteryPlays = lotteryPlayService.toRDTOS(list);
+			
+			return lotteryPlays;
+		}
+		
+		/**
+		 * 获取补录的数据列表
+		 * @param province
+		 * @param lotteryType
+		 * @param model
+		 * @param httpSession
+		 * @return
+		 * @throws Exception
+		 */
+		@RequestMapping(value = "/getNumofMakeupList", method = RequestMethod.GET)
+		public @ResponseBody Map<String,Object> getNumofMakeupList(
+				@RequestParam(value="page",required=false) int page,
+				@RequestParam(value="rows",required=false) int rows,
+				@RequestParam(value="province",required=false) String province,//省份
+				@RequestParam(value="lotteryType",required=false) String lotteryType,//彩种类型
+				@RequestParam(value="lotteryPlay",required=false) String lotteryPlay,//
+				ModelMap model,HttpSession httpSession) throws Exception
+		{
+			Map<String,Object> returnData = new HashMap<String, Object>();
+			
+			if(null != lotteryPlay && !"".equals(lotteryPlay))
+			{
+				LotteryPlay lotteryPlay2 = lotteryPlayService.getLotteryPlayById(lotteryPlay);//获取补录信息数据\
+				LotteryPlayBulufangan lBulufangan = lotteryPlay2.getLotteryPlayBulufangan();
+				
+				String lotteryNumber = lotteryPlay2.getLotteryNumber();//获取开奖号码个数,用来组装返回数据
+				String numOrChar = lBulufangan.getNumOrChar();//获取方案标识
+				
+				
+				Map<String,Object> result = lotteryPlayService.findALL(page, rows, lotteryPlay2.getCorrespondingTable());
+				
+				
+				//组装返回数据
+				List<Map<String,Object>> queryList = (List<Map<String, Object>>) result.get("resultList");
+				
+				List<Map<String,Object>> resultList = new ArrayList<Map<String,Object>>();//返回数据列表list
+				//整理数据
+				int lNum = 0;//开奖号码个数
+				if(null != lotteryNumber && !"".equals(lotteryNumber))
+				{
+					lNum = Integer.parseInt(lotteryNumber);
+				}
+				
+				SimpleDateFormat sdf = new SimpleDateFormat(DateUtil.FULL_DATE_FORMAT);
+				
+				if("0".equals(numOrChar))//数字方案
+				{
+					int snum = Integer.parseInt(lBulufangan.getStartNumber());//开始号码
+					int endNum = Integer.parseInt(lBulufangan.getEndNumber());//结束号码
+					for (Map<String, Object> data : queryList) 
+					{
+						Map<String , Object> resultData = new HashMap<String, Object>();
+						
+						Long cl = 0l;
+						if(null != data.get("CREATE_TIME") && !"".equals(data.get("CREATE_TIME").toString()))
+						{
+							resultData.put("CREATE_TIME", data.get("CREATE_TIME").toString().substring(0, 19));
+						}
+						resultData.put("id", data.get("id"));
+						resultData.put("ISSUE_NUMBER", data.get("ISSUE_NUMBER"));
+						
+						
+						
+						//整理开奖数据
+						StringBuffer kjNum = new StringBuffer();
+						int differ = snum - 0;//计算开始号码和0的差，用于生成params，即参数
+						for (int i = 0 ; i < lNum ; i++) 
+						{
+							if(i == (lNum-1))
+							{
+								kjNum.append(data.get("NO"+(i+differ)));
+							}
+							else
+							{
+								kjNum.append(data.get("NO"+(i+differ)) +" ,");
+							}
+							
+						}
+						
+						resultData.put("kjNum", kjNum);
+						resultList.add(resultData);
+					}
+				}
+				else
+				{
+					for (Map<String, Object> data : queryList) 
+					{
+						Map<String , Object> resultData = new HashMap<String, Object>();
+						
+						Long cl = 0l;
+						if(null != data.get("CREATE_TIME") && !"".equals(data.get("CREATE_TIME").toString()))
+						{
+							resultData.put("CREATE_TIME", data.get("CREATE_TIME").toString().substring(0, 19));
+						}
+						resultData.put("id", data.get("id"));
+						resultData.put("ISSUE_NUMBER", data.get("ISSUE_NUMBER"));
+						
+						//整理开奖数据
+						StringBuffer kjNum = new StringBuffer();
+//						int differ = snum - 0;//计算开始号码和0的差，用于生成params，即参数
+						for (int i = 0 ; i < lNum ; i++) 
+						{
+							if(i == (lNum-1))
+							{
+								kjNum.append(data.get("NO"+i));
+							}
+							else
+							{
+								kjNum.append(data.get("NO"+i) +" ,");
+							}
+							
+						}
+						
+						resultData.put("kjNum", kjNum);
+						resultList.add(resultData);
+					}
+				}
+				
+				
+				
+				
+				returnData.put("rows", resultList);
+				returnData.put("total", result.get("totalRecord"));
+			}
+			
+			return returnData;
+		}
+		
+		/**
+		 * 删除指定的补录数据
+		 * @param ids
+		 * @param model
+		 * @param httpSession
+		 * @return
+		 * @throws Exception
+		 */
+		@RequestMapping(value = "/deleteNumofMakeUp", method = RequestMethod.POST)
+		public @ResponseBody ResultBean  deleteNumofMakeUp(
+				@RequestParam(value="ids",required=false) String[] ids,
+				@RequestParam(value="lotteryPlay",required=false) String lotteryPlay,
+				ModelMap model,HttpSession httpSession) throws Exception 
+		{
+			ResultBean resultBean = new ResultBean();
+			
+			LotteryPlay lPlay = lotteryPlayService.getLotteryPlayById(lotteryPlay);
+			String tableName = lPlay.getCorrespondingTable();//获取表名
+			
+			 for (String id : ids) 
+				{
+				 	lotteryPlayService.deleteById(tableName, id);
+				}
+			 String returnMsg = "删除成功!";
+			 resultBean.setStatus("success");
+			 resultBean.setMessage(returnMsg);
 			
 			return resultBean;
 			
