@@ -63,7 +63,7 @@ public class WeixinDaoImpl implements WeixinDao
 		
 		int pageAll = this.getAllPageNum(sql.toString());//获取数据总数
 		
-		sql.append(" LIMIT "+(page-0)+","+(rows*page));//放置分页参数
+		sql.append(" LIMIT "+(page-1)*rows+","+(rows*page));//放置分页参数
 		
 		returnData.put("totalRecord", pageAll);//放置数据总数
 		returnData.put("resultList", jdbcTemplate.queryForList(sql.toString()));//放置数据总数
