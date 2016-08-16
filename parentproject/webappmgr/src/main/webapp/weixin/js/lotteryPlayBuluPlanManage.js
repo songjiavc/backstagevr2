@@ -168,7 +168,8 @@ function updateLotteryPlayBuluPlan(id)
 					startNumber:data.startNumber,
 					endNumber:data.endNumber,
 					otherPlan:data.otherPlan,
-					otherNum:data.otherNum
+					otherNum:data.otherNum,
+					repeatNum:data.repeatNum//开奖号码是否重复
 					
 				});
 				$("#numOrCharU").combobox('select',data.numOrChar);

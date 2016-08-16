@@ -57,6 +57,9 @@ public class LotteryPlayBulufangan extends BaseEntiry implements Serializable
 	@Column(name="NUM_OR_CHAR", length=45)
 	private String numOrChar;//彩种玩法是数字还是汉字，因为有的彩种玩法是汉字的，用此字段来区分，（0：数字，1：汉字或其他）
 	
+	@Column(name="REPEAT_NUM", length=45)
+	private String repeatNum;//开奖号码是否可以重复，0：不重复 1：重复
+	
 	@Column(name="OTHER_PLAN", length=255)
 	private String otherPlan;//若为其他玩法类型，存储其方案
 	
@@ -68,6 +71,16 @@ public class LotteryPlayBulufangan extends BaseEntiry implements Serializable
 	//与“补录方案表”关联
 	@OneToMany(mappedBy = "lotteryPlayBulufangan", fetch = FetchType.LAZY) 
 	private List<LotteryPlay> lotteryPlays;
+
+	
+	
+	public String getRepeatNum() {
+		return repeatNum;
+	}
+
+	public void setRepeatNum(String repeatNum) {
+		this.repeatNum = repeatNum;
+	}
 
 	/**
 	 * 一个方案对应多个补录计算字段的关联关系

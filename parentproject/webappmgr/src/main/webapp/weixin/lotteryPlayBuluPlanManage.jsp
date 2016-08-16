@@ -147,6 +147,15 @@
 									</select>
 					        
 				        </div>
+				        <div class="ftitle">
+				            <label for="repeatNumA">开奖号码是否重复:</label>
+				            
+				            	   <select class="easyui-combobox" id="repeatNumA" name="repeatNum" style="width:200px;">
+									<option value="0">不重复</option>
+									<option value="1">重复</option>
+									</select>
+					        
+				        </div>
 				        <div class="ftitle" id="snDivA">
 				            <label for="startNumberA">开始号码:</label>
 				            <input class="easyui-numberbox numberInput" precision="0"  type="text" id="startNumberA" name="startNumber" style="width:200px"  
@@ -211,6 +220,15 @@
 									<option value="0">数字</option>
 									<option value="1">其他</option>
 								</select>
+				        </div>
+				        <div class="ftitle">
+				            <label for="repeatNumU">开奖号码是否重复:</label>
+				            
+				            	   <select class="easyui-combobox" id="repeatNumU" name="repeatNum" style="width:200px;">
+									<option value="0">不重复</option>
+									<option value="1">重复</option>
+									</select>
+					        
 				        </div>
 				        <div class="ftitle" id="snDivU">
 				            <label for="startNumberU">开始号码:</label>

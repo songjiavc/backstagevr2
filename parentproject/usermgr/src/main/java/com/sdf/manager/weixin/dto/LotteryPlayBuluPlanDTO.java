@@ -19,6 +19,8 @@ public class LotteryPlayBuluPlanDTO
 	
 	private String numOrChar;
 	
+	private String repeatNum;//开奖号码是否可以重复，0：不重复 1：重复
+	
 	
 	private String otherPlan;
 	
@@ -31,6 +33,14 @@ public class LotteryPlayBuluPlanDTO
 	
 	
 	
+
+	public String getRepeatNum() {
+		return repeatNum;
+	}
+
+	public void setRepeatNum(String repeatNum) {
+		this.repeatNum = repeatNum;
+	}
 
 	public String getOtherNum() {
 		return otherNum;

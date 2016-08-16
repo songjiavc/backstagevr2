@@ -787,6 +787,7 @@ public class WeixinController extends GlobalExceptionHandler
 				@RequestParam(value="numOrChar",required=false) String numOrChar,
 				@RequestParam(value="otherPlan",required=false) String otherPlan,
 				@RequestParam(value="otherNum",required=false) String otherNum,
+				@RequestParam(value="repeatNum",required=false) String repeatNum,//开奖号码是否重复
 				ModelMap model,HttpSession httpSession) throws Exception
 		{
 		   ResultBean resultBean = new ResultBean ();
@@ -802,7 +803,7 @@ public class WeixinController extends GlobalExceptionHandler
 			   lotteryPlayBulufangan.setNumOrChar(numOrChar);
 			   lotteryPlayBulufangan.setOtherPlan(otherPlan);
 			   lotteryPlayBulufangan.setOtherNum(otherNum);
-			   
+			   lotteryPlayBulufangan.setRepeatNum(repeatNum);
 			   
 			   lotteryPlayBulufangan.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
 			   lotteryPlayBulufangan.setModifyTime(new Timestamp(System.currentTimeMillis()));
@@ -827,6 +828,7 @@ public class WeixinController extends GlobalExceptionHandler
 			   lotteryPlayBulufangan.setNumOrChar(numOrChar);
 			   lotteryPlayBulufangan.setOtherPlan(otherPlan);
 			   lotteryPlayBulufangan.setOtherNum(otherNum);
+			   lotteryPlayBulufangan.setRepeatNum(repeatNum);
 			   
 			   
 			   lotteryPlayBulufangan.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
