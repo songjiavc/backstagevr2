@@ -72,7 +72,11 @@ function initLotteryPlay()
 		valueField:'id',
 		textField:'name',
 		 onLoadSuccess: function (data1) { //数据加载完毕事件
-			 $('#lotteryPlayC').combobox('select',data1[0].id);
+			 if(data1.length>0)
+				 {
+				 	$('#lotteryPlayC').combobox('select',data1[0].id);
+				 }
+			
 				
          }
 	}); 
@@ -91,7 +95,11 @@ function initQueryProvince()
 		valueField:'pcode',
 		textField:'pname',
 		 onLoadSuccess: function (data1) { //数据加载完毕事件
-			 $('#provinceC').combobox('select',data1[0].pcode);
+			 if(data1.length>0)
+				 {
+				 	$('#provinceC').combobox('select',data1[0].pcode);
+				 }
+			
 				
          }
 	}); 
