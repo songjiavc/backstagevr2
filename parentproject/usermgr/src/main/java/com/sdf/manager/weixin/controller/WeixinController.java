@@ -956,6 +956,39 @@ public class WeixinController extends GlobalExceptionHandler
 			
 		}
 	 
+	 /**
+	  * 校验当前待删除补录方案是否被使用，若在被使用则不可以进行删除操作
+	  * @param id
+	  * @param model
+	  * @param httpSession
+	  * @return
+	  * @throws Exception
+	  */
+	 @RequestMapping(value = "/checkCouldDeleted", method = RequestMethod.GET)
+		public @ResponseBody ResultBean  checkCouldDeleted(
+				@RequestParam(value="id",required=false) String id,
+				ModelMap model,HttpSession httpSession) throws Exception {
+			
+			ResultBean resultBean = new ResultBean ();
+			
+			LotteryPlayBulufangan bulufangan = lotteryPlayBuLuPlanService.getLotteryPlayBulufanganById(id);
+			
+			List<LotteryPlay> list = bulufangan.getLotteryPlays();
+			
+			
+			if(list.size()>0)//若获取关联的补录信息数据大于0个,不可以进行删除
+			{
+				resultBean.setExist(false);
+			}
+			else
+			{
+				resultBean.setExist(true);
+			}
+			
+			return resultBean;
+			
+		}
+	 
 	 
 	 /**3.补录数据管理模块**/
 	 

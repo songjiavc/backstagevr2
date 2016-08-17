@@ -208,31 +208,73 @@ function deleteLotteryPlayBuluPlan(id)
 	var url = contextPath + '/weixincontrol/deleteLotteryPlayBuluPlans.action';
 	var data1 = new Object();
 	
-	var codearr = [];
-	codearr.push(id);
+	var delFlag = checkCouldDeleted(id);
 	
-	data1.ids=codearr.toString();
+	if(delFlag)
+		{
+			var codearr = [];
+			codearr.push(id);
+			
+			data1.ids=codearr.toString();
+			
+			$.messager.confirm("提示", "您确认删除选中数据？", function (r) {  
+		        if (r) {  
+			        	$.ajax({
+			        		async: false,   //设置为同步获取数据形式
+			                type: "post",
+			                url: url,
+			                data:data1,
+			                dataType: "json",
+			                success: function (data) {
+			                	initDatagrid();
+			                	$.messager.alert('提示', data.message);
+			                },
+			                error: function (XMLHttpRequest, textStatus, errorThrown) {
+			                    window.parent.location.href = contextPath + "/error.jsp";
+			                }
+			           });
+			        	
+		        }  
+		    });  
+		}
+	else
+		{
+			$.messager.alert('提示', "当前补录方案正在被使用，不可以删除!");
+			
+		}
 	
-	$.messager.confirm("提示", "您确认删除选中数据？", function (r) {  
-        if (r) {  
-	        	$.ajax({
-	        		async: false,   //设置为同步获取数据形式
-	                type: "post",
-	                url: url,
-	                data:data1,
-	                dataType: "json",
-	                success: function (data) {
-	                	initDatagrid();
-	                	$.messager.alert('提示', data.message);
-	                },
-	                error: function (XMLHttpRequest, textStatus, errorThrown) {
-	                    window.parent.location.href = contextPath + "/error.jsp";
-	                }
-	           });
-	        	
-        }  
-    });  
 }
+
+/**
+ * 查询是否可以进行删除
+ * @param id
+ */
+function checkCouldDeleted(id)
+{
+	var flag = true;
+	
+	var data = new Object();
+	
+	data.id = id;
+	
+	$.ajax({
+		async: false,   //设置为同步获取数据形式
+        type: "get",
+        url: contextPath+'/weixincontrol/checkCouldDeleted.action',
+        data:data,
+        dataType: "json",
+        success: function (data) {
+        	flag = data.exist;
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            window.parent.location.href = contextPath + "/error.jsp";
+        }
+   });
+	
+	return flag;
+}
+
+
 
 
 /**
