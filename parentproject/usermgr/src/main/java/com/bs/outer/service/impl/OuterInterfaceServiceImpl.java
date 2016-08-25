@@ -761,17 +761,17 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 			execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = 12 AND GROUP_NUMBER =  ?  ;"  ;
 		}else if("2".equals(type)){
 			if(groupLength == 3){
-				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = 11 AND GROUP_NUMBER =  ?  ;"  ;
+				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = 10 AND GROUP_NUMBER =  ?  ;"  ;
 			}else{
 				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,THREECODE_COMPOUND AS CURRENT_MISS,THREECODE_COMPOUND_MAXMISS AS MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = "+ groupLength +" AND GROUP_NUMBER =  ?  ;"  ;
 			}
 		}else if("3".equals(type)){
 			//前二值
-			execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = 9 AND GROUP_NUMBER =  ?  ;"  ;
+			execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = 11 AND GROUP_NUMBER =  ?  ;"  ;
 		}else if("4".equals(type)){
 			//前二组
 			if(groupLength == 2){
-				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = 10 AND GROUP_NUMBER =  ?  ;"  ;
+				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = 9 AND GROUP_NUMBER =  ?  ;"  ;
 			}else{
 				execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,TWOCODE_COMPOUND AS CURRENT_MISS,TWOCODE_COMPOUND_MAXMISS AS MAX_MISS,TYPE FROM " + tableName + " WHERE TYPE = "+ groupLength +" AND GROUP_NUMBER =  ?  ;"  ;
 			}
