@@ -208,7 +208,7 @@ function initImgList(upId,listId)
         dataType: "json",
         success: function (returndata) {
         	
-        	if(null!=returndata&&0!=returndata[0].id)
+        	if(null!=returndata&&null!=returndata[0].id)
         		{
 	        		$("#"+listId+" ul").html("");
 	        		var html='';
@@ -226,11 +226,13 @@ function initImgList(upId,listId)
 									var id = upload[i].id;
 					        	
 									html+='<li><a title="点击预览图片"  id="'+upload[i].id+'" class="fujian"  onclick="previewImage(&quot;'+imgId+'&quot;,&quot;'+realName+'&quot;)">'+fileName+'</a>'+
-									'<a onclick="deleteImg(&quot;'+id+'&quot;,&quot;'+upId+'&quot;,&quot;'+listId+'&quot;)">删除</a></li>';
+									'<a href="#" class="deletecls"  onclick="deleteImg(&quot;'+id+'&quot;,&quot;'+upId+'&quot;,&quot;'+listId+'&quot;)">'+
+									'<img style="width:16px;height:16px;" src="'+ contextPath+'/images/delete.jpg"></a></li>';
 						  		
 				  				}
 				  			
 				  		}
+				  	 
 				  	
 				  	$("#"+listId+" ul").html(html);
         		}
@@ -298,24 +300,31 @@ function updateArticle(id)
 //删除图片
 function deleteImg(id,upId,listId)
 {
-	var data = new Object();
-	data.id = id;
-	$.ajax({
-		async: false,   //设置为同步获取数据形式
-        type: "get",
-        url: contextPath+'/article/deleteImg.action',
-        data:data,
-        dataType: "json",
-        success: function (returndata) {
-        	
-        	initImgList(upId,listId);//删除成功后重新加载图片列表
-      			
-        	
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
-        }
-   });
+	$.messager.confirm("提示", "您确认删除选中的图片？", function (r) {  
+        if (r) {  
+        	var data = new Object();
+        	data.id = id;
+        	$.ajax({
+        		async: false,   //设置为同步获取数据形式
+                type: "get",
+                url: contextPath+'/article/deleteImg.action',
+                data:data,
+                dataType: "json",
+                success: function (returndata) {
+                	
+                	initImgList(upId,listId);//删除成功后重新加载图片列表
+              			
+                	
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    window.parent.location.href = contextPath + "/error.jsp";
+                }
+           });
+	        	
+        }  
+    });  
+	
+	
 }
 
 function submitAddArticle()

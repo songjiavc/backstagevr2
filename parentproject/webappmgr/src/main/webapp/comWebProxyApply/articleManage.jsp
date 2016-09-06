@@ -67,6 +67,16 @@
 	  		{
 	  			cursor:pointer;	
 	  		}
+	  		
+	  		ul
+	  		{
+	  			/* list-style-type:none; */
+	  		}
+	  		
+	  		li a{
+	  			font-size:15px;
+	  		}
+	  		
 		</style>
 		
 	 
@@ -123,7 +133,7 @@
 	            <label for="codeA">标题:</label>
 				            <input type="hidden" name="id" id="idA"/>
 				            <input class="easyui-validatebox commonInput" type="text" id="titleA" name="title" style="width:200px"  
-				             data-options="required:true"   ></input>
+				             data-options="required:true"   validType="length[1,10]"></input>
 	        </div>
 	        <div class="ftitle">
 	            <label for="appVersionUrlU">上传文章图片:</label>
@@ -138,7 +148,7 @@
 	        
 	        <div class="ftitle">
 	            <label for="contentA">文章内容:</label>
-	             <textarea id="contentA" name="content" class="easyui-validatebox" validType="length[0,500]" 
+	             <textarea id="contentA" name="content" class="easyui-validatebox" validType="length[1,500]" data-options="required:true" 
 				           style="resize:none;width:350px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
 	        </div>
 	        
@@ -169,7 +179,7 @@
 	            <label for="codeA">标题:</label>
 				            <input type="hidden" name="id" id="idU"/>
 				            <input class="easyui-validatebox commonInput" type="text" id="titleU" name="title" style="width:200px"  
-				             data-options="required:true"   ></input>
+				             data-options="required:true"   validType="length[1,10]"  ></input>
 	        </div>
 	         <div class="ftitle">
 	            <label for="appVersionUrlU">上传文章图片:</label>
@@ -184,7 +194,7 @@
 	        
 	        <div class="ftitle">
 	            <label for="contentA">文章内容:</label>
-	             <textarea id="contentA" name="content" class="easyui-validatebox" validType="length[0,500]" 
+	             <textarea id="contentA" name="content" class="easyui-validatebox" data-options="required:true"   validType="length[1,500]" 
 				           style="resize:none;width:350px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
 	        </div>
 	        
