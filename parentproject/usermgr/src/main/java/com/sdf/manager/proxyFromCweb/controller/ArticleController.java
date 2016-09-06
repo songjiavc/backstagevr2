@@ -294,13 +294,18 @@ public class ArticleController
 				ModelMap model,HttpSession httpSession) throws Exception {
 		 
 		 List<Uploadfile> uploadfiles = new ArrayList<Uploadfile>();
-		 uploadfiles = uploadfileService.getUploadfilesByNewsUuid(uplId);
-		 
- 		 if(uploadfiles.size()==0)
+		 if(!"".equals(uplId))
 		 {
-			 Uploadfile uploadfile = new Uploadfile();
-			 uploadfiles.add(uploadfile);
+			 uploadfiles = uploadfileService.getUploadfilesByNewsUuid(uplId);
+			 
+	 		 if(uploadfiles.size()==0)
+			 {
+				 Uploadfile uploadfile = new Uploadfile();
+				 uploadfiles.add(uploadfile);
+			 }
+			 
 		 }
+		
 		 
 		 return uploadfiles;
 	 }
@@ -326,7 +331,11 @@ public class ArticleController
 			 Uploadfile uploadfile = uploadfileService.getUploadfileById(Integer.parseInt(id));
 			 
 			 //删除
-			 uploadfileService.delete(uploadfile);
+			 if(null != uploadfile)
+			 {
+				 uploadfileService.delete(uploadfile);
+			 }
+			
 			 
 			 //TODO:删除文件附件图片
 			 
