@@ -128,7 +128,7 @@
                     }
                 }]
             ">
-		<form id="ff" method="get" novalidate>
+		<form id="ff" method="post" novalidate>
 	        <div class="ftitle">
 	            <label for="codeA">标题:</label>
 				            <input type="hidden" name="id" id="idA"/>
@@ -148,8 +148,8 @@
 	        
 	        <div class="ftitle">
 	            <label for="contentA">文章内容:</label>
-	             <textarea id="contentA" name="content" class="easyui-validatebox" validType="length[1,500]" data-options="required:true" 
-				           style="resize:none;width:350px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
+	             <textarea id="contentA" name="content" class="easyui-validatebox" validType="length[1,1000]" data-options="required:true" 
+				           style="resize:none;width:350px;height:210px;border-radius:5px;margin-left: 30px;"></textarea>
 	        </div>
 	        
 	        
@@ -174,7 +174,7 @@
                     }
                 }]
             ">
-		<form id="ffUpdate" method="get" novalidate>
+		<form id="ffUpdate" method="post" novalidate>
 	         <div class="ftitle">
 	            <label for="codeA">标题:</label>
 				            <input type="hidden" name="id" id="idU"/>
@@ -194,8 +194,8 @@
 	        
 	        <div class="ftitle">
 	            <label for="contentA">文章内容:</label>
-	             <textarea id="contentA" name="content" class="easyui-validatebox" data-options="required:true"   validType="length[1,500]" 
-				           style="resize:none;width:350px;height:100px;border-radius:5px;margin-left: 30px;"></textarea>
+	             <textarea id="contentA" name="content" class="easyui-validatebox" data-options="required:true"   validType="length[1,1000]" 
+				           style="resize:none;width:350px;height:210px;border-radius:5px;margin-left: 30px;"></textarea>
 	        </div>
 	        
 	         

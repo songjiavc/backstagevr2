@@ -23,7 +23,6 @@ import com.sdf.manager.user.entity.BaseEntiry;
 /** 
   * @ClassName: Article 
   * @Description:公司网站文章实体
-  * @author songj@sdfcp.com
   * @date 2015年9月23日 下午5:27:11 
   *  
   */
@@ -47,7 +46,7 @@ public class Article extends BaseEntiry implements Serializable
 	@Column(name="TITLE")
 	private String title;//文章标题
 	
-	@Column(name="CONTENT")
+	@Column(name="CONTENT",length=16777216)//指定为这个长度后，数据库会自动映射成longtext类型
 	private String content;//文章内容
 	
 	@Column(name="IMG")

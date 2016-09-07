@@ -117,11 +117,11 @@ public class ArticleController
 	  * @return
 	  * @throws Exception
 	  */
-	 @RequestMapping(value = "/saveOrUpdate", method = RequestMethod.GET)
+	 @RequestMapping(value = "/saveOrUpdate", method = RequestMethod.POST)
 		public @ResponseBody ResultBean saveOrUpdate(
 				@RequestParam(value="id",required=false) String id,
 				@RequestParam(value="title",required=false) String title,
-				@RequestParam(value="content",required=false) String content,
+				@RequestParam(value="content",required=false) String content,//字段长度过长时，使用post方法提交，可以正常将内容提交到后台
 				@RequestParam(value="img",required=false) String img,//图片对应的upload表的newsUuid
 				ModelMap model,HttpSession httpSession) throws Exception
 		{

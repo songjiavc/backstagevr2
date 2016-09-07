@@ -208,7 +208,7 @@ function initImgList(upId,listId)
         dataType: "json",
         success: function (returndata) {
         	$("#"+listId+" ul").html("");
-        	if(null!=returndata&&null!=returndata[0].id)
+        	if(null!=returndata/*&&null!=returndata[0].id*/)
         		{
 	        		var html='';
 				  	var upload=returndata;
