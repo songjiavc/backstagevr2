@@ -1,5 +1,7 @@
 package com.sdf.manager.ad.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,6 +21,16 @@ public class UploadfileServiceImpl implements UploadfileService {
 	public Uploadfile getUploadfileByNewsUuid(String newsUuid) {
 		return uploadfileRepository.getUploadfileByNewsUuid(newsUuid);
 	}
+	
+	
+	public List<Uploadfile> getUploadfilesByNewsUuid(String newsUuid)
+	{
+		return uploadfileRepository.getUploadfilesByNewsUuid(newsUuid);
+	}
+	
+	public Uploadfile getUploadfileById(int id) {
+		return uploadfileRepository.getUploadfileById(id);
+	}
 
 	public void save(Uploadfile entity) {
 
@@ -28,6 +40,11 @@ public class UploadfileServiceImpl implements UploadfileService {
 	public void update(Uploadfile entity) {
 
 		uploadfileRepository.save(entity);
+	}
+	
+	public void delete(Uploadfile entity) {
+
+		uploadfileRepository.delete(entity);
 	}
 
 }

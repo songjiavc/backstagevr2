@@ -1,5 +1,7 @@
 package com.sdf.manager.ad.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Query;
 
 import com.sdf.manager.ad.entity.Uploadfile;
@@ -9,4 +11,10 @@ public interface UploadfileRepository extends GenericRepository<Uploadfile, Stri
 
 	@Query("select u from Uploadfile u where  u.newsUuid =?1")
 	public Uploadfile getUploadfileByNewsUuid(String newsUuid);
+	
+	@Query("select u from Uploadfile u where  u.newsUuid =?1")
+	public List<Uploadfile> getUploadfilesByNewsUuid(String newsUuid);
+	
+	@Query("select u from Uploadfile u where  u.id =?1")
+	public Uploadfile getUploadfileById(int id);
 }
