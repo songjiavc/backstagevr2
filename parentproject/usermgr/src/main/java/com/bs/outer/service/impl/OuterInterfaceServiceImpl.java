@@ -518,7 +518,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 * @see com.bs.outer.service.OuterInterfaceService#getInitSameList(java.lang.String, java.lang.String)
 	 */
 	public List<Fast3Same> getInitSameList(String issueNumber, String provinceNumber) {
-		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[10];
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[4];
 		String where = null;
 		if(StringUtils.isEmpty(issueNumber)){
 			where = " ORDER BY CURRENT_ISSUE DESC LIMIT 10 ";
