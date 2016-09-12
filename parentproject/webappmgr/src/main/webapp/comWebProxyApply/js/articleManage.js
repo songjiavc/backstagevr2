@@ -11,6 +11,7 @@ $(document).ready(function(){
 
 function addComwebArticle()
 {
+	$("#uploadShowA ul").html("");
 	$("#addArticle").dialog('open');
 }
 
@@ -214,7 +215,7 @@ function initImgList(upId,listId)
 				  	var upload=returndata;
 				  	for(var i=0;i<upload.length;i++)
 				  		{
-				  			if(upload[0].id == 0)
+				  			if(upload[0].id == 0 || null == upload[0].id)
 				  				{
 				  					break;
 				  				}
