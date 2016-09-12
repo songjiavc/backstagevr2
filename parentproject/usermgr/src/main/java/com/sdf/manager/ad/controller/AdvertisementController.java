@@ -1,5 +1,6 @@
 package com.sdf.manager.ad.controller;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -510,6 +511,17 @@ public class AdvertisementController //extends GlobalExceptionHandler
 		 List<App> apps = new ArrayList<App>();
 		 List<UserGroup> userGroups = new ArrayList<UserGroup>();
 		 List<AppAdAndArea> appAdAndAreas = new ArrayList<AppAdAndArea>();
+		 
+		 
+		//获取项目根路径
+		 String savePath = httpSession.getServletContext().getRealPath("");
+	     savePath = savePath + "upload"+File.separator;
+	     //删除附件文件相关s
+		 Uploadfile uploadfile = null;
+		 File dirFile = null;
+		 boolean deleteFlag = false;//删除附件flag
+		//删除附件文件相关e
+		 
 		 for (String id : ids) 
 			{
 			 	advertisement = advertisementService.getAdvertisementById(id);
@@ -532,6 +544,30 @@ public class AdvertisementController //extends GlobalExceptionHandler
 					
 					advertisement.setAppAdAndAreas(appAdAndAreas);
 			 		advertisementService.update(advertisement);
+			 		
+			 		//若为图片广告则删除图片附件
+			 		if(AdvertisementController.AD_IMG.equals(advertisement.getImgOrWord()))
+			 		{
+			 			//删除附件s
+				 		//1.获取附件
+				 		uploadfile = uploadfileService.getUploadfileByNewsUuid(advertisement.getAppImgUrl());
+				 		//2.删除附件
+				 		dirFile = new File(savePath+uploadfile.getUploadRealName());
+				        // 如果dir对应的文件不存在，或者不是一个目录，则退出
+			        	deleteFlag = dirFile.delete();
+			        	if(deleteFlag)
+			        	{//删除附件(清空附件关联newsUuid)
+			        		uploadfile.setNewsUuid("");
+			        		uploadfileService.update(uploadfile);
+			        		logger.info("删除附件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+			        	}
+			        	else
+			        	{
+			        		 logger.error("应用广告数据id为："+advertisement.getId()+"的数据没有文件");
+			        	}
+				      //删除附件e
+			 		}
+			 		
 			 		
 			 		 //日志输出
 					 logger.info("删除应用广告数据--应用广告id="+id+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
