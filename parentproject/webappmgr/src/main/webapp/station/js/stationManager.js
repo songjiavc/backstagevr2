@@ -5,8 +5,26 @@ $(document).ready(
 			closeDialog();
 			initQueryProvince();//初始化模糊查询省数据]
 			initSearchFormAgent(initParam);
+			
+			bindCombobox();
 		}
 );
+
+
+function bindCombobox()
+{
+	
+	//切换彩种时要清空登录账号和站点号的数据
+	$("#addFormStationStyle").combobox({
+
+		onSelect: function (rec) {
+			$("#addFormStationNumber").val("");//清空站点号
+			$("#addOrUpdateStationForm").form('validate');//清空站点号后校验，提示要重新输入站点号
+			$("#addFormStationCode").val("");//清空生成的登录账号
+		}
+
+		}); 
+}
 
 /**
  * 初始化模糊查询“省”下拉框数据
@@ -72,6 +90,8 @@ function initProvince(addOrUpdate,pcode,oldccode,oldacode)
             		 oldacode="";
             	 }
             	 initAddFormCity(addOrUpdate,rec.pcode,oldccode,oldacode);
+            	 
+            	 generateStationCode();//调用生成登录账号方法
  		    }
 		});
 }
@@ -108,6 +128,8 @@ function initAddFormCity(addOrUpdate,pcode,oldccode,oldacode){
         		 oldacode="";
         	 }
         	 initAddFormRegion(addOrUpdate,rec.ccode,oldacode);
+        	 
+        	 generateStationCode();//调用生成登录账号方法
 		    }
 	}); 
 }
@@ -461,5 +483,92 @@ $.extend($.fn.validatebox.defaults.rules, {
     equalTo: { 
     	validator: function (value, param) { 
     		return $(param[0]).val() == value;
-    		}, message: '两次密码输入不一致！' }
+    		}, message: '两次密码输入不一致！' },
+	checkSNum: 
+	{//自定义校验站点号（福彩5位数字，体彩8位数字）
+        validator: function(value,param){
+        	var rules = $.fn.validatebox.defaults.rules;  
+        	
+        	var message ="";
+        	var validateFlag = true;//校验结果标记
+        	var numberFlag = /^[0-9]*$/.test(value);//校验是否为数字
+        	//获取当前彩种（根据是体彩还是福彩确定站点号的校验规则）。都是数字；体彩5位，福彩8位(1:体彩 2：福彩)
+        	var stationStyle = $("#addFormStationStyle").combobox('getValue');
+        	var sNumLen = 0;//站点号长度
+        	if("1" == stationStyle)
+    		{//体彩
+    			sNumLen = 5;//体彩站点号8位数字
+    			
+    		}
+        	else if("2" == stationStyle)
+    		{//福彩
+    			sNumLen = 8;//福彩站点号5位
+    			
+    		}
+        	
+        	if(numberFlag)
+        		{
+	        		
+	            	var sNum = value.length;//输入的站点号的长度
+	            	
+	            	if(sNumLen != sNum)
+	            		{
+		            		message = "站点号必须是"+sNumLen+"位数字";
+		        			validateFlag = false;
+	            		}
+    	        	
+        		}
+        	else
+        		{
+        			message = "站点号必须是数字";
+        			validateFlag = false;
+        		}
+        	
+    		rules.checkSNum.message = message; 
+            return validateFlag;
+        }
+    }
 });
+
+function trimAll(str) {
+	  return str.replace(/(^\s+)|(\s+$)/g, "");
+	}
+
+//根据彩种，省份和站点号生成登录账号
+function generateStationCode()
+{
+	var gerFlag = true;//是否生成登录账号flag
+	
+	//获取当前彩种(1:体彩 2：福彩)
+	var sNum = $("#addFormStationNumber").val().trim();
+	var numberFlag = /^[0-9]*$/.test(sNum);//校验是否为数字
+	var stationStyle = $("#addFormStationStyle").combobox('getValue');
+	
+	
+	if(null == sNum  ||sNum.length == "" || !numberFlag)
+		{
+			gerFlag = false;
+		}
+	
+	if(gerFlag)
+		{//可以生成登录账号
+			var stationCode = '';
+			if("1" == stationStyle)
+			{//体彩（城市编码截取前4位+站点号）
+				var cityCode = $("#addFormCity").combobox('getValue');
+				stationCode = cityCode.substring(0,4)+sNum;//截取城市编码前4位和站点号组合
+			}
+			else if("2" == stationStyle)
+			{//福彩（站点号）
+				stationCode = sNum;
+			}
+			
+			$("#addFormStationCode").val(stationCode);//放置生成的登录账号
+		}
+	
+	
+	
+	
+}
+
+

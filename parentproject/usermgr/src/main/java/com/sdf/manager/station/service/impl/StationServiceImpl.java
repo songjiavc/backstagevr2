@@ -67,6 +67,7 @@ public class StationServiceImpl implements StationService {
 		}else{
 			Station station = this.getStationById(stationFormDto.getId());
 			station.setAgentId(stationFormDto.getAddFormAgent());
+			station.setCode(stationFormDto.getAddFormStationCode());//update by banna in 2016-09-12:修改通行证信息时登录账号可能重新生成，所以在修改时也要重新保存
 			station.setOwner(stationFormDto.getAddFormName());
 			station.setStationNumber(stationFormDto.getAddFormStationNumber());
 			station.setStationType(stationFormDto.getAddFormStationStyle());
