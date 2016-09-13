@@ -783,14 +783,15 @@ function initApkList(upId,listId)
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
         type: "get",
-        url: contextPath+'/advertisement/getFileOfAppad.action',
+        url: contextPath+'/appversion/getFileOfAppad.action',
         data:data,
         dataType: "json",
         success: function (returndata) {
         	
-        	if(null!=returndata.id&&0!=returndata.id)
+        	var uploadfile = returndata.uploadfile;
+        	if(null!=uploadfile.id&&0!=uploadfile.id)
         		{
-				  	var upload=returndata;
+				  	var upload=uploadfile;
 				  	var fileName = upload.uploadFileName;
 					var realName = upload.uploadRealName;
 					var filepath = upload.uploadfilepath;
