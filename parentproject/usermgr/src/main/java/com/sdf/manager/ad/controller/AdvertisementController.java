@@ -37,6 +37,7 @@ import com.sdf.manager.app.entity.App;
 import com.sdf.manager.app.service.AppService;
 import com.sdf.manager.common.bean.ResultBean;
 import com.sdf.manager.common.bean.TreeBean;
+import com.sdf.manager.common.exception.GlobalExceptionHandler;
 import com.sdf.manager.common.util.DateUtil;
 import com.sdf.manager.common.util.LoginUtils;
 import com.sdf.manager.common.util.QueryResult;
@@ -60,7 +61,7 @@ import com.sdf.manager.userGroup.service.UserGroupService;
  */
 @Controller
 @RequestMapping("advertisement")
-public class AdvertisementController //extends GlobalExceptionHandler
+public class AdvertisementController extends GlobalExceptionHandler
 {
 
 	private Logger logger = LoggerFactory.getLogger(AdvertisementController.class);
