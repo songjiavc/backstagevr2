@@ -102,12 +102,12 @@ function getLoginArea()
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
         type: "get",
-        url: contextPath+'/advertisement/getLoginArea.action',
+        url: contextPath+'/appAd/getLoginArea.action',
         data:data,
         dataType: "json",
         success: function (returndata) {
         	
-        	returnarea = returndata;
+        	returnarea = returndata.resultdata;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             window.parent.location.href = contextPath + "/error.jsp";
@@ -273,7 +273,7 @@ function initAreaData(areaDataGridId)
 		async: false,   //设置为同步获取数据形式
         type: "get",
         data:data,
-        url: contextPath+'/advertisement/getTreedataOfAdvertisement.action',
+        url: contextPath+'/appAd/getTreedataOfAdvertisement.action',
         dataType: "json",
         success: function (data) {
         	setting = {

@@ -51,7 +51,7 @@ function upIdHaveFujian(upId)
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
         type: "get",
-        url: contextPath+'/advertisement/getFileOfAppad.action',
+        url: contextPath+'/appAd/getFileOfAppad.action',
         data:data,
         dataType: "json",
         success: function (returndata) {
