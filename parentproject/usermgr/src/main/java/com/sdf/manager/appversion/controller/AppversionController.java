@@ -339,7 +339,7 @@ public class AppversionController extends GlobalExceptionHandler {
 		 
 		 //获取项目根路径
 		 String savePath = httpSession.getServletContext().getRealPath("");
-	     savePath = savePath + "uploadApkFile"+File.separator;
+	     savePath = savePath +File.separator+ "uploadApkFile"+File.separator;
 		 
 		 
 		 Appversion appversion;
@@ -365,6 +365,7 @@ public class AppversionController extends GlobalExceptionHandler {
 			 		uploadfile = uploadfileService.getUploadfileByNewsUuid(appversion.getAppVersionUrl());
 			 		//2.删除附件
 			 		dirFile = new File(savePath+uploadfile.getUploadRealName());
+			 		logger.info("待删除文件路径："+dirFile);
 			        // 如果dir对应的文件不存在，或者不是一个目录，则退出
 			 		deleteFlag = dirFile.delete();
 		        	if(deleteFlag)

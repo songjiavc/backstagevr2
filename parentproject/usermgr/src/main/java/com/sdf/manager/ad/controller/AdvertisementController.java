@@ -515,7 +515,7 @@ public class AdvertisementController //extends GlobalExceptionHandler
 		 
 		//获取项目根路径
 		 String savePath = httpSession.getServletContext().getRealPath("");
-	     savePath = savePath + "upload"+File.separator;
+	     savePath = savePath +File.separator+ "upload"+File.separator;
 	     //删除附件文件相关s
 		 Uploadfile uploadfile = null;
 		 File dirFile = null;
@@ -553,6 +553,7 @@ public class AdvertisementController //extends GlobalExceptionHandler
 				 		uploadfile = uploadfileService.getUploadfileByNewsUuid(advertisement.getAppImgUrl());
 				 		//2.删除附件
 				 		dirFile = new File(savePath+uploadfile.getUploadRealName());
+				 		logger.info("待删除文件路径："+dirFile);
 				        // 如果dir对应的文件不存在，或者不是一个目录，则退出
 			        	deleteFlag = dirFile.delete();
 			        	if(deleteFlag)

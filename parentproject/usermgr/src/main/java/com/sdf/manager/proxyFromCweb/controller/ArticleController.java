@@ -83,7 +83,7 @@ public class ArticleController
 		 
 		//获取项目根路径
 		 String savePath = httpSession.getServletContext().getRealPath("");
-	     savePath = savePath + "uploadArticleImg"+File.separator;
+	     savePath = savePath +File.separator+ "uploadArticleImg"+File.separator;
 	     //删除附件文件相关s
 		 List<Uploadfile> uploadfiles = null;
 		 File dirFile = null;
@@ -112,6 +112,7 @@ public class ArticleController
 			 			 {
 			 				uploadfile = uploadfiles.get(m);
 			 				dirFile = new File(savePath+uploadfile.getUploadRealName());
+			 				logger.info("待删除文件路径："+dirFile);
 					        // 如果dir对应的文件不存在，或者不是一个目录，则退出
 				        	deleteFlag = dirFile.delete();
 				        	if(deleteFlag)
@@ -236,6 +237,7 @@ public class ArticleController
 				ModelMap model,HttpSession httpSession) throws Exception
 		{
 		 	Map<String,Object> returnData = new HashMap<String,Object> ();
+		 	
 		 	
 		 	//放置分页参数
 			Pageable pageable = new PageRequest(page-1,rows);
