@@ -99,7 +99,7 @@
 					         				 	  cache: false,
 					          					  async: false,   //设置为同步获取数据形式
 					          					  dataType: 'json', 
-					          					  type: 'get',
+					          					  type: 'post',
 					          					  data:{
 									  					realname:realname,
 									  					filename:filename,
