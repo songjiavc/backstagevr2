@@ -608,6 +608,33 @@ public class AppversionController extends GlobalExceptionHandler {
 	 
 	 /**
 	  * 
+	  * @Title: getFileOfAppad
+	  * @Description: 根据附件主键获取附件信息
+	  * @author:banna
+	  * @return: Uploadfile
+	  */
+	 @RequestMapping(value = "/getFileOfAppad", method = RequestMethod.GET)
+		public @ResponseBody Map<String,Object>  getFileOfAppad(
+				@RequestParam(value="uplId",required=false) String uplId,
+				ModelMap model,HttpSession httpSession) throws Exception {
+		 
+		 Map<String,Object> returndata = new HashMap<String, Object>();
+		 Uploadfile uploadfile = uploadfileService.getUploadfileByNewsUuid(uplId);
+		 
+		 if(null == uploadfile)
+		 {
+			 uploadfile = new Uploadfile();
+			 uploadfile.setId(0);
+		 }
+		 
+		 returndata.put("uploadfile", uploadfile);
+		 
+		 return returndata;
+	 }
+	 
+	 
+	 /**
+	  * 
 	  * @Title: saveFujian
 	  * @Description: 保存应用安装包附件
 	  * @author:banna
