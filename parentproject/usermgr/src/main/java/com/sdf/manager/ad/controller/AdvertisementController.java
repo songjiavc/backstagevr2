@@ -551,22 +551,26 @@ public class AdvertisementController //extends GlobalExceptionHandler
 			 			//删除附件s
 				 		//1.获取附件
 				 		uploadfile = uploadfileService.getUploadfileByNewsUuid(advertisement.getAppImgUrl());
-				 		//2.删除附件
-				 		dirFile = new File(savePath+uploadfile.getUploadRealName());
-				 		logger.info("待删除文件路径："+dirFile);
-				        // 如果dir对应的文件不存在，或者不是一个目录，则退出
-			        	deleteFlag = dirFile.delete();
-			        	if(deleteFlag)
-			        	{//删除附件(清空附件关联newsUuid)
-			        		uploadfile.setNewsUuid("");
-			        		uploadfileService.update(uploadfile);
-			        		logger.info("删除附件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
-			        	}
-			        	else
-			        	{
-			        		 logger.error("应用广告数据id为："+advertisement.getId()+"的数据没有文件");
-			        	}
-				      //删除附件e
+				 		if(null != uploadfile)
+				 		{
+				 			//2.删除附件
+					 		dirFile = new File(savePath+uploadfile.getUploadRealName());
+					 		logger.info("待删除文件路径："+dirFile);
+					        // 如果dir对应的文件不存在，或者不是一个目录，则退出
+				        	deleteFlag = dirFile.delete();
+				        	if(deleteFlag)
+				        	{//删除附件(清空附件关联newsUuid)
+				        		uploadfile.setNewsUuid("");
+				        		uploadfileService.update(uploadfile);
+				        		logger.info("删除附件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+				        	}
+				        	else
+				        	{
+				        		 logger.error("应用广告数据id为："+advertisement.getId()+"的数据没有文件");
+				        	}
+					      //删除附件e
+				 		}
+				 		
 			 		}
 			 		
 			 		
