@@ -10,8 +10,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -339,7 +337,7 @@ public class AppversionController extends GlobalExceptionHandler {
 		 
 		 //获取项目根路径
 		 String savePath = httpSession.getServletContext().getRealPath("");
-	     savePath = savePath + "uploadApkFile"+File.separator;
+	     savePath = savePath +File.separator+ "uploadApkFile"+File.separator;
 		 
 		 
 		 Appversion appversion;
@@ -363,22 +361,27 @@ public class AppversionController extends GlobalExceptionHandler {
 			 		//删除附件s
 			 		//1.获取附件
 			 		uploadfile = uploadfileService.getUploadfileByNewsUuid(appversion.getAppVersionUrl());
-			 		//2.删除附件
-			 		dirFile = new File(savePath+uploadfile.getUploadRealName());
-			        // 如果dir对应的文件不存在，或者不是一个目录，则退出
-			 		deleteFlag = dirFile.delete();
-		        	if(deleteFlag)
-		        	{//删除附件(清空附件关联newsUuid)
-		        		uploadfile.setNewsUuid("");
-		        		uploadfileService.update(uploadfile);
-		        		logger.info("删除附件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
-		        	}
-		        	else
-		        	{
-		        		 logger.error("应用版本数据id为："+appversion.getId()+"的数据没有文件");
-		        	}
-			        	
-			      //删除附件e
+			 		if(null != uploadfile)
+			 		{
+			 			//2.删除附件
+				 		dirFile = new File(savePath+uploadfile.getUploadRealName());
+				 		logger.info("待删除文件路径："+dirFile);
+				        // 如果dir对应的文件不存在，或者不是一个目录，则退出
+				 		deleteFlag = dirFile.delete();
+			        	if(deleteFlag)
+			        	{//删除附件(清空附件关联newsUuid)
+			        		uploadfile.setNewsUuid("");
+			        		uploadfileService.update(uploadfile);
+			        		logger.info("删除附件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+			        	}
+			        	else
+			        	{
+			        		 logger.error("应用版本数据id为："+appversion.getId()+"的数据没有文件");
+			        	}
+				        	
+				      //删除附件e
+			 		}
+			 		
 			 		
 			 		 //日志输出
 					 logger.info("删除应用版本--应用版本id="+id+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
@@ -610,7 +613,7 @@ public class AppversionController extends GlobalExceptionHandler {
 	  * @author:banna
 	  * @return: ResultBean
 	  */
-	 @RequestMapping(value = "/saveFujian", method = RequestMethod.GET)
+	 @RequestMapping(value = "/saveFujian", method = RequestMethod.POST)
 		public @ResponseBody ResultBean  saveFujian(
 				@RequestParam(value="realname",required=false) String realname,
 				@RequestParam(value="filename",required=false) String filename,
@@ -620,7 +623,7 @@ public class AppversionController extends GlobalExceptionHandler {
 		 ResultBean resultBean = new ResultBean();
 		 String type=getExt(filename);
 		 String uploadfilepath = "/uploadApkFile/";
-		 
+		 logger.info("saveFujian？？应用版本名称="+filename);
 		 Uploadfile uploadfile = uploadfileService.getUploadfileByNewsUuid(uplId);
 		 
 		 //因为一个应用只能有一个图片附件，所以当这个upId有数据的话就进行修改操作，如果没有数据就创建数据

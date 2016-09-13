@@ -515,7 +515,7 @@ public class AdvertisementController //extends GlobalExceptionHandler
 		 
 		//获取项目根路径
 		 String savePath = httpSession.getServletContext().getRealPath("");
-	     savePath = savePath + "upload"+File.separator;
+	     savePath = savePath +File.separator+ "upload"+File.separator;
 	     //删除附件文件相关s
 		 Uploadfile uploadfile = null;
 		 File dirFile = null;
@@ -551,21 +551,26 @@ public class AdvertisementController //extends GlobalExceptionHandler
 			 			//删除附件s
 				 		//1.获取附件
 				 		uploadfile = uploadfileService.getUploadfileByNewsUuid(advertisement.getAppImgUrl());
-				 		//2.删除附件
-				 		dirFile = new File(savePath+uploadfile.getUploadRealName());
-				        // 如果dir对应的文件不存在，或者不是一个目录，则退出
-			        	deleteFlag = dirFile.delete();
-			        	if(deleteFlag)
-			        	{//删除附件(清空附件关联newsUuid)
-			        		uploadfile.setNewsUuid("");
-			        		uploadfileService.update(uploadfile);
-			        		logger.info("删除附件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
-			        	}
-			        	else
-			        	{
-			        		 logger.error("应用广告数据id为："+advertisement.getId()+"的数据没有文件");
-			        	}
-				      //删除附件e
+				 		if(null != uploadfile)
+				 		{
+				 			//2.删除附件
+					 		dirFile = new File(savePath+uploadfile.getUploadRealName());
+					 		logger.info("待删除文件路径："+dirFile);
+					        // 如果dir对应的文件不存在，或者不是一个目录，则退出
+				        	deleteFlag = dirFile.delete();
+				        	if(deleteFlag)
+				        	{//删除附件(清空附件关联newsUuid)
+				        		uploadfile.setNewsUuid("");
+				        		uploadfileService.update(uploadfile);
+				        		logger.info("删除附件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+				        	}
+				        	else
+				        	{
+				        		 logger.error("应用广告数据id为："+advertisement.getId()+"的数据没有文件");
+				        	}
+					      //删除附件e
+				 		}
+				 		
 			 		}
 			 		
 			 		
@@ -800,6 +805,24 @@ public class AdvertisementController //extends GlobalExceptionHandler
 		 //因为一个应用只能有一个图片附件，所以当这个upId有数据的话就进行修改操作，如果没有数据就创建数据
 		 if(null != uploadfile)
 		 {
+			 //①：因为广告图片只有一个附件，所以在上传其他附件替换上一个附件时，要先把上一个附件文件删除
+			 String savePath = httpSession.getServletContext().getRealPath("");//获取项目根路径
+		     savePath = savePath +File.separator+ "upload"+File.separator;
+		     //删除附件文件相关s
+			 File dirFile = null;
+			 boolean deleteFlag = false;//删除附件flag
+			//2.删除附件
+	 		dirFile = new File(savePath+uploadfile.getUploadRealName());
+	 		logger.info("待删除文件路径："+dirFile);
+	        // 如果dir对应的文件不存在，或者不是一个目录，则退出
+        	deleteFlag = dirFile.delete();
+        	if(deleteFlag)
+        	{//删除附件(清空附件关联newsUuid)
+        		logger.info("saveFujian==删除原附件文件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+        	}
+		    //删除附件e
+			 
+			 //②：保存新的附件文件
 			 uploadfile.setUploadFileName(filename);
 			 uploadfile.setUploadRealName(realname);
 			 uploadfile.setUploadfilepath(uploadfilepath);

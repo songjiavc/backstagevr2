@@ -63,7 +63,7 @@ public class UploadApk extends HttpServlet {
 	                .getRealPath("");
 	        savePath = savePath + "/uploadApkFile/";
 	        File f1 = new File(savePath);
-	        System.out.println(savePath);
+	        System.out.println("上传应用版本apk附件全路径=="+savePath);
 	        if (!f1.exists()) {
 	            f1.mkdirs();
 	        }

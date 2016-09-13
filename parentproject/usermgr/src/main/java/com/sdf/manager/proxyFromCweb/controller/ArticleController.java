@@ -83,7 +83,7 @@ public class ArticleController
 		 
 		//获取项目根路径
 		 String savePath = httpSession.getServletContext().getRealPath("");
-	     savePath = savePath + "uploadArticleImg"+File.separator;
+	     savePath = savePath +File.separator+ "uploadArticleImg"+File.separator;
 	     //删除附件文件相关s
 		 List<Uploadfile> uploadfiles = null;
 		 File dirFile = null;
@@ -112,6 +112,7 @@ public class ArticleController
 			 			 {
 			 				uploadfile = uploadfiles.get(m);
 			 				dirFile = new File(savePath+uploadfile.getUploadRealName());
+			 				logger.info("待删除文件路径："+dirFile);
 					        // 如果dir对应的文件不存在，或者不是一个目录，则退出
 				        	deleteFlag = dirFile.delete();
 				        	if(deleteFlag)
@@ -236,6 +237,7 @@ public class ArticleController
 				ModelMap model,HttpSession httpSession) throws Exception
 		{
 		 	Map<String,Object> returnData = new HashMap<String,Object> ();
+		 	
 		 	
 		 	//放置分页参数
 			Pageable pageable = new PageRequest(page-1,rows);
@@ -370,9 +372,28 @@ public class ArticleController
 		 {
 			 Uploadfile uploadfile = uploadfileService.getUploadfileById(Integer.parseInt(id));
 			 
+			
+			 
 			 //删除
 			 if(null != uploadfile)
 			 {
+				//①：删除附件的数据时要把当前附件数据对于的附件文件也删除
+				 String savePath = httpSession.getServletContext().getRealPath("");//获取项目根路径
+			     savePath = savePath +uploadfile.getUploadfilepath();
+			     //删除附件文件相关s
+				 File dirFile = null;
+				 boolean deleteFlag = false;//删除附件flag
+				//2.删除附件
+		 		dirFile = new File(savePath+uploadfile.getUploadRealName());
+		 		logger.info("待删除文件路径："+dirFile);
+		        // 如果dir对应的文件不存在，或者不是一个目录，则退出
+	        	deleteFlag = dirFile.delete();
+	        	if(deleteFlag)
+	        	{//删除附件(清空附件关联newsUuid)
+	        		logger.info("deleteImg==删除原附件文件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+	        	}
+			    //删除附件e
+				 
 				 uploadfileService.delete(uploadfile);
 			 }
 			
