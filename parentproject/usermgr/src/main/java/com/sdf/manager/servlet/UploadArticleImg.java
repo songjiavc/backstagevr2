@@ -62,7 +62,7 @@ public class UploadArticleImg extends HttpServlet {
 	                .getRealPath("");
 	        savePath = savePath + "/uploadArticleImg/";
 	        File f1 = new File(savePath);
-	        System.out.println(savePath);
+	        System.out.println("上传网站图片全路径=="+savePath);
 	        if (!f1.exists()) {
 	            f1.mkdirs();
 	        }

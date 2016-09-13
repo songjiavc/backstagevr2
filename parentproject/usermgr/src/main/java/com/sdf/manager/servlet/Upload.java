@@ -63,7 +63,7 @@ public class Upload extends HttpServlet {
 	                .getRealPath("");
 	        savePath = savePath + "/upload/";
 	        File f1 = new File(savePath);
-	        System.out.println(savePath);
+	        System.out.println("上传应用广告图片附件全路径=="+savePath);
 	        if (!f1.exists()) {
 	            f1.mkdirs();
 	        }
