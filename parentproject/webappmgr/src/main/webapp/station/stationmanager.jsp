@@ -201,11 +201,6 @@
     			<input id="addFormAgent" name="addFormAgent" class="easyui-combobox textbox"  />
     		</div>
 	        <div class="ftitle">
-	            <label for="addFormStationCode">登录账号:</label>
-	            <input class="easyui-validatebox textbox" type="text" name="addFormStationCode"  id="addFormStationCode" data-options="required:true,validType:['englishOrNum','length[0,20]',]"" 
-	              missingMessage="登录账号不可以为空" invalidMessage="登录账号长度不可以超过20个字符"></input>
-	        </div>
-	        <div class="ftitle">
 	            <label for="addFormStationStyle">站点类型:</label>
 	            <select class="easyui-combobox" id="addFormStationStyle" name="addFormStationStyle" style="width:200px;">
 					<option value="1" selected >体彩</option>
@@ -214,13 +209,14 @@
 	        </div>
 	        <div class="ftitle">
 	            <label for="addFormStationNumber">站点号:</label>
-	            <input class="easyui-validatebox textbox" type="text" name="addFormStationNumber"  data-options="required:true,validType:['englishOrNum','length[0,20]']""
-	              missingMessage="站点号不可以为空" invalidMessage="站点号长度不可以超过20个字符"></input>
+	            <input class="easyui-validatebox textbox" type="text" id="addFormStationNumber" name="addFormStationNumber"  
+	            data-options="required:true,validType:['checkSNum']" onBlur="generateStationCode()"
+	              missingMessage="站点号不可以为空" ></input>
 	        </div>
 	        
 	        <div class="ftitle">
 	            <label for="addFormProvince">省:</label>
-	            <input id="addFormProvince" name="addFormProvince" class="easyui-combobox textbox"  />
+	            <input id="addFormProvince" name="addFormProvince" class="easyui-combobox textbox" onChange="generateStationCode()" />
 	        </div>
 	        <div class="ftitle">
 	        	<label for="addFormCity">市:</label>
@@ -229,6 +225,11 @@
 	        <div class="ftitle">
 	        	<label for="addFormRegion">区:</label>
 	        	<input id="addFormRegion" name="addFormRegion" class="easyui-combobox textbox"   />
+	        </div>
+	        <div class="ftitle">
+	            <label for="addFormStationCode">登录账号:</label>
+	            <input class="easyui-validatebox textbox" type="text" name="addFormStationCode"  id="addFormStationCode"  
+	              readonly="readonly"></input>
 	        </div>
 	        <div class="ftitle">
 	            <label for="addFormAddress" >详细地址:</label>

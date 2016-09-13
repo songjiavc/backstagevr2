@@ -1,5 +1,6 @@
 package com.sdf.manager.appversion.controller;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -9,6 +10,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -334,7 +337,18 @@ public class AppversionController extends GlobalExceptionHandler {
 		 
 		 ResultBean resultBean = new ResultBean();
 		 
+		 //获取项目根路径
+		 String savePath = httpSession.getServletContext().getRealPath("");
+	     savePath = savePath + "uploadApkFile"+File.separator;
+		 
+		 
 		 Appversion appversion;
+		 //删除附件文件相关s
+		 Uploadfile uploadfile = null;
+		 File dirFile = null;
+		 boolean deleteFlag = false;//删除附件flag
+		//删除附件文件相关e
+		 
 		 for (String id : ids) 
 			{
 			 	appversion = appversionService.getAppversionById(id);
@@ -345,6 +359,26 @@ public class AppversionController extends GlobalExceptionHandler {
 			 		appversion.setModifyTime(new Timestamp(System.currentTimeMillis()));
 			 		appversion.setApp(null);//删除应用版本与应用的关联关系,避免在删除应用时校验是否拥有有效的应用版本数据的时候造成错误
 			 		appversionService.update(appversion);
+			 		
+			 		//删除附件s
+			 		//1.获取附件
+			 		uploadfile = uploadfileService.getUploadfileByNewsUuid(appversion.getAppVersionUrl());
+			 		//2.删除附件
+			 		dirFile = new File(savePath+uploadfile.getUploadRealName());
+			        // 如果dir对应的文件不存在，或者不是一个目录，则退出
+			 		deleteFlag = dirFile.delete();
+		        	if(deleteFlag)
+		        	{//删除附件(清空附件关联newsUuid)
+		        		uploadfile.setNewsUuid("");
+		        		uploadfileService.update(uploadfile);
+		        		logger.info("删除附件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+		        	}
+		        	else
+		        	{
+		        		 logger.error("应用版本数据id为："+appversion.getId()+"的数据没有文件");
+		        	}
+			        	
+			      //删除附件e
 			 		
 			 		 //日志输出
 					 logger.info("删除应用版本--应用版本id="+id+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));

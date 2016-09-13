@@ -1,5 +1,6 @@
 package com.sdf.manager.proxyFromCweb.controller;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,6 +81,15 @@ public class ArticleController
 		 
 		 ResultBean resultBean = new ResultBean();
 		 
+		//获取项目根路径
+		 String savePath = httpSession.getServletContext().getRealPath("");
+	     savePath = savePath + "uploadArticleImg"+File.separator;
+	     //删除附件文件相关s
+		 List<Uploadfile> uploadfiles = null;
+		 File dirFile = null;
+		 boolean deleteFlag = false;//删除附件flag
+		//删除附件文件相关e
+		 
 		 Article article;
 		 for (String id : ids) 
 			{
@@ -90,6 +100,36 @@ public class ArticleController
 			 		article.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
 			 		article.setModifyTime(new Timestamp(System.currentTimeMillis()));
 			 		articleService.update(article);
+			 		
+			 		//删除附件s
+			 		//1.获取附件
+			 		if(null != article.getImg() && !"".equals(article.getImg()))
+			 		{
+			 			 uploadfiles = uploadfileService.getUploadfilesByNewsUuid(article.getImg());
+				 		//2.删除附件
+			 			 Uploadfile uploadfile = null;
+			 			 for(int m=0;m<uploadfiles.size();m++)
+			 			 {
+			 				uploadfile = uploadfiles.get(m);
+			 				dirFile = new File(savePath+uploadfile.getUploadRealName());
+					        // 如果dir对应的文件不存在，或者不是一个目录，则退出
+				        	deleteFlag = dirFile.delete();
+				        	if(deleteFlag)
+				        	{//删除附件(清空附件关联newsUuid)
+				        		uploadfile.setNewsUuid("");
+				        		uploadfileService.update(uploadfile);
+				        		logger.info("删除附件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+				        	}
+				        	else
+				        	{
+				        		 logger.error("网站文章id为："+article.getId()+"的数据没有文件");
+				        	}
+			 				 
+			 			 }
+				 		
+			 		}
+			 		
+			      //删除附件e
 			 		
 			 		 //日志输出
 					 logger.info("删除文章数据id="+id+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
