@@ -8,9 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.sdf.manager.user.entity.BaseEntiry;
+
 @Entity
 @Table(name = "UPLOADFILE")
-public class Uploadfile {
+public class Uploadfile extends BaseEntiry {
 
 	private Integer id;
 	private String newsUuid;

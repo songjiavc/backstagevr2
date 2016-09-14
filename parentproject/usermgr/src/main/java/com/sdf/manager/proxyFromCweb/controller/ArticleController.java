@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sdf.manager.ad.entity.Uploadfile;
 import com.sdf.manager.ad.service.UploadfileService;
 import com.sdf.manager.common.bean.ResultBean;
+import com.sdf.manager.common.util.Constants;
 import com.sdf.manager.common.util.LoginUtils;
 import com.sdf.manager.common.util.QueryResult;
 import com.sdf.manager.proxyFromCweb.dto.ArticleDTO;
@@ -117,7 +118,10 @@ public class ArticleController
 				        	deleteFlag = dirFile.delete();
 				        	if(deleteFlag)
 				        	{//删除附件(清空附件关联newsUuid)
-				        		uploadfile.setNewsUuid("");
+				        		uploadfile.setModify(uploadfile.getNewsUuid());//放置附件关联uuid
+				   			 	uploadfile.setModifyTime(new Timestamp(System.currentTimeMillis()));
+				   			 	uploadfile.setNewsUuid("");
+				   			 	uploadfile.setIsDeleted(Constants.IS_DELETED);
 				        		uploadfileService.update(uploadfile);
 				        		logger.info("删除附件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
 				        	}
@@ -304,6 +308,13 @@ public class ArticleController
 		 uploadfile.setUploadfilepath(uploadfilepath);
 		 uploadfile.setUploadContentType(type);
 		 
+		 //添加修改时间跟踪
+		 uploadfile.setCreater(uploadfile.getNewsUuid());//放置附件关联uuid
+		 uploadfile.setModify(uploadfile.getNewsUuid());//放置附件关联uuid
+		 uploadfile.setCreaterTime(new Timestamp(System.currentTimeMillis()));
+		 uploadfile.setModifyTime(new Timestamp(System.currentTimeMillis()));
+		 uploadfile.setIsDeleted(Constants.IS_NOT_DELETED);
+		 
 		 uploadfileService.save(uploadfile);
 		 
 		 resultBean.setStatus("success");
@@ -393,8 +404,11 @@ public class ArticleController
 	        		logger.info("deleteImg==删除原附件文件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
 	        	}
 			    //删除附件e
-				 
-				 uploadfileService.delete(uploadfile);
+		   		 uploadfile.setModify(uploadfile.getNewsUuid());//放置附件关联uuid
+		   		 uploadfile.setModifyTime(new Timestamp(System.currentTimeMillis()));
+		   		 uploadfile.setIsDeleted(Constants.IS_DELETED);//删除标记
+//				 uploadfileService.delete(uploadfile);
+		   		 uploadfileService.update(uploadfile);
 			 }
 			
 			 

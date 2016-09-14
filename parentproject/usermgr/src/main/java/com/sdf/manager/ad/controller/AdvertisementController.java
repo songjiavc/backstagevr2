@@ -38,6 +38,7 @@ import com.sdf.manager.app.service.AppService;
 import com.sdf.manager.common.bean.ResultBean;
 import com.sdf.manager.common.bean.TreeBean;
 import com.sdf.manager.common.exception.GlobalExceptionHandler;
+import com.sdf.manager.common.util.Constants;
 import com.sdf.manager.common.util.DateUtil;
 import com.sdf.manager.common.util.LoginUtils;
 import com.sdf.manager.common.util.QueryResult;
@@ -561,7 +562,10 @@ public class AdvertisementController extends GlobalExceptionHandler
 				        	deleteFlag = dirFile.delete();
 				        	if(deleteFlag)
 				        	{//删除附件(清空附件关联newsUuid)
-				        		uploadfile.setNewsUuid("");
+				        		uploadfile.setModify(uploadfile.getNewsUuid());//放置附件关联uuid
+				   			 	uploadfile.setModifyTime(new Timestamp(System.currentTimeMillis()));
+				   			 	uploadfile.setNewsUuid("");
+				   			 	uploadfile.setIsDeleted(Constants.IS_DELETED);
 				        		uploadfileService.update(uploadfile);
 				        		logger.info("删除附件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
 				        	}
@@ -835,6 +839,10 @@ public class AdvertisementController extends GlobalExceptionHandler
 			 uploadfile.setUploadfilepath(uploadfilepath);
 			 uploadfile.setUploadContentType(type);
 			 
+			 //添加修改时间跟踪
+			 uploadfile.setModify(uploadfile.getNewsUuid());//放置附件关联uuid
+			 uploadfile.setModifyTime(new Timestamp(System.currentTimeMillis()));
+			 
 			 uploadfileService.update(uploadfile);
 		 }
 		 else
@@ -845,6 +853,13 @@ public class AdvertisementController extends GlobalExceptionHandler
 			 uploadfile.setUploadRealName(realname);
 			 uploadfile.setUploadfilepath(uploadfilepath);
 			 uploadfile.setUploadContentType(type);
+			
+			 //添加修改时间跟踪
+			 uploadfile.setCreater(uploadfile.getNewsUuid());//放置附件关联uuid
+			 uploadfile.setModify(uploadfile.getNewsUuid());//放置附件关联uuid
+			 uploadfile.setCreaterTime(new Timestamp(System.currentTimeMillis()));
+			 uploadfile.setModifyTime(new Timestamp(System.currentTimeMillis()));
+			 uploadfile.setIsDeleted(Constants.IS_NOT_DELETED);
 			 
 			 uploadfileService.save(uploadfile);
 		 }
