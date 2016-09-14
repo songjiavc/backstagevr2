@@ -315,7 +315,7 @@ function approveStationAdsInDialog(operortype)
 function viewOrdersDetail(orderId)
 {
 	
-	var url = contextPath + '/advertisement/getDetailAdvertisement.action';
+	var url = contextPath + '/appAd/getDetailAdvertisement.action';
 	var data1 = new Object();
 	data1.id=orderId;//订单id
 	
@@ -361,7 +361,7 @@ function viewOrdersDetail(orderId)
 function viewPTOrdersDetail(id)
 {
 	
-	var url = contextPath + '/advertisement/getDetailAdvertisement.action';
+	var url = contextPath + '/appAd/getDetailAdvertisement.action';
 	var data1 = new Object();
 	data1.id=id;//订单id
 	
@@ -415,7 +415,7 @@ function initImgList(upId,listId)
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
         type: "get",
-        url: contextPath+'/advertisement/getFileOfAppad.action',
+        url: contextPath+'/appAd/getFileOfAppad.action',
         data:data,
         dataType: "json",
         success: function (returndata) {

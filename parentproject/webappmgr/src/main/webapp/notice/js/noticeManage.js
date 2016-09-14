@@ -263,7 +263,6 @@ function initDatagrid()
 		url:contextPath + '/notice/getNoticeList.action',//'datagrid_data1.json',
 		method:'get',
 		border:false,
-		singleSelect:false,
 		fit:true,//datagrid自适应
 		fitColumns:true,
 		pagination:true,
@@ -584,7 +583,7 @@ function initAreaData(areaDataGridId,isProvinceManager,province)
 		async: false,   //设置为同步获取数据形式
         type: "get",
         data:data,
-        url: contextPath+'/advertisement/getTreedataOfAdvertisement.action',
+        url: contextPath+'/appAd/getTreedataOfAdvertisement.action',
         dataType: "json",
         success: function (data) {
         	setting = {
@@ -1327,7 +1326,7 @@ function getAdtypeOfLoginRole()
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
         type: "get",
-        url: contextPath+'/advertisement/getAdtypeOfLoginRole.action',
+        url: contextPath+'/appAd/getAdtypeOfLoginRole.action',
         data:data,
         dataType: "json",
         success: function (returndata) {

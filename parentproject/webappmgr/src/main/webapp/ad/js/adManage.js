@@ -7,10 +7,12 @@ $(document).ready(function(){
 	
 			closeDialog();//页面加载时关闭弹框
 			/*initQueryProvince();//初始化模糊查询的省份
-*/			initDatagrid();//初始化数据列表
+*/			
 			clearLists();
 			idArr = [];
 			bindComboboxChange();//为通行证的模糊查询的省份条件绑定下拉框级联事件
+			
+			initDatagrid();//初始化数据列表
 		});
 
 
@@ -146,12 +148,12 @@ function checkUseUgroup(ugroupId,adId,stationDataGridId)
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
         type: "get",
-        url: contextPath+'/advertisement/checkUseUgroup.action',
+        url: contextPath+'/appAd/checkUseUgroup.action',
         data:data,
         dataType: "json",
         success: function (returndata) {
         	
-        	var flag = returndata.exist;//当前用户是否可以选择通行证组的范围
+        	var flag = returndata.resultBean.exist;//当前用户是否可以选择通行证组的范围
         	
         	if(flag)
         		{
@@ -193,10 +195,9 @@ function initDatagrid()
 		singleSelect:false,
 		rownumbers:false,
 		queryParams: params,
-		url:contextPath + '/advertisement/getAdvertisementList.action',//'datagrid_data1.json',
+		url:contextPath + '/appAd/getAdvertisementList.action',//'datagrid_data1.json',
 		method:'get',
 		border:false,
-		singleSelect:false,
 		fit:true,//datagrid自适应
 		fitColumns:true,
 		pagination:true,
@@ -234,6 +235,7 @@ function initDatagrid()
 	});
 }
 
+
 /**
  * 获取当前登录用户的区域信息
  * @returns
@@ -245,12 +247,12 @@ function getLoginArea()
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
         type: "get",
-        url: contextPath+'/advertisement/getLoginArea.action',
+        url: contextPath+'/appAd/getLoginArea.action',
         data:data,
         dataType: "json",
         success: function (returndata) {
         	
-        	returnarea = returndata;
+        	returnarea = returndata.resultdata;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             window.parent.location.href = contextPath + "/error.jsp";
@@ -419,7 +421,7 @@ function initAreaData(areaDataGridId,isProvinceManager,province)
 		async: false,   //设置为同步获取数据形式
         type: "get",
         data:data,
-        url: contextPath+'/advertisement/getTreedataOfAdvertisement.action',
+        url: contextPath+'/appAd/getTreedataOfAdvertisement.action',
         dataType: "json",
         success: function (data) {
         	setting = {
@@ -458,7 +460,7 @@ function getAppsOfAd(adId)
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
         type: "get",
-        url: contextPath+'/advertisement/getAppsOfAdvertisement.action',
+        url: contextPath+'/appAd/getAppsOfAdvertisement.action',
         data:data,
         dataType: "json",
         success: function (returndata) {
@@ -658,7 +660,7 @@ function checkStations(id,stationDataGridId)
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
         type: "get",
-        url: contextPath+'/advertisement/getStationOfUsergroup.action',
+        url: contextPath+'/appAd/getStationOfUsergroup.action',
         data:data,
         dataType: "json",
         success: function (returndata) {
@@ -729,7 +731,7 @@ function detailAd(id,adStatus)
 {
 	var updateFlag = true;
 	$("#detailAd").dialog('open');
-	var url = contextPath + '/advertisement/getDetailAdvertisement.action';
+	var url = contextPath + '/appAd/getDetailAdvertisement.action';
 	var data1 = new Object();
 	data1.id=id;//应用的id
 	
@@ -828,7 +830,7 @@ function updateAd(id,adStatus)
 	if(updateFlag)
 		{
 			$("#updateAd").dialog('open');
-			var url = contextPath + '/advertisement/getDetailAdvertisement.action';
+			var url = contextPath + '/appAd/getDetailAdvertisement.action';
 			var data1 = new Object();
 			data1.id=id;//应用的id
 			
@@ -944,7 +946,7 @@ function initImgList(upId,listId)
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
         type: "get",
-        url: contextPath+'/advertisement/getFileOfAppad.action',
+        url: contextPath+'/appAd/getFileOfAppad.action',
         data:data,
         dataType: "json",
         success: function (returndata) {
@@ -994,7 +996,7 @@ function upIdHaveFujian(upId)
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
         type: "get",
-        url: contextPath+'/advertisement/getFileOfAppad.action',
+        url: contextPath+'/appAd/getFileOfAppad.action',
         data:data,
         dataType: "json",
         success: function (returndata) {
@@ -1025,7 +1027,7 @@ function getAdtypeOfLoginRole()
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
         type: "get",
-        url: contextPath+'/advertisement/getAdtypeOfLoginRole.action',
+        url: contextPath+'/appAd/getAdtypeOfLoginRole.action',
         data:data,
         dataType: "json",
         success: function (returndata) {
@@ -1055,7 +1057,7 @@ function checkAreas(id)
 	$.ajax({
 		async: false,   //设置为同步获取数据形式
         type: "get",
-        url: contextPath+'/advertisement/getAreasOfAdvertisement.action',
+        url: contextPath+'/appAd/getAreasOfAdvertisement.action',
         data:data,
         dataType: "json",
         success: function (returndata) {
@@ -1145,7 +1147,7 @@ function openDialog(dialogId,addorupdate){
 function submitAddAd(operatype)
 {
 	$('#ff').form('submit',{
-		url:contextPath+'/advertisement/saveOrUpdate.action',
+		url:contextPath+'/appAd/saveOrUpdate.action',
 		onSubmit:function(param){
 			var flag = false;
 			param.adStatus = operatype;
@@ -1252,7 +1254,7 @@ function submitAddAd(operatype)
 function submitUpdateAd(operatype)
 {
 	$('#ffUpdate').form('submit',{
-		url:contextPath+'/advertisement/saveOrUpdate.action',
+		url:contextPath+'/appAd/saveOrUpdate.action',
 		onSubmit:function(param){
 			var flag = false;
 			param.adStatus = operatype;
@@ -1361,7 +1363,7 @@ function submitUpdateAd(operatype)
  */
 function deleteAd(id,adStatus)
 {
-	var url = contextPath + '/advertisement/deleteAdvertisements.action';
+	var url = contextPath + '/appAd/deleteAdvertisements.action';
 	var data1 = new Object();
 	var deleteFlag = true;
 	
@@ -1416,7 +1418,7 @@ function deleteAd(id,adStatus)
  */
 function deleteAdList(operaType)
 {
-	var url = contextPath + '/advertisement/deleteAdvertisements.action';
+	var url = contextPath + '/appAd/deleteAdvertisements.action';
 	var data1 = new Object();
 	
 	var codearr = new Array();
@@ -1482,7 +1484,7 @@ function deleteAdList(operaType)
  */
 function publishAdList(operaType)
 {
-	var url = contextPath + '/advertisement/publishAdvertisements.action';
+	var url = contextPath + '/appAd/publishAdvertisements.action';
 	var data1 = new Object();
 	
 	var codearr = new Array();

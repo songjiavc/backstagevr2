@@ -207,7 +207,8 @@
        </div>
        
        
-    <div id="selectRoleDiv" class="easyui-dialog"   title="角色选择" style="width:800px;height:600px;padding:0px;border:0;" data-options="
+    <div id="selectRoleDiv" class="easyui-dialog"   title="角色选择" style="width:800px;height:600px;padding:0px;border:0;top:40px;"
+            data-options=" 
    				 modal:true,
                 iconCls: 'icon-search',
                  onBeforeClose:function(){

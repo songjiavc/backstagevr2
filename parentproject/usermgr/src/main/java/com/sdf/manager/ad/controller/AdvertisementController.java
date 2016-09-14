@@ -37,6 +37,7 @@ import com.sdf.manager.app.entity.App;
 import com.sdf.manager.app.service.AppService;
 import com.sdf.manager.common.bean.ResultBean;
 import com.sdf.manager.common.bean.TreeBean;
+import com.sdf.manager.common.exception.GlobalExceptionHandler;
 import com.sdf.manager.common.util.DateUtil;
 import com.sdf.manager.common.util.LoginUtils;
 import com.sdf.manager.common.util.QueryResult;
@@ -59,8 +60,8 @@ import com.sdf.manager.userGroup.service.UserGroupService;
  * @date: 2016年2月15日 下午12:30:13
  */
 @Controller
-@RequestMapping("advertisement")
-public class AdvertisementController //extends GlobalExceptionHandler
+@RequestMapping("appAd")
+public class AdvertisementController extends GlobalExceptionHandler
 {
 
 	private Logger logger = LoggerFactory.getLogger(AdvertisementController.class);
@@ -658,12 +659,12 @@ public class AdvertisementController //extends GlobalExceptionHandler
 	  * @return: ResultBean
 	  */
 	 @RequestMapping(value = "/checkUseUgroup", method = RequestMethod.GET)
-		public @ResponseBody ResultBean  checkUseUgroup(
+		public @ResponseBody Map<String,Object>  checkUseUgroup(
 				@RequestParam(value="id",required=false) String id,
 				ModelMap model,HttpSession httpSession) throws Exception {
 		 
 		 ResultBean resultBean = new ResultBean();
-		 
+		 Map<String,Object> returnData = new HashMap<String, Object>();
 		 String code = LoginUtils.getAuthenticatedUserCode(httpSession);
 		 User user = userService.getUserByCode(code);
 		 //获取当前登录人员的角色list
@@ -681,7 +682,9 @@ public class AdvertisementController //extends GlobalExceptionHandler
 		 
 		 resultBean.setExist(isSZX);
 		 
-		 return resultBean;
+		 returnData.put("resultBean", resultBean);
+		 
+		 return returnData;
 	 }
 	 
 	 /**
@@ -696,6 +699,8 @@ public class AdvertisementController //extends GlobalExceptionHandler
 				ModelMap model,HttpSession httpSession) throws Exception {
 		 
 		 Map<String,Object> returndata = new HashMap<String, Object>();
+		 Map<String,Object> resultdata = new HashMap<String, Object>();
+		 
 		 
 		 String code = LoginUtils.getAuthenticatedUserCode(httpSession);
 		 User user = userService.getUserByCode(code);
@@ -724,11 +729,13 @@ public class AdvertisementController //extends GlobalExceptionHandler
 		 
 		 if(null != user)
 		 {
-			 returndata.put("province", user.getProvinceCode());
-			 returndata.put("city", user.getCityCode());
-			 returndata.put("adType", adType);
-			 returndata.put("lotteryType", lotteryType);
+			 resultdata.put("province", user.getProvinceCode());
+			 resultdata.put("city", user.getCityCode());
+			 resultdata.put("adType", adType);
+			 resultdata.put("lotteryType", lotteryType);
 		 }
+		 
+		 returndata.put("resultdata", resultdata);
 		 
 		 return returndata;
 	 }
@@ -860,13 +867,18 @@ public class AdvertisementController //extends GlobalExceptionHandler
 				@RequestParam(value="uplId",required=false) String uplId,
 				ModelMap model,HttpSession httpSession) throws Exception {
 		 
-		 Uploadfile uploadfile = uploadfileService.getUploadfileByNewsUuid(uplId);
+		 Uploadfile uploadfile = new Uploadfile();
 		 
-		 if(null == uploadfile)
+		 if(!"".equals(uplId))
 		 {
-			 uploadfile = new Uploadfile();
-			 uploadfile.setId(0);
+			 uploadfile = uploadfileService.getUploadfileByNewsUuid(uplId);
+			 if(null == uploadfile)
+			 {
+				 uploadfile = new Uploadfile();
+				 uploadfile.setId(0);
+			 }
 		 }
+		
 		 
 		 return uploadfile;
 	 }
