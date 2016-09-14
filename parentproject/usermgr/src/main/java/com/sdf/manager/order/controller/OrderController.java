@@ -522,8 +522,8 @@ public class OrderController extends GlobalExceptionHandler
 			ResultBean resultBean = new ResultBean();
 			
 			Orders orders;
-			App app = new App();
-			Station station = new Station();
+//			App app = new App();
+//			Station station = new Station();
 			for (String id : ids) 
 			{
 				orders = new Orders();
@@ -531,8 +531,8 @@ public class OrderController extends GlobalExceptionHandler
 				orders.setIsDeleted("0");;//设置当前数据为已删除状态
 				
 				//删除和应用还有通行证的关联关系
-				orders.setApp(app);
-				orders.setStation(station);
+				orders.setApp(null);
+				orders.setStation(null);
 				
 				orders.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
 				orders.setModifyTime(new Timestamp(System.currentTimeMillis()));
