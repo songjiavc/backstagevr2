@@ -134,7 +134,285 @@ public class MenuController extends GlobalExceptionHandler{
 		model.addAttribute("message", message);
 		return "user/test";//"user/test"
 	}
+	
+	/**
+	 * 通行证组管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/userGroupManage.action", method = RequestMethod.GET)
+	public String userGroupManage()
+	{
+		String indexPage = "userGroup/userGroupManage";
+		
+		
+		return indexPage;
+	}
+	
+	/**
+	 * 角色管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/roleManage.action", method = RequestMethod.GET)
+	public String roleManage()
+	{
+		String indexPage = "user/roleManage";
+		
+		
+		return indexPage;
+	}
+	
+	/**
+	 * 账号管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/useraccount.action", method = RequestMethod.GET)
+	public String useraccount()
+	{
+		String indexPage = "user/useraccount";
+		
+		
+		return indexPage;
+	}
+	
+	/**
+	 * 权限管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/authority.action", method = RequestMethod.GET)
+	public String authority()
+	{
+		String indexPage = "user/authority";
+		
+		
+		return indexPage;
+	}
+	
+	
+	/**
+	 * 应用管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/appManage.action", method = RequestMethod.GET)
+	public String appManage()
+	{
+		String indexPage = "app/appManage";
+		
+		
+		return indexPage;
+	}
+	
+	/**
+	 * 应用区域单价管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/appUpriceManage.action", method = RequestMethod.GET)
+	public String appUpriceManage()
+	{
+		String indexPage = "appUnitPrice/appUpriceManage";
+		
+		
+		return indexPage;
+	}
+	
+	/**
+	 * 应用版本管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/appVersionManage.action", method = RequestMethod.GET)
+	public String appVersionManage()
+	{
+		String indexPage = "appversion/appVersionManage";
+		
+		
+		return indexPage;
+	}
+	
+	/**
+	 * 应用公告管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/noticeManage.action", method = RequestMethod.GET)
+	public String noticeManage()
+	{
+		String indexPage = "notice/noticeManage";
+		
+		
+		return indexPage;
+	}
+	
+	/**
+	 * 开奖公告补录管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/kaijiangNoticeManage.action", method = RequestMethod.GET)
+	public String kaijiangNoticeManage()
+	{
+		String indexPage = "notice/kaijiangNoticeManage";
+		
+		
+		return indexPage;
+	}
+	
+	/**
+	 * 预测信息管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/forecastManage.action", method = RequestMethod.GET)
+	public String forecastManage()
+	{
+		String indexPage = "forecast/forecastManage";
+		
+		
+		return indexPage;
+	}
+	
+	/**
+	 * 订单管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/orderManage.action", method = RequestMethod.GET)
+	public String orderManage()
+	{
+		String indexPage = "orderFGoods/orderManage";
+		
+		
+		return indexPage;
+	}
+	
+	/**
+	 * 公司公告管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/companynoticeManage.action", method = RequestMethod.GET)
+	public String companynoticeManage()
+	{
+		String indexPage = "companyNotice/companynoticeManage";
+		
+		
+		return indexPage;
+	}
     
+	
+	/**
+	 * 文章管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/articleManage.action", method = RequestMethod.GET)
+	public String articleManage()
+	{
+		String indexPage = "comWebProxyApply/articleManage";
+		
+		
+		return indexPage;
+	}
+	
+	/**
+	 * 代理申请管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/proxyApplyFCwebManage.action", method = RequestMethod.GET)
+	public String proxyApplyFCwebManage()
+	{
+		String indexPage = "comWebProxyApply/proxyApplyFCwebManage";
+		
+		
+		return indexPage;
+	}
+	
+	/**
+	 * 通告管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/announcementManage.action", method = RequestMethod.GET)
+	public String announcementManage()
+	{
+		String indexPage = "announcement/announcementManage";
+		
+		
+		return indexPage;
+	}
+	
+	/**
+	 * 常见问题管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/wxCommonProblemManage.action", method = RequestMethod.GET)
+	public String wxCommonProblemManage()
+	{
+		String indexPage = "weixin/wxCommonProblemManage";
+		
+		
+		return indexPage;
+	}
+    
+	/**
+	 * 补录信息管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/lotteryPlayManage.action", method = RequestMethod.GET)
+	public String lotteryPlayManage()
+	{
+		String indexPage = "weixin/lotteryPlayManage";
+		
+		
+		return indexPage;
+	}
+	
+	/**
+	 * 补录数据管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/numOfMakeupFromWeixinManage.action", method = RequestMethod.GET)
+	public String numOfMakeupFromWeixinManage()
+	{
+		String indexPage = "weixin/numOfMakeupFromWeixinManage";
+		
+		
+		return indexPage;
+	}
+	
+	
+	/**
+	 * 补录方案管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/lotteryPlayBuluPlanManage.action", method = RequestMethod.GET)
+	public String lotteryPlayBuluPlanManage()
+	{
+		String indexPage = "weixin/lotteryPlayBuluPlanManage";
+		
+		
+		return indexPage;
+	}
+	
+	/**
+	 * 应用广告管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/adManage.action", method = RequestMethod.GET)
+	public String adManage()
+	{
+		String indexPage = "ad/adManage";
+		
+		
+		return indexPage;
+	}
+	
+	/**
+	 * 应用广告管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/stationAppAdManage.action", method = RequestMethod.GET)
+	public String stationAppAdManage()
+	{
+		String indexPage = "stationAppAdManage/stationAppAdManage";
+		
+		
+		return indexPage;
+	}
+    
+	
+	
     
 	/**
 	 * 
