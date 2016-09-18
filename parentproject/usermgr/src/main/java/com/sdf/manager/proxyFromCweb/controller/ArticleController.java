@@ -290,8 +290,8 @@ public class ArticleController
 	  * @author:banna
 	  * @return: ResultBean
 	  */
-	 @RequestMapping(value = "/saveFujian", method = RequestMethod.GET)
-		public @ResponseBody ResultBean  saveFujian(
+	 @RequestMapping(value = "/saveArticleFujian", method = RequestMethod.GET)
+		public @ResponseBody ResultBean  saveArticleFujian(
 				@RequestParam(value="realname",required=false) String realname,
 				@RequestParam(value="filename",required=false) String filename,
 				@RequestParam(value="uplId",required=false) String uplId,
@@ -318,6 +318,8 @@ public class ArticleController
 		 uploadfileService.save(uploadfile);
 		 
 		 resultBean.setStatus("success");
+		 
+		 logger.info("上传附件成功，附件id="+uplId+"==附件文件存储名称="+filename);
 		 
 		 return resultBean;
 		 

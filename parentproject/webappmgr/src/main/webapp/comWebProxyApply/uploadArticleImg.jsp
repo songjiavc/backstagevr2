@@ -105,7 +105,7 @@
 									  					filename:filename,
 									  					uplId:uploadId//附件表的 
 					          					  },
-					          					  url: contextPath+"/article/saveFujian.action",
+					          					  url: contextPath+"/article/saveArticleFujian.action",
 					          					  success: function (data)
 					          					  {
 									  					$('#status-message').text('上传成功.');
