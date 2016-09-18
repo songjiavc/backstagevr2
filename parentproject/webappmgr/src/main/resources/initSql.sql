@@ -11,15 +11,15 @@ values ('1','admin','2015-10-15 09:35:14','admin','2015-10-15 09:35:14',NULL,'�
 insert  into `T_SDF_AUTHORITY`(`ID`,`CREATER`,`CREATER_TIME`,`MODIFY`,`MODIFY_TIME`,`AUTH_IMG`,`AUTH_NAME`,`CODE`,`PARANT_AUTH_ID`,`STATUS`,`URL`,`IS_DELETED`,`ISSYSTEM`) 
 values ('4028813a505fe87201505ff93aa80002','admin','2015-10-13 14:53:00','admin','2015-10-14 14:39:08','icon-nav','用户','1','1','1','','1','1');
 insert  into `T_SDF_AUTHORITY`(`ID`,`CREATER`,`CREATER_TIME`,`MODIFY`,`MODIFY_TIME`,`AUTH_IMG`,`AUTH_NAME`,`CODE`,`PARANT_AUTH_ID`,`STATUS`,`URL`,`IS_DELETED`,`ISSYSTEM`) 
-values ('4028813a506515ad01506519290a0001','admin','2015-10-14 14:45:59','admin','2015-10-14 15:21:26','icon-nav','账号管理','11','4028813a505fe87201505ff93aa80002','1','/user/useraccount.jsp','1','1');
+values ('4028813a506515ad01506519290a0001','admin','2015-10-14 14:45:59','admin','2015-10-14 15:21:26','icon-nav','账号管理','11','4028813a505fe87201505ff93aa80002','1','/menu/useraccount.action','1','1');
 insert  into `T_SDF_AUTHORITY`(`ID`,`CREATER`,`CREATER_TIME`,`MODIFY`,`MODIFY_TIME`,`AUTH_IMG`,`AUTH_NAME`,`CODE`,`PARANT_AUTH_ID`,`STATUS`,`URL`,`IS_DELETED`,`ISSYSTEM`) 
-values ('4028813a506515ad01506519e1720002','admin','2015-10-14 14:46:46','admin','2015-10-14 15:21:19','icon-nav','权限管理','12','4028813a505fe87201505ff93aa80002','1','/user/authority.jsp','1','1');
+values ('4028813a506515ad01506519e1720002','admin','2015-10-14 14:46:46','admin','2015-10-14 15:21:19','icon-nav','权限管理','12','4028813a505fe87201505ff93aa80002','1','/menu/authority.action','1','1');
 insert  into `T_SDF_AUTHORITY`(`ID`,`CREATER`,`CREATER_TIME`,`MODIFY`,`MODIFY_TIME`,`AUTH_IMG`,`AUTH_NAME`,`CODE`,`PARANT_AUTH_ID`,`STATUS`,`URL`,`IS_DELETED`,`ISSYSTEM`) 
 values ('ff808181513737320151373886c80000', 'agentMgr', '代理管理', '4028813a505fe87201505ff93aa80002', '/agent/agentmanager.action', 'icon-nav', '1', 'admin', '2015-11-24 10:00:30', 'admin', '2015-11-24 10:02:12', '1', '0');
 insert  into `T_SDF_AUTHORITY`(`ID`,`CREATER`,`CREATER_TIME`,`MODIFY`,`MODIFY_TIME`,`AUTH_IMG`,`AUTH_NAME`,`CODE`,`PARANT_AUTH_ID`,`STATUS`,`URL`,`IS_DELETED`,`ISSYSTEM`) 
 values ('4028813a506536910150653be3ed0001', 'auth5', '站点管理', '4028813a505fe87201505ff93aa80002', '/station/stationmanager.action', 'icon-nav', '1', 'admin', '2015-10-14 15:23:55', 'admin', '2015-10-14 15:23:55', '1', '1');
 insert  into `T_SDF_AUTHORITY`(`ID`,`CREATER`,`CREATER_TIME`,`MODIFY`,`MODIFY_TIME`,`AUTH_IMG`,`AUTH_NAME`,`CODE`,`PARANT_AUTH_ID`,`STATUS`,`URL`,`IS_DELETED`,`ISSYSTEM`) 
-values ('4028813a506a4de701506a79c6990000','admin','2015-10-15 15:49:37','admin','2015-10-15 15:49:37','11','角色管理','tole55','4028813a505fe87201505ff93aa80002','1','/user/roleManage.jsp','1','1');
+values ('4028813a506a4de701506a79c6990000','admin','2015-10-15 15:49:37','admin','2015-10-15 15:49:37','11','角色管理','tole55','4028813a505fe87201505ff93aa80002','1','/menu/roleManage.action','1','1');
 
 
 
