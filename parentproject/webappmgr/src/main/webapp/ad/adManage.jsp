@@ -163,8 +163,7 @@
                     text:'取消',
                     iconCls:'icon-cancel',
                     handler:function(){
-                        $('#addAd').dialog('close');
-                        $('#ff').form('clear');//清空表单内容
+                        addDialogCancel();
                     }
                 }]
             ">

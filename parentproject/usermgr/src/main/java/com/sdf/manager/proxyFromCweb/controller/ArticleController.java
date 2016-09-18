@@ -422,7 +422,67 @@ public class ArticleController
 		 return resultBean;
 	 }
 
-
+	 /**
+	  * 根据newsUuid批量逻辑删除其对应的附件数据，并删除其附件文件
+	  * @param newsUuid
+	  * @param model
+	  * @param httpSession
+	  * @return
+	  * @throws Exception
+	  */
+	 @RequestMapping(value = "/deleteImgsByNewsuuid", method = RequestMethod.GET)
+		public @ResponseBody ResultBean deleteImgsByNewsuuid(
+				@RequestParam(value="newsUuid",required=false) String newsUuid,
+				ModelMap model,HttpSession httpSession) throws Exception {
+		 
+		 ResultBean resultBean = new ResultBean();
+		 if(null != newsUuid)
+		 {
+			 List<Uploadfile> uploadfiles = uploadfileService.getUploadfilesByNewsUuid(newsUuid);
+			 
+			
+			 
+			 //删除
+			 if(null != uploadfiles)
+			 {
+				//①：删除附件的数据时要把当前附件数据对于的附件文件也删除
+				 String savePath = httpSession.getServletContext().getRealPath("");//获取项目根路径
+			    
+			     //删除附件文件相关s
+				 File dirFile = null;
+				 boolean deleteFlag = false;//删除附件flag
+				 
+				 for (Uploadfile uploadfile : uploadfiles) 
+				 {
+					 	savePath = savePath +uploadfile.getUploadfilepath();
+					 	//2.删除附件
+				 		dirFile = new File(savePath+uploadfile.getUploadRealName());
+				 		logger.info("待删除文件路径："+dirFile);
+				        // 如果dir对应的文件不存在，或者不是一个目录，则退出
+			        	deleteFlag = dirFile.delete();
+			        	if(deleteFlag)
+			        	{//删除附件(清空附件关联newsUuid)
+			        		logger.info("deleteImg==删除原附件文件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+			        	}
+					    //删除附件e
+				   		 uploadfile.setModify(uploadfile.getNewsUuid());//放置附件关联uuid
+				   		 uploadfile.setModifyTime(new Timestamp(System.currentTimeMillis()));
+				   		 uploadfile.setIsDeleted(Constants.IS_DELETED);//删除标记
+	//						 uploadfileService.delete(uploadfile);
+				   		 uploadfileService.update(uploadfile);
+				 }
+				 
+				
+			 }
+			
+			 
+			 //TODO:删除文件附件图片
+			 
+			 resultBean.setUseFlag(true);
+		 }
+		
+		 return resultBean;
+	 }
 
 
 

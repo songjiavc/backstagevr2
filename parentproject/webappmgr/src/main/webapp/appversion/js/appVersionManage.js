@@ -2,6 +2,13 @@ var idArr = [];//选中的应用id数据
 
 $(document).ready(function(){
 	
+			//在点击添加应用广告关闭按钮时（右上角的小x）触发的事件
+			$("#addAppVersion").dialog({  
+			    onClose: function () {  
+			    	checkDeleteFujian();
+			    }  
+			});  
+			
 			closeDialog();//页面加载时关闭弹框
 			
 			initParentAppList('appIdC','','',true);
@@ -9,6 +16,9 @@ $(document).ready(function(){
 			initDatagrid();//初始化数据列表
 			
 			idArr = [];
+			
+			
+			
 		});
 
 
@@ -30,12 +40,56 @@ function reset()
 function addDialogCancel()
 {
 	$('#addAppVersion').dialog('close');
+	
+	checkDeleteFujian();
+	
     $('#ff').form('clear');//清空表单内容
      $('#ff [name="appVersionStatus"]:radio').each(function() {   //设置“待上架”为默认选中radio
 	            if (this.value == '0'){   
 	               this.checked = true;   
 	            }       
 	         }); 
+}
+
+/**
+ * 校验是否需要删除冗余附件数据
+ */
+function checkDeleteFujian()
+{
+	//若点击添加文章后已经上传了附件，则要将附件数据删除，若没有上传附件则可以正常退出
+	var uploadId = '';//上传附件id
+	if(''!=$("#urlHiddenA").val())
+	{
+		uploadId = $("#urlHiddenA").val();
+		//调用删除方法
+		deleteImgsByNewsuuid(uploadId);
+	}
+}
+
+//删除图片
+function deleteImgsByNewsuuid(newsUuid)
+{
+	
+	var data = new Object();
+	data.newsUuid = newsUuid;
+	$.ajax({
+		async: false,   //设置为同步获取数据形式
+        type: "get",
+        url: contextPath+'/article/deleteImgsByNewsuuid.action',
+        data:data,
+        dataType: "json",
+        success: function (returndata) {
+        	
+      			console.log("删除成功");
+        	
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            window.parent.location.href = contextPath + "/error.jsp";
+        }
+   });
+	        	
+	
+	
 }
 
 /**
