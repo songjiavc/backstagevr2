@@ -219,7 +219,7 @@ function getProvinceAllId()
         	proAllId = data.message;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -352,7 +352,7 @@ function updateForecast(id)
 	        	
 	        },
 	        error: function (XMLHttpRequest, textStatus, errorThrown) {
-	            window.parent.location.href = contextPath + "/error.jsp";
+	            window.parent.location.href = contextPath + "/menu/error.action";
 	        }
 		});
 		
@@ -469,7 +469,7 @@ function deleteForecast(id)
 		                	$.messager.alert('提示', data.message);
 		                },
 		                error: function (XMLHttpRequest, textStatus, errorThrown) {
-		                    window.parent.location.href = contextPath + "/error.jsp";
+		                    window.parent.location.href = contextPath + "/menu/error.action";
 		                }
 		           });
 		        	
@@ -502,7 +502,7 @@ function checkForcastIsableDel(id)
         	flag = data.exist;//true:与应用公告数据有关联，false：与应用公告数据无关联
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -561,7 +561,7 @@ function deleteForcastList(operaType)
 				                	
 				                },
 				                error: function (XMLHttpRequest, textStatus, errorThrown) {
-				                    window.parent.location.href = contextPath + "/error.jsp";
+				                    window.parent.location.href = contextPath + "/menu/error.action";
 				                }
 				           });
 				        	
@@ -629,7 +629,7 @@ function checkAppName(id,name)
         		}
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	

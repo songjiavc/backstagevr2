@@ -198,7 +198,7 @@ function updateLotteryPlay(id)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
 	});
 	
@@ -234,7 +234,7 @@ function deleteLotteryPlay(id)
 	                	$.messager.alert('提示', data.message);
 	                },
 	                error: function (XMLHttpRequest, textStatus, errorThrown) {
-	                    window.parent.location.href = contextPath + "/error.jsp";
+	                    window.parent.location.href = contextPath + "/menu/error.action";
 	                }
 	           });
 	        	
@@ -357,7 +357,7 @@ function getCheckIpbuId(lpId)
         	ipbuId = data.lpBuluId;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	

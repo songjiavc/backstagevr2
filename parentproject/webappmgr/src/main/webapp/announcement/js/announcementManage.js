@@ -297,7 +297,7 @@ function initAreaData(areaDataGridId,isProvinceManager,province)
         		zNodes = data;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -342,7 +342,7 @@ function getLoginuserRole()
         	returnArr.push(lotteryType);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-        		window.parent.location.href = contextPath + "/error.jsp";
+        		window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -372,7 +372,7 @@ function getAppsOfNotice(noticeId)
         	returnlist = returndata;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -561,7 +561,7 @@ function checkStations(id,stationDataGridId)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -671,7 +671,7 @@ function detailAnnouncement(id,status)
 	        	
 	        },
 	        error: function (XMLHttpRequest, textStatus, errorThrown) {
-	            window.parent.location.href = contextPath + "/error.jsp";
+	            window.parent.location.href = contextPath + "/menu/error.action";
 	        }
 		});
 	
@@ -803,7 +803,7 @@ function updateAnnouncement(id,status)
 			        	
 			        },
 			        error: function (XMLHttpRequest, textStatus, errorThrown) {
-			            window.parent.location.href = contextPath + "/error.jsp";
+			            window.parent.location.href = contextPath + "/menu/error.action";
 			        }
 				});
 		}
@@ -841,7 +841,7 @@ function checkAreas(id)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -1123,7 +1123,7 @@ function deleteAnnouncement(id,status)
 		                	$.messager.alert('提示', data.message);
 		                },
 		                error: function (XMLHttpRequest, textStatus, errorThrown) {
-		                    window.parent.location.href = contextPath + "/error.jsp";
+		                    window.parent.location.href = contextPath + "/menu/error.action";
 		                }
 		           });
 		        	
@@ -1186,7 +1186,7 @@ function deleteAnnouncementList(operaType)
 				                	
 				                },
 				                error: function (XMLHttpRequest, textStatus, errorThrown) {
-				                    window.parent.location.href = contextPath + "/error.jsp";
+				                    window.parent.location.href = contextPath + "/menu/error.action";
 				                }
 				           });
 				        	
@@ -1252,7 +1252,7 @@ function publishAnnouncementList(operaType)
 				                	
 				                },
 				                error: function (XMLHttpRequest, textStatus, errorThrown) {
-				                    window.parent.location.href = contextPath + "/error.jsp";
+				                    window.parent.location.href = contextPath + "/menu/error.action";
 				                }
 				           });
 				        	

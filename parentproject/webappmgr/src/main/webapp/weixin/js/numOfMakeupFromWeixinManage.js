@@ -186,7 +186,7 @@ function deleteNumofMakeUpById(id)
 	                	$.messager.alert('提示', data.message);
 	                },
 	                error: function (XMLHttpRequest, textStatus, errorThrown) {
-	                    window.parent.location.href = contextPath + "/error.jsp";
+	                    window.parent.location.href = contextPath + "/menu/error.action";
 	                }
 	           });
 	        	
@@ -227,7 +227,7 @@ function deleteNumofMakeUp()
 	                	$.messager.alert('提示', data.message);
 	                },
 	                error: function (XMLHttpRequest, textStatus, errorThrown) {
-	                    window.parent.location.href = contextPath + "/error.jsp";
+	                    window.parent.location.href = contextPath + "/menu/error.action";
 	                }
 	           });
 	        	

@@ -190,7 +190,7 @@ function updateLotteryPlayBuluPlan(id)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
 	});
 	
@@ -230,7 +230,7 @@ function deleteLotteryPlayBuluPlan(id)
 			                	$.messager.alert('提示', data.message);
 			                },
 			                error: function (XMLHttpRequest, textStatus, errorThrown) {
-			                    window.parent.location.href = contextPath + "/error.jsp";
+			                    window.parent.location.href = contextPath + "/menu/error.action";
 			                }
 			           });
 			        	
@@ -267,7 +267,7 @@ function checkCouldDeleted(id)
         	flag = data.exist;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -448,7 +448,7 @@ function checkPlanName(id,name)
         		}
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	

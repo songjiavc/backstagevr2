@@ -67,7 +67,7 @@ function getLoginuserRole()
         	returnArr.push(city);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-        		window.parent.location.href = contextPath + "/error.jsp";
+        		window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -138,7 +138,7 @@ function calculatePrice(userYearId)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -291,7 +291,7 @@ function approveStationAds(adId,operortype)
         	$.messager.alert('提示', data.message);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 }
@@ -344,7 +344,7 @@ function viewOrdersDetail(orderId)
 					
 	        },
 	        error: function (XMLHttpRequest, textStatus, errorThrown) {
-	            window.parent.location.href = contextPath + "/error.jsp";
+	            window.parent.location.href = contextPath + "/menu/error.action";
 	        }
 		});
 		
@@ -390,7 +390,7 @@ function viewPTOrdersDetail(id)
 					
 	        },
 	        error: function (XMLHttpRequest, textStatus, errorThrown) {
-	            window.parent.location.href = contextPath + "/error.jsp";
+	            window.parent.location.href = contextPath + "/menu/error.action";
 	        }
 		});
 		
@@ -435,7 +435,7 @@ function initImgList(upId,listId)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 }
@@ -490,7 +490,7 @@ function getDetailStation(stationId)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-        	window.parent.location.href = contextPath + "/error.jsp";
+        	window.parent.location.href = contextPath + "/menu/error.action";
 
         }
 	});
@@ -565,7 +565,7 @@ function deleteOrders(id)
 				                	$.messager.alert('提示', data.message);
 				                },
 				                error: function (XMLHttpRequest, textStatus, errorThrown) {
-				                    window.parent.location.href = contextPath + "/error.jsp";
+				                    window.parent.location.href = contextPath + "/menu/error.action";
 				                }
 				           });
 				        	
@@ -634,7 +634,7 @@ function deleteOrdersList()
 				                	
 				                },
 				                error: function (XMLHttpRequest, textStatus, errorThrown) {
-				                    window.parent.location.href = contextPath + "/error.jsp";
+				                    window.parent.location.href = contextPath + "/menu/error.action";
 				                }
 				           });
 				        	
@@ -718,7 +718,7 @@ function checkOrderFinish(id)
         	flag = data.exist;//true:订单审批已完成
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -752,7 +752,7 @@ function checkCode(id,code)
         		}
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -781,7 +781,7 @@ function checkProName(id,name)
         		}
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	

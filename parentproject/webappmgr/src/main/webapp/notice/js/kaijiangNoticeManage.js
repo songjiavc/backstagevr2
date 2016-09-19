@@ -221,7 +221,7 @@ function initAreaData(areaDataGridId)
         		zNodes = data;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -348,7 +348,7 @@ function detailKjNotice(id)
 	        	
 	        },
 	        error: function (XMLHttpRequest, textStatus, errorThrown) {
-	            window.parent.location.href = contextPath + "/error.jsp";
+	            window.parent.location.href = contextPath + "/menu/error.action";
 	        }
 		});
 }
@@ -404,7 +404,7 @@ function updatKjnotice(id,status)
 			        	
 			        },
 			        error: function (XMLHttpRequest, textStatus, errorThrown) {
-			            window.parent.location.href = contextPath + "/error.jsp";
+			            window.parent.location.href = contextPath + "/menu/error.action";
 			        }
 				});
 		}
@@ -442,7 +442,7 @@ function checkAreas(id)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -603,7 +603,7 @@ function deleteKjnotice(id,status)
 		                	$.messager.alert('提示', data.message);
 		                },
 		                error: function (XMLHttpRequest, textStatus, errorThrown) {
-		                    window.parent.location.href = contextPath + "/error.jsp";
+		                    window.parent.location.href = contextPath + "/menu/error.action";
 		                }
 		           });
 		        	
@@ -666,7 +666,7 @@ function deleteKjnoticeList(operaType)
 				                	
 				                },
 				                error: function (XMLHttpRequest, textStatus, errorThrown) {
-				                    window.parent.location.href = contextPath + "/error.jsp";
+				                    window.parent.location.href = contextPath + "/menu/error.action";
 				                }
 				           });
 				        	
@@ -732,7 +732,7 @@ function publishKaijiangNoticeList(operaType)
 				                	
 				                },
 				                error: function (XMLHttpRequest, textStatus, errorThrown) {
-				                    window.parent.location.href = contextPath + "/error.jsp";
+				                    window.parent.location.href = contextPath + "/menu/error.action";
 				                }
 				           });
 				        	

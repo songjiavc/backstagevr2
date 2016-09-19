@@ -236,7 +236,7 @@ function checkNoticeUseUgroup(ugroupId,adId,stationDataGridId)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 }
@@ -400,7 +400,7 @@ function getLoginArea()
         	returnarea = returndata;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -602,7 +602,7 @@ function initAreaData(areaDataGridId,isProvinceManager,province)
         		zNodes = data;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -630,7 +630,7 @@ function getAppsOfNotice(noticeId)
         	returnlist = returndata;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -819,7 +819,7 @@ function checkStations(id,stationDataGridId)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -852,7 +852,7 @@ function checkForecast(id,stationDataGridId)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -1001,7 +1001,7 @@ function detailNotice(id)
 	        	
 	        },
 	        error: function (XMLHttpRequest, textStatus, errorThrown) {
-	            window.parent.location.href = contextPath + "/error.jsp";
+	            window.parent.location.href = contextPath + "/menu/error.action";
 	        }
 		});
 	
@@ -1157,7 +1157,7 @@ function updateNotice(id,noticeStatus)
 			        	
 			        },
 			        error: function (XMLHttpRequest, textStatus, errorThrown) {
-			            window.parent.location.href = contextPath + "/error.jsp";
+			            window.parent.location.href = contextPath + "/menu/error.action";
 			        }
 				});
 		}
@@ -1335,7 +1335,7 @@ function getAdtypeOfLoginRole()
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -1366,7 +1366,7 @@ function checkAreas(id)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -1677,7 +1677,7 @@ function deleteNotice(id,noticeStatus)
 		                	$.messager.alert('提示', data.message);
 		                },
 		                error: function (XMLHttpRequest, textStatus, errorThrown) {
-		                    window.parent.location.href = contextPath + "/error.jsp";
+		                    window.parent.location.href = contextPath + "/menu/error.action";
 		                }
 		           });
 		        	
@@ -1775,7 +1775,7 @@ function deleteNoticeList(operaType)
 				                	
 				                },
 				                error: function (XMLHttpRequest, textStatus, errorThrown) {
-				                    window.parent.location.href = contextPath + "/error.jsp";
+				                    window.parent.location.href = contextPath + "/menu/error.action";
 				                }
 				           });
 				        	
@@ -1840,7 +1840,7 @@ function publishNoticeList(operaType)
 				                	
 				                },
 				                error: function (XMLHttpRequest, textStatus, errorThrown) {
-				                    window.parent.location.href = contextPath + "/error.jsp";
+				                    window.parent.location.href = contextPath + "/menu/error.action";
 				                }
 				           });
 				        	
@@ -1894,7 +1894,7 @@ function getLoginuserRole()
         	returnArr.push(lotteryType);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-        		window.parent.location.href = contextPath + "/error.jsp";
+        		window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	

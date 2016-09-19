@@ -113,7 +113,7 @@ function updateAuth(code,isSystem)
 		        	
 		        },
 		        error: function (XMLHttpRequest, textStatus, errorThrown) {
-		            window.parent.location.href = contextPath + "/error.jsp";
+		            window.parent.location.href = contextPath + "/menu/error.action";
 		        }
 		   });
 			
@@ -199,7 +199,7 @@ function deleteAuthList()
 				                	
 				                },
 				                error: function (XMLHttpRequest, textStatus, errorThrown) {
-				                    window.parent.location.href = contextPath + "/error.jsp";
+				                    window.parent.location.href = contextPath + "/menu/error.action";
 				                }
 				           });
 				        	
@@ -270,7 +270,7 @@ function deleteAuth(code,isSystem,connectRole)
 			                	$.messager.alert('提示', data.message);
 			                },
 			                error: function (XMLHttpRequest, textStatus, errorThrown) {
-			                    window.parent.location.href = contextPath + "/error.jsp";
+			                    window.parent.location.href = contextPath + "/menu/error.action";
 			                }
 			           });
 			        	
@@ -398,7 +398,7 @@ function checkCode(id,code,authname)
         		}
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -429,7 +429,7 @@ function checkHaveChildAuth(id)
         		}
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -513,7 +513,7 @@ function initZnodes()
         		zNodes = data;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
