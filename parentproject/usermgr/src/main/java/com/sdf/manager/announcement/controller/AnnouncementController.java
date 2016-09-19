@@ -34,6 +34,7 @@ import com.sdf.manager.announcement.entity.AnnouncementAndArea;
 import com.sdf.manager.announcement.service.AnnouncementAndAreaService;
 import com.sdf.manager.announcement.service.AnnouncementService;
 import com.sdf.manager.common.bean.ResultBean;
+import com.sdf.manager.common.exception.GlobalExceptionHandler;
 import com.sdf.manager.common.util.Constants;
 import com.sdf.manager.common.util.DateUtil;
 import com.sdf.manager.common.util.LoginUtils;
@@ -61,7 +62,7 @@ import com.sdf.manager.userGroup.service.UserGroupService;
  */
 @Controller
 @RequestMapping("announcement")
-public class AnnouncementController {
+public class AnnouncementController extends GlobalExceptionHandler {
 
 	private Logger logger = LoggerFactory.getLogger(AnnouncementController.class);
 	

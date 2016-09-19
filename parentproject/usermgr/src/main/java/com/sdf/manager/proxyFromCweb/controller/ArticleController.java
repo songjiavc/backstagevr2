@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sdf.manager.ad.entity.Uploadfile;
 import com.sdf.manager.ad.service.UploadfileService;
 import com.sdf.manager.common.bean.ResultBean;
+import com.sdf.manager.common.exception.GlobalExceptionHandler;
 import com.sdf.manager.common.util.Constants;
 import com.sdf.manager.common.util.LoginUtils;
 import com.sdf.manager.common.util.QueryResult;
@@ -35,7 +36,7 @@ import com.sdf.manager.proxyFromCweb.service.ArticleService;
 
 @Controller
 @RequestMapping("article")
-public class ArticleController 
+public class ArticleController extends GlobalExceptionHandler
 {
 	
 	Logger logger = LoggerFactory.getLogger(ArticleController.class);

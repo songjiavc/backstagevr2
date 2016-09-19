@@ -28,6 +28,7 @@ import com.sdf.manager.announcement.dto.AnnouncementDTO;
 import com.sdf.manager.announcement.entity.Announcement;
 import com.sdf.manager.announcement.entity.AnnouncementAndArea;
 import com.sdf.manager.common.bean.ResultBean;
+import com.sdf.manager.common.exception.GlobalExceptionHandler;
 import com.sdf.manager.common.util.DateUtil;
 import com.sdf.manager.common.util.LoginUtils;
 import com.sdf.manager.common.util.QueryResult;
@@ -53,7 +54,7 @@ import com.sdf.manager.userGroup.service.UserGroupService;
  */
 @Controller
 @RequestMapping("companynotice")
-public class CompanynoticeController {
+public class CompanynoticeController extends GlobalExceptionHandler {
 
 private Logger logger = LoggerFactory.getLogger(CompanynoticeController.class);
 	

@@ -35,7 +35,7 @@ import com.sdf.manager.notice.service.ForecastService;
 
 @Controller
 @RequestMapping("forecast")
-public class ForecastController //extends GlobalExceptionHandler
+public class ForecastController extends GlobalExceptionHandler
 {
 	
 	Logger logger = LoggerFactory.getLogger(ForecastController.class);

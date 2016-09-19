@@ -43,7 +43,7 @@ import com.sdf.manager.userGroup.service.UserGroupService;
 
 @Controller
 @RequestMapping("userGroup")
-public class UserGroupController // extends GlobalExceptionHandler 
+public class UserGroupController extends GlobalExceptionHandler 
 {
 	
 	Logger logger = LoggerFactory.getLogger(UserGroupController.class);
