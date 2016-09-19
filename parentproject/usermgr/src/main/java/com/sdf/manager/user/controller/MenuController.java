@@ -410,6 +410,21 @@ public class MenuController extends GlobalExceptionHandler{
 		
 		return indexPage;
 	}
+	
+	/**
+	 * 跳转到错误页
+	 * @return
+	 */
+	@RequestMapping(value = "/error.action", method = RequestMethod.GET)
+	public String error()
+	{
+		String indexPage = "error";
+		
+		
+		return indexPage;
+	}
+	
+	
     
 	
 	
