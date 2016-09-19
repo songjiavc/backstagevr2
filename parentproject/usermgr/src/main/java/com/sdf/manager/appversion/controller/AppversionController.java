@@ -90,6 +90,57 @@ public class AppversionController extends GlobalExceptionHandler {
 	}
 	
 	/**
+	 * 跳转到上传apk附件页面
+	 * @param uploadId
+	 * @param session
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/uploadApkFile.action", method = RequestMethod.GET)
+	public String uploadApkFile(@RequestParam(value="uploadId",required=false) String uploadId,HttpSession session,ModelMap model)
+	{
+		String indexPage = "appversion/uploadApkFile";
+		
+		
+		model.addAttribute("uploadId", uploadId);
+		return indexPage;
+	}
+	
+	/**
+	 * 跳转到上传文章图片附件页面
+	 * @param uploadId
+	 * @param session
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/uploadArticleImg.action", method = RequestMethod.GET)
+	public String uploadArticleImg(@RequestParam(value="uploadId",required=false) String uploadId,HttpSession session,ModelMap model)
+	{
+		String indexPage = "appversion/uploadArticleImg";
+		
+		
+		model.addAttribute("uploadId", uploadId);
+		return indexPage;
+	}
+	
+	/**
+	 * 跳转到上传应用广告图片附件页面
+	 * @param uploadId
+	 * @param session
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/uploadFile.action", method = RequestMethod.GET)
+	public String uploadFile(@RequestParam(value="uploadId",required=false) String uploadId,HttpSession session,ModelMap model)
+	{
+		String indexPage = "appversion/uploadFile";
+		
+		
+		model.addAttribute("uploadId", uploadId);
+		return indexPage;
+	}
+	
+	/**
 	 * 
 	* @Title: getAppversionList
 	* @Description: 根据筛选条件获取应用版本数据
