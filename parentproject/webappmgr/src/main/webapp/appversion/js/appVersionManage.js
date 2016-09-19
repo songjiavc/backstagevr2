@@ -84,7 +84,7 @@ function deleteImgsByNewsuuid(newsUuid)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	        	
@@ -118,7 +118,7 @@ function upIdHaveFujian(upId)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -293,7 +293,7 @@ function updateAppVersion(id,appversionStatus)
 		        	
 		        },
 		        error: function (XMLHttpRequest, textStatus, errorThrown) {
-		            window.parent.location.href = contextPath + "/error.jsp";
+		            window.parent.location.href = contextPath + "/menu/error.action";
 		        }
 			});
 			
@@ -334,6 +334,7 @@ function submitAddAppVersion()
 	    success:function(data){
 	    	//提交表单后，从后台返回的data类型为String，要获取信息需要将其转换为json类型，使用eval("(" + data + ")")方法转换
 	    	$.messager.alert('提示', eval("(" + data + ")").message);
+	    	$("#urlHiddenA").val("");//在关闭弹框之前先把附件id的值清空，防止在关闭添加弹框时触发这个问题
 	    	$("#addAppVersion").dialog('close');//初始化添加应用弹框关闭
 	    	
 	    	$('#ff').form('clear');//清空表单内容
@@ -404,7 +405,7 @@ function generateCode()
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 }
@@ -458,7 +459,7 @@ function deleteAppVersion(id,appVersionStatus)
 		                	$.messager.alert('提示', data.message);
 		                },
 		                error: function (XMLHttpRequest, textStatus, errorThrown) {
-		                    window.parent.location.href = contextPath + "/error.jsp";
+		                    window.parent.location.href = contextPath + "/menu/error.action";
 		                }
 		           });
 		        	
@@ -529,7 +530,7 @@ function deleteAppVerList(operaType)
 				                	
 				                },
 				                error: function (XMLHttpRequest, textStatus, errorThrown) {
-				                    window.parent.location.href = contextPath + "/error.jsp";
+				                    window.parent.location.href = contextPath + "/menu/error.action";
 				                }
 				           });
 				        	
@@ -634,7 +635,7 @@ function updateAppVerStatus(appVersionStatus)
 				                	
 				                },
 				                error: function (XMLHttpRequest, textStatus, errorThrown) {
-				                    window.parent.location.href = contextPath + "/error.jsp";
+				                    window.parent.location.href = contextPath + "/menu/error.action";
 				                }
 				           });
 				        	
@@ -720,7 +721,7 @@ function checkAppVerNum(appId,versionCode,id)
         		}
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -752,7 +753,7 @@ function checkAppVerName(id,name)
         		}
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -806,7 +807,8 @@ function openDialog(dialogId,addorupdate){
 			
 		}
 	
-	var url = 'uploadApkFile.jsp?uploadId='+uploadId;
+//	var url = 'uploadApkFile.jsp?uploadId='+uploadId;
+	var url = contextPath+'/appversion/uploadApkFile.action?uploadId='+uploadId;
 	$('#'+dialogId).dialog({
 	    title: '上传应用安装包文件',
 	    width: 500,
@@ -859,7 +861,7 @@ function initApkList(upId,listId)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 }

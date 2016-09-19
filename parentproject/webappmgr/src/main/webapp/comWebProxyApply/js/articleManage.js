@@ -2,6 +2,7 @@ var idArr = [];//选中的应用id数据
 
 $(document).ready(function(){
 	
+	
 			//在点击添加文章关闭按钮时（右上角的小x）触发的事件
 			$("#addArticle").dialog({  
 			    onClose: function () {  
@@ -82,7 +83,7 @@ function upIdHaveFujian(upId)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -197,7 +198,8 @@ function openDialog(dialogId,addorupdate){
 			
 		}
 	
-	var url = 'uploadArticleImg.jsp?uploadId='+uploadId;
+//	var url = 'uploadArticleImg.jsp?uploadId='+uploadId;
+	var url = contextPath+'/appversion/uploadArticleImg.action?uploadId='+uploadId;
 	$('#'+dialogId).dialog({
 	    title: '上传文章图片',
 	    width: 500,
@@ -267,7 +269,7 @@ function initImgList(upId,listId)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 }
@@ -311,7 +313,7 @@ function updateArticle(id)
 					initImgList(data.img, "uploadShowU");
 	        },
 	        error: function (XMLHttpRequest, textStatus, errorThrown) {
-	            window.parent.location.href = contextPath + "/error.jsp";
+	            window.parent.location.href = contextPath + "/menu/error.action";
 	        }
 		});
 		
@@ -340,7 +342,7 @@ function deleteImgsByNewsuuid(newsUuid)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	        	
@@ -368,7 +370,7 @@ function deleteImg(id,upId,listId)
                 	
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    window.parent.location.href = contextPath + "/error.jsp";
+                    window.parent.location.href = contextPath + "/menu/error.action";
                 }
            });
 	        	
@@ -394,6 +396,7 @@ function submitAddArticle()
 	    success:function(data){
 	    	//提交表单后，从后台返回的data类型为String，要获取信息需要将其转换为json类型，使用eval("(" + data + ")")方法转换
 	    	$.messager.alert('提示', eval("(" + data + ")").message);
+	    	$("#imgA").val("");
 	    	$("#addArticle").dialog('close');//初始化添加应用弹框关闭
 	    	
 	    	//添加角色后刷新数据列表
@@ -466,7 +469,7 @@ function deleteArticle(id)
 		                	$.messager.alert('提示', data.message);
 		                },
 		                error: function (XMLHttpRequest, textStatus, errorThrown) {
-		                    window.parent.location.href = contextPath + "/error.jsp";
+		                    window.parent.location.href = contextPath + "/menu/error.action";
 		                }
 		           });
 		        	

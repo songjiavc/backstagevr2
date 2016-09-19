@@ -69,7 +69,7 @@ function deleteImgsByNewsuuid(newsUuid)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	        	
@@ -231,7 +231,7 @@ function checkUseUgroup(ugroupId,adId,stationDataGridId)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 }
@@ -315,7 +315,7 @@ function getLoginArea()
         	returnarea = returndata.resultdata;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -500,7 +500,7 @@ function initAreaData(areaDataGridId,isProvinceManager,province)
         		zNodes = data;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -528,7 +528,7 @@ function getAppsOfAd(adId)
         	returnlist = returndata;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -730,7 +730,7 @@ function checkStations(id,stationDataGridId)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -867,7 +867,7 @@ function detailAd(id,adStatus)
 	        	
 	        },
 	        error: function (XMLHttpRequest, textStatus, errorThrown) {
-	            window.parent.location.href = contextPath + "/error.jsp";
+	            window.parent.location.href = contextPath + "/menu/error.action";
 	        }
 		});
 	
@@ -981,7 +981,7 @@ function updateAd(id,adStatus)
 			        	
 			        },
 			        error: function (XMLHttpRequest, textStatus, errorThrown) {
-			            window.parent.location.href = contextPath + "/error.jsp";
+			        	window.parent.location.href = contextPath + "/menu/error.action";
 			        }
 				});
 		}
@@ -1026,7 +1026,7 @@ function initImgList(upId,listId)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 }
@@ -1069,7 +1069,7 @@ function upIdHaveFujian(upId)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -1096,7 +1096,7 @@ function getAdtypeOfLoginRole()
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -1127,7 +1127,7 @@ function checkAreas(id)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
@@ -1181,7 +1181,8 @@ function openDialog(dialogId,addorupdate){
 			
 		}
 	
-	var url = 'uploadFile.jsp?uploadId='+uploadId;
+//	var url = 'uploadFile.jsp?uploadId='+uploadId;
+	var url = contextPath+'/appversion/uploadFile.action?uploadId='+uploadId;
 	$('#'+dialogId).dialog({
 	    title: '上传广告图片',
 	    width: 500,
@@ -1299,6 +1300,7 @@ function submitAddAd(operatype)
 	    success:function(data){
 	    	//提交表单后，从后台返回的data类型为String，要获取信息需要将其转换为json类型，使用eval("(" + data + ")")方法转换
 	    	$.messager.alert('提示', eval("(" + data + ")").message);
+	    	$("#appImgUrlA").val("");
 	    	$("#addAd").dialog('close');//初始化添加通行证组弹框关闭
 	    	$('#ff').form('clear');//清空表单内容
 	    	initDatagrid();
@@ -1460,7 +1462,7 @@ function deleteAd(id,adStatus)
 		                	$.messager.alert('提示', data.message);
 		                },
 		                error: function (XMLHttpRequest, textStatus, errorThrown) {
-		                    window.parent.location.href = contextPath + "/error.jsp";
+		                    window.parent.location.href = contextPath + "/menu/error.action";
 		                }
 		           });
 		        	
@@ -1523,7 +1525,7 @@ function deleteAdList(operaType)
 				                	
 				                },
 				                error: function (XMLHttpRequest, textStatus, errorThrown) {
-				                    window.parent.location.href = contextPath + "/error.jsp";
+				                    window.parent.location.href = contextPath + "/menu/error.action";
 				                }
 				           });
 				        	
@@ -1589,7 +1591,7 @@ function publishAdList(operaType)
 				                	
 				                },
 				                error: function (XMLHttpRequest, textStatus, errorThrown) {
-				                    window.parent.location.href = contextPath + "/error.jsp";
+				                    window.parent.location.href = contextPath + "/menu/error.action";
 				                }
 				           });
 				        	
@@ -1719,7 +1721,7 @@ function getLoginuserRole()
         	returnArr.push(city);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-        		window.parent.location.href = contextPath + "/error.jsp";
+        		window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 	
