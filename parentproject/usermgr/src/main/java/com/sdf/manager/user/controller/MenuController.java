@@ -139,6 +139,19 @@ public class MenuController extends GlobalExceptionHandler{
 	 * 通行证组管理菜单
 	 * @return
 	 */
+	@RequestMapping(value = "/logout.action", method = RequestMethod.GET)
+	public String logout()
+	{
+		String indexPage = "index";
+		
+		
+		return indexPage;
+	}
+	
+	/**
+	 * 通行证组管理菜单
+	 * @return
+	 */
 	@RequestMapping(value = "/userGroupManage.action", method = RequestMethod.GET)
 	public String userGroupManage()
 	{
@@ -155,7 +168,7 @@ public class MenuController extends GlobalExceptionHandler{
 	@RequestMapping(value = "/roleManage.action", method = RequestMethod.GET)
 	public String roleManage()
 	{
-		String indexPage = "user/roleManage";
+		String indexPage = "index";
 		
 		
 		return indexPage;

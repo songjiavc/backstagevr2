@@ -14,7 +14,7 @@
 	
 	
 	<jsp:include page="common/top.jsp" flush="true" />
-	<link rel="stylesheet" href="css/indexStyle.css">
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/indexStyle.css">
 
   </head>
   
