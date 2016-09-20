@@ -43,7 +43,7 @@ public class WeixinDaoImpl implements WeixinDao
 		
 		StringBuffer sql = new StringBuffer("SELECT * FROM ");
 		//连接表名
-		sql.append(" "+tableName + " ORDER BY CREATE_TIME DESC ");
+		sql.append(" "+tableName + " WHERE ORIGIN = '9'  ORDER BY CREATE_TIME DESC ");// 是补录数据
 		
        /*
         * //1.测试查询sql
@@ -63,7 +63,7 @@ public class WeixinDaoImpl implements WeixinDao
 		
 		int pageAll = this.getAllPageNum(sql.toString());//获取数据总数
 		
-		sql.append(" LIMIT "+(page-1)*rows+","+(rows*page));//放置分页参数
+		sql.append(" LIMIT "+(page-1)*rows+","+rows);//放置分页参数，limit m,n：n是指从第m+1条开始，取n条；其中m是指记录开始的index，从0开始，表示第一条记录
 		
 		returnData.put("totalRecord", pageAll);//放置数据总数
 		returnData.put("resultList", jdbcTemplate.queryForList(sql.toString()));//放置数据总数
