@@ -43,7 +43,7 @@ public class WeixinDaoImpl implements WeixinDao
 		
 		StringBuffer sql = new StringBuffer("SELECT * FROM ");
 		//连接表名
-		sql.append(" "+tableName + " WHERE ORIGIN = '9'  ORDER BY CREATE_TIME DESC ");// 是补录数据
+		sql.append(" "+tableName + "   ORDER BY CREATE_TIME DESC ");// WHERE ORIGIN = '9'是补录数据
 		
        /*
         * //1.测试查询sql
