@@ -22,7 +22,6 @@
 		$(document).ready(function()
 				{
 					var alertmsg = getQueryString('alertmsg');
-					//var alertmsg = $("#alertmsg").val();
 					if(null != alertmsg)
 						{
 							var msg = "";
@@ -64,7 +63,6 @@
 
 </head>
 <body  style=" background-image: url('<%=request.getContextPath() %>/images/1.jpg'); background-repeat: repeat;width:100%;height:100%; margin:0; padding:0;">
-	<input type="hidden" id="alertmsg">
 	<div  id="top">
 		<div style="margin-top:10px;margin-left:20px;">后台数据管理平台</div>
 		
