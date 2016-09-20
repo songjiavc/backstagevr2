@@ -140,11 +140,12 @@ public class MenuController extends GlobalExceptionHandler{
 	 * @return
 	 */
 	@RequestMapping(value = "/logout.action", method = RequestMethod.GET)
-	public String logout()
+	public String logout(@RequestParam(value="alertmsg",required=false) String alertmsg,
+			ModelMap model)
 	{
 		String indexPage = "index";
 		
-		
+		model.addAttribute("alertmsg", alertmsg);
 		return indexPage;
 	}
 	
