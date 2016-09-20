@@ -96,7 +96,7 @@ function logout()
 {
 	$.messager.confirm('系统提示','您确认退出吗?',function(r){
 	    if (r){
-	    	window.location.href=contextPath+"/index.jsp";
+	    	window.location.href=contextPath;
 	    }
 	});
 	
