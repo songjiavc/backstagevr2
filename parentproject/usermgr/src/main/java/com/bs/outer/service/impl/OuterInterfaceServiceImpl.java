@@ -357,7 +357,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 }
 
 	public List<Fast3> getKaijiangNumberListByProvinceNumber(String provinceNumber){
-		String tableName = "analysis.T_ANHUI_KUAI3_NUMBER";
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("kuai3number");
 		String execSql = "SELECT \n    p.*\nFROM\n    (SELECT \n        u.*\n    FROM\n        "+ tableName +" u\n    ORDER BY u.issue_number DESC\n    LIMIT 200) p\nORDER BY p.issue_number ASC";
 		Object[] queryParams = new Object[]{
 		};
@@ -369,7 +369,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 * @see com.bs.outer.service.OuterInterfaceService#getKaiJiangNumberByIssueId(java.lang.Class, java.lang.String, java.lang.String)
 	 */
 	public Fast3 getKaiJiangNumberByIssueId(String issueNumber,String provinceNumber) {
-		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[0];
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("kuai3number");
 		String execSql = "SELECT u.* FROM "+tableName +" u  WHERE ISSUE_NUMBER > ? LIMIT 1 ";
 		Object[] queryParams = new Object[]{
 				issueNumber
@@ -379,7 +379,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	}
 	
 	public List<Fast3Analysis> getAnalysisListByIssueNumber(String issueNumber,String provinceNumber){
-		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[1];
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("kuai3missanalysis");
 		String execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM "+tableName +" WHERE ISSUE_NUMBER > ? ORDER BY TYPE,CURRENT_MISS DESC; ";
 		Object[] queryParams = new Object[]{
 				issueNumber
@@ -395,7 +395,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 * @return
 	 */
 	public List<Fast3DanMa> getInitDanmaList(String issueNumber,String provinceNumber){
-		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[2];
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("kuai3danma");
 		String where = null;
 		if(StringUtils.isEmpty(issueNumber)){
 			where = " ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
@@ -416,7 +416,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 * @return
 	 */
 	public List<Fast3DanMa> get5In11InitDanmaList(String issueNumber,String provinceNumber){
-		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[4];
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in11danma");
 		String where = null;
 		if(StringUtils.isEmpty(issueNumber)){
 			where = " ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
@@ -437,7 +437,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 * @return
 	 */
 	public List<Fast3DanMa> get5In12InitDanmaList(String issueNumber,String provinceNumber){
-		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[8];
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in12danma");
 		String where = null;
 		if(StringUtils.isEmpty(issueNumber)){
 			where = " ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
@@ -454,7 +454,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 
 
 	public List<Fast3SiMa> getInitSimaList(int siMaId, String provinceNumber) {
-		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[3];
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("kuai3sima");
 		String where = null;
 		if(siMaId == 0){
 			where = " ORDER BY CREATE_TIME DESC LIMIT 10 ";
@@ -476,7 +476,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 * @return
 	 */
 	public List<Fast3SiMa> get5In11InitSimaList(int siMaId, String provinceNumber) {
-		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[5];
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in11sima");
 		String where = null;
 		if(siMaId == 0){
 			where = " ORDER BY CREATE_TIME DESC LIMIT 10 ";
@@ -498,7 +498,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 * @return
 	 */
 	public List<Fast3SiMa> get5In12InitSimaList(int siMaId, String provinceNumber) {
-		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[9];
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in12sima");
 		String where = null;
 		if(siMaId == 0){
 			where = " ORDER BY CREATE_TIME DESC LIMIT 10 ";
@@ -518,7 +518,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 * @see com.bs.outer.service.OuterInterfaceService#getInitSameList(java.lang.String, java.lang.String)
 	 */
 	public List<Fast3Same> getInitSameList(String issueNumber, String provinceNumber) {
-		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[4];
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("kuai3samenumber");
 		String where = null;
 		if(StringUtils.isEmpty(issueNumber)){
 			where = " ORDER BY CURRENT_ISSUE DESC LIMIT 10 ";
@@ -536,7 +536,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 * @see com.bs.outer.service.OuterInterfaceService#getInitSameList(java.lang.String, java.lang.String)
 	 */
 	public List<Fast3Same> get5In11InitSameList(String issueNumber, String provinceNumber) {
-		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[6];
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in11samenumber");
 		String where = null;
 		if(StringUtils.isEmpty(issueNumber)){
 			where = " ORDER BY CURRENT_ISSUE DESC LIMIT 10 ";
@@ -552,14 +552,14 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 
 	public List<HotCoolBean> getHotCoolList(String issueNumber, String provinceNumber) {
 		List<HotCoolBean> hotList = new ArrayList<HotCoolBean>();
-		String tbName1 = "analysis."+globalCacheService.getCacheMap(provinceNumber)[12];
+		String tbName1 = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in11follownumberlastissue");
 		String selSql = "SELECT ISSUE_NUMBER FROM " + tbName1;
 		Object[] queryParams = new Object[]{
 		};
 		FollowLastIssueBean dsIssueNumber = followLastIssueRepository.getEntityBySql(FollowLastIssueBean.class,selSql,queryParams);
 		if(StringUtils.isEmpty(issueNumber) || !dsIssueNumber.equals(issueNumber)){
 			//获取所有follow列表，而后进行加工
-			String tbName2 = "analysis."+globalCacheService.getCacheMap(provinceNumber)[7];
+			String tbName2 = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in11follownumber");
 			String selSql2 = "SELECT * FROM " + tbName2;
 			Object[] param = new Object[]{
 			};
@@ -645,7 +645,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 * @see com.bs.outer.service.OuterInterfaceService#getInitSameList(java.lang.String, java.lang.String)
 	 */
 	public List<Fast3Same> get5In12InitSameList(String issueNumber, String provinceNumber) {
-		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[4];
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in12samenumber");
 		String where = null;
 		if(StringUtils.isEmpty(issueNumber)){
 			where = " ORDER BY CURRENT_ISSUE DESC LIMIT 10 ";
@@ -685,7 +685,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 * @see com.bs.outer.service.OuterInterfaceService#getLn5In12Last3DaysList()
 	 */
 	public List<Ln5In12Bean> get5In12LastRecord100List(String provinceNumber){
-		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[2];
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in12number");
 		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM "+ tableName+" ORDER BY ISSUE_NUMBER DESC LIMIT 300";
 		Object[] queryParams = new Object[]{
 		};
@@ -698,7 +698,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 * @see com.bs.outer.service.OuterInterfaceService#getLn5In12Last3DaysList()
 	 */
 	public List<Ln5In12Bean> get5In11LastRecord100List(String provinceNumber){
-		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[0];
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in11number");
 		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM "+ tableName+" ORDER BY ISSUE_NUMBER DESC LIMIT 300";
 		Object[] queryParams = new Object[]{
 		};
@@ -707,7 +707,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	}
 	
 	public List<Ln5In12Bean> get5In12ListByIssueNumber(String issueNumber,String provinceNumber){
-		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[2];
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in12number");
 		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM " + tableName + " WHERE ISSUE_NUMBER > ?" ;
 		Object[] queryParams = new Object[]{
 				issueNumber
@@ -717,7 +717,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	}
 	
 	public List<Ln5In12Bean> get5In11ListByIssueNumber(String issueNumber,String provinceNumber){
-		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[0];
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in11number");
 		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM " + tableName + " WHERE ISSUE_NUMBER > ?" ;
 		Object[] queryParams = new Object[]{
 				issueNumber
@@ -754,7 +754,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 */
 	public Fast3Analysis get5In11MissAnalysisByTypeAndGroup(String type,String group,String provinceNumber){
 		Fast3Analysis fast3Analysis = null;
-		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[1];
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in11missanalysis");
 		String execSql = null;
 		int groupLength = group.length();
 		if("1".equals(type)){
@@ -802,7 +802,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 */
 	public Fast3Analysis get5In12MissAnalysisByTypeAndGroup(String type,String group,String provinceNumber){
 		Fast3Analysis fast3Analysis = null;
-		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[3];
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in12missanalysis");
 		String execSql = null;
 		int groupLength = group.length();
 		if("1".equals(type)){
@@ -848,7 +848,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 *    获取所有的遗漏统计结果
 	 */
 	private List<Fast3Analysis> get5In11AllMissAnalysis(String issueNumber,String provinceNumber){
-		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[1];
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in11missanalysis");
 		//String tableName = "analysis.T_LN_5IN11_MISSANALYSIS";
 		String execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE ISSUE_NUMBER > ?  ORDER BY TYPE,CURRENT_MISS DESC;"  ;
 		Object[] queryParams = new Object[]{
@@ -886,7 +886,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 *    获取所有的遗漏统计结果
 	 */
 	private List<Fast3Analysis> get5In12AllMissAnalysis(String issueNumber,String provinceNumber){
-		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber)[3];
+		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in12missanalysis");
 		//String tableName = "analysis.T_LN_5IN11_MISSANALYSIS";
 		String execSql = "SELECT ID,ISSUE_NUMBER,GROUP_NUMBER,CURRENT_MISS,MAX_MISS,TYPE FROM " + tableName + " WHERE ISSUE_NUMBER > ?  ORDER BY TYPE,CURRENT_MISS DESC;"  ;
 		Object[] queryParams = new Object[]{
