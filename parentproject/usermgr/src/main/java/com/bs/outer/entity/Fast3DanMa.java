@@ -16,10 +16,10 @@ public class Fast3DanMa{
 	private String issueNumber;
 	
 	@Column(name="DANMA_ONE")
-	private Integer danmaOne;
+	private String danmaOne;
 	
 	@Column(name="DANMA_TWO")
-	private Integer danmaTwo;
+	private String danmaTwo;
 	
 	@Column(name="DROWN_NUMBER")
 	private String drownNumber;
@@ -46,19 +46,20 @@ public class Fast3DanMa{
 		this.issueNumber = issueNumber;
 	}
 
-	public Integer getDanmaOne() {
+
+	public String getDanmaOne() {
 		return danmaOne;
 	}
 
-	public void setDanmaOne(Integer danmaOne) {
-		this.danmaOne = danmaOne;
-	}
-
-	public Integer getDanmaTwo() {
+	public String getDanmaTwo() {
 		return danmaTwo;
 	}
 
-	public void setDanmaTwo(Integer danmaTwo) {
+	public void setDanmaOne(String danmaOne) {
+		this.danmaOne = danmaOne;
+	}
+
+	public void setDanmaTwo(String danmaTwo) {
 		this.danmaTwo = danmaTwo;
 	}
 

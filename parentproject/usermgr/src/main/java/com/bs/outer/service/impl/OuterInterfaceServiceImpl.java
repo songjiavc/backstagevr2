@@ -309,7 +309,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		    		{
 		    			execSql.append(" WHERE CREATE_TIME>'"+ct+"' ");
 		    		}
-		    		execSql.append(" ORDER BY ISSUE_NUMBER DESC LIMIT 300");
+		    		execSql.append(" ORDER BY ISSUE_NUMBER DESC LIMIT ");
 			Object[] queryParams = new Object[]{
 			};
 		    List<QiLeCai> qiLeCaieDList =qiLeCaiRepository.getEntityListBySql(QiLeCai.class,execSql.toString(), queryParams);
@@ -329,7 +329,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 		{
 	 			execSql.append(" WHERE CREATE_TIME>'"+ct+"' ");
 	 		}
-	 		execSql.append(" ORDER BY ISSUE_NUMBER DESC LIMIT 300");
+	 		execSql.append(" ORDER BY ISSUE_NUMBER DESC LIMIT ");
 			Object[] queryParams = new Object[]{
 			};
 			List<ThreeD> threeDList =threeDRepository.getEntityListBySql(ThreeD.class,execSql.toString(), queryParams);
@@ -358,7 +358,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 
 	public List<Fast3> getKaijiangNumberListByProvinceNumber(String provinceNumber){
 		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("kuai3number");
-		String execSql = "SELECT \n    p.*\nFROM\n    (SELECT \n        u.*\n    FROM\n        "+ tableName +" u\n    ORDER BY u.issue_number DESC\n    LIMIT 200) p\nORDER BY p.issue_number ASC";
+		String execSql = "SELECT \n    p.*\nFROM\n    (SELECT \n        u.*\n    FROM\n        "+ tableName +" u\n    ORDER BY u.issue_number DESC\n    LIMIT 300) p\nORDER BY p.issue_number ASC";
 		Object[] queryParams = new Object[]{
 		};
 		List<Fast3> fast3List = fast3NumberRepository.getEntityListBySql(Fast3.class,execSql, queryParams);
@@ -672,7 +672,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	
 	
 	public List<Ln5In12Bean> getLn5In12ListByIssueNumber(String issueNumber){
-		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM analysis.T_LN_5IN12_NUMBER WHERE ISSUE_NUMBER > ?  LIMIT 300" ;
+		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM analysis.T_LN_5IN12_NUMBER WHERE ISSUE_NUMBER > ?  LIMIT " ;
 		Object[] queryParams = new Object[]{
 				issueNumber
 		};
@@ -686,7 +686,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 */
 	public List<Ln5In12Bean> get5In12LastRecord100List(String provinceNumber){
 		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in12number");
-		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM "+ tableName+" ORDER BY ISSUE_NUMBER DESC LIMIT 300";
+		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM "+ tableName+" ORDER BY ISSUE_NUMBER DESC LIMIT ";
 		Object[] queryParams = new Object[]{
 		};
 		List<Ln5In12Bean> ln5In12List =ln5In12Repository.getEntityListBySql(Ln5In12Bean.class,execSql, queryParams);
@@ -699,7 +699,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 */
 	public List<Ln5In12Bean> get5In11LastRecord100List(String provinceNumber){
 		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in11number");
-		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM "+ tableName+" ORDER BY ISSUE_NUMBER DESC LIMIT 300";
+		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM "+ tableName+" ORDER BY ISSUE_NUMBER DESC LIMIT ";
 		Object[] queryParams = new Object[]{
 		};
 		List<Ln5In12Bean> ln5In12List =ln5In12Repository.getEntityListBySql(Ln5In12Bean.class,execSql, queryParams);
@@ -932,7 +932,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	}
 	
 	 public List<ShuangSQ> getShuangSQNumByIssueNumber(){
-		 String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5,NO6,NO7 FROM analysis.T_DATA_BASE_SHUANG ORDER BY ISSUE_NUMBER DESC  LIMIT 300" ;
+		 String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5,NO6,NO7 FROM analysis.T_DATA_BASE_SHUANG ORDER BY ISSUE_NUMBER DESC  LIMIT " ;
 			Object[] queryParams = new Object[]{
 			};
 			List<ShuangSQ> shuangSQList = shuangSQRepository.getEntityListBySql(ShuangSQ.class,execSql, queryParams);
@@ -944,7 +944,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 * @return
 	 */ 
 	  public List<ThreeD> get3DNumByIssueNumber(){
-		  String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,TEST_NUM FROM analysis.T_DATA_BASE_3D ORDER BY ISSUE_NUMBER DESC LIMIT 300" ;
+		  String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,TEST_NUM FROM analysis.T_DATA_BASE_3D ORDER BY ISSUE_NUMBER DESC LIMIT " ;
 			Object[] queryParams = new Object[]{
 			};
 			List<ThreeD> threeDList =threeDRepository.getEntityListBySql(ThreeD.class,execSql, queryParams);
@@ -956,7 +956,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	    * @return
 	    */
 	  public List<QiLeCai> getQiLeCaiNumByIssueNumber(){
-		    String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5,NO6,NO7,NO8 FROM analysis.T_DATA_BASE_QILECAI ORDER BY ISSUE_NUMBER DESC LIMIT 300" ;
+		    String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5,NO6,NO7,NO8 FROM analysis.T_DATA_BASE_QILECAI ORDER BY ISSUE_NUMBER DESC LIMIT " ;
 			Object[] queryParams = new Object[]{
 			};
 			List<QiLeCai> qiLeCaieDList =qiLeCaiRepository.getEntityListBySql(QiLeCai.class,execSql, queryParams);
