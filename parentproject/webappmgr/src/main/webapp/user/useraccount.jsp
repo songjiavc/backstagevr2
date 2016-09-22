@@ -105,7 +105,7 @@
 	        <div class="ftitle">
 	            <label for="lotteryTypeA" >用户类型:</label>
 		    			<select class="easyui-combobox" id="lotteryTypeA" name="lotteryType" style="width:200px;">
-							<option value="">全部</option>
+							<option value="0" selected>全部</option>
 							<option value="1" >体彩</option>
 							<option value="2">福彩</option>
 						</select>
