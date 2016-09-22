@@ -277,6 +277,9 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			
 			station.setPassword(password);
 			
+			station.setModify(station.getCode());//若站点修改密码则修改人放置站点code
+			station.setModifyTime(new Timestamp(System.currentTimeMillis()));
+			
 			stationService.update(station);
 			
 			

@@ -30,7 +30,8 @@
 								case '0':msg="当前登录名不存在，请确认后登录!";break;
 								case '1':msg="登录密码不可以为空!";break;
 								case '2':msg="登录密码不正确，请确认后登录!";break;
-								default:msg="登录信息错误，请确认后登录!";
+								case '3':msg="安全退出!";break;
+								//default:msg="安全退出!";
 							}
 							$("#err").html(msg);
 						}
@@ -61,8 +62,7 @@
 </style>
 
 </head>
-<body  style=" background-image: url('images/1.jpg'); background-repeat: repeat;width:100%;height:100%; margin:0; padding:0;">
-	
+<body  style=" background-image: url('<%=request.getContextPath() %>/images/1.jpg'); background-repeat: repeat;width:100%;height:100%; margin:0; padding:0;">
 	<div  id="top">
 		<div style="margin-top:10px;margin-left:20px;">后台数据管理平台</div>
 		

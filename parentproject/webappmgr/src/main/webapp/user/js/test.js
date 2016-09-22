@@ -41,7 +41,7 @@ $(function() {
 	else
 		{
 			//登录失败，跳转回登录页
-			window.location.href=contextPath+"/index.jsp?alertmsg="+message;
+			window.location.href=contextPath + "/menu/logout.action?alertmsg="+message;
 		}
 	
 	
@@ -96,7 +96,8 @@ function logout()
 {
 	$.messager.confirm('系统提示','您确认退出吗?',function(r){
 	    if (r){
-	    	window.location.href=contextPath + '/menu/logout.action';
+	    	var message = '3';
+	    	window.location.href=contextPath + '/menu/logout.action?alertmsg='+message;
 	    }
 	});
 	
