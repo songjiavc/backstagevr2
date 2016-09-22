@@ -169,7 +169,7 @@ public class MenuController extends GlobalExceptionHandler{
 	@RequestMapping(value = "/roleManage.action", method = RequestMethod.GET)
 	public String roleManage()
 	{
-		String indexPage = "index";
+		String indexPage = "user/roleManage";
 		
 		
 		return indexPage;
