@@ -179,6 +179,9 @@ public class OrderController extends GlobalExceptionHandler
 				@RequestParam(value="page",required=false) int page,
 				@RequestParam(value="rows",required=false) int rows,
 				@RequestParam(value="orderName",required=false) String orderName,//模糊查询填写的订单名称
+				@RequestParam(value="isProxy",required=false) boolean isProxy,//当前获取订单数据的登录用户是否为“代理”
+				@RequestParam(value="isFinancialManager",required=false) boolean isFinancialManager,//当前获取订单数据的登录用户是否为“财务管理员”
+				@RequestParam(value="currentId",required=false) String currentId,//模糊查询填写的订单名称
 				ModelMap model,HttpSession httpSession) throws Exception
 		{
 			Map<String,Object> returnData = new HashMap<String,Object> ();
@@ -199,6 +202,18 @@ public class OrderController extends GlobalExceptionHandler
 				params.add("%"+orderName+"%");//根据订单名称模糊查询
 				buffer.append(" and name like ?").append(params.size());
 			}
+			
+			//判断是否为“代理”或者“财务管理员”，来处理返回数据
+			if(isProxy)
+			{//若为代理用户登录获取订单数据，则只获取当前代理创建的订单
+				params.add(currentId);//只查询有效的数据
+				buffer.append(" and creater = ?").append(params.size());
+			}
+			else
+				if(isFinancialManager)
+				{//TODO:若为“财务管理员”，则获取其下属专员对应的代理所发布的订单数据
+					
+				}
 			
 			
 			//排序

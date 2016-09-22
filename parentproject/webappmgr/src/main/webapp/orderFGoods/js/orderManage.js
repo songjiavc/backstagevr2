@@ -162,8 +162,16 @@ function closeDialog()
  */
 function initDatagrid()
 {
+	var roleArr = getLoginuserRole();//获取当前登录用户的角色(财务/代理)
+	var isProxy = roleArr[0];//是否拥有代理角色
+	var isFinancialManager = roleArr[1];//是否拥有财务管理员角色
+	var currentId = roleArr[2];
+	
 	var params = new Object();
 	params.orderName = $("#orderNameC").val().trim();
+	params.isProxy = isProxy;
+	params.isFinancialManager = isFinancialManager;
+	params.currentId = currentId;
 	
 	$('#datagrid').datagrid({
 		singleSelect:false,
@@ -206,14 +214,11 @@ function initDatagrid()
 				{field:'opt',title:'操作',width:200,align:'center',  
 		            formatter:function(value,row,index){  
 		            	
-		            	var roleArr = getLoginuserRole();
-		            	var isProxy = roleArr[0];//是否拥有代理角色
-		            	var isFinancialManager = roleArr[1];//是否拥有财务管理员角色
-		            	var currentId = roleArr[2];
+		            	
 		            	var status = row.status;
 		            	var ordercreater = row.creater;
 		                var btn = ''
-		                	if(isProxy && ('01'==status||'02'==status) && currentId==ordercreater)//当前角色为“代理”且订单状态为“代理保存订单”或“财务管理员驳回”时，显示以下按钮
+		                	if(isProxy && ('01'==status||'02'==status) /*&& currentId==ordercreater*/)//当前角色为“代理”且订单状态为“代理保存订单”或“财务管理员驳回”时，显示以下按钮
 		                		{
 		                			btn=btn+'<a class="editcls" onclick="updateOrders(&quot;'+row.id+'&quot;)" href="javascript:void(0)" title="编辑">编辑</a>'//代理编辑
 				                	+'<a class="deleterole" onclick="deleteOrders(&quot;'+row.id+'&quot;)" href="javascript:void(0)" title="删除">删除</a>'//代理删除
