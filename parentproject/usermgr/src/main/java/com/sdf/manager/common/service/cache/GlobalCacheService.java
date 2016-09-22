@@ -1,5 +1,7 @@
 package com.sdf.manager.common.service.cache;
 
+import java.util.Map;
+
 /** 
   * @ClassName: GlobalCacheService 
   * @Description: 全局缓存内容,目前缓存map 
@@ -16,15 +18,9 @@ public interface GlobalCacheService{
       * 
       * @return 
       */
-    public String[] getCacheMap(String key);
+    public Map<String,String> getCacheMap(String key);
     
-    /** 
-      * @Description: 增加内存map
-      * @author songj@sdfcp.com
-      * @date 2014年12月9日 下午3:33:28 
-      *  
-      */
-    public void setCacheMap(String key,String value[]);
+   
    
 } 
 
