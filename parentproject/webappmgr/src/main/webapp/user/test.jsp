@@ -62,7 +62,7 @@
         <div id="tabs" class="easyui-tabs"  fit="true" border="false" >
 			<div title="欢迎使用" style="padding:20px;overflow:hidden;" id="home">
 				
-			<h1>欢迎进入时代枫企业管理平台</h1>
+			<h1>欢迎进入佰艺霖企业管理平台</h1>
 
 			</div>
 		</div>
