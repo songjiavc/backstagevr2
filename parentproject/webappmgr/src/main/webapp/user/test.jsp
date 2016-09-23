@@ -45,8 +45,8 @@
          <span style="float:right; padding-right:20px;" class="head"> 
          		当前登录用户：<span id="loginuser">admin</span>
          </span>
-
-        <span style="padding-left:10px; font-size: 36px; float:left;font-family:隶书;">后台数据管理平台</span>
+		<img alt="" src="<%=request.getContextPath() %>/images/clogo.png" style="float:left;">
+        <span style="padding-left:10px; font-size: 36px; float:left;font-family:隶书;">企业数据管理平台</span>
     </div>
     <div region="south" split="false" style="height: 30px; background: #D2E0F2; ">
         <div class="footer"><center>后台数据管理平台@2016</center></div>
@@ -58,11 +58,10 @@
 			</div>
 
     </div>
-    <div id="mainPanle" region="center" style="background: #eee; overflow-y:hidden">
+    <div id="mainPanle" region="center" style="background: #eee; overflow-y:hidden;">
         <div id="tabs" class="easyui-tabs"  fit="true" border="false" >
-			<div title="欢迎使用" style="padding:20px;overflow:hidden;" id="home">
-				
-			<h1>欢迎进入佰艺霖企业管理平台</h1>
+			<div title="欢迎使用" style="padding:20px;overflow:hidden; " id="home">
+			<div style="font-size:70px;text-shadow: 0 1px 1px rgba(1,1,1,10);    box-shadow: 0px 5px 60px deepskyblue;    border-radius: 30px;color: deepskyblue;font-family: 隶书;width: 55%;margin-left:auto;margin-right:auto;    position: relative;    top: 30%;">欢迎进入佰艺霖企业管理平台</div>
 
 			</div>
 		</div>
