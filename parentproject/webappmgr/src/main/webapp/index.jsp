@@ -15,7 +15,7 @@
 	
 	<jsp:include page="common/top.jsp" flush="true" />
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/indexStyle.css">
-
+  <link rel="shortcut icon" href="<%=request.getContextPath() %>/images/favicon.ico">
   </head>
   
     <script >
