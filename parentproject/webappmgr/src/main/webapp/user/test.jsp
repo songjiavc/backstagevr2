@@ -6,6 +6,7 @@
     
     <title>后台数据管理平台</title>
 	 <jsp:include page="../common/top.jsp" flush="true" /> 
+	   <link rel="shortcut icon" href="<%=request.getContextPath() %>/images/favicon.ico">
 	  <script type="text/javascript">
 	 
         //设置登录窗口
@@ -26,7 +27,9 @@
         }
     </script>
 
-<script type="text/javascript" src="<%=request.getContextPath() %>/user/js/test.js"></script>  
+<script type="text/javascript" src="<%=request.getContextPath() %>/user/js/test.js"></script> 
+
+ 
 </head>
 <body class="easyui-layout" style="overflow-y: hidden"  scroll="no">
 <!-- message中存放的是登录信息 -->

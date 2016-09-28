@@ -309,7 +309,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		    		{
 		    			execSql.append(" WHERE CREATE_TIME>'"+ct+"' ");
 		    		}
-		    		execSql.append(" ORDER BY ISSUE_NUMBER DESC LIMIT ");
+		    		execSql.append(" ORDER BY ISSUE_NUMBER DESC LIMIT 300");
 			Object[] queryParams = new Object[]{
 			};
 		    List<QiLeCai> qiLeCaieDList =qiLeCaiRepository.getEntityListBySql(QiLeCai.class,execSql.toString(), queryParams);
@@ -329,7 +329,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 		{
 	 			execSql.append(" WHERE CREATE_TIME>'"+ct+"' ");
 	 		}
-	 		execSql.append(" ORDER BY ISSUE_NUMBER DESC LIMIT ");
+	 		execSql.append(" ORDER BY ISSUE_NUMBER DESC LIMIT 300");
 			Object[] queryParams = new Object[]{
 			};
 			List<ThreeD> threeDList =threeDRepository.getEntityListBySql(ThreeD.class,execSql.toString(), queryParams);
