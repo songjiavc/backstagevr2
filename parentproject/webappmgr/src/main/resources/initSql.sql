@@ -106,3 +106,51 @@ insert into `T_BS_STATION_AD_NEXT_STATUS` (`ID`, `current_status_id`, `direction
 insert into `T_BS_STATION_AD_NEXT_STATUS` (`ID`, `current_status_id`, `direction_flag`, `next_status_id`) values('3','11','1','21');
 insert into `T_BS_STATION_AD_NEXT_STATUS` (`ID`, `current_status_id`, `direction_flag`, `next_status_id`) values('4','11','0','02');
 
+
+/*
+ * 初始化审批专家发布图谜字谜状态表数据
+ */
+INSERT INTO `T_BYL_FIGURE_AND_PUZZLE_APP_STATUS` (`ID`, `IS_PARENT`, `PARENT_STATUS`, `STATUS_ID`, `STATUS_NAME`) VALUES('1','1',NULL,'00','专家发布图谜字谜');
+INSERT INTO `T_BYL_FIGURE_AND_PUZZLE_APP_STATUS` (`ID`, `IS_PARENT`, `PARENT_STATUS`, `STATUS_ID`, `STATUS_NAME`) VALUES('2','0','1','01','专家保存图谜字谜');
+INSERT INTO `T_BYL_FIGURE_AND_PUZZLE_APP_STATUS` (`ID`, `IS_PARENT`, `PARENT_STATUS`, `STATUS_ID`, `STATUS_NAME`) VALUES('3','0','1','02','公司驳回专家图谜字谜');
+INSERT INTO `T_BYL_FIGURE_AND_PUZZLE_APP_STATUS` (`ID`, `IS_PARENT`, `PARENT_STATUS`, `STATUS_ID`, `STATUS_NAME`) VALUES('4','1',NULL,'10','公司审批专家图谜字谜');
+INSERT INTO `T_BYL_FIGURE_AND_PUZZLE_APP_STATUS` (`ID`, `IS_PARENT`, `PARENT_STATUS`, `STATUS_ID`, `STATUS_NAME`) VALUES('5','0','4','11','提交公司审批');
+INSERT INTO `T_BYL_FIGURE_AND_PUZZLE_APP_STATUS` (`ID`, `IS_PARENT`, `PARENT_STATUS`, `STATUS_ID`, `STATUS_NAME`) VALUES('6','1',NULL,'20','审批完成');
+INSERT INTO `T_BYL_FIGURE_AND_PUZZLE_APP_STATUS` (`ID`, `IS_PARENT`, `PARENT_STATUS`, `STATUS_ID`, `STATUS_NAME`) VALUES('7','0','6','21','审批完成发布图谜字谜');
+INSERT INTO `T_BYL_FIGURE_AND_PUZZLE_APP_STATUS` (`ID`, `IS_PARENT`, `PARENT_STATUS`, `STATUS_ID`, `STATUS_NAME`) VALUES('8','1',NULL,'30','不通过');
+INSERT INTO `T_BYL_FIGURE_AND_PUZZLE_APP_STATUS` (`ID`, `IS_PARENT`, `PARENT_STATUS`, `STATUS_ID`, `STATUS_NAME`) VALUES('9','0','8','31','审批不通过');
+
+
+/*
+ * 初始化审批专家发布图谜字谜状态流程表数据
+ */
+INSERT INTO `T_BYL_FIGURE_AND_PUZZLE_NEXT_STATUS` (`ID`, `CURRENT_STATUS_ID`, `DIRECTION_FLAG`, `NEXT_STATUS_ID`) VALUES('1','01','1','11');
+INSERT INTO `T_BYL_FIGURE_AND_PUZZLE_NEXT_STATUS` (`ID`, `CURRENT_STATUS_ID`, `DIRECTION_FLAG`, `NEXT_STATUS_ID`) VALUES('2','02','1','11');
+INSERT INTO `T_BYL_FIGURE_AND_PUZZLE_NEXT_STATUS` (`ID`, `CURRENT_STATUS_ID`, `DIRECTION_FLAG`, `NEXT_STATUS_ID`) VALUES('3','11','1','21');
+INSERT INTO `T_BYL_FIGURE_AND_PUZZLE_NEXT_STATUS` (`ID`, `CURRENT_STATUS_ID`, `DIRECTION_FLAG`, `NEXT_STATUS_ID`) VALUES('4','11','0','02');
+
+/*
+ *初始化代理提交订单状态流程表数据
+ */
+insert  into `T_SDF_ORDER_NEXT_STATUS`(`id`,`current_status_id`,`next_status_id`,`direction_flag`) values (1,'01','11','1');
+insert  into `T_SDF_ORDER_NEXT_STATUS`(`id`,`current_status_id`,`next_status_id`,`direction_flag`) values (2,'02','11','1');
+insert  into `T_SDF_ORDER_NEXT_STATUS`(`id`,`current_status_id`,`next_status_id`,`direction_flag`) values (3,'11','21','1');
+insert  into `T_SDF_ORDER_NEXT_STATUS`(`id`,`current_status_id`,`next_status_id`,`direction_flag`) values (4,'11','02','0');
+
+/*
+ *初始化代理提交订单状态表数据 
+ */
+
+insert  into `T_SDF_ORDER_STATUS`(`id`,`statusId`,`statusName`,`isParent`,`parentStatus`) values (1,'00','代理录入订单',1,NULL);
+insert  into `T_SDF_ORDER_STATUS`(`id`,`statusId`,`statusName`,`isParent`,`parentStatus`) values (2,'01','代理保存订单',0,'1');
+insert  into `T_SDF_ORDER_STATUS`(`id`,`statusId`,`statusName`,`isParent`,`parentStatus`) values (3,'02','财务管理员驳回',0,'1');
+insert  into `T_SDF_ORDER_STATUS`(`id`,`statusId`,`statusName`,`isParent`,`parentStatus`) values (4,'10','财务管理员审批',1,NULL);
+insert  into `T_SDF_ORDER_STATUS`(`id`,`statusId`,`statusName`,`isParent`,`parentStatus`) values (5,'11','提交财务管理员审批',0,'4');
+insert  into `T_SDF_ORDER_STATUS`(`id`,`statusId`,`statusName`,`isParent`,`parentStatus`) values (6,'20','审批完成',1,NULL);
+insert  into `T_SDF_ORDER_STATUS`(`id`,`statusId`,`statusName`,`isParent`,`parentStatus`) values (7,'21','审批完成归档',0,'6');
+insert  into `T_SDF_ORDER_STATUS`(`id`,`statusId`,`statusName`,`isParent`,`parentStatus`) values (8,'30','不通过',1,NULL);
+insert  into `T_SDF_ORDER_STATUS`(`id`,`statusId`,`statusName`,`isParent`,`parentStatus`) values (9,'31','审批不通过',0,'8');
+
+
+
+
