@@ -180,6 +180,7 @@
 								<option value="3D">3D</option>
 								<option value="双色球" >双色球</option>
 								<option value="七乐彩">七乐彩</option>
+								<option value="3D试机">3D试机</option>
 							</select>
 							</div>
 				            <!-- <input class="easyui-validatebox commonInput" type="text" id="appNoticeNameA" name="appNoticeName" style="width:200px"  

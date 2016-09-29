@@ -103,7 +103,7 @@ public class GlobalCacheServiceImpl implements GlobalCacheService{
 		   put("220000",new HashMap<String,String>(){
 			   {
 				   put("kuai3number","T_JILIN_KUAI3_NUMBER");
-				   put("kuai3missanalysis","T_JILIN_5IN11_MISSANALYSIS");
+				   put("kuai3missanalysis","T_JILIN_KUAI3_MISSANALYSIS");
 				   put("kuai3sima","T_JILIN_KUAI3_SIMA");
 				   put("kuai3samenumber","T_JILIN_KUAI3_SAMENUMBER");
 				   put("kuai3danma","T_JILIN_KUAI3_DANMA");
