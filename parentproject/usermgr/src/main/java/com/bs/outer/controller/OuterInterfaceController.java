@@ -940,7 +940,8 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	/**
 	 * 
 	 * @Title: getAdsOfStationAndApp
-	 * @Description: TODO:根据通行证id和应用id获取这个通行证在这个应用中可以展示的应用广告数据
+	 * @Description: TODO:当前接口没调用，目前应用广告也是通过getStaAdsOfStationAndApp接口来获取的。
+	 * 根据通行证id和应用id获取这个通行证在这个应用中可以展示的应用广告数据
 	 * @author:banna
 	 * @return: List<AdvertisementDTO>
 	 */
