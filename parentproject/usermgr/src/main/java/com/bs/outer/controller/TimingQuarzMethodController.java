@@ -251,7 +251,7 @@ public class TimingQuarzMethodController {
 		 		
 		 		notice.setAppNoticeAndAreas(appnoticeAndAreas);
     	 		noticeService.update(notice);
-    	 		logger.info("删除开奖公告数据--id="+notice.getId()+"--操作人=sysauto");
+    	 		logger.info("删除七乐彩开奖公告数据--id="+notice.getId()+"--操作人=sysauto");
     		}
         	
         	//④生成新的开奖公告数据
@@ -300,73 +300,7 @@ public class TimingQuarzMethodController {
     	/****/////
     	
     	
-    	//2analysis.T_DATA_BASE_3D(3d)
-    	//①获取上一次的生成时间，根据“开奖公告名称”模糊查询
-    	String threeD = "3D";
-    	Date threeDct =  outerInterfaceService.getNoticeByAppNoticeName(threeD);
     	
-    	//②从analysis.T_DATA_BASE_3D(3d)获取上一次生成时间后的更新数据
-    	List<ThreeD> threelist = outerInterfaceService.get3DNumKaijiang(threeDct);
-    	
-    	if(null!=threelist && threelist.size()>0)
-    	{
-    		logger.info("addKjNotices：开始生成3D开奖公告！");
-    		//③替换之前此彩种的开奖公告
-        	List<Notice> lastlist = outerInterfaceService.getLastKjNoticeOfNoticename(threeD).getResultList();
-        	for (Notice notice : lastlist) {
-        		notice.setIsDeleted("0");
-    	 		notice.setModify("sysauto");
-    	 		notice.setModifyTime(new Timestamp(System.currentTimeMillis()));
-    	 		
-		 		
-		 		notice.setAppNoticeAndAreas(appnoticeAndAreas);
-    	 		noticeService.update(notice);
-    	 		logger.info("删除开奖公告数据--id="+notice.getId()+"--操作人=sysauto");
-    		}
-        	
-        	//④生成新的开奖公告数据
-        	
-        	   Notice  notice = new Notice();
-    		   notice.setId(UUID.randomUUID().toString());
-    		   notice.setAppNoticeName(threeD);
-    		   
-    		   ThreeD newThreeD = threelist.get(0);
-    		   StringBuffer appNoticeWord =  new StringBuffer(threeD+"开奖期号："+newThreeD.getIssueNumber() +"   开奖号码："
-    		   		+ newThreeD.getNo1()+","+newThreeD.getNo2()+","+newThreeD.getNo3());
-    		   notice.setAppNoticeWord(appNoticeWord.toString());//开奖公告内容
-    		   
-    		   notice.setLotteryType(Constants.LOTTERY_TYPE_FC);
-    		   notice.setNoticeStatus(NoticeController.NOTICE_STATUS_FB);//发布状态
-    		   
-    		   notice.setAppCategory(NoticeController.APP_CATEGORY_COMPANY_KAIJIANG);
-    		   Date st = DateUtil.formatStringToDate(DateUtil.formatCurrentDateWithYMD(), DateUtil.SIMPLE_DATE_FORMAT);
-    		   Date et = DateUtil.getNextDayOfCurrentTime(new Timestamp(System.currentTimeMillis()), 365);
-    		   
-    		   try {
-    			notice.setStartTime(DateUtil.formatDateToTimestamp(st, DateUtil.FULL_DATE_FORMAT));
-    			notice.setEndTime(DateUtil.formatDateToTimestamp(et, DateUtil.FULL_DATE_FORMAT));
-    			} catch (ParseException e) {
-    				// TODO Auto-generated catch block
-    				e.printStackTrace();
-    				System.out.println("时间转换错误");
-    				logger.error("addKjNotices方法内3D开奖公告时间转换错误!");
-    			}
-    		 
-    		   
-    		   notice.setModify("sysauto");
-    		   notice.setModifyTime(new Timestamp(System.currentTimeMillis()));
-    		   notice.setCreater("sysauto");
-    		   notice.setCreaterTime(new Timestamp(System.currentTimeMillis()));
-    		   notice.setIsDeleted("1");
-    		   
-    		   //设置开奖类公告字体颜色
-    		   notice.setNoticeFontColor("#1E90FF");
-    		   
-    		   noticeService.save(notice);//保存应用公告数据
-    		   logger.info("生成3D开奖公告：公告id="+notice.getId());
-    	}
-    	
-    	/****/////
     	
     	//3.analysis.T_DATA_BASE_SHUANG(双色球)
     	//①获取上一次的生成时间，根据“开奖公告名称”模糊查询
@@ -389,7 +323,7 @@ public class TimingQuarzMethodController {
 		 		
 		 		notice.setAppNoticeAndAreas(appnoticeAndAreas);
     	 		noticeService.update(notice);
-    	 		logger.info("删除开奖公告数据--id="+notice.getId()+"--操作人=sysauto");
+    	 		logger.info("删除双色球开奖公告数据--id="+notice.getId()+"--操作人=sysauto");
     		}
         	
         	//④生成新的开奖公告数据
@@ -438,9 +372,88 @@ public class TimingQuarzMethodController {
   	}
     
     /**
-     * 生成3D试机号开奖公告
+     * 生成3d开奖公告
      */
     @Scheduled(cron = "0 40 20 * * ? ")  //每天晚上8点40执行定时任务，0 40 20 * * ? 
+  	public void addThreeDKjNotices()
+  	{
+    	
+    	
+    	//2analysis.T_DATA_BASE_3D(3d)
+    	//①获取上一次的生成时间，根据“开奖公告名称”模糊查询
+    	String threeD = "3D";
+    	
+    	Date threeDct =  outerInterfaceService.getNoticeByAppNoticeName(threeD);
+    	
+    	//②从analysis.T_DATA_BASE_3D(3d)获取上一次生成时间后的更新数据
+    	List<AppNoticeAndArea> appnoticeAndAreas = new ArrayList<AppNoticeAndArea>();
+    	List<ThreeD> threelist = outerInterfaceService.get3DNumKaijiang(threeDct);
+    	
+    	if(null!=threelist && threelist.size()>0)
+    	{
+    		logger.info("addThreeDKjNotices：开始生成3D开奖公告！");
+    		//③替换之前此彩种的开奖公告
+        	List<Notice> lastlist = outerInterfaceService.getLastKjNoticeOfNoticename(threeD).getResultList();
+        	for (Notice notice : lastlist) {
+        		notice.setIsDeleted("0");
+    	 		notice.setModify("sysauto");
+    	 		notice.setModifyTime(new Timestamp(System.currentTimeMillis()));
+    	 		
+		 		
+		 		notice.setAppNoticeAndAreas(appnoticeAndAreas);
+    	 		noticeService.update(notice);
+    	 		logger.info("删除3D开奖公告数据--id="+notice.getId()+"--操作人=sysauto");
+    		}
+        	
+        	//④生成新的开奖公告数据
+        	
+        	   Notice  notice = new Notice();
+    		   notice.setId(UUID.randomUUID().toString());
+    		   notice.setAppNoticeName(threeD);
+    		   
+    		   ThreeD newThreeD = threelist.get(0);
+    		   StringBuffer appNoticeWord =  new StringBuffer(threeD+"开奖期号："+newThreeD.getIssueNumber() +"   开奖号码："
+    		   		+ newThreeD.getNo1()+","+newThreeD.getNo2()+","+newThreeD.getNo3());
+    		   notice.setAppNoticeWord(appNoticeWord.toString());//开奖公告内容
+    		   
+    		   notice.setLotteryType(Constants.LOTTERY_TYPE_FC);
+    		   notice.setNoticeStatus(NoticeController.NOTICE_STATUS_FB);//发布状态
+    		   
+    		   notice.setAppCategory(NoticeController.APP_CATEGORY_COMPANY_KAIJIANG);
+    		   Date st = DateUtil.formatStringToDate(DateUtil.formatCurrentDateWithYMD(), DateUtil.SIMPLE_DATE_FORMAT);
+    		   Date et = DateUtil.getNextDayOfCurrentTime(new Timestamp(System.currentTimeMillis()), 365);
+    		   
+    		   try {
+    			notice.setStartTime(DateUtil.formatDateToTimestamp(st, DateUtil.FULL_DATE_FORMAT));
+    			notice.setEndTime(DateUtil.formatDateToTimestamp(et, DateUtil.FULL_DATE_FORMAT));
+    			} catch (ParseException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    				System.out.println("时间转换错误");
+    				logger.error("addKjNotices方法内3D开奖公告时间转换错误!");
+    			}
+    		 
+    		   
+    		   notice.setModify("sysauto");
+    		   notice.setModifyTime(new Timestamp(System.currentTimeMillis()));
+    		   notice.setCreater("sysauto");
+    		   notice.setCreaterTime(new Timestamp(System.currentTimeMillis()));
+    		   notice.setIsDeleted("1");
+    		   
+    		   //设置开奖类公告字体颜色
+    		   notice.setNoticeFontColor("#1E90FF");
+    		   
+    		   noticeService.save(notice);//保存应用公告数据
+    		   logger.info("生成3D开奖公告：公告id="+notice.getId());
+    	}
+    	
+    	/****/////
+  	}
+    
+    /**
+     * 生成3D试机号开奖公告
+     */
+    @Scheduled(cron = "0 40 18 * * ? ")  //每天晚上6点40执行定时任务，0 40 20 * * ? 
   	public void addSJThreeDKjNotices()
   	{
     	//2analysis.T_DATA_BASE_3D(3d)
