@@ -251,18 +251,29 @@ public class AppUPriceController extends GlobalExceptionHandler {
 		 ResultBean resultBean = new ResultBean();
 		 
 		 AppUnitPrice appUnitPrice;
+		 String defaultAppPrice = "";//应用默认单价
 		 for (String id : ids) 
 			{
 			 	appUnitPrice = appUPriceService.getAppUnitPriceById(id);
 			 	if(null != appUnitPrice)
 			 	{
-			 		appUnitPrice.setIsDeleted("0");
+			 		/*UPDATE ON 2016-10-03:删除应用单价时不进行数据的删除，因为在添加应用时会对应的添加当前应用的省份单价
+			 		 * （即添加各个市的默认单价数据到应用单价表中，用于查询通行证的付费应用时使用）
+			 		,若删除存在的自定义单价，则要回复应用区域单价模块中变更为省份单价，即默认单价，否则无法正常显示应该付费购买的应用数据*/
+			 		appUnitPrice.setPriceType("0");//恢复为省份默认单价数据类型
 			 		appUnitPrice.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
 			 		appUnitPrice.setModifyTime(new Timestamp(System.currentTimeMillis()));
+			 		//获取当前自定义单价对应的应用的默认单价
+			 		defaultAppPrice = appUnitPrice.getApp().getAppMoney();
+			 		appUnitPrice.setUnitPrice(defaultAppPrice);
 			 		appUPriceService.update(appUnitPrice);
+			 		/*appUnitPrice.setIsDeleted("0");
+			 		appUnitPrice.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
+			 		appUnitPrice.setModifyTime(new Timestamp(System.currentTimeMillis()));
+			 		appUPriceService.update(appUnitPrice);*/
 			 		
 			 		 //日志输出
-					 logger.info("删除应用区域单价信息--应用区域单价数据id="+id+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+					 logger.info("恢复应用区域单价信息--应用区域单价数据id="+id+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
 				   
 			 	}
 			}
