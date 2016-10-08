@@ -426,6 +426,19 @@ public class MenuController extends GlobalExceptionHandler{
 	}
 	
 	/**
+	 * 图谜字谜专家管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/expertOfFMPAppManage.action", method = RequestMethod.GET)
+	public String expertOfFMPAppManage()
+	{
+		String indexPage = "figureAndPuzzleApp/expertOfFMPAppManage";
+		
+		
+		return indexPage;
+	}
+	
+	/**
 	 * 跳转到错误页
 	 * @return
 	 */
