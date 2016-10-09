@@ -24,4 +24,6 @@ public interface ExpertOfFMAPPService
 			LinkedHashMap<String, String> orderby, Pageable pageable);
 	
 	public ExpertsOfFMPAPP getExpertsOfFMPAPPById(String id);
+	
+	public ExpertsOfFMPAPP getExpertsOfFMPAPPByCode(String code);
 }

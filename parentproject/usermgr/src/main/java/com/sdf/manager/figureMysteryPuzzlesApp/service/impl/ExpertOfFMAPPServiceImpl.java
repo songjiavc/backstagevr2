@@ -139,4 +139,19 @@ public class ExpertOfFMAPPServiceImpl implements ExpertOfFMAPPService
 	{
 		return expertOfFMAPPRepository.getExpertsOfFMPAPPById(id);
 	}
+
+	/**
+	 * 
+	* @Title: getExpertsOfFMPAPPByCode 
+	* @Description: 根据code获取图谜字谜专家数据
+	* @param @param code
+	* @param @return    设定文件 
+	* @author banna
+	* @date 2016年10月9日 上午10:57:27 
+	* @throws
+	 */
+	public ExpertsOfFMPAPP getExpertsOfFMPAPPByCode(String code) 
+	{
+		return expertOfFMAPPRepository.getExpertsOfFMPAPPByCode(code);
+	}
 }

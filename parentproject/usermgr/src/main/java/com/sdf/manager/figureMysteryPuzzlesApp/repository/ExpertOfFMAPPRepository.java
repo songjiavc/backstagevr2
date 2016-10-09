@@ -14,6 +14,9 @@ public interface ExpertOfFMAPPRepository extends GenericRepository<ExpertsOfFMPA
 	@Query("select u from ExpertsOfFMPAPP u where u.isDeleted ='1' and u.id =?1 ")
 	public ExpertsOfFMPAPP getExpertsOfFMPAPPById(String id);
 	
+	@Query("select u from ExpertsOfFMPAPP u where u.isDeleted ='1' and u.code =?1 ")
+	public ExpertsOfFMPAPP getExpertsOfFMPAPPByCode(String code);
+	
 	
 	
 }

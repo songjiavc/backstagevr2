@@ -34,6 +34,8 @@ import com.sdf.manager.figureMysteryPuzzlesApp.service.FigureAndPuzzleStatusServ
 import com.sdf.manager.figureMysteryPuzzlesApp.service.FigureAndPuzzleUploadfileService;
 import com.sdf.manager.figureMysteryPuzzlesApp.service.FoundFigureAndPuzzleStatusService;
 import com.sdf.manager.figureMysteryPuzzlesApp.service.PuzzlesTypeService;
+import com.sdf.manager.user.bean.AccountBean;
+import com.sdf.manager.user.entity.User;
 
 /**
  * 图谜字谜应用后台控制层
@@ -616,15 +618,21 @@ public class FigureMPuzzlesAppController
 			
 		}
 	 
-	 /**
-	  * 校验字谜类型名称全局唯一
-	  * @param id
-	  * @param typeName
-	  * @param model
-	  * @param httpSession
-	  * @return
-	  * @throws Exception
-	  */
+	/**
+	 * 
+	* @Title: checkTypeName 
+	* @Description: 校验字谜类型名称全局唯一
+	* @param @param id
+	* @param @param typeName
+	* @param @param model
+	* @param @param httpSession
+	* @param @return
+	* @param @throws Exception    设定文件 
+	* @author banna
+	* @date 2016年10月9日 上午10:38:50 
+	* @return ResultBean    返回类型 
+	* @throws
+	 */
 	 @RequestMapping(value = "/checkTypeName", method = RequestMethod.POST)
 		public @ResponseBody ResultBean  checkTypeName(
 				@RequestParam(value="id",required=false) String id,
@@ -676,6 +684,211 @@ public class FigureMPuzzlesAppController
 			return resultBean;
 			
 		}
+	 
+	 
+	 /**
+	  ********* 3.专家发布图谜字谜登录模块*********
+	  * 
+	  **/
+	 
+	 /**
+	  * 
+	 * @Title: expertLogin 
+	 * @Description: 图谜字谜专家登录方法
+	 * @param @param httpSession
+	 * @param @param code
+	 * @param @param password
+	 * @param @param model
+	 * @param @return
+	 * @param @throws Exception    设定文件 
+	 * @author banna
+	 * @date 2016年10月9日 上午11:05:56 
+	 * @return String    返回类型 
+	 * @throws
+	  */
+	 @RequestMapping(value = "/expertLogin", method = RequestMethod.POST)
+		public String expertLogin(HttpSession httpSession,
+				@RequestParam(value="code",required=false) String code,//登录名是user表中的code
+				@RequestParam(value="password",required=false) String password,
+				ModelMap model) throws Exception {
+			
+
+			String message ="success";
+			
+			ExpertsOfFMPAPP expertsOfFMPAPP = expertOfFMAPPService.getExpertsOfFMPAPPByCode(code);
+			if(null == expertsOfFMPAPP)
+			{
+				message = "0";//当前登录名不存在，请确认后登录!
+			}
+			else if("".equals(password))
+			{
+				message = "1";//登录密码不可以为空!
+			}
+			else if(null != expertsOfFMPAPP && !expertsOfFMPAPP.getPassword().equals(password))
+			{
+				message = "2";//登录密码不正确，请确认后登录!
+			}
+			else
+			{
+				//向session中写入登录的专家信息
+				this.setLoginExpertMessage(httpSession, code, password, expertsOfFMPAPP.getName(),expertsOfFMPAPP.getId());
+			}
+			
+			 //日志输出
+			   logger.info("图谜字谜专家登录：登录信息专家登录名："+code+"密码："+password+"登录状态："+message);
+			   
+			
+			
+			model.addAttribute("message", message);
+			return "figureAndPuzzleApp/figureAndPuzzleOfExpert";//登录成功后返回专家的图谜字谜管理页面
+		}
+	 
+	 /**
+	  * 
+	 * @Title: updateExpertPassword 
+	 * @Description: 修改图谜字谜专家登录密码
+	 * @param @param newPassword
+	 * @param @param model
+	 * @param @param httpSession
+	 * @param @return
+	 * @param @throws Exception    设定文件 
+	 * @author banna
+	 * @date 2016年10月9日 上午11:45:47 
+	 * @return ResultBean    返回类型 
+	 * @throws
+	  */
+	 @RequestMapping(value = "/updateExpertPassword", method = RequestMethod.POST)
+		public @ResponseBody ResultBean  updateExpertPassword(
+				@RequestParam(value="password",required=true) String newPassword,
+				ModelMap model,HttpSession httpSession) throws Exception{
+			ResultBean resultBean = new ResultBean();
+			try {
+				String userCode = this.getAuthenticatedExpertCode(httpSession);//获取当前登录的专家code
+				ExpertsOfFMPAPP expertsOfFMPAPP = expertOfFMAPPService.getExpertsOfFMPAPPByCode(userCode);//根据当前专家的登录名获取专家信息
+				expertsOfFMPAPP.setPassword(newPassword);//修改专家登录密码为新的登录密码
+				expertOfFMAPPService.update(expertsOfFMPAPP);
+				resultBean.setStatus("success");
+				resultBean.setMessage("密码修改成功!");
+			}catch (Exception e) {
+				resultBean.setStatus("failure");
+				resultBean.setMessage(e.getMessage());
+			}finally{
+				return resultBean;
+			}
+		}
+		
 	
+	 
+	 /**
+		 * 图谜字谜专家登出
+		 * @return
+		 */
+		@RequestMapping(value = "/logout.action", method = RequestMethod.GET)
+		public String logout(@RequestParam(value="alertmsg",required=false) String alertmsg,
+				ModelMap model)
+		{
+			String indexPage = "figureAndPuzzleApp/index";
+			
+			model.addAttribute("alertmsg", alertmsg);
+			return indexPage;
+		}
+		
+		/**
+		 * 获取登录的专家信息
+		* @Title: getLoginExpertmsg 
+		* @Description: TODO(这里用一句话描述这个方法的作用) 
+		* @param @param model
+		* @param @param httpSession
+		* @param @return
+		* @param @throws Exception    设定文件 
+		* @author banna
+		* @date 2016年10月9日 上午11:34:36 
+		* @return ResultBean    返回类型 
+		* @throws
+		 */
+		@RequestMapping(value = "/getLoginExpertmsg", method = RequestMethod.POST)
+		public @ResponseBody ResultBean getLoginExpertmsg(
+				ModelMap model,HttpSession httpSession) throws Exception
+		{
+			ResultBean resultBean = new ResultBean();
+			
+			String name = this.getAuthenticatedExpertName(httpSession);
+			
+			resultBean.setMessage(name);
+			
+			return resultBean;
+		}
+		
+		/**
+		 * 
+		* @Title: setLoginExpertMessage 
+		* @Description:向session中放置当前登录的专家信息 
+		* @param @param session
+		* @param @param userCode
+		* @param @param password
+		* @param @param name
+		* @param @param userId    设定文件 
+		* @author banna
+		* @date 2016年10月9日 上午11:53:10 
+		* @return void    返回类型 
+		* @throws
+		 */
+		public  void setLoginExpertMessage(HttpSession session,
+				 String userCode,String password,String name,String userId)
+		 {
+			ExpertsOfFMPAPPDTO expertsOfFMPAPPDTO = new ExpertsOfFMPAPPDTO();
+			expertsOfFMPAPPDTO.setCode(userCode);
+			expertsOfFMPAPPDTO.setPassword(password);
+			expertsOfFMPAPPDTO.setName(name);
+			expertsOfFMPAPPDTO.setId(userId);
+			
+			//将session登录信息放置到session 
+			session.setAttribute("expertBean", expertsOfFMPAPPDTO);
+			
+			
+		 }
+		
+		/**
+		 * 
+		* @Title: getAuthenticatedExpertName 
+		* @Description: 从session中获取当前登录的专家姓名
+		* @param @param session
+		* @param @return    设定文件 
+		* @author banna
+		* @date 2016年10月9日 上午11:53:36 
+		* @return String    返回类型 
+		* @throws
+		 */
+		public  String getAuthenticatedExpertName(HttpSession session){
+			 String name = null; 
+			
+			 ExpertsOfFMPAPPDTO expertsOfFMPAPPDTO = (ExpertsOfFMPAPPDTO)session.getAttribute("expertBean");
+			 
+			 name = expertsOfFMPAPPDTO.getName();
+			 
+			 return name;
+		 }
+		
+		/**
+		 * 
+		* @Title: getAuthenticatedUserCode 
+		* @Description: 从session中获取当前登录的专家登录名 
+		* @param @param session
+		* @param @return    设定文件 
+		* @author banna
+		* @date 2016年10月9日 上午11:53:55 
+		* @return String    返回类型 
+		* @throws
+		 */
+		 public  String getAuthenticatedExpertCode(HttpSession session){
+			 String code = null; 
+			
+			 ExpertsOfFMPAPPDTO expertsOfFMPAPPDTO = (ExpertsOfFMPAPPDTO)session.getAttribute("expertBean");
+			 
+			 code = expertsOfFMPAPPDTO.getCode();
+			 
+			 return code;
+		 }
+		
 	
 }

@@ -465,6 +465,19 @@ public class MenuController extends GlobalExceptionHandler{
 	}
 	
 	
+	/**
+	 * 跳转到图谜字谜专家登录页
+	 * @return
+	 */
+	@RequestMapping(value = "/el.action", method = RequestMethod.GET)
+	public String expertLogin()
+	{
+		String indexPage = "figureAndPuzzleApp/index";
+		
+		
+		return indexPage;
+	}
+	
     
 	
 	
