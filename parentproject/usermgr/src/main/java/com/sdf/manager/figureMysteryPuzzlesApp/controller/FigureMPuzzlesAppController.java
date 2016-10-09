@@ -26,11 +26,14 @@ import com.sdf.manager.common.util.Constants;
 import com.sdf.manager.common.util.LoginUtils;
 import com.sdf.manager.common.util.QueryResult;
 import com.sdf.manager.figureMysteryPuzzlesApp.dto.ExpertsOfFMPAPPDTO;
+import com.sdf.manager.figureMysteryPuzzlesApp.dto.PuzzleTypeDTO;
 import com.sdf.manager.figureMysteryPuzzlesApp.entity.ExpertsOfFMPAPP;
+import com.sdf.manager.figureMysteryPuzzlesApp.entity.PuzzlesType;
 import com.sdf.manager.figureMysteryPuzzlesApp.service.ExpertOfFMAPPService;
 import com.sdf.manager.figureMysteryPuzzlesApp.service.FigureAndPuzzleStatusService;
 import com.sdf.manager.figureMysteryPuzzlesApp.service.FigureAndPuzzleUploadfileService;
 import com.sdf.manager.figureMysteryPuzzlesApp.service.FoundFigureAndPuzzleStatusService;
+import com.sdf.manager.figureMysteryPuzzlesApp.service.PuzzlesTypeService;
 
 /**
  * 图谜字谜应用后台控制层
@@ -53,10 +56,21 @@ public class FigureMPuzzlesAppController
 	@Autowired
 	private FoundFigureAndPuzzleStatusService foundFigureAndPuzzleStatusService;
 	
+	@Autowired
+	private PuzzlesTypeService puzzleTypeService;
+	
 	
 	@Autowired
 	private ExpertOfFMAPPService expertOfFMAPPService;
 	
+	
+	public static final String TUMI_FLAG = "1";//图谜标记
+	public static final String ZIMI_FLAG = "2";//字谜标记
+	
+	
+	/**
+	 *********** 1.图谜字谜专家管理模块 ***********
+	 **/
 	
 	/**
 	 * 根据id获取图谜字谜专家数据
@@ -362,7 +376,306 @@ public class FigureMPuzzlesAppController
 			
 		}
 	
+	 
+	 /**
+	  ********* 2.字谜类型管理模块*********
+	  * 
+	  **/
+	 
+	 /**
+	  * 根据id获取字谜类型详情数据
+	  * @param id
+	  * @param model
+	  * @param httpSession
+	  * @return
+	  * @throws Exception
+	  */
+	 @RequestMapping(value = "/getDetailPuzzlesType", method = RequestMethod.GET)
+		public @ResponseBody PuzzleTypeDTO getDetailPuzzlesType(@RequestParam(value="id",required=false) String id,
+				ModelMap model,HttpSession httpSession) throws Exception
+		{
+			
+			PuzzlesType puzzlesType = puzzleTypeService.getPuzzlesTypeById(id);
+			
+			PuzzleTypeDTO dto = puzzleTypeService.toDTO(puzzlesType);
+			
+			logger.info("获取字谜类型详情数据，id="+id);
+			
+			return dto;
+		}
 	
+	 /**
+	  * 获取字谜类型数据列表
+	  * @param page
+	  * @param rows
+	  * @param typeName
+	  * @param model
+	  * @param httpSession
+	  * @return
+	  * @throws Exception
+	  */
+	 @RequestMapping(value = "/getPuzzlesTypeList", method = RequestMethod.GET)
+		public @ResponseBody Map<String,Object> getPuzzlesTypeList(
+				@RequestParam(value="page",required=false) int page,
+				@RequestParam(value="rows",required=false) int rows,
+				@RequestParam(value="typeName",required=false) String typeName,
+				ModelMap model,HttpSession httpSession) throws Exception
+		{
+			Map<String,Object> result = new HashMap<String, Object>();
+			
+			//放置分页参数
+			Pageable pageable = new PageRequest(page-1,rows);
+			
+			//参数
+			StringBuffer buffer = new StringBuffer();
+			List<Object> params = new ArrayList<Object>();
+			
+			//只查询未删除数据
+			params.add("1");//只查询有效的数据
+			buffer.append(" isDeleted = ?").append(params.size());
+			
+			//连接查询条件
+			if(null != typeName&&!"".equals(typeName.trim()))
+			{
+				params.add("%"+typeName+"%");
+				buffer.append(" and typeName like ?").append(params.size());
+			}
+			
+			
+			
+			//排序
+			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
+			orderBy.put("createrTime", "desc");
+			
+			QueryResult<PuzzlesType> exQueryResult = puzzleTypeService.getPuzzlesTypeList(PuzzlesType.class,
+					buffer.toString(), params.toArray(),orderBy, pageable);
+					
+			List<PuzzlesType> puzzlesTypes = exQueryResult.getResultList();
+			Long totalrow = exQueryResult.getTotalRecord();
+			
+			//将实体转换为dto
+			List<PuzzleTypeDTO> puzzleTypeDTOs = puzzleTypeService.toRDTOS(puzzlesTypes);
+			
+			result.put("rows", puzzleTypeDTOs);
+			result.put("total", totalrow);
+		 	
+			
+			
+			return result;
+		}
+		
+	 /**
+	  * 保存或修改字谜类型数据
+	  * @param id
+	  * @param typeName
+	  * @param typeCol
+	  * @param typeColWordsNum
+	  * @param model
+	  * @param httpSession
+	  * @return
+	  * @throws Exception
+	  */
+	 @RequestMapping(value = "/saveOrUpdatePuzzleType", method = RequestMethod.GET)
+		public @ResponseBody ResultBean saveOrUpdatePuzzleType(
+				@RequestParam(value="id",required=false) String id,
+				@RequestParam(value="typeName",required=false) String typeName,
+				@RequestParam(value="typeCol",required=false) String typeCol,
+				@RequestParam(value="typeColWordsNum",required=false) String typeColWordsNum,
+				ModelMap model,HttpSession httpSession) throws Exception
+		{
+		   ResultBean resultBean = new ResultBean ();
+		   
+		   
+		   PuzzlesType puzzlesType = puzzleTypeService.getPuzzlesTypeById(id);
+		   
+		   if(null != puzzlesType)
+		   {//修改字谜类型数据
+			   puzzlesType.setTypeName(typeName);
+			   puzzlesType.setTypeCol(typeCol);
+			   puzzlesType.setTypeColWordsNum(typeColWordsNum);
+			   
+			   int typeWordsNum = 0;
+			   if(null != typeCol && null != typeColWordsNum)
+			   {
+				   typeWordsNum = Integer.parseInt(typeCol) * Integer.parseInt(typeColWordsNum);//计算字谜最多字数
+			   }
+			   puzzlesType.setTypeWordsNum(typeWordsNum+"");
+			   puzzlesType.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
+			   puzzlesType.setModifyTime(new Timestamp(System.currentTimeMillis()));
+			   
+			   logger.info("修改字谜类型数据，id="+id);
+			   
+			   puzzleTypeService.update(puzzlesType);
+			   
+			   resultBean.setMessage("修改字谜类型成功!");
+			   resultBean.setStatus("success");
+		   }
+		   else
+		   {//添加图谜字谜专家数据
+			   puzzlesType = new PuzzlesType();
+			   puzzlesType.setTypeName(typeName);
+			   puzzlesType.setTypeCol(typeCol);
+			   puzzlesType.setTypeColWordsNum(typeColWordsNum);
+			   
+			   int typeWordsNum = 0;
+			   if(null != typeCol && null != typeColWordsNum)
+			   {
+				   typeWordsNum = Integer.parseInt(typeCol) * Integer.parseInt(typeColWordsNum);//计算字谜最多字数
+			   }
+			   puzzlesType.setTypeWordsNum(typeWordsNum+"");
+			   puzzlesType.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
+			   puzzlesType.setModifyTime(new Timestamp(System.currentTimeMillis()));
+			   puzzlesType.setIsDeleted(Constants.IS_NOT_DELETED);
+			   puzzlesType.setCreater(LoginUtils.getAuthenticatedUserCode(httpSession));
+			   puzzlesType.setCreaterTime(new Timestamp(System.currentTimeMillis()));
+			   
+			   logger.info("添加字谜类型数据");
+			   
+			   puzzleTypeService.save(puzzlesType);
+			   
+			   resultBean.setMessage("添加字谜类型成功!");
+			   resultBean.setStatus("success");
+			   
+			   
+		   }
+		   
+		 
+		   return resultBean;
+		}
+	 
+	 
+	 /**
+	  * 删除字谜类型数据
+	  * @param ids
+	  * @param model
+	  * @param httpSession
+	  * @return
+	  * @throws Exception
+	  */
+	 @RequestMapping(value = "/deletePuzzleType", method = RequestMethod.POST)
+		public @ResponseBody ResultBean  deletePuzzleType(
+				@RequestParam(value="ids",required=false) String[] ids,
+				ModelMap model,HttpSession httpSession) throws Exception {
+		 
+		 ResultBean resultBean = new ResultBean();
+		 
+		PuzzlesType puzzlesType;
+		 for (String id : ids) 
+			{
+			 	puzzlesType = puzzleTypeService.getPuzzlesTypeById(id);
+			 	if(null != puzzlesType)
+			 	{
+			 		puzzlesType.setIsDeleted(Constants.IS_DELETED);
+			 		puzzlesType.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
+			 		puzzlesType.setModifyTime(new Timestamp(System.currentTimeMillis()));
+			 		puzzleTypeService.update(puzzlesType);
+			 		
+			 		 //日志输出
+					 logger.info("删除字谜类型数据--id="+id+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+				   
+			 	}
+			}
+		 String returnMsg = "删除成功!";
+		 resultBean.setStatus("success");
+		 resultBean.setMessage(returnMsg);
+		 
+		 return resultBean;
+				 
+		 
+	 }
+	
+	 /**
+	  * 判断字谜类型是否可以删除
+	  * @param id
+	  * @param model
+	  * @param httpSession
+	  * @return
+	  * @throws Exception
+	  */
+	 @RequestMapping(value = "/checkCouldDeleted", method = RequestMethod.POST)
+		public @ResponseBody ResultBean  checkCouldDeleted(
+				@RequestParam(value="id",required=false) String id,
+				ModelMap model,HttpSession httpSession) throws Exception {
+			
+			ResultBean resultBean = new ResultBean ();
+			
+			PuzzlesType puzzlesType = puzzleTypeService.getPuzzlesTypeById(id);
+			
+			
+			//若字谜类型的关联数据都还有关联的数据
+			if(puzzlesType.getFloorOfFigureAndPuzzles().size()>0 || puzzlesType.getFigureAndPuzzles().size()>0)
+			{
+				resultBean.setExist(false);//若查询的数据条数大于0，则当前输入值已存在，不符合唯一性校验
+			}
+			else
+			{
+				resultBean.setExist(true);
+			}
+			
+			return resultBean;
+			
+		}
+	 
+	 /**
+	  * 校验字谜类型名称全局唯一
+	  * @param id
+	  * @param typeName
+	  * @param model
+	  * @param httpSession
+	  * @return
+	  * @throws Exception
+	  */
+	 @RequestMapping(value = "/checkTypeName", method = RequestMethod.POST)
+		public @ResponseBody ResultBean  checkTypeName(
+				@RequestParam(value="id",required=false) String id,
+				@RequestParam(value="typeName",required=false) String typeName,
+				ModelMap model,HttpSession httpSession) throws Exception {
+			
+			ResultBean resultBean = new ResultBean ();
+			
+			//放置分页参数
+			Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);
+			
+			//参数
+			StringBuffer buffer = new StringBuffer();
+			List<Object> params = new ArrayList<Object>();
+			
+			//只查询未删除数据
+			params.add("1");//只查询有效的数据
+			buffer.append(" isDeleted = ?").append(params.size());
+			
+			if(null != typeName && !"".equals(typeName))
+			{
+				params.add(typeName);
+				buffer.append(" and typeName = ?").append(params.size());
+			}
+			
+			
+			if(null != id && !"".equals(id))
+			{//校验修改中的值的唯一性
+				params.add(id);
+				buffer.append(" and id != ?").append(params.size());
+			}
+			
+			//排序
+			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
+			
+			QueryResult<PuzzlesType> exQueryResult = puzzleTypeService.getPuzzlesTypeList
+					(PuzzlesType.class, buffer.toString(), params.toArray(),
+					orderBy, pageable);
+			
+			if(exQueryResult.getResultList().size()>0)
+			{
+				resultBean.setExist(true);//若查询的数据条数大于0，则当前输入值已存在，不符合唯一性校验
+			}
+			else
+			{
+				resultBean.setExist(false);
+			}
+			
+			return resultBean;
+			
+		}
 	
 	
 }

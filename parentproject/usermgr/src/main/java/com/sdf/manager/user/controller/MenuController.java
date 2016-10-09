@@ -439,6 +439,19 @@ public class MenuController extends GlobalExceptionHandler{
 	}
 	
 	/**
+	 * 字谜类型管理菜单
+	 * @return
+	 */
+	@RequestMapping(value = "/puzzleTypeManage.action", method = RequestMethod.GET)
+	public String puzzleTypeManage()
+	{
+		String indexPage = "figureAndPuzzleApp/puzzleTypeManage";
+		
+		
+		return indexPage;
+	}
+	
+	/**
 	 * 跳转到错误页
 	 * @return
 	 */

@@ -98,7 +98,7 @@
 	</div>
 
     <div  data-options="region:'center'" data-options="border:false" >
-    	 <table id="datagrid" class="easyui-datagrid"  title="应用列表" >
+    	 <table id="datagrid" class="easyui-datagrid"  title="图谜字谜专家列表" >
 			</table>
  	</div>  
   
