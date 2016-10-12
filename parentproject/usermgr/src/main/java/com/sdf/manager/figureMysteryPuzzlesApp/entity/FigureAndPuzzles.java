@@ -1,6 +1,7 @@
 package com.sdf.manager.figureMysteryPuzzlesApp.entity;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -67,6 +68,12 @@ public class FigureAndPuzzles extends BaseEntiry implements Serializable
 	@Column(name="FIGURE_IMG")
 	private String figureImg;//图谜图片附件id
 	
+	@Column(name="STATUS", length=4)
+	private String status;//图谜字谜状态，参考T_BYL_FIGURE_AND_PUZZLE_APP_STATUS状态
+	
+	@Column(name="STATUS_TIME")
+	private Timestamp statusTime;//状态更新时间
+	
 	
 	
 	//一个字谜类型可以对应多个字谜
@@ -91,6 +98,22 @@ public class FigureAndPuzzles extends BaseEntiry implements Serializable
 	
 	
 	
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Timestamp getStatusTime() {
+		return statusTime;
+	}
+
+	public void setStatusTime(Timestamp statusTime) {
+		this.statusTime = statusTime;
+	}
 
 	public String getName() {
 		return name;

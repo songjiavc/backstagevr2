@@ -1,5 +1,7 @@
 package com.sdf.manager.figureMysteryPuzzlesApp.dto;
 
+import java.sql.Timestamp;
+
 
 public class FigureAndPuzzlesDTO 
 {
@@ -35,7 +37,42 @@ public class FigureAndPuzzlesDTO
 	private String figureImg;//图谜图片附件id
 	
 	
+	private String status;
+	private String statusName;
 	
+	private Timestamp statusTime;
+
+
+	
+	
+	public String getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+
+	public String getStatusName() {
+		return statusName;
+	}
+
+
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
+
+
+	public Timestamp getStatusTime() {
+		return statusTime;
+	}
+
+
+	public void setStatusTime(Timestamp statusTime) {
+		this.statusTime = statusTime;
+	}
 
 
 	public String getName() {
