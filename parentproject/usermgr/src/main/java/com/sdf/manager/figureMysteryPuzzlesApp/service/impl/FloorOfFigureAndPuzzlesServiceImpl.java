@@ -48,6 +48,26 @@ public class FloorOfFigureAndPuzzlesServiceImpl implements
 				dto.setPuzzlesTypeId(entity.getPuzzlesType().getId());
 			}
 			
+			if(null != entity.getFigureOrPuzzles())
+			{
+				String fop = entity.getFigureOrPuzzles();
+				if("0".equals(fop))
+				{
+					dto.setFigureOrPuzzlesName("全部");
+				}
+				else
+					if("1".equals(fop))
+					{
+						dto.setFigureOrPuzzlesName("图谜");
+					}
+					else
+						if("2".equals(fop))
+						{
+							dto.setFigureOrPuzzlesName("字谜");
+						}
+			}
+			
+			
 			
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();

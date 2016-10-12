@@ -1,5 +1,6 @@
 package com.sdf.manager.figureMysteryPuzzlesApp.controller;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,21 +22,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sdf.manager.ad.entity.Uploadfile;
+import com.sdf.manager.appversion.entity.Appversion;
 import com.sdf.manager.common.bean.ResultBean;
 import com.sdf.manager.common.util.Constants;
 import com.sdf.manager.common.util.LoginUtils;
 import com.sdf.manager.common.util.QueryResult;
 import com.sdf.manager.figureMysteryPuzzlesApp.dto.ExpertsOfFMPAPPDTO;
+import com.sdf.manager.figureMysteryPuzzlesApp.dto.FloorOfFigureAndPuzzlesDTO;
 import com.sdf.manager.figureMysteryPuzzlesApp.dto.PuzzleTypeDTO;
 import com.sdf.manager.figureMysteryPuzzlesApp.entity.ExpertsOfFMPAPP;
+import com.sdf.manager.figureMysteryPuzzlesApp.entity.FigureAPuzzleUploadfile;
+import com.sdf.manager.figureMysteryPuzzlesApp.entity.FloorOfFigureAndPuzzles;
 import com.sdf.manager.figureMysteryPuzzlesApp.entity.PuzzlesType;
 import com.sdf.manager.figureMysteryPuzzlesApp.service.ExpertOfFMAPPService;
 import com.sdf.manager.figureMysteryPuzzlesApp.service.FigureAndPuzzleStatusService;
 import com.sdf.manager.figureMysteryPuzzlesApp.service.FigureAndPuzzleUploadfileService;
+import com.sdf.manager.figureMysteryPuzzlesApp.service.FloorOfFigureAndPuzzlesService;
 import com.sdf.manager.figureMysteryPuzzlesApp.service.FoundFigureAndPuzzleStatusService;
 import com.sdf.manager.figureMysteryPuzzlesApp.service.PuzzlesTypeService;
-import com.sdf.manager.user.bean.AccountBean;
-import com.sdf.manager.user.entity.User;
 
 /**
  * 图谜字谜应用后台控制层
@@ -64,6 +69,12 @@ public class FigureMPuzzlesAppController
 	
 	@Autowired
 	private ExpertOfFMAPPService expertOfFMAPPService;
+	
+	@Autowired
+	private FloorOfFigureAndPuzzlesService floorOfFigureAndPuzzlesService;
+	
+	
+	
 	
 	
 	public static final String TUMI_FLAG = "1";//图谜标记
@@ -685,6 +696,55 @@ public class FigureMPuzzlesAppController
 			
 		}
 	 
+	 /**
+	  * 
+	 * @Title: getAllPuzzlesType 
+	 * @Description: 获取字谜类型数据列表
+	 * @param @param model
+	 * @param @param httpSession
+	 * @param @return
+	 * @param @throws Exception    设定文件 
+	 * @author banna
+	 * @date 2016年10月10日 上午8:44:06 
+	 * @return Map<String,Object>    返回类型 
+	 * @throws
+	  */
+	 @RequestMapping(value = "/getAllPuzzlesType", method = RequestMethod.POST)
+		public @ResponseBody List<PuzzleTypeDTO> getAllPuzzlesType(
+				ModelMap model,HttpSession httpSession) throws Exception
+		{
+//			Map<String,Object> result = new HashMap<String, Object>();
+			
+			//放置分页参数
+			Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);
+			
+			//参数
+			StringBuffer buffer = new StringBuffer();
+			List<Object> params = new ArrayList<Object>();
+			
+			//只查询未删除数据
+			params.add("1");//只查询有效的数据
+			buffer.append(" isDeleted = ?").append(params.size());
+			
+			
+			
+			//排序
+			LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
+			orderBy.put("typeName", "desc");
+			
+			QueryResult<PuzzlesType> exQueryResult = puzzleTypeService.getPuzzlesTypeList(PuzzlesType.class,
+					buffer.toString(), params.toArray(),orderBy, pageable);
+					
+			List<PuzzlesType> puzzlesTypes = exQueryResult.getResultList();
+			
+			//将实体转换为dto
+			List<PuzzleTypeDTO> puzzleTypeDTOs = puzzleTypeService.toRDTOS(puzzlesTypes);
+			
+//			result.put("puzzleTypes", puzzleTypeDTOs);
+			
+			
+			return puzzleTypeDTOs;
+		}
 	 
 	 /**
 	  ********* 3.专家发布图谜字谜登录模块*********
@@ -889,6 +949,612 @@ public class FigureMPuzzlesAppController
 			 
 			 return code;
 		 }
-		
-	
+		 
+		 
+		 /**
+			 *********** 4.图谜字谜底板管理模块 ***********
+			 **/
+		 
+		 /**
+		  * 
+		 * @Title: saveSingleFAPAppFujian 
+		 * @Description: 图谜字谜应用上传单个附件方法（一个newsUuid只对应一个附件）
+		 * @param @param realname
+		 * @param @param filename
+		 * @param @param uplId
+		 * @param @param model
+		 * @param @param httpSession
+		 * @param @return
+		 * @param @throws Exception    设定文件 
+		 * @author banna
+		 * @date 2016年10月10日 上午8:52:01 
+		 * @return ResultBean    返回类型 
+		 * @throws
+		  */
+		 @RequestMapping(value = "/saveSingleFAPAppFujian", method = RequestMethod.GET)
+			public @ResponseBody ResultBean  saveSingleFAPAppFujian(
+					@RequestParam(value="realname",required=false) String realname,
+					@RequestParam(value="filename",required=false) String filename,
+					@RequestParam(value="uplId",required=false) String uplId,
+					ModelMap model,HttpSession httpSession) throws Exception {
+			 
+			 ResultBean resultBean = new ResultBean();
+			 String type=getExt(filename);
+			 String uploadfilepath = "/uploadFAPAppImg/";//图谜字谜应用图片路径
+			 
+			 FigureAPuzzleUploadfile uploadfile = figureAndPuzzleUploadfileService.getFigureAPuzzleUploadfileByNewsUuid(uplId);
+			 //因为一个应用只能有一个图片附件，所以当这个upId有数据的话就进行修改操作，如果没有数据就创建数据
+			 if(null != uploadfile)
+			 {
+				 //①：因为广告图片只有一个附件，所以在上传其他附件替换上一个附件时，要先把上一个附件文件删除
+				 String savePath = httpSession.getServletContext().getRealPath("");//获取项目根路径
+			     savePath = savePath +File.separator+ "uploadFAPAppImg"+File.separator;
+			     //删除附件文件相关s
+				 File dirFile = null;
+				 boolean deleteFlag = false;//删除附件flag
+				//2.删除附件
+		 		dirFile = new File(savePath+uploadfile.getUploadRealName());
+		 		logger.info("待删除文件路径："+dirFile);
+		        // 如果dir对应的文件不存在，或者不是一个目录，则退出
+	        	deleteFlag = dirFile.delete();
+	        	if(deleteFlag)
+	        	{//删除附件(清空附件关联newsUuid)
+	        		logger.info("saveSingleFAPAppFujian==删除原附件文件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+	        	}
+			    //删除附件e
+				 
+				 //②：保存新的附件文件
+				 uploadfile.setUploadFileName(filename);
+				 uploadfile.setUploadRealName(realname);
+				 uploadfile.setUploadfilepath(uploadfilepath);
+				 uploadfile.setUploadContentType(type);
+				 
+				 //添加修改时间跟踪
+				 uploadfile.setModify(uploadfile.getNewsUuid());//放置附件关联uuid
+				 uploadfile.setModifyTime(new Timestamp(System.currentTimeMillis()));
+				 
+				 figureAndPuzzleUploadfileService.update(uploadfile);
+			 }
+			 else
+			 {
+				 uploadfile = new FigureAPuzzleUploadfile();
+				 uploadfile.setNewsUuid(uplId);
+				 uploadfile.setUploadFileName(filename);
+				 uploadfile.setUploadRealName(realname);
+				 uploadfile.setUploadfilepath(uploadfilepath);
+				 uploadfile.setUploadContentType(type);
+				
+				 //添加修改时间跟踪
+				 uploadfile.setCreater(uploadfile.getNewsUuid());//放置附件关联uuid
+				 uploadfile.setModify(uploadfile.getNewsUuid());//放置附件关联uuid
+				 uploadfile.setCreaterTime(new Timestamp(System.currentTimeMillis()));
+				 uploadfile.setModifyTime(new Timestamp(System.currentTimeMillis()));
+				 uploadfile.setIsDeleted(Constants.IS_NOT_DELETED);
+				 
+				 figureAndPuzzleUploadfileService.save(uploadfile);
+			 }
+			 
+			 resultBean.setStatus("success");
+			 
+			 logger.info("上传图谜字谜应用单个附件成功，附件id="+uplId+"==附件文件存储名称="+filename);
+			 
+			 return resultBean;
+			 
+		 }
+		 
+		 /**
+		  * 
+		 * @Title: saveMoreFAPAppFujian 
+		 * @Description: 图谜字谜应用上传多个附件方法（一个newsUuid对应多个附件）
+		 * @param @param realname
+		 * @param @param filename
+		 * @param @param uplId
+		 * @param @param model
+		 * @param @param httpSession
+		 * @param @return
+		 * @param @throws Exception    设定文件 
+		 * @author banna
+		 * @date 2016年10月10日 上午8:52:45 
+		 * @return ResultBean    返回类型 
+		 * @throws
+		  */
+		 @RequestMapping(value = "/saveMoreFAPAppFujian", method = RequestMethod.GET)
+			public @ResponseBody ResultBean  saveMoreFAPAppFujian(
+					@RequestParam(value="realname",required=false) String realname,
+					@RequestParam(value="filename",required=false) String filename,
+					@RequestParam(value="uplId",required=false) String uplId,
+					ModelMap model,HttpSession httpSession) throws Exception {
+			 
+			 ResultBean resultBean = new ResultBean();
+			 String type=getExt(filename);
+			 String uploadfilepath = "/uploadFAPAppImg/";//图谜字谜应用图片路径
+			 
+			 FigureAPuzzleUploadfile uploadfile = new FigureAPuzzleUploadfile();
+			 uploadfile.setNewsUuid(uplId);
+			 uploadfile.setUploadFileName(filename);
+			 uploadfile.setUploadRealName(realname);
+			 uploadfile.setUploadfilepath(uploadfilepath);
+			 uploadfile.setUploadContentType(type);
+			 
+			 //添加修改时间跟踪
+			 uploadfile.setCreater(uploadfile.getNewsUuid());//放置附件关联uuid
+			 uploadfile.setModify(uploadfile.getNewsUuid());//放置附件关联uuid
+			 uploadfile.setCreaterTime(new Timestamp(System.currentTimeMillis()));
+			 uploadfile.setModifyTime(new Timestamp(System.currentTimeMillis()));
+			 uploadfile.setIsDeleted(Constants.IS_NOT_DELETED);
+			 
+			 figureAndPuzzleUploadfileService.save(uploadfile);
+			 
+			 resultBean.setStatus("success");
+			 
+			 logger.info("上传图谜字谜附件成功，附件id="+uplId+"==附件文件存储名称="+filename);
+			 
+			 return resultBean;
+			 
+		 }
+		 
+		 
+		 /**
+		  * 
+		  * @Title: getExt
+		  * @Description: 获取附件类型的后缀
+		  * @author:banna
+		  * @return: String
+		  */
+		 private String getExt(String fileName) {
+				return fileName.substring(fileName.lastIndexOf("."));
+			}
+		 
+		 /**
+		  * 
+		 * @Title: getDetailFloorOfFAPApp 
+		 * @Description:根据id获取图谜字谜底板数据
+		 * @param @param id
+		 * @param @param model
+		 * @param @param httpSession
+		 * @param @return
+		 * @param @throws Exception    设定文件 
+		 * @author banna
+		 * @date 2016年10月10日 上午9:03:36 
+		 * @return FloorOfFigureAndPuzzlesDTO    返回类型 
+		 * @throws
+		  */
+		 @RequestMapping(value = "/getDetailFloorOfFAPApp", method = RequestMethod.GET)
+			public @ResponseBody FloorOfFigureAndPuzzlesDTO getDetailFloorOfFAPApp(@RequestParam(value="id",required=false) String id,
+					ModelMap model,HttpSession httpSession) throws Exception
+			{
+				
+				FloorOfFigureAndPuzzles floorOfFigureAndPuzzles = floorOfFigureAndPuzzlesService.getFloorOfFigureAndPuzzlesById(id);
+				
+				FloorOfFigureAndPuzzlesDTO floorOfFigureAndPuzzlesDTO = floorOfFigureAndPuzzlesService.toDTO(floorOfFigureAndPuzzles);
+				
+				logger.info("获取图谜字谜底板详情，id="+id);
+				
+				return floorOfFigureAndPuzzlesDTO;
+			}
+		 
+		 /**
+		  * 
+		 * @Title: getFloorOfFAPAppList 
+		 * @Description: 根据条件筛选图谜字谜底板数据
+		 * @param @param page
+		 * @param @param rows
+		 * @param @param floorName
+		 * @param @param figureOrPuzzles
+		 * @param @param model
+		 * @param @param httpSession
+		 * @param @return
+		 * @param @throws Exception    设定文件 
+		 * @author banna
+		 * @date 2016年10月10日 上午9:41:14 
+		 * @return Map<String,Object>    返回类型 
+		 * @throws
+		  */
+		 @RequestMapping(value = "/getFloorOfFAPAppList", method = RequestMethod.GET)
+			public @ResponseBody Map<String,Object> getFloorOfFAPAppList(
+					@RequestParam(value="page",required=false) int page,
+					@RequestParam(value="rows",required=false) int rows,
+					@RequestParam(value="floorName",required=false) String floorName,
+					@RequestParam(value="figureOrPuzzles",required=false) String figureOrPuzzles,//1：图谜，2：字谜  0：全部 
+					ModelMap model,HttpSession httpSession) throws Exception
+			{
+				Map<String,Object> result = new HashMap<String, Object>();
+				
+				//放置分页参数
+				Pageable pageable = new PageRequest(page-1,rows);
+				
+				//参数
+				StringBuffer buffer = new StringBuffer();
+				List<Object> params = new ArrayList<Object>();
+				
+				//只查询未删除数据
+				params.add("1");//只查询有效的数据
+				buffer.append(" isDeleted = ?").append(params.size());
+				
+				//连接查询条件
+				if(null != floorName&&!"".equals(floorName.trim()))
+				{
+					params.add("%"+floorName+"%");
+					buffer.append(" and floorName like ?").append(params.size());
+				}
+				
+				
+				if(null != figureOrPuzzles&&!"".equals(figureOrPuzzles.trim()))
+				{
+					params.add(figureOrPuzzles);
+					buffer.append(" and figureOrPuzzles = ?").append(params.size());
+				}
+				
+				//排序
+				LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
+				orderBy.put("createrTime", "desc");
+				
+				QueryResult<FloorOfFigureAndPuzzles> exQueryResult = floorOfFigureAndPuzzlesService.getFloorOfFigureAndPuzzlesList
+						(FloorOfFigureAndPuzzles.class,
+						buffer.toString(), params.toArray(),orderBy, pageable);
+						
+				List<FloorOfFigureAndPuzzles> expertsOfFMPAPPs = exQueryResult.getResultList();
+				Long totalrow = exQueryResult.getTotalRecord();
+				
+				//将实体转换为dto
+				List<FloorOfFigureAndPuzzlesDTO> floorOfFigureAndPuzzlesDTOs = floorOfFigureAndPuzzlesService.toRDTOS(expertsOfFMPAPPs);
+				
+				result.put("rows", floorOfFigureAndPuzzlesDTOs);
+				result.put("total", totalrow);
+			 	
+				
+				
+				
+				return result;
+			}
+		 
+		 /**
+		  * 
+		 * @Title: saveOrUpdateFloorOfFAPApp 
+		 * @Description: 添加或修改图谜字谜底板数据
+		 * @param @param id
+		 * @param @param floorName
+		 * @param @param figureOrPuzzles
+		 * @param @param floorDescription
+		 * @param @param floorImg
+		 * @param @param puzzlesTypeId
+		 * @param @param model
+		 * @param @param httpSession
+		 * @param @return
+		 * @param @throws Exception    设定文件 
+		 * @author banna
+		 * @date 2016年10月10日 上午10:06:31 
+		 * @return ResultBean    返回类型 
+		 * @throws
+		  */
+		 @RequestMapping(value = "/saveOrUpdateFloorOfFAPApp", method = RequestMethod.GET)
+			public @ResponseBody ResultBean saveOrUpdateFloorOfFAPApp(
+					@RequestParam(value="id",required=false) String id,
+					@RequestParam(value="floorName",required=false) String floorName,
+					@RequestParam(value="figureOrPuzzles",required=false) String figureOrPuzzles,
+					@RequestParam(value="floorDescription",required=false) String floorDescription,
+					@RequestParam(value="floorImg",required=false) String floorImg,
+					@RequestParam(value="puzzlesTypeId",required=false) String puzzlesTypeId,//若当前的底板是字谜底板，这个字段放置的是字谜类型的id
+					ModelMap model,HttpSession httpSession) throws Exception
+			{
+			   ResultBean resultBean = new ResultBean ();
+			   
+			   FloorOfFigureAndPuzzles floorOfFigureAndPuzzles = floorOfFigureAndPuzzlesService.getFloorOfFigureAndPuzzlesById(id);
+			   if(null != floorOfFigureAndPuzzles)
+			   {//修改图谜字谜底板数据
+				   
+				   floorOfFigureAndPuzzles.setFloorName(floorName);
+				   
+//				   floorOfFigureAndPuzzles.setFigureOrPuzzles(figureOrPuzzles);//图谜字谜类型修改时不可进行修改
+				   floorOfFigureAndPuzzles.setFloorDescription(floorDescription);
+				   floorOfFigureAndPuzzles.setFloorImg(floorImg);
+				   floorOfFigureAndPuzzles.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
+				   floorOfFigureAndPuzzles.setModifyTime(new Timestamp(System.currentTimeMillis()));
+				   
+				   PuzzlesType puzzlesType = puzzleTypeService.getPuzzlesTypeById(puzzlesTypeId);
+				   floorOfFigureAndPuzzles.setPuzzlesType(puzzlesType);
+				   
+				   
+				   logger.info("修改图谜字谜底板数据，id="+id);
+				   
+				   floorOfFigureAndPuzzlesService.update(floorOfFigureAndPuzzles);
+				   
+				   resultBean.setMessage("修改图谜字谜底板成功!");
+				   resultBean.setStatus("success");
+			   }
+			   else
+			   {//添加图谜字谜专家数据
+				   floorOfFigureAndPuzzles = new FloorOfFigureAndPuzzles();
+				   floorOfFigureAndPuzzles.setFloorName(floorName);
+				   floorOfFigureAndPuzzles.setFigureOrPuzzles(figureOrPuzzles);
+				   floorOfFigureAndPuzzles.setFloorDescription(floorDescription);
+				   floorOfFigureAndPuzzles.setFloorImg(floorImg);
+				   floorOfFigureAndPuzzles.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
+				   floorOfFigureAndPuzzles.setModifyTime(new Timestamp(System.currentTimeMillis()));
+				   
+				   PuzzlesType puzzlesType = puzzleTypeService.getPuzzlesTypeById(puzzlesTypeId);
+				   floorOfFigureAndPuzzles.setPuzzlesType(puzzlesType);
+				   
+				   floorOfFigureAndPuzzles.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
+				   floorOfFigureAndPuzzles.setModifyTime(new Timestamp(System.currentTimeMillis()));
+				   floorOfFigureAndPuzzles.setIsDeleted(Constants.IS_NOT_DELETED);
+				   floorOfFigureAndPuzzles.setCreater(LoginUtils.getAuthenticatedUserCode(httpSession));
+				   floorOfFigureAndPuzzles.setCreaterTime(new Timestamp(System.currentTimeMillis()));
+				   
+				   logger.info("添加图谜字谜底板数据");
+				   
+				   floorOfFigureAndPuzzlesService.save(floorOfFigureAndPuzzles);
+				   
+				   resultBean.setMessage("添加图谜字谜底板成功!");
+				   resultBean.setStatus("success");
+				   
+				   
+			   }
+			   
+			 
+			   return resultBean;
+			}
+		 
+		 /**
+		  * 
+		 * @Title: deleteFloorOfFAPApp 
+		 * @Description: 删除图谜字谜底板数据
+		 * @param @param ids
+		 * @param @param model
+		 * @param @param httpSession
+		 * @param @return
+		 * @param @throws Exception    设定文件 
+		 * @author banna
+		 * @date 2016年10月10日 上午10:09:38 
+		 * @return ResultBean    返回类型 
+		 * @throws
+		  */
+		 @RequestMapping(value = "/deleteFloorOfFAPApp", method = RequestMethod.POST)
+			public @ResponseBody ResultBean  deleteFloorOfFAPApp(
+					@RequestParam(value="ids",required=false) String[] ids,
+					ModelMap model,HttpSession httpSession) throws Exception {
+			 
+			 ResultBean resultBean = new ResultBean();
+			 
+			 //获取项目根路径
+			 String savePath = httpSession.getServletContext().getRealPath("");
+		     savePath = savePath +File.separator+ "uploadFAPAppImg"+File.separator;
+			 
+			 
+			 FloorOfFigureAndPuzzles floorOfFigureAndPuzzles = null;
+			 //删除附件文件相关s
+			List<FigureAPuzzleUploadfile> uploadfiles;
+			 File dirFile = null;
+			 boolean deleteFlag = false;//删除附件flag
+			//删除附件文件相关e
+			 
+			 for (String id : ids) 
+				{
+				 	floorOfFigureAndPuzzles = floorOfFigureAndPuzzlesService.getFloorOfFigureAndPuzzlesById(id);
+				 	if(null != floorOfFigureAndPuzzles)
+				 	{
+				 		//删除附件s
+				 		//1.获取附件
+				 		uploadfiles = figureAndPuzzleUploadfileService.getFigureAPuzzleUploadfilesByNewsUuid(floorOfFigureAndPuzzles.getFloorImg());
+				 		if(null != uploadfiles && uploadfiles.size()>0)
+				 		{
+				 			for (FigureAPuzzleUploadfile uploadfile : uploadfiles)
+				 			{
+				 				//2.删除附件
+						 		dirFile = new File(savePath+uploadfile.getUploadRealName());
+						 		logger.info("待删除文件路径："+dirFile);
+						        // 如果dir对应的文件不存在，或者不是一个目录，则退出
+						 		deleteFlag = dirFile.delete();
+					        	if(deleteFlag)
+					        	{//删除附件(清空附件关联newsUuid)
+					        		uploadfile.setModify(uploadfile.getNewsUuid());//放置附件关联uuid
+					   			 	uploadfile.setModifyTime(new Timestamp(System.currentTimeMillis()));
+					   			 	uploadfile.setNewsUuid("");
+					   			 	uploadfile.setIsDeleted(Constants.IS_DELETED);
+					        		figureAndPuzzleUploadfileService.update(uploadfile);
+					        		logger.info("删除图谜字谜底板附件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+					        	}
+					        	else
+					        	{
+					        		 logger.error("图谜字谜底板数据id为："+floorOfFigureAndPuzzles.getId()+"的数据没有文件");
+					        	}
+						        	
+						      //删除附件e
+							}
+				 			
+				 		}
+				 		//对图谜字谜底板数据做删除处理
+				 		floorOfFigureAndPuzzles.setIsDeleted(Constants.IS_DELETED);
+				 		floorOfFigureAndPuzzles.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
+				 		floorOfFigureAndPuzzles.setModifyTime(new Timestamp(System.currentTimeMillis()));
+				 		floorOfFigureAndPuzzles.setPuzzlesType(null);
+				 		floorOfFigureAndPuzzlesService.update(floorOfFigureAndPuzzles);
+				 		
+				 		
+				 		 //日志输出
+						 logger.info("删除图谜字谜底板版本--图谜字谜底板id="+id+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+					   
+				 	}
+				}
+			 String returnMsg = "删除成功!";
+			 resultBean.setStatus("success");
+			 resultBean.setMessage(returnMsg);
+			 
+			 return resultBean;
+		 }
+		 
+		 
+		 /**
+		  * 
+		 * @Title: deleteImgsByNewsuuid 
+		 * @Description: 根据newsUuid删除图谜字谜附件数据
+		 * @param @param newsUuid
+		 * @param @param model
+		 * @param @param httpSession
+		 * @param @return
+		 * @param @throws Exception    设定文件 
+		 * @author banna
+		 * @date 2016年10月11日 上午9:51:11 
+		 * @return ResultBean    返回类型 
+		 * @throws
+		  */
+		 @RequestMapping(value = "/deleteImgsByNewsuuid", method = RequestMethod.GET)
+			public @ResponseBody ResultBean deleteImgsByNewsuuid(
+					@RequestParam(value="newsUuid",required=false) String newsUuid,
+					ModelMap model,HttpSession httpSession) throws Exception {
+			 
+			 ResultBean resultBean = new ResultBean();
+			 if(null != newsUuid)
+			 {
+				 List<FigureAPuzzleUploadfile> uploadfiles = figureAndPuzzleUploadfileService.getFigureAPuzzleUploadfilesByNewsUuid(newsUuid);
+				 
+				
+				 
+				 //删除
+				 if(null != uploadfiles)
+				 {
+					//①：删除附件的数据时要把当前附件数据对于的附件文件也删除
+					 String savePath = httpSession.getServletContext().getRealPath("");//获取项目根路径
+				    
+				     //删除附件文件相关s
+					 File dirFile = null;
+					 boolean deleteFlag = false;//删除附件flag
+					 
+					 for (FigureAPuzzleUploadfile uploadfile : uploadfiles) 
+					 {
+						 	savePath = savePath +uploadfile.getUploadfilepath();
+						 	//2.删除附件
+					 		dirFile = new File(savePath+uploadfile.getUploadRealName());
+					 		logger.info("待删除文件路径："+dirFile);
+					        // 如果dir对应的文件不存在，或者不是一个目录，则退出
+				        	deleteFlag = dirFile.delete();
+				        	if(deleteFlag)
+				        	{//删除附件(清空附件关联newsUuid)
+				        		logger.info("deleteImg==删除原附件文件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+				        	}
+						    //删除附件e
+					   		 uploadfile.setModify(uploadfile.getNewsUuid());//放置附件关联uuid
+					   		 uploadfile.setModifyTime(new Timestamp(System.currentTimeMillis()));
+					   		 uploadfile.setIsDeleted(Constants.IS_DELETED);//删除标记
+		//						 uploadfileService.delete(uploadfile);
+					   		figureAndPuzzleUploadfileService.update(uploadfile);
+					 }
+					 
+					
+				 }
+				
+				 
+				 //TODO:删除文件附件图片
+				 
+				 resultBean.setUseFlag(true);
+			 }
+			
+			 return resultBean;
+		 }
+		 
+		 /**
+		  * 
+		 * @Title: deleteImg 
+		 * @Description: 根据id删除附件数据
+		 * @param @param id
+		 * @param @param model
+		 * @param @param httpSession
+		 * @param @return
+		 * @param @throws Exception    设定文件 
+		 * @author banna
+		 * @date 2016年10月11日 上午10:24:50 
+		 * @return ResultBean    返回类型 
+		 * @throws
+		  */
+		 @RequestMapping(value = "/deleteImg", method = RequestMethod.GET)
+			public @ResponseBody ResultBean deleteImg(
+					@RequestParam(value="id",required=false) String id,
+					ModelMap model,HttpSession httpSession) throws Exception {
+			 
+			 ResultBean resultBean = new ResultBean();
+			 if(null != id)
+			 {
+				 FigureAPuzzleUploadfile uploadfile = figureAndPuzzleUploadfileService.getFigureAPuzzleUploadfileById(Integer.parseInt(id));
+				 
+				
+				 
+				 //删除
+				 if(null != uploadfile)
+				 {
+					//①：删除附件的数据时要把当前附件数据对于的附件文件也删除
+					 String savePath = httpSession.getServletContext().getRealPath("");//获取项目根路径
+				     savePath = savePath +uploadfile.getUploadfilepath();
+				     //删除附件文件相关s
+					 File dirFile = null;
+					 boolean deleteFlag = false;//删除附件flag
+					//2.删除附件
+			 		dirFile = new File(savePath+uploadfile.getUploadRealName());
+			 		logger.info("待删除文件路径："+dirFile);
+			        // 如果dir对应的文件不存在，或者不是一个目录，则退出
+		        	deleteFlag = dirFile.delete();
+		        	if(deleteFlag)
+		        	{//删除附件(清空附件关联newsUuid)
+		        		logger.info("deleteImg==删除原附件文件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+		        	}
+				    //删除附件e
+			   		 uploadfile.setModify(uploadfile.getNewsUuid());//放置附件关联uuid
+			   		 uploadfile.setModifyTime(new Timestamp(System.currentTimeMillis()));
+			   		 uploadfile.setIsDeleted(Constants.IS_DELETED);//删除标记
+//					 uploadfileService.delete(uploadfile);
+			   		figureAndPuzzleUploadfileService.update(uploadfile);
+				 }
+				
+				 
+				 //TODO:删除文件附件图片
+				 
+				 resultBean.setUseFlag(true);
+			 }
+			
+			 return resultBean;
+		 }
+		 
+		/**
+		 * 
+		* @Title: getImgsByNewsuuid 
+		* @Description:根据newsUuid获取其对应的有效的图片列表
+		* @param @param newsUuid
+		* @param @param model
+		* @param @param httpSession
+		* @param @return
+		* @param @throws Exception    设定文件 
+		* @author banna
+		* @date 2016年10月11日 上午10:05:18 
+		* @return Map<String,Object>    返回类型 
+		* @throws
+		 */
+		 @RequestMapping(value = "/getImgsByNewsuuid", method = RequestMethod.GET)
+			public @ResponseBody Map<String,Object> getImgsByNewsuuid(
+					@RequestParam(value="newsUuid",required=false) String newsUuid,
+					ModelMap model,HttpSession httpSession) throws Exception 
+		{
+			 
+			 Map<String,Object> result = new HashMap<String, Object>();
+			 
+			 if(null != newsUuid)
+			 {
+				 List<FigureAPuzzleUploadfile> uploadfiles = figureAndPuzzleUploadfileService.getFigureAPuzzleUploadfilesByNewsUuid(newsUuid);
+				 
+				 result.put("imgList", uploadfiles);
+			 }
+			 
+			 return result;
+			 
+		 }
+		 
+		 
+		 
+		 /**
+			 *********** 5. ***********
+			 **/
+		 
+		 
+		 
+		 
+		 
+		 
 }

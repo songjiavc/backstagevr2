@@ -103,6 +103,19 @@
     	<url-pattern>/servlet/UploadArticleImg</url-pattern>
   	</servlet-mapping>
   	<!-- 文章图片文件上传end-->
+  	
+  	<!-- 图谜字谜图片文件上传start-->
+	<servlet>
+    	<description>This is the description of my J2EE component</description>
+    	<display-name>This is the display name of my J2EE component</display-name>
+    	<servlet-name>UploadFAPAppImg</servlet-name>
+    	<servlet-class>com.sdf.manager.servlet.UploadFAPAppImg</servlet-class>
+  	</servlet>
+  	<servlet-mapping>
+    	<servlet-name>UploadFAPAppImg</servlet-name>
+    	<url-pattern>/servlet/UploadFAPAppImg</url-pattern>
+  	</servlet-mapping>
+  	<!-- 图谜字谜图片文件上传end-->
   
   
    <!-- 设置默认加载首页 -->

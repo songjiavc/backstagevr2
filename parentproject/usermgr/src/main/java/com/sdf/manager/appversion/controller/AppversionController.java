@@ -142,6 +142,53 @@ public class AppversionController extends GlobalExceptionHandler {
 	
 	/**
 	 * 
+	* @Title: uploadFAPAppImg 
+	* @Description: 跳转到上传单个附件的页面
+	* @param @param uploadId
+	* @param @param session
+	* @param @param model
+	* @param @return    设定文件 
+	* @author banna
+	* @date 2016年10月10日 上午10:41:46 
+	* @return String    返回类型 
+	* @throws
+	 */
+	@RequestMapping(value = "/uploadFAPAppImg.action", method = RequestMethod.GET)
+	public String uploadFAPAppImg(@RequestParam(value="uploadId",required=false) String uploadId,HttpSession session,ModelMap model)
+	{
+		String indexPage = "appversion/uploadFAPAppImg";
+		
+		
+		model.addAttribute("uploadId", uploadId);
+		return indexPage;
+	}
+	
+	/**
+	 * 
+	* @Title: uploadMoreFAPAppImg 
+	* @Description:上传多附件的图谜字谜底板图片
+	* @param @param uploadId
+	* @param @param session
+	* @param @param model
+	* @param @return    设定文件 
+	* @author banna
+	* @date 2016年10月11日 上午10:10:59 
+	* @return String    返回类型 
+	* @throws
+	 */
+	@RequestMapping(value = "/uploadMoreFAPAppImg.action", method = RequestMethod.GET)
+	public String uploadMoreFAPAppImg(@RequestParam(value="uploadId",required=false) String uploadId,HttpSession session,ModelMap model)
+	{
+		String indexPage = "appversion/uploadMoreFAPAppImg";
+		
+		
+		model.addAttribute("uploadId", uploadId);
+		return indexPage;
+	}
+	
+	
+	/**
+	 * 
 	* @Title: getAppversionList
 	* @Description: 根据筛选条件获取应用版本数据
 	* @Author : banna

@@ -452,6 +452,25 @@ public class MenuController extends GlobalExceptionHandler{
 	}
 	
 	/**
+	 * 
+	* @Title: floorOfFigureAndPuzlleManage 
+	* @Description: 跳转到图谜字谜底板管理页面 
+	* @param @return    设定文件 
+	* @author banna
+	* @date 2016年10月10日 上午10:40:31 
+	* @return String    返回类型 
+	* @throws
+	 */
+	@RequestMapping(value = "/floorOfFigureAndPuzlleManage.action", method = RequestMethod.GET)
+	public String floorOfFigureAndPuzlleManage()
+	{
+		String indexPage = "figureAndPuzzleApp/floorOfFigureAndPuzlleManage";
+		
+		
+		return indexPage;
+	}
+	
+	/**
 	 * 跳转到错误页
 	 * @return
 	 */

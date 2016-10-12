@@ -4,7 +4,7 @@
 <html>
   <head>
     
-    <title>图谜字谜</title>
+    <title>佰艺霖图谜字谜专家平台</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">

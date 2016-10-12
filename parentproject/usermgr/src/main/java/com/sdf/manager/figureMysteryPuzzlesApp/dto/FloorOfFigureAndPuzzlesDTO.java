@@ -16,6 +16,8 @@ public class FloorOfFigureAndPuzzlesDTO
 	
 	private String figureOrPuzzles;//专家发布的是图谜、字谜或全部1：图谜，2：字谜  0：全部 
 	
+	private String figureOrPuzzlesName;//“图谜”，“字谜”
+	
 	private String floorDescription;//底板的具体描述
 	
 	private String floorImg;
@@ -24,9 +26,20 @@ public class FloorOfFigureAndPuzzlesDTO
 	private String puzzlesTypeId;//若当前底板是属于某个字谜类型的，则这个字段放置对应的这个字谜类型的id
 	
 	
+	
 	private String createTime;//创建时间
 	
 	private String creater;//创建人
+	
+	
+
+	public String getFigureOrPuzzlesName() {
+		return figureOrPuzzlesName;
+	}
+
+	public void setFigureOrPuzzlesName(String figureOrPuzzlesName) {
+		this.figureOrPuzzlesName = figureOrPuzzlesName;
+	}
 
 	public String getId() {
 		return id;
