@@ -108,12 +108,22 @@ function deletePuzzleType(id)
 	
 	data1.ids=codearr.toString();
 	
+	var returnFlag = checkPuzzleTypeDeleted(id);
 	
 	if(codearr.length == 0)
 	{
 		$.messager.alert('提示',"请选择数据后操作!");
 		deleteFlag = false;
 	}
+	else
+		{
+			if(!returnFlag)
+				{
+					$.messager.alert('提示',"当前字谜类型数据正在被使用，不可以被删除!");
+					deleteFlag = false;
+				}
+		}
+	
 	
 	if(deleteFlag)
 	{
@@ -137,6 +147,34 @@ function deletePuzzleType(id)
 	        }  
 	    });  
 	}
+}
+
+/**
+ * 校验当前字谜类型是否有关联数据
+ * @param id
+ */
+function checkPuzzleTypeDeleted(id)
+{
+	var flag = false;
+	var url = contextPath + '/fmpApp/checkCouldDeleted.action';
+	var data1 = new Object();
+	data1.id = id;
+	$.ajax({
+		async: false,   //设置为同步获取数据形式
+        type: "post",
+        url: url,
+        data:data1,
+        dataType: "json",
+        success: function (data) {
+        	flag = data.exist;
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            window.parent.location.href = contextPath + "/menu/error.action";
+        }
+   });
+	
+	
+	return flag;
 }
 
 
