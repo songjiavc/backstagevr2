@@ -403,4 +403,20 @@ public class DateUtil {
   	  returnTime = sdf.format(new Date());
   	  return returnTime;
   	}
+    
+    /**
+     * 
+     * @Title: formatCurrentDateWithYMD
+     * @Description: 获取当前时间不带时分秒的字符串,返回的格式为“年月日”
+     * @author:banna
+     * @return: String
+     */
+    public static String formatCurrentDateWithYMDHMS() {
+  	  
+  	  String returnTime;
+  	
+  	  SimpleDateFormat sdf = new SimpleDateFormat(DateUtil.FULL_DATE_FORMAT);
+  	  returnTime = sdf.format(new Date());
+  	  return returnTime;
+  	}
 }
