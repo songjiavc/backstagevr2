@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.bs.outer.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bs.outer.entity.Fast3Analysis;
+import com.bs.outer.entity.Fast3DanMa;
+import com.bs.outer.entity.Fast3Same;
+import com.bs.outer.entity.Fast3SiMa;
+import com.bs.outer.entity.HotCoolBean;
+import com.bs.outer.entity.Ln5In12Bean;
 import com.bs.outer.service.OuterInterfaceService;
 import com.sdf.manager.common.bean.ResultBeanData;
+import com.sdf.manager.common.util.DateUtil;
 
 
 /**
@@ -275,5 +281,20 @@ public class LottoryToolOuterController
 		}finally{
 			return rtnMap;
 		}
+	}
+	
+	/**
+	 *
+	 * @Title: getLotteryNum
+	 * @Description:  获取遗漏统计内容
+	 * * 对应的返回json数据结构：
+	 * @author:songjia
+	 * @return: Fast3
+	 */
+	@RequestMapping(value="/getServiceNowTime",method = RequestMethod.GET)
+	public @ResponseBody String getServiceNowTime()
+	{
+		
+		return DateUtil.formatCurrentDateWithYMDHMS();
 	}
 }
