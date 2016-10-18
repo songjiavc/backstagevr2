@@ -483,6 +483,25 @@ public class MenuController extends GlobalExceptionHandler{
 		return indexPage;
 	}
 	
+	/**
+	 * 
+	* @Title: errorExpert 
+	* @Description: 专家登录跳转错误页 
+	* @param @return    设定文件 
+	* @author banna
+	* @date 2016年10月17日 下午4:23:12 
+	* @return String    返回类型 
+	* @throws
+	 */
+	@RequestMapping(value = "/errorExpert.action", method = RequestMethod.GET)
+	public String errorExpert()
+	{
+		String indexPage = "figureAndPuzzleApp/error";
+		
+		
+		return indexPage;
+	}
+	
 	
 	/**
 	 * 跳转到图谜字谜专家登录页

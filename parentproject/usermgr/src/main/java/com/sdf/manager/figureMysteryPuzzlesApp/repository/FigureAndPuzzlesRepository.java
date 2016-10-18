@@ -19,6 +19,7 @@ public interface FigureAndPuzzlesRepository extends GenericRepository<FigureAndP
 	@Query("select u from FigureAndPuzzles u where u.isDeleted ='1' and u.id =?1 ")
 	public FigureAndPuzzles getFigureAndPuzzlesById(String id);
 	
-	
+	@Query("select u from FigureAndPuzzles u where u.isDeleted ='1' and u.fAPCode =?1 ")
+	public FigureAndPuzzles getFigureAndPuzzlesByFAPCode(String fAPCode);
 	
 }

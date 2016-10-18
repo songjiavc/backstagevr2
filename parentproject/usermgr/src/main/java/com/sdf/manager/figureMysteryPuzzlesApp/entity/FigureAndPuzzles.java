@@ -16,7 +16,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.sdf.manager.ad.entity.AppAdAndArea;
 import com.sdf.manager.user.entity.BaseEntiry;
 
 
@@ -42,6 +41,9 @@ public class FigureAndPuzzles extends BaseEntiry implements Serializable
 	@GeneratedValue(generator="idGenerator")	
 	private String id;
 	
+	@Column(name="FIGURE_AND_PUZZLE_CODE", length=45)
+	private String fAPCode;//图谜字谜编码
+	
 	@Column(name="NAME", length=45)
 	private String name;//发布的图谜字谜的名称
 	
@@ -62,11 +64,17 @@ public class FigureAndPuzzles extends BaseEntiry implements Serializable
 	
 	
 	@Column(name="WORD_IN_IMG")
-	private String wordInImg;//图中字图片对应的附件的newsUuid，可以对应多个图中字图片(图片加载时不需要有顺序)
+	private String wordInImg;//图中字图片对应的附件的newsUuid，可以对应多个图中字图片(图片加载时不需要有顺序)--》公司虚拟专家发布字谜使用
+	
+	@Column(name="PUZZLE_CONTENT")
+	private String puzzleContent;//字谜文字内容（专家发布字谜使用）
+	
+	@Column(name="PUZZLE_STATUS")
+	private String zimiStatus;//字谜类型，0：输入文字,1：上传字谜图片
 	
 	
 	@Column(name="FIGURE_IMG")
-	private String figureImg;//图谜图片附件id
+	private String figureImg;//图谜图片附件newsUuid
 	
 	@Column(name="STATUS", length=4)
 	private String status;//图谜字谜状态，参考T_BYL_FIGURE_AND_PUZZLE_APP_STATUS状态
@@ -74,6 +82,9 @@ public class FigureAndPuzzles extends BaseEntiry implements Serializable
 	@Column(name="STATUS_TIME")
 	private Timestamp statusTime;//状态更新时间
 	
+	@Column(name="FLOOR_UPLOADID")
+	private String floorUploadid;//底板附件id(数据来源于图谜字谜对应的底板对应的底板附件的id)
+
 	
 	
 	//一个字谜类型可以对应多个字谜
@@ -87,8 +98,6 @@ public class FigureAndPuzzles extends BaseEntiry implements Serializable
 	private FloorOfFigureAndPuzzles floorOfFigureAndPuzzles;
 
 	
-	@Column(name="FLOOR_UPLOADID")
-	private String floorUploadid;//底板附件id
 	
 	/**
 	 * 一个图谜字谜可以发布给多个区域
@@ -98,6 +107,30 @@ public class FigureAndPuzzles extends BaseEntiry implements Serializable
 	
 	
 	
+
+	public String getZimiStatus() {
+		return zimiStatus;
+	}
+
+	public void setZimiStatus(String zimiStatus) {
+		this.zimiStatus = zimiStatus;
+	}
+
+	public String getPuzzleContent() {
+		return puzzleContent;
+	}
+
+	public void setPuzzleContent(String puzzleContent) {
+		this.puzzleContent = puzzleContent;
+	}
+
+	public String getfAPCode() {
+		return fAPCode;
+	}
+
+	public void setfAPCode(String fAPCode) {
+		this.fAPCode = fAPCode;
+	}
 
 	public String getStatus() {
 		return status;

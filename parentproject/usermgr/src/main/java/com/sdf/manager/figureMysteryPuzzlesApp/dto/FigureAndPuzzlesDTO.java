@@ -7,6 +7,7 @@ public class FigureAndPuzzlesDTO
 {
 	private String id;
 	
+	private String fAPCode;//图谜字谜编码
 	
 	private String name;//发布的图谜字谜的名称
 	
@@ -15,6 +16,8 @@ public class FigureAndPuzzlesDTO
 	
 	private String figureOrPuzzles;//专家发布的是图谜、字谜或全部1：图谜，2：字谜 (专家发布时只可以选择是发布图谜或字谜)
 	
+	private String figureOrPuzzlesName;//“图谜”，“字谜”
+	
 	
 	private String isCompany;//是否为公司虚拟专家发布的图谜、字谜，1：是 0：否（若为公司虚拟专家算法生成的图谜字谜标记都是1，其他专家添加的都是0）
 	
@@ -22,13 +25,20 @@ public class FigureAndPuzzlesDTO
 	
 	private String wordInImg;//图中字图片对应的附件的newsUuid，可以对应多个图中字图片
 	
+	private String puzzleContent;//字谜文字内容（专家发布字谜使用）
+	
 	
 	private String puzzlesTypeId;//对应的字谜类型的id
 	
+	private String puzzlesTypeName;//字谜类型名称
+	
 	private String floorUploadid;//底板附件id
 	
+	private String zimiStatus;//字谜类型，0：输入文字,1：上传字谜图片
 	
 	private String floorOfFigureAndPuzzlesId;//对应的底板id
+	
+	private String floorOfFigureAndPuzzlesName;//对应的底板name
 	
 	private String createTime;//创建时间
 	
@@ -42,9 +52,69 @@ public class FigureAndPuzzlesDTO
 	
 	private Timestamp statusTime;
 
+	
+	
+	
+	public String getFloorOfFigureAndPuzzlesName() {
+		return floorOfFigureAndPuzzlesName;
+	}
 
-	
-	
+
+	public void setFloorOfFigureAndPuzzlesName(String floorOfFigureAndPuzzlesName) {
+		this.floorOfFigureAndPuzzlesName = floorOfFigureAndPuzzlesName;
+	}
+
+
+	public String getZimiStatus() {
+		return zimiStatus;
+	}
+
+
+	public void setZimiStatus(String zimiStatus) {
+		this.zimiStatus = zimiStatus;
+	}
+
+
+	public String getPuzzleContent() {
+		return puzzleContent;
+	}
+
+
+	public void setPuzzleContent(String puzzleContent) {
+		this.puzzleContent = puzzleContent;
+	}
+
+
+	public String getPuzzlesTypeName() {
+		return puzzlesTypeName;
+	}
+
+
+	public void setPuzzlesTypeName(String puzzlesTypeName) {
+		this.puzzlesTypeName = puzzlesTypeName;
+	}
+
+
+	public String getFigureOrPuzzlesName() {
+		return figureOrPuzzlesName;
+	}
+
+
+	public void setFigureOrPuzzlesName(String figureOrPuzzlesName) {
+		this.figureOrPuzzlesName = figureOrPuzzlesName;
+	}
+
+
+	public String getfAPCode() {
+		return fAPCode;
+	}
+
+
+	public void setfAPCode(String fAPCode) {
+		this.fAPCode = fAPCode;
+	}
+
+
 	public String getStatus() {
 		return status;
 	}

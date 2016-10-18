@@ -10,10 +10,10 @@
     
     <script type="text/javascript">
   	var toolbar = [{
-  	    text:'添加字谜类型',
+  	    text:'添加图谜字谜',
   	    iconCls:'icon-add',
   	    handler:function(){
-  	    	$("#addPuzzleType").dialog('open');
+  	    	addDialogOpen();
   	    	
   	    }
   	}  ];
@@ -36,12 +36,12 @@
 	  		.ftitle label{
 	  			float : left;
 	  			margin-left: 30px;
-	  			width:100px;
+	  			width:130px;
 	  		}
 	  		.ftitle .commonInput{
 	  			float : left;
 	  			width: 200px;
-	  		
+	  			margin-left: 30px;
 	  			border-radius : 5px;
 	  		}
 	  		
@@ -93,9 +93,28 @@
 			<div   data-options="region:'north'" style="height:10%;border:1px solid white; background-color:white;">
 	    	<table style="border: none;">
 		    	<tr>
-		    		<td width="7%" class="td_font">字谜类型名称：</td>
+		    		<td width="7%" class="td_font">图谜字谜名称：</td>
 		    		<td width="15%">
-		    			<input id="typeNameC" class="input_border"  type="text" name="typeNameC"  />  
+		    			<input id="nameC" class="input_border"  type="text" name="nameC"  />  
+		    		</td>
+		    		
+		    		<td width="7%" class="td_font">图谜/字谜：</td>
+		    		<td width="15%">
+		    			<select class="easyui-combobox " id="figureOrPuzzlesC" name="figureOrPuzzlesC"  
+			          	  data-options="editable:false" style="width:150px;" >
+			          	  <option value="" >请选择</option>
+			          	  <option value="1" >图谜</option>
+			          	  <option value="2" >字谜</option>
+						</select>
+		    		</td>
+		    		<td width="7%" class="td_font">彩种：</td>
+		    		<td width="15%">
+						<select class="easyui-combobox " id="lotterytypeC" name="lotterytypeC"  
+			          	  data-options="editable:false" style="width:150px;" >
+			          	   <option value="" >请选择</option>
+			          	  <option value="1" >体彩</option>
+			          	  <option value="2" >福彩</option>
+						</select>
 		    		</td>
 		    		
 		    		<td class="td_font" width="12%">
@@ -119,16 +138,22 @@
 	<input type="hidden" name="message" id="message" value="${message}">
   
   
-    <!-- 添加字谜类型 -->
-  <div id="addPuzzleType" class="easyui-dialog"  title="添加字谜类型" style="width:500px;height:400px;padding:10px;top:10px;"
+    <!-- 添加图谜字谜-->
+  <div id="addFigureAndPuzzle" class="easyui-dialog"  title="添加图谜字谜" style="width:650px;height:500px;padding:10px;top:10px;"
             data-options="
             modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
-                    text:'提交',
+                    text:'保存',
                     iconCls:'icon-ok',
                     handler:function(){
-                        submitAddPuzzleType();
+                        submitAddFigureAndPuzzle('0');
+                    }
+                },{
+                    text:'保存并提交',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        submitAddFigureAndPuzzle('1');
                     }
                 },{
                     text:'取消',
@@ -140,59 +165,337 @@
             ">
 		<form id="ff" method="get" novalidate>
 	        <div class="ftitle">
-	            <label for="codeA">字谜类型名称:</label>
+	            <label for="codeA">图谜字谜名称:</label>
 	            <input type="hidden" name="id" id="idA"/>
-	            <input class="easyui-validatebox commonInput" type="text" id="typeNameA" name="typeName"  
-	                data-options="required:true" validType="checkTypeName['#typeNameA','idA']"></input>
-	        </div>
-	        <div class="ftitle">
-	            <label for="nameA">字谜行数:</label>
-	            <input class="easyui-numberbox numberInput" type="text" id="typeColA" name="typeCol" data-options="required:true"
-	              missingMessage="字谜行数不可以为空" ></input>
-	        </div>
-	        <div class="ftitle">
-	            <label for="passwordA">字谜每行最多字数:</label>
-	            <input class="easyui-numberbox numberInput" type="text" id="typeColWordsNumA" name="typeColWordsNum" data-options="required:true"
-	             missingMessage="字谜每行最多字数不可以为空" ></input>
+	            <input class="easyui-validatebox commonInput" type="text" id="nameA" name="name"  
+	                data-options="required:true" ></input>
 	        </div>
 	        
+	         <div class="ftitle">
+		            <label for="playNameA">彩种玩法:</label><!-- 用来拼接当前图谜字谜的名称，用于应用中显示 -->
+		             <div style="float:left;margin-left:30px;">
+		             	 <select class="easyui-combobox " id="playNameA" name="playName"  data-options="editable:false" style="width:200px;" >
+				          	  <option value="3D" >3D</option>
+				          	  <option value="双色球">双色球</option>
+						</select>
+		             </div>
+			 </div>
+	        
+	        <div class="ftitle">
+		            <label for="lotteryTypeA">彩种分类:</label>
+		             <div style="float:left;margin-left:30px;">
+		             	 <select class="easyui-combobox " id="lotteryTypeA" name="lotteryType"  data-options="editable:false" style="width:200px;" >
+				          	  <option value="1" >体彩</option>
+				          	  <option value="2">福彩</option>
+						</select>
+		             </div>
+				           
+			 </div>
+	        
+	         <div class="ftitle">
+		            <label for="figureOrPuzzlesA">图谜/字谜:</label>
+		             <div style="float:left;margin-left:30px;">
+		             	 <select class="easyui-combobox " id="figureOrPuzzlesA" name="figureOrPuzzles"  data-options="editable:false" style="width:200px;" >
+				          	  <option value="1" >图谜</option>
+				          	  <option value="2">字谜</option>
+						</select>
+		             </div>
+			 </div>
+			 
+			 <div class="ftitle" id="zimiStatusDivA">
+		            <label for="puzzlesTypeIdA">输入文字/上传字谜图片:</label>
+		             <div style="float:left;margin-left: 5%;">
+			            <input class="easyui-validatebox" type="radio" name="zimiStatus" id="zs1"  value="0" checked><span for="zs1">输入文字</span></input>
+			            <input class="easyui-validatebox" style="margin-left:7px;" type="radio" id="zs2" name="zimiStatus" value="1"><span for="zs2">上传字谜图片</span></input>
+	        		</div>
+			 </div>
+	         
+			 <div class="ftitle" id="zmA">
+		            <label for="puzzlesTypeIdA">字谜类型:</label>
+		             <div style="float:left;margin-left:30px;">
+		             	 <select class="easyui-combobox " id="puzzlesTypeIdA" name="puzzlesTypeId"  data-options="editable:false" style="width:200px;" >
+					    	</select>
+		             </div>
+			 </div>
+			 
+			 <div class="ftitle" id="zmFloorA">
+		            <label for="puzzlesTypeIdA">字谜底板:</label>
+		             <div style="float:left;margin-left:30px;">
+		             	 <select class="easyui-combobox " id="floorOfFigureAndPuzzleA" name="floorOfFigureAndPuzzlesId"  data-options="editable:false" style="width:200px;" >
+						</select>
+		             </div>
+			 </div>
+			 
+			  <div class="ftitle" id="floorA">
+	            <label for="imgshowA">字谜底板图片:</label>
+	            <div style="float:left;margin-left:30px;">
+		             <div id="imgshowA">
+		            
+		            </div>
+	            </div>
+	           
+	       	 </div>
+	       	 
+	        <div class="ftitle" id="zimiContentA">
+	            <label for="versionDescriptionA">字谜内容:</label>
+	            <textarea id="puzzleContentA" name="puzzleContent" class="easyui-validatebox" 
+	         	 validType="checkPuzzleContent['#puzzleContentA']" style="resize:none;width:350px;height:60px;border-radius:5px;margin-left:30px;"></textarea>
+	        </div>
+			 
+			 <div class="ftitle" id="tumiDivImg">
+	            <label for="appVersionUrlU">上传字谜/图谜图片:</label>
+	            <input type="hidden" name="figureImg" id="figureImgA"/>
+	             <a href="#" id="uploadA" class="l-btn l-btn-small" style="margin-left:30px;" plain="true" onclick="openDialog('ddA','add')" style="width:200px;">上传字谜/图谜图片</a>
+	        </div>
+	        
+	         <div class="ftitle" id="tumiDivImgShow">
+	            <label for="tumiA">字谜/图谜图片:</label>
+	            <div style="float:left;margin-left:30px;">
+		             <div id="tumiA">
+		            
+		            </div>
+	            </div>
+	           
+	        </div>
+			 
 	      </form>
     </div>
-     <!-- 修改字谜类型-->
-     <div id="updatePuzzleType" class="easyui-dialog"  title="修改字谜类型" style="width:500px;height:400px;padding:10px;top:10px;"
+     <!-- 修改图谜字谜-->
+     <div id="updateFigureAndPuzzle" class="easyui-dialog"  title="修改图谜字谜" style="width:650px;height:500px;padding:10px;top:10px;"
             data-options="
                modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
-                    text:'提交',
+                    text:'保存',
                     iconCls:'icon-ok',
                     handler:function(){
-                        submitUpdatePuzzleType();
+                        submitUpdateFigureAndPuzzle('0');
+                    }
+                },{
+                    text:'保存并提交',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        submitUpdateFigureAndPuzzle('1');
                     }
                 },{
                     text:'取消',
                     iconCls:'icon-cancel',
                     handler:function(){
-                        $('#updatePuzzleType').dialog('close');
+                        $('#updateFigureAndPuzzle').dialog('close');
                     }
                 }]
             ">
 		<form id="ffUpdate" method="get" novalidate>
 	       <div class="ftitle">
-	            <label for="typeNameU">字谜类型名称:</label>
+	            <label for="nameU">图谜字谜名称:</label>
 	            <input type="hidden" name="id" id="idU"/>
-	            <input class="easyui-validatebox commonInput" type="text" id="typeNameU" name="typeName"  
-	                data-options="required:true" validType="checkTypeName['#typeNameU','idU']"></input>
+	            <input class="easyui-validatebox commonInput" type="text" id="nameU" name="name"  
+	                data-options="required:true" ></input>
 	        </div>
+	        
+	         <div class="ftitle">
+		            <label for="playNameU">彩种玩法:</label><!-- 用来拼接当前图谜字谜的名称，用于应用中显示 -->
+		            <input class="easyui-validatebox commonInput" type="text" id="playNameU" name="playName" readonly="readonly" />
+		             <!-- <div style="float:left;margin-left:30px;">
+		             	 <select class="easyui-combobox " id="playNameU" name="playName"  data-options="editable:false" style="width:200px;" >
+				          	  <option value="3D" >3D</option>
+				          	  <option value="双色球">双色球</option>
+						</select>
+		             </div> -->
+			 </div>
+	        
 	        <div class="ftitle">
-	            <label for="typeColU">字谜行数:</label>
-	            <input class="easyui-numberbox numberInput" type="text" id="typeColU" name="typeCol" data-options="required:true"
-	              missingMessage="字谜行数不可以为空" ></input>
+		            <label for="lotteryTypeU">彩种分类:</label>
+		             <input class="easyui-validatebox commonInput" type="text" id="lotteryTypeNameU" name="lotteryTypeName" readonly="readonly" />
+		            <!--  <div style="float:left;margin-left:30px;">
+		             	 <select class="easyui-combobox " id="lotteryTypeU" name="lotteryType"  data-options="editable:false" style="width:200px;" >
+				          	  <option value="1" >体彩</option>
+				          	  <option value="2">福彩</option>
+						</select>
+		             </div> -->
+				           
+			 </div>
+	        
+	         <div class="ftitle">
+		            <label for="figureOrPuzzlesU">图谜/字谜:</label>
+		            <input class="easyui-validatebox commonInput" type="text" id="figureOrPuzzlesNameU" name="figureOrPuzzlesName" readonly="readonly" />
+		             <!-- <div style="float:left;margin-left:30px;">
+		             	 <select class="easyui-combobox " id="figureOrPuzzlesU" name="figureOrPuzzles"  data-options="editable:false" style="width:200px;" >
+				          	  <option value="1" >图谜</option>
+				          	  <option value="2">字谜</option>
+						</select>
+		             </div> -->
+			 </div>
+			 
+			 <div class="ftitle" id="zimiStatusDivU">
+		            <label for="puzzlesTypeIdU">输入文字/上传字谜图片:</label>
+		             <div style="float:left;margin-left: 5%;">
+			            <input class="easyui-validatebox" type="radio" name="zimiStatus" id="zs1"  value="0" ><span for="zs1">输入文字</span></input>
+			            <input class="easyui-validatebox" style="margin-left:7px;" type="radio" id="zs2" name="zimiStatus" value="1"><span for="zs2">上传字谜图片</span></input>
+	        		</div>
+			 </div>
+	         
+			 <div class="ftitle" id="zmU">
+		            <label for="puzzlesTypeIdU">字谜类型:</label>
+		             <div style="float:left;margin-left:30px;">
+		             	 <select class="easyui-combobox " id="puzzlesTypeIdU" name="puzzlesTypeId"  data-options="editable:false" style="width:200px;" >
+					    	</select>
+		             </div>
+			 </div>
+			 
+			 <div class="ftitle" id="zmFloorU">
+		            <label for="puzzlesTypeIdU">字谜底板:</label>
+		             <div style="float:left;margin-left:30px;">
+		             	 <select class="easyui-combobox " id="floorOfFigureAndPuzzleU" name="floorOfFigureAndPuzzlesId"  data-options="editable:false" style="width:200px;" >
+						</select>
+		             </div>
+			 </div>
+			 
+			  <div class="ftitle" id="floorU">
+	            <label for="imgshowU">字谜底板图片:</label>
+	            <div style="float:left;margin-left:30px;">
+		             <div id="imgshowU">
+		            
+		            </div>
+	            </div>
+	           
+	       	 </div>
+	       	 
+	        <div class="ftitle" id="zimiContentU">
+	            <label for="versionDescriptionU">字谜内容:</label>
+	            <textarea id="puzzleContentU" name="puzzleContent" class="easyui-validatebox" 
+	         	 validType="checkPuzzleContent['#puzzleContentU']" style="resize:none;width:350px;height:60px;border-radius:5px;margin-left:30px;"></textarea>
 	        </div>
+			 
+			 <div class="ftitle" id="tumiDivImgU">
+	            <label for="appVersionUrlU">上传字谜/图谜图片:</label>
+	            <input type="hidden" name="figureImg" id="figureImgU"/>
+	             <a href="#" id="uploadA" class="l-btn l-btn-small" style="margin-left:30px;" plain="true" onclick="openDialog('ddA','update')" style="width:200px;">上传字谜/图谜图片</a>
+	        </div>
+	        
+	         <div class="ftitle" id="tumiDivImgShowU">
+	            <label for="tumiU">字谜/图谜图片:</label>
+	            <div style="float:left;margin-left:30px;">
+		             <div id="tumiU">
+		            
+		            </div>
+	            </div>
+	           
+	        </div>
+	      </form>
+    </div>
+    
+    <!-- 详情图谜字谜-->
+     <div id="detailFigureAndPuzzle" class="easyui-dialog"  title="图谜字谜详情" style="width:650px;height:500px;padding:10px;top:10px;"
+            data-options="
+               modal:true,
+                iconCls: 'icon-save',
+                buttons: [{
+                    text:'关闭',
+                    iconCls:'icon-cancel',
+                    handler:function(){
+                        $('#detailFigureAndPuzzle').dialog('close');
+                    }
+                }]
+            ">
+		<form id="ffDetail" method="get" novalidate>
+	       <div class="ftitle">
+	            <label for="nameD">图谜字谜名称:</label>
+	            <input type="hidden" name="id" id="idU"/>
+	            <input class="easyui-validatebox commonInput" type="text" id="nameD" name="name"  
+	                data-options="required:true" ></input>
+	        </div>
+	        
+	         <div class="ftitle">
+		            <label for="playNameD">彩种玩法:</label><!-- 用来拼接当前图谜字谜的名称，用于应用中显示 -->
+		            <input class="easyui-validatebox commonInput" type="text" id="playNameD" name="playName" readonly="readonly" />
+		             <!-- <div style="float:left;margin-left:30px;">
+		             	 <select class="easyui-combobox " id="playNameU" name="playName"  data-options="editable:false" style="width:200px;" >
+				          	  <option value="3D" >3D</option>
+				          	  <option value="双色球">双色球</option>
+						</select>
+		             </div> -->
+			 </div>
+	        
 	        <div class="ftitle">
-	            <label for="typeWordsNumU">字谜每行最多字数:</label>
-	            <input class="easyui-numberbox numberInput" type="text" id="typeColWordsNumU" name="typeColWordsNum" data-options="required:true"
-	             missingMessage="字谜每行最多字数不可以为空" ></input>
+		            <label for="lotteryTypeD">彩种分类:</label>
+		             <input class="easyui-validatebox commonInput" type="text" id="lotteryTypeNameD" name="lotteryTypeName" readonly="readonly" />
+		            <!--  <div style="float:left;margin-left:30px;">
+		             	 <select class="easyui-combobox " id="lotteryTypeU" name="lotteryType"  data-options="editable:false" style="width:200px;" >
+				          	  <option value="1" >体彩</option>
+				          	  <option value="2">福彩</option>
+						</select>
+		             </div> -->
+				           
+			 </div>
+	        
+	         <div class="ftitle">
+		            <label for="figureOrPuzzlesD">图谜/字谜:</label>
+		            <input class="easyui-validatebox commonInput" type="text" id="figureOrPuzzlesNameD" name="figureOrPuzzlesName" readonly="readonly" />
+		             <!-- <div style="float:left;margin-left:30px;">
+		             	 <select class="easyui-combobox " id="figureOrPuzzlesU" name="figureOrPuzzles"  data-options="editable:false" style="width:200px;" >
+				          	  <option value="1" >图谜</option>
+				          	  <option value="2">字谜</option>
+						</select>
+		             </div> -->
+			 </div>
+			 
+			 <div class="ftitle" id="zimiStatusDivD">
+		            <label for="puzzlesTypeIdD">输入文字/上传字谜图片:</label>
+		            <input class="easyui-validatebox commonInput" type="text" id="zimiStatusNameD"
+		             name="zimiStatusName" readonly="readonly" />
+		             <!-- <div style="float:left;margin-left: 5%;">
+			            <input class="easyui-validatebox" type="radio" name="zimiStatus" id="zs1"  value="0" ><span for="zs1">输入文字</span></input>
+			            <input class="easyui-validatebox" style="margin-left:7px;" type="radio" id="zs2" name="zimiStatus" value="1"><span for="zs2">上传字谜图片</span></input>
+	        		</div> -->
+			 </div>
+	         
+			 <div class="ftitle" id="zmD">
+		            <label for="puzzlesTypeIdD">字谜类型:</label>
+		            <input class="easyui-validatebox commonInput" type="text" id="puzzlesTypeNameD"
+		             name="puzzlesTypeName" readonly="readonly" />
+		            <!--  <div style="float:left;margin-left:30px;">
+		             	 <select class="easyui-combobox " id="puzzlesTypeIdD" name="puzzlesTypeId"  data-options="editable:false" style="width:200px;" >
+					    	</select>
+		             </div> -->
+			 </div>
+			 
+			 <div class="ftitle" id="zmFloorD">
+		            <label for="puzzlesTypeIdD">字谜底板:</label>
+		            <input class="easyui-validatebox commonInput" type="text" id="figureOrPuzzlesNameD"
+		             name="figureOrPuzzlesName" readonly="readonly" />
+		             <!-- <div style="float:left;margin-left:30px;">
+		             	 <select class="easyui-combobox " id="floorOfFigureAndPuzzleD" name="floorOfFigureAndPuzzlesId"  data-options="editable:false" style="width:200px;" >
+						</select>
+		             </div> -->
+			 </div>
+			 
+			  <div class="ftitle" id="floorD">
+	            <label for="imgshowD">字谜底板图片:</label>
+	            <div style="float:left;margin-left:30px;">
+		             <div id="imgshowD">
+		            
+		            </div>
+	            </div>
+	           
+	       	 </div>
+	       	 
+	        <div class="ftitle" id="zimiContentD">
+	            <label for="versionDescriptionD">字谜内容:</label>
+	            <textarea id="puzzleContentD" name="puzzleContent" class="easyui-validatebox" 
+	         	 readonly="readonly" style="resize:none;width:350px;height:60px;border-radius:5px;margin-left:30px;"></textarea>
+	        </div>
+			 
+	        
+	         <div class="ftitle" id="tumiDivImgShowD">
+	            <label for="tumiD">字谜/图谜图片:</label>
+	             <input type="hidden" name="figureImg" id="figureImgD"/>
+	            <div style="float:left;margin-left:30px;">
+		             <div id="tumiD">
+		            
+		            </div>
+	            </div>
+	           
 	        </div>
 	      </form>
     </div>
@@ -222,6 +525,8 @@
             </div>
         </div>
     </div>
+	<div id="ddA">Dialog Content.</div>
+     <div id="uploadShowAimgPreview" title="图片浏览" class="easyui-dialog" data-options="modal:true"  style="width:600px; height:400px;"> </div>
 </body>
 
 

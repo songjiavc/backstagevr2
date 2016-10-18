@@ -16,9 +16,13 @@ import com.sdf.manager.common.util.DateUtil;
 import com.sdf.manager.common.util.QueryResult;
 import com.sdf.manager.figureMysteryPuzzlesApp.controller.FigureMPuzzlesAppController;
 import com.sdf.manager.figureMysteryPuzzlesApp.dto.FigureAndPuzzlesDTO;
+import com.sdf.manager.figureMysteryPuzzlesApp.entity.FigureAndPuzzleStatus;
 import com.sdf.manager.figureMysteryPuzzlesApp.entity.FigureAndPuzzles;
+import com.sdf.manager.figureMysteryPuzzlesApp.entity.PuzzlesType;
 import com.sdf.manager.figureMysteryPuzzlesApp.repository.FigureAndPuzzlesRepository;
+import com.sdf.manager.figureMysteryPuzzlesApp.service.FigureAndPuzzleStatusService;
 import com.sdf.manager.figureMysteryPuzzlesApp.service.FigureAndPuzzlesService;
+import com.sdf.manager.order.entity.OrderStatus;
 
 @Service("figureAndPuzzlesService")
 @Transactional(propagation=Propagation.REQUIRED)
@@ -26,6 +30,9 @@ public class FigureAndPuzzlesServiceImpl implements FigureAndPuzzlesService {
 
 	@Autowired
 	private FigureAndPuzzlesRepository figureAndPuzzlesRepository;
+	
+	@Autowired
+	private FigureAndPuzzleStatusService figureAndPuzzleStatusService;
 	
 	public FigureAndPuzzlesDTO toDTO(FigureAndPuzzles entity) 
 	{
@@ -44,15 +51,56 @@ public class FigureAndPuzzlesServiceImpl implements FigureAndPuzzlesService {
 			//若当前底板是字谜的底板，则一定有字谜类型，这时要将字谜类型的id返回
 			if(null != entity.getFigureOrPuzzles() && FigureMPuzzlesAppController.ZIMI_FLAG.equals(entity.getFigureOrPuzzles()))
 			{
-				dto.setPuzzlesTypeId(entity.getPuzzlesType().getId());
+				PuzzlesType puzzlesType = entity.getPuzzlesType();
+				if(null != puzzlesType)
+				{
+					dto.setPuzzlesTypeId(puzzlesType.getId());
+					dto.setPuzzlesTypeName(puzzlesType.getTypeName());
+				}
+				else
+				{
+					dto.setPuzzlesTypeName("图片字谜");
+					
+				}
+				
+				
 			}
 			
 			
 			if(null != entity.getFloorOfFigureAndPuzzles())
 			{
 				dto.setFloorOfFigureAndPuzzlesId(entity.getFloorOfFigureAndPuzzles().getId());
+				dto.setFigureOrPuzzlesName(entity.getFloorOfFigureAndPuzzles().getFloorName());
 			}
 			
+			
+			if(null != entity.getStatus())
+			{
+				String statusName = "";
+				FigureAndPuzzleStatus figureAndPuzzleStatus = figureAndPuzzleStatusService.
+						getFigureAndPuzzleStatusByStatusId(entity.getStatus());
+				statusName = figureAndPuzzleStatus.getStatusName();
+				dto.setStatusName(statusName);
+			}
+			
+			if(null != entity.getFigureOrPuzzles())
+			{
+				String fop = entity.getFigureOrPuzzles();
+				if("0".equals(fop))
+				{
+					dto.setFigureOrPuzzlesName("全部");
+				}
+				else
+					if("1".equals(fop))
+					{
+						dto.setFigureOrPuzzlesName("图谜");
+					}
+					else
+						if("2".equals(fop))
+						{
+							dto.setFigureOrPuzzlesName("字谜");
+						}
+			}
 			
 			
 			
@@ -106,6 +154,11 @@ public class FigureAndPuzzlesServiceImpl implements FigureAndPuzzlesService {
 
 	public FigureAndPuzzles getFigureAndPuzzlesById(String id) {
 		return figureAndPuzzlesRepository.getFigureAndPuzzlesById(id);
+	}
+
+	public FigureAndPuzzles getFigureAndPuzzlesByFAPCode(String fAPCode) 
+	{
+		return figureAndPuzzlesRepository.getFigureAndPuzzlesByFAPCode(fAPCode);
 	}
 
 }

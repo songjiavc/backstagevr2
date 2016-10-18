@@ -23,5 +23,7 @@ public interface FigureAndPuzzlesService
 	public QueryResult<FigureAndPuzzles> getFigureAndPuzzlesList(Class<FigureAndPuzzles> entityClass, String whereJpql, Object[] queryParams, 
 			LinkedHashMap<String, String> orderby, Pageable pageable);
 	
-	public FigureAndPuzzles getFigureAndPuzzlesById(String id);		
+	public FigureAndPuzzles getFigureAndPuzzlesById(String id);	
+	
+	public FigureAndPuzzles getFigureAndPuzzlesByFAPCode(String fAPCode);
 }
