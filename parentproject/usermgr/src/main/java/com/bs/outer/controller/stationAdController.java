@@ -537,14 +537,14 @@ public class stationAdController extends GlobalExceptionHandler
 			 		List<AppAdAndArea> adAndAreasBefore = advertisement.getAppAdAndAreas();//获取之前绑定的应用广告的区域信息
 					   for (AppAdAndArea appAdAndArea : adAndAreasBefore) {
 						   adAndAreaService.delete(appAdAndArea);
-						   logger.info("通行证删除应用广告与区域关联数据--关联id="+appAdAndArea.getId()+"==应用广告告id="+id+"--操作通行证id="+stationId);
+						   logger.info("通行证删除应用广告与区域关联数据--关联id="+appAdAndArea.getId()+"==应用广告告id="+id+"--操作id="+LoginUtils.getAuthenticatedUserCode(httpSession));
 					   }
 					
 					advertisement.setAppAdAndAreas(appAdAndAreas);
 			 		advertisementService.update(advertisement);
 			 		
 			 		 //日志输出
-					 logger.info("通行证删除应用广告数据--应用广告id="+id+"--操作通行证id="+stationId);
+					 logger.info("通行证删除应用广告数据--应用广告id="+id+"--操作id="+LoginUtils.getAuthenticatedUserCode(httpSession));
 				   
 			 	}
 			}

@@ -234,11 +234,13 @@ function initDatagrid()
 ////因为微信没有修改站点广告的功能，所以暂时去掉驳回功能				    
 //	                				+'<a class="rejectOrder" onclick="approveStationAds(&quot;'+row.id+'&quot;,3)" href="javascript:void(0)" title="审批驳回">驳回</a>'//市中心驳回
 				                	+'<a class="stopOrder" onclick="approveStationAds(&quot;'+row.id+'&quot;,4)" href="javascript:void(0)" title="不通过">不通过</a>'//市中心不通过，终止订单的审批流程且流程不可恢复
-				                	+'<a class="throughOrder" onclick="approveStationAds(&quot;'+row.id+'&quot;,2)" href="javascript:void(0)" title="审批通过">通过</a>';//市中心审批通过
+				                	+'<a class="throughOrder" onclick="approveStationAds(&quot;'+row.id+'&quot;,2)" href="javascript:void(0)" title="审批通过">通过</a>'
+				                	+'<a class="deleterole" onclick="deleteStationAds(&quot;'+row.id+'&quot;)" href="javascript:void(0)" title="删除">删除</a>';
 	                			}
 		                		else
 	                			{
-	                				btn=btn+'<a class="detailcls" onclick="viewPTOrdersDetail(&quot;'+row.id+'&quot;)" href="javascript:void(0)" title="查看详情">详情</a>';//市中心可以查看订单详情但是不可以修改内容，可以审批
+	                				btn=btn+'<a class="detailcls" onclick="viewPTOrdersDetail(&quot;'+row.id+'&quot;)" href="javascript:void(0)" title="查看详情">详情</a>'
+	                				+'<a class="deleterole" onclick="deleteStationAds(&quot;'+row.id+'&quot;)" href="javascript:void(0)" title="删除">删除</a>';//市中心可以查看订单详情但是不可以修改内容，可以审批
 	                			}
 		                	
 		                return btn;  
@@ -534,12 +536,12 @@ function submitUpdateOrders(operatype)
 }
 
 /**
- * 删除商品数据
+ * 删除通行证广告数据
  * @param id
  */
-function deleteOrders(id)
+function deleteStationAds(id)
 {
-	var url = contextPath + '/order/deleteOrders.action';
+	var url = contextPath + '/stationAd/deleteStationAd.action';
 	var data1 = new Object();
 	
 	var codearr = [];
@@ -549,9 +551,7 @@ function deleteOrders(id)
 		
 	if(codearr.length>0)
 	{
-		var finishFlag = checkOrderFinish(id);
-		if(!finishFlag)
-			{
+		
 				$.messager.confirm("提示", "您确认删除选中数据？", function (r) {  
 			        if (r) {  
 				        	$.ajax({
@@ -571,11 +571,7 @@ function deleteOrders(id)
 				        	
 			        }  
 			    });  
-			}
-		else
-			{
-				$.messager.alert('提示', "待删除订单已完成审批，不可进行删除操作!");
-			}
+			
 		
 	}
 	else
