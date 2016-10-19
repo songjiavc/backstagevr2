@@ -2013,7 +2013,8 @@ public class FigureMPuzzlesAppController
 				   if(FigureMPuzzlesAppController.OPERORTYPE_SAVEANDCOMMIT.equals(operatype))
 				   {
 					 //由于状态变化，将变化状态存入到状态流程跟踪表中
-					   this.saveFoundFigureAndPuzzleStatus(this.getAuthenticatedExpertCode(httpSession),currentStatus,figureAndPuzzles);
+					   this.saveFoundFigureAndPuzzleStatus(this.getAuthenticatedExpertCode(httpSession)
+							   ,currentStatus,figureAndPuzzles,"");
 				   }
 				   
 				   resultBean.setMessage("修改图谜字谜成功!");
@@ -2107,7 +2108,7 @@ public class FigureMPuzzlesAppController
 				   {
 					   currentStatus = FigureMPuzzlesAppController.EXPERT_SAVE_FAP;//
 					   this.saveFoundFigureAndPuzzleStatus
-					   (this.getAuthenticatedExpertCode(httpSession),currentStatus,finishSaveFAP);
+					   (this.getAuthenticatedExpertCode(httpSession),currentStatus,finishSaveFAP,"");
 				   }
 				   else if(FigureMPuzzlesAppController.OPERORTYPE_SAVEANDCOMMIT.equals(operatype))
 				   { /**若专家在发布图谜字谜时保存并提交到公司审批人员处审批时，当前图谜字谜是有两个状态变化的，
@@ -2115,11 +2116,11 @@ public class FigureMPuzzlesAppController
 				   	*/
 					  //1.保存“专家保存图谜字谜”状态跟踪数据
 					   this.saveFoundFigureAndPuzzleStatus
-					   (this.getAuthenticatedExpertCode(httpSession),FigureMPuzzlesAppController.EXPERT_SAVE_FAP,finishSaveFAP);
+					   (this.getAuthenticatedExpertCode(httpSession),FigureMPuzzlesAppController.EXPERT_SAVE_FAP,finishSaveFAP,"");
 					   
 					   //2.保存“提交公司人员审批”状态跟踪数据；若提交图谜字谜到公司人员处审批，则当前状态为提交后的状态
 					   this.saveFoundFigureAndPuzzleStatus
-					   (this.getAuthenticatedExpertCode(httpSession),currentStatus,finishSaveFAP);
+					   (this.getAuthenticatedExpertCode(httpSession),currentStatus,finishSaveFAP,"");
 				   }
 				   
 				   resultBean.setMessage("添加图谜字谜成功!");
@@ -2139,7 +2140,7 @@ public class FigureMPuzzlesAppController
 		 /**
 		  * 
 		 * @Title: deleteFigureAndPuzzle 
-		 * @Description: 删除图谜字谜数据
+		 * @Description: 专家删除图谜字谜数据
 		 * @param @param ids
 		 * @param @param model
 		 * @param @param httpSession
@@ -2171,16 +2172,6 @@ public class FigureMPuzzlesAppController
 				 	figureAndPuzzles = figureAndPuzzlesService.getFigureAndPuzzlesById(id);
 				 	if(null != figureAndPuzzles)
 				 	{
-				 		
-				 		//对图谜字谜数据做删除处理
-				 		figureAndPuzzles.setFigureAndPuzzleAndAreas(null);
-				 		figureAndPuzzles.setFloorOfFigureAndPuzzles(null);
-				 		figureAndPuzzles.setPuzzlesType(null);
-				 		figureAndPuzzles.setIsDeleted(Constants.IS_DELETED);
-				 		figureAndPuzzles.setModify(this.getAuthenticatedExpertCode(httpSession));
-				 		figureAndPuzzles.setModifyTime(new Timestamp(System.currentTimeMillis()));
-				 		
-				 		
 				 		//删除关联区域表数据
 				 		List<FigureAndPuzzleAndArea> beforeFigureAndPuzzleAndAreas = 
 				 				figureAndPuzzles.getFigureAndPuzzleAndAreas();
@@ -2191,11 +2182,85 @@ public class FigureMPuzzlesAppController
 				 					+ "--操作人="+this.getAuthenticatedExpertCode(httpSession));
 						}
 				 		figureAndPuzzles.setFigureAndPuzzleAndAreas(figureAndPuzzleAndAreas);//将要删除的图谜字谜数据的区域取消关联
+				 		//对图谜字谜数据做删除处理
+//				 		figureAndPuzzles.setFigureAndPuzzleAndAreas(null);
+				 		figureAndPuzzles.setFloorOfFigureAndPuzzles(null);
+				 		figureAndPuzzles.setPuzzlesType(null);
+				 		figureAndPuzzles.setIsDeleted(Constants.IS_DELETED);
+				 		figureAndPuzzles.setModify(this.getAuthenticatedExpertCode(httpSession));
+				 		figureAndPuzzles.setModifyTime(new Timestamp(System.currentTimeMillis()));
 				 		figureAndPuzzlesService.update(figureAndPuzzles);
 				 		
 				 		
 				 		 //日志输出
 						 logger.info("删除图谜字谜--图谜字谜id="+id+"--操作人="+this.getAuthenticatedExpertCode(httpSession));
+					   
+				 	}
+				}
+			 String returnMsg = "删除成功!";
+			 resultBean.setStatus("success");
+			 resultBean.setMessage(returnMsg);
+			 
+			 return resultBean;
+		 }
+		 
+		 /**
+		  * 
+		 * @Title: deleteFigureAndPuzzleByCompany 
+		 * @Description: 公司删除图谜字谜数据 
+		 * @param @param ids
+		 * @param @param model
+		 * @param @param httpSession
+		 * @param @return
+		 * @param @throws Exception    设定文件 
+		 * @author banna
+		 * @date 2016年10月19日 下午3:27:19 
+		 * @return ResultBean    返回类型 
+		 * @throws
+		  */
+		 @RequestMapping(value = "/deleteFigureAndPuzzleByCompany", method = RequestMethod.POST)
+			public @ResponseBody ResultBean  deleteFigureAndPuzzleByCompany(
+					@RequestParam(value="ids",required=false) String[] ids,
+					ModelMap model,HttpSession httpSession) throws Exception {
+			 
+			 ResultBean resultBean = new ResultBean();
+			 
+			 //获取项目根路径
+			 String savePath = httpSession.getServletContext().getRealPath("");
+		     savePath = savePath +File.separator+ "uploadFAPAppImg"+File.separator;
+			 
+			 
+			 FigureAndPuzzles figureAndPuzzles = null;
+			 List<FigureAndPuzzleAndArea> figureAndPuzzleAndAreas = 
+					 new ArrayList<FigureAndPuzzleAndArea>();
+			 
+			 for (String id : ids) 
+				{
+				 	figureAndPuzzles = figureAndPuzzlesService.getFigureAndPuzzlesById(id);
+				 	if(null != figureAndPuzzles)
+				 	{
+				 		//删除关联区域表数据
+				 		List<FigureAndPuzzleAndArea> beforeFigureAndPuzzleAndAreas = 
+				 				figureAndPuzzles.getFigureAndPuzzleAndAreas();
+				 		for (FigureAndPuzzleAndArea figureAndPuzzleAndArea : beforeFigureAndPuzzleAndAreas) 
+				 		{
+				 			figureAndPuzzleAndAreaService.delete(figureAndPuzzleAndArea);
+				 			logger.info("删除图谜字谜与区域关联数据--关联id="+figureAndPuzzleAndArea.getId()+"==图谜字谜id="+id+""
+				 					+ "--操作人="+LoginUtils.getAuthenticatedUserCode(httpSession));
+						}
+				 		figureAndPuzzles.setFigureAndPuzzleAndAreas(figureAndPuzzleAndAreas);//将要删除的图谜字谜数据的区域取消关联
+				 		//对图谜字谜数据做删除处理
+//				 		figureAndPuzzles.setFigureAndPuzzleAndAreas(null);
+				 		figureAndPuzzles.setFloorOfFigureAndPuzzles(null);
+				 		figureAndPuzzles.setPuzzlesType(null);
+				 		figureAndPuzzles.setIsDeleted(Constants.IS_DELETED);
+				 		figureAndPuzzles.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
+				 		figureAndPuzzles.setModifyTime(new Timestamp(System.currentTimeMillis()));
+				 		figureAndPuzzlesService.update(figureAndPuzzles);
+				 		
+				 		
+				 		 //日志输出
+						 logger.info("删除图谜字谜--图谜字谜id="+id+"--操作人="+LoginUtils.getAuthenticatedUserCode(httpSession));
 					   
 				 	}
 				}
@@ -2218,13 +2283,14 @@ public class FigureMPuzzlesAppController
 		 * @return void    返回类型 
 		 * @throws
 		  */
-		 private void saveFoundFigureAndPuzzleStatus(String creator,String currentStatus,FigureAndPuzzles figureAndPuzzles)
+		 private void saveFoundFigureAndPuzzleStatus(String creator,String currentStatus,FigureAndPuzzles figureAndPuzzles,String rejectReson)
 		 {
 			 FoundFigureAndPuzzleStatus foundFigureAndPuzzleStatus = new FoundFigureAndPuzzleStatus();
 			 foundFigureAndPuzzleStatus.setCreator(creator);
 			 foundFigureAndPuzzleStatus.setStatus(currentStatus);
 			 foundFigureAndPuzzleStatus.setStatusSj(new Timestamp(System.currentTimeMillis()));
 			 foundFigureAndPuzzleStatus.setFigureAndPuzzles(figureAndPuzzles);
+			 foundFigureAndPuzzleStatus.setReason(rejectReson);//驳回状态的驳回理由
 			 foundFigureAndPuzzleStatusService.save(foundFigureAndPuzzleStatus);
 		 }
 		 
@@ -2335,6 +2401,7 @@ public class FigureMPuzzlesAppController
 						@RequestParam(value="fApId",required=false) String fApId,
 						@RequestParam(value="operortype",required=false) String operortype,
 						@RequestParam(value="areadata",required=false) String areadata,//绑定的区域数据list,
+						@RequestParam(value="rejectReson",required=false) String rejectReson,//审批驳回理由
 						ModelMap model,HttpSession httpSession) throws Exception
 				{
 					ResultBean resultBean = new ResultBean();
@@ -2354,7 +2421,7 @@ public class FigureMPuzzlesAppController
 					    figureAndPuzzles.setModifyTime(new Timestamp(System.currentTimeMillis()));
 					  //由于状态变化，将变化状态存入到状态流程跟踪表中
 						this.saveFoundFigureAndPuzzleStatus
-						(this.getAuthenticatedExpertCode(httpSession),currentStatus,figureAndPuzzles);
+						(this.getAuthenticatedExpertCode(httpSession),currentStatus,figureAndPuzzles,"");
 				    }
 				    else if(FigureMPuzzlesAppController.PAGE_OPERORTYPE_PASS.equals(operortype))
 				    {//公司审批图谜字谜列表审批通过
@@ -2390,7 +2457,7 @@ public class FigureMPuzzlesAppController
 					   figureAndPuzzles.setModifyTime(new Timestamp(System.currentTimeMillis()));
 					 //由于状态变化，将变化状态存入到状态流程跟踪表中
 						this.saveFoundFigureAndPuzzleStatus
-						(LoginUtils.getAuthenticatedUserCode(httpSession),currentStatus,figureAndPuzzles);
+						(LoginUtils.getAuthenticatedUserCode(httpSession),currentStatus,figureAndPuzzles,"");
 					  
 				    }
 				    else if(FigureMPuzzlesAppController.PAGE_OPERORTYPE_REJECT.equals(operortype))
@@ -2401,11 +2468,12 @@ public class FigureMPuzzlesAppController
 				    			getFigureAndPuzzleNextStatusBycurrentStatusId(currentStatus, directFlag);
 					   currentStatus = figureAndPuzzleNextStatus.getNextStatusId();
 					   
+					   figureAndPuzzles.setRejectReason(rejectReson);//审批驳回操作，录入驳回理由
 					   figureAndPuzzles.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
 					   figureAndPuzzles.setModifyTime(new Timestamp(System.currentTimeMillis()));
 					 //由于状态变化，将变化状态存入到状态流程跟踪表中
 						this.saveFoundFigureAndPuzzleStatus
-						(LoginUtils.getAuthenticatedUserCode(httpSession),currentStatus,figureAndPuzzles);
+						(LoginUtils.getAuthenticatedUserCode(httpSession),currentStatus,figureAndPuzzles,rejectReson);
 				    }
 				    else if(FigureMPuzzlesAppController.PAGE_OPERORTYPE_STOP.equals(operortype))
 				    {//公司审批列表不通过
@@ -2416,7 +2484,7 @@ public class FigureMPuzzlesAppController
 					   figureAndPuzzles.setModifyTime(new Timestamp(System.currentTimeMillis()));
 					 //由于状态变化，将变化状态存入到状态流程跟踪表中
 						this.saveFoundFigureAndPuzzleStatus
-						(LoginUtils.getAuthenticatedUserCode(httpSession),currentStatus,figureAndPuzzles);
+						(LoginUtils.getAuthenticatedUserCode(httpSession),currentStatus,figureAndPuzzles,"");
 				    }
 				    
 				    figureAndPuzzles.setStatus(currentStatus);

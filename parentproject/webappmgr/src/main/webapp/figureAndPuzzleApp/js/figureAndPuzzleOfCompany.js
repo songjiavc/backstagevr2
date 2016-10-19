@@ -81,6 +81,9 @@ function viewTumiHide()
 
 function closeDialog()
 {
+	$("#wShow").dialog('close');
+	$("#rejectResonShowDiv").dialog('close');
+	$("#rejectResonDiv").dialog('close');
 	$("#w").dialog('close');
 	$("#detailFigureAndPuzzle").dialog('close');
 	$("#viewFigureAndPuzzle").dialog('close');
@@ -143,9 +146,22 @@ function initDatagrid()
 				                	+'<a class="throughOrder" onclick="approveFigureAndPuzzle(&quot;'+row.id+'&quot;,2)" href="javascript:void(0)" title="审批通过">通过</a>';
 			            		}
 			            	else
-			            		{
-			            			btn='<a class="detailcls" onclick="viewFigureAndPuzzle(&quot;'+row.id+'&quot;)" href="javascript:void(0)" title="查看详情">详情</a>'//代理编辑
+			            		if('02'==status)
+			            		{//审批驳回，显示驳回理由查看按钮
+				            		btn=btn+'<a class="detailcls" onclick="viewFigureAndPuzzle(&quot;'+row.id+'&quot;)" href="javascript:void(0)" title="查看详情">详情</a>'
+				            		+'<a class="rejectResonOrder" onclick="showRejectReason(&quot;'+row.id+'&quot;)" href="javascript:void(0)" title="驳回理由">查看驳回理由</a>';
 			            		}
+			            		else
+				            		if('21'==status)
+				            		{//审批完成，显示查看发布区域按钮
+					            		btn=btn+'<a class="detailcls" onclick="viewFigureAndPuzzle(&quot;'+row.id+'&quot;)" href="javascript:void(0)" title="查看详情">详情</a>'
+					            		+'<a class="deleterole" onclick="deleteFigureAndPuzzleByCompany(&quot;'+row.id+'&quot;)" href="javascript:void(0)" title="删除">删除</a>'
+					            		+'<a class="showarea" onclick="showArea(&quot;'+row.id+'&quot;)" href="javascript:void(0)" title="查看发布区域">查看发布区域</a>';
+				            		}
+				            	else
+				            		{
+				            			btn='<a class="detailcls" onclick="viewFigureAndPuzzle(&quot;'+row.id+'&quot;)" href="javascript:void(0)" title="查看详情">详情</a>';//代理编辑
+				            		}
 			            	
 		                	return btn;  
 			            }  
@@ -158,7 +174,9 @@ function initDatagrid()
 	        $('.deleterole').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});  
 	        $('.rejectOrder').linkbutton({text:'驳回',plain:true,iconCls:'icon-remove'});  
 	        $('.throughOrder').linkbutton({text:'通过',plain:true,iconCls:'icon-remove'});
-	        $('.stopOrder').linkbutton({text:'不通过',plain:true,iconCls:'icon-remove'});     
+	        $('.stopOrder').linkbutton({text:'不通过',plain:true,iconCls:'icon-remove'});  
+	        $('.rejectResonOrder').linkbutton({text:'查看驳回理由',plain:true,iconCls:'icon-help'}); 
+	        $('.showarea').linkbutton({text:'查看发布区域',plain:true,iconCls:'icon-tip'});
 	        
 	        if(data.rows.length==0){
 				var body = $(this).data().datagrid.dc.body2;
@@ -168,6 +186,137 @@ function initDatagrid()
 	        
 	    }
 	});
+}
+
+/**
+ *公司对审批完成的图谜字谜数据可以进行删除操作
+ * @param id
+ */
+function deleteFigureAndPuzzleByCompany(id)
+{
+	var url = contextPath + '/fmpApp/deleteFigureAndPuzzleByCompany.action';
+	var data1 = new Object();
+	var deleteFlag = true;
+	
+	var codearr = [];
+	codearr.push(id);
+	
+	data1.ids=codearr.toString();
+	
+	
+	if(codearr.length == 0)
+	{
+		$.messager.alert('提示',"请选择数据后操作!");
+		deleteFlag = false;
+	}
+	
+	if(deleteFlag)
+	{
+		$.messager.confirm("提示", "您确认删除选中数据？", function (r) {  
+	        if (r) {  
+		        	$.ajax({
+		        		async: false,   //设置为同步获取数据形式
+		                type: "post",
+		                url: url,
+		                data:data1,
+		                dataType: "json",
+		                success: function (data) {
+		                	initDatagrid();
+		                	$.messager.alert('提示', data.message);
+		                },
+		                error: function (XMLHttpRequest, textStatus, errorThrown) {
+		                    window.parent.location.href = contextPath + "/menu/error.action";
+		                }
+		           });
+		        	
+	        }  
+	    });  
+	}
+}
+
+
+/**
+ * 查看发布区域
+ * @param id
+ */
+function showArea(id)
+{
+	initAreaData("treeDemoShow");
+	//选中当前应用广告发布的区域
+	var zTree = $.fn.zTree.getZTreeObj("treeDemoShow");
+	var node;//ztree树节点变量
+	var cityIds = checkAreas(id);
+	$.each(cityIds,function(j,cityId){
+		areaList.put(cityId, cityId);
+		node = zTree.getNodeByParam("id",cityId);
+		if(null != node)
+		{
+			zTree.checkNode(node, true, true);//设置树节点被选中
+		}
+	});
+	$('#wShow').dialog('open');
+}
+
+/**
+ * 获取当前图谜字谜的发布区域数据
+ * @param id
+ * @returns
+ */
+function checkAreas(id)
+{
+	var data = new Object();
+	data.id = id;
+	
+	var area ;
+	
+	$.ajax({
+		async: false,   //设置为同步获取数据形式
+        type: "get",
+        url: contextPath+'/fmpApp/getAreasOfFigureAndPuzzle.action',
+        data:data,
+        dataType: "json",
+        success: function (returndata) {
+        	
+        	area = returndata;
+        	
+        	
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            window.parent.location.href = contextPath + "/menu/error.action";
+        }
+   });
+	
+	return area;
+}
+
+/**
+ * 查看驳回理由
+ * @param id
+ */
+function showRejectReason(id)
+{
+	$("#rejectResonShowDiv").dialog('open');
+	var url = contextPath + '/fmpApp/getDetailFigureAndPuzzles.action';
+	var data1 = new Object();
+	data1.id=id;
+	
+	
+	$.ajax({
+		async: false,   //设置为同步获取数据形式
+        type: "get",
+        url: url,
+        data:data1,
+        dataType: "json",
+        success: function (data) {
+        	
+        	$("#rejectResonShow").val(data.rejectReason);
+        	
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            window.parent.location.href = contextPath + "/menu/error.action";
+        }
+	});
+        	
 }
 
 /**
@@ -256,7 +405,7 @@ function detailFigureAndPuzzle(id)
 				
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/menu/errorExpert.action";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
 	});
 	
@@ -349,7 +498,7 @@ function viewFigureAndPuzzle(id)
 				
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/menu/errorExpert.action";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
 	});
 	
@@ -568,7 +717,7 @@ function initImgList(newsUuid,uploadShowDivId)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/menu/errorExpert.action";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 }
@@ -608,7 +757,7 @@ function initImgById(id,uploadShowDivId)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/menu/errorExpert.action";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 }
@@ -660,7 +809,7 @@ function initTumiOrZimiImgList(newsUuid,uploadShowDivId)
         	
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/menu/errorExpert.action";
+            window.parent.location.href = contextPath + "/menu/error.action";
         }
    });
 }
@@ -701,6 +850,13 @@ function approveFigureAndPuzzle(fApId,operortype)
 			$("#operortypeD").val(operortype);
 		}
 	else
+		if(operortype == '3')
+		{//审批驳回输入驳回理由
+			$("#rejectResonDiv").dialog('open');
+			$("#fApIdRr").val(fApId);
+			$("#operortypeRr").val(operortype);
+		}
+		else
 		{
 			submitApprove(fApId,operortype,'0');
 		}
@@ -725,31 +881,41 @@ function submitApprove(fApId,operortype,flag)
 	
 	if('1' == flag)
 		{
-			areaList = new map();
-			var treeObj=$.fn.zTree.getZTreeObj("treeDemo"),
-		     nodes=treeObj.getCheckedNodes(true),
-		     v="";
-			
-			for(var i=0; i<nodes.length; i++)
-			{
-				if(!nodes[i].isParent)
+			if(operortype == '2')
+				{//审批通过操作的特殊处理
+					areaList = new map();
+					var treeObj=$.fn.zTree.getZTreeObj("treeDemo"),
+				     nodes=treeObj.getCheckedNodes(true),
+				     v="";
+					
+					for(var i=0; i<nodes.length; i++)
 					{
-						areaList.put(nodes[i].id, nodes[i].id);
+						if(!nodes[i].isParent)
+							{
+								areaList.put(nodes[i].id, nodes[i].id);
+							}
+						
 					}
-				
-			}
-			
-			if(areaList.keys.length==0)
-			{
-				$.messager.alert('提示', "请选择当前广告要发布给哪些区域!");
-				submitFlag = false;
-			}
+					
+					if(areaList.keys.length==0)
+					{
+						$.messager.alert('提示', "请选择当前广告要发布给哪些区域!");
+						submitFlag = false;
+					}
+					else
+						{
+							$("#w").dialog('close');
+						}
+					
+					data1.areadata = JSON.stringify(areaList);
+				}
 			else
-				{
-					$("#w").dialog('close');
+				if(operortype == '3')
+				{//审批驳回操作的特殊处理
+					data1.rejectReson = $("#rejectResonV").val();
+					$("#rejectResonDiv").dialog('close');
 				}
 			
-			data1.areadata = JSON.stringify(areaList);
 		}
 	if(submitFlag)
 		{
@@ -773,11 +939,24 @@ function submitApprove(fApId,operortype,flag)
 	
 }
 
+/**
+ * 审核通过后，选择区域确认触发方法
+ */
 var areaList = new map();
 function areaSelect()
 {
 	var fApId = $("#fApIdD").val();
 	var operortype = $("#operortypeD").val();
+	submitApprove(fApId,operortype,'1');
+}
+
+/**
+ * 审核驳回后，输入驳回理由完成后方法
+ */
+function resonFinish()
+{
+	var fApId = $("#fApIdRr").val();
+	var operortype = $("#operortypeRr").val();
 	submitApprove(fApId,operortype,'1');
 }
 

@@ -361,7 +361,7 @@
     </div>
     
      <!-- 发布区域弹框 -->
-  <div id="w" class="easyui-dialog" title="选择发布区域" style="width:400px;height:300px;padding:10px"
+  <div id="w" class="easyui-dialog" title="选择发布区域" style="width:400px;height:400px;padding:10px"
             data-options="
             modal:true,
                 iconCls: 'icon-save',
@@ -383,6 +383,67 @@
         	<input type="hidden" id="fApIdD" />
         	<input type="hidden" id="operortypeD" />
 			<ul id="treeDemo" class="ztree"></ul>
+		</div>
+    </div>
+    
+    <div id="wShow" class="easyui-dialog" title="查看发布区域" style="width:400px;height:400px;padding:10px"
+            data-options="
+            modal:true,
+                iconCls: 'icon-save',
+                buttons: [{
+                    text:'关闭',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        $('#wShow').dialog('close');
+                    }
+                }]
+            ">
+        <div class="zTreeDemoBackground left" style="float:left;width: 200px;">
+			<ul id="treeDemoShow" class="ztree"></ul>
+		</div>
+    </div>
+    
+     <div id="rejectResonDiv" class="easyui-dialog" title="驳回理由" style="width:400px;height:300px;padding:10px"
+            data-options="
+            modal:true,
+                iconCls: 'icon-save',
+                buttons: [{
+                    text:'确认',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        resonFinish();
+                    }
+                },{
+                    text:'取消',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        $('#rejectResonDiv').dialog('close');
+                    }
+                }]
+            ">
+        <div class="zTreeDemoBackground left" style="float:left;width: 200px;">
+        	<input type="hidden" id="fApIdRr" />
+        	<input type="hidden" id="operortypeRr" />
+       		 <textarea id="rejectResonV" name="rejectReson" class="easyui-validatebox" 
+	         	  style="resize:none;width:360px;height:190px;"></textarea>
+		</div>
+    </div>
+    
+     <div id="rejectResonShowDiv" class="easyui-dialog" title="驳回理由" style="width:400px;height:300px;padding:10px"
+            data-options="
+            modal:true,
+                iconCls: 'icon-save',
+                buttons: [{
+                    text:'关闭',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        $('#rejectResonShowDiv').dialog('close');
+                    }
+                }]
+            ">
+        <div class="zTreeDemoBackground left" style="float:left;width: 200px;">
+	         <textarea id="rejectResonShow" name="rejectReson" 
+	         	readonly="readonly"  style="resize:none;width:360px;height:190px;"></textarea>
 		</div>
     </div>
     
