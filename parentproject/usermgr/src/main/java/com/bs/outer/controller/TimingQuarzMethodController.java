@@ -36,7 +36,7 @@ import com.sdf.manager.order.service.RelaBsStaAppService;
 import com.sdf.manager.station.entity.Station;
 import com.sdf.manager.station.service.StationService;
 
-@Component("taskJob") 
+@Component("taskJob")
 public class TimingQuarzMethodController {
 	
 	private Logger logger = LoggerFactory.getLogger(TimingQuarzMethodController.class);
@@ -83,7 +83,7 @@ public class TimingQuarzMethodController {
 	 * @author:banna
 	 * @return: void
 	 */
-    @Scheduled(cron = "0 0 1 * * ? ")  
+//   // @Scheduled(cron = "0 0 1 * * ? ")  
 	public void updateRelaBsStaAndApp()
 	{
     	try
@@ -123,7 +123,7 @@ public class TimingQuarzMethodController {
      * @author:banna
      * @return: void
      */
-    @Scheduled(cron = "0 0 3 * * ? ")  //cron = "0 0 3 * * ? ""0 0/2 0/1 * * ? "
+   // @Scheduled(cron = "0 0 3 * * ? ")  //cron = "0 0 3 * * ? ""0 0/2 0/1 * * ? "
 	public void addReceiptOfAnnouncement()
 	{
     	Pageable pageable = new PageRequest(0, Integer.MAX_VALUE);
@@ -223,7 +223,7 @@ public class TimingQuarzMethodController {
      * @author:banna
      * @return: void
      */
-    @Scheduled(cron = "0 0 7 * * ? ")  //每天上午7点执行0 0 7 * * ? ;0 0/2 0/1 * * ? 
+   // @Scheduled(cron = "0 0 7 * * ? ")  //每天上午7点执行0 0 7 * * ? ;0 0/2 0/1 * * ? 
   	public void addKjNotices()
   	{
     	
@@ -374,7 +374,7 @@ public class TimingQuarzMethodController {
     /**
      * 生成3d开奖公告
      */
-    @Scheduled(cron = "0 40 20 * * ? ")  //每天晚上8点40执行定时任务，0 40 20 * * ? 
+   // @Scheduled(cron = "0 40 20 * * ? ")  //每天晚上8点40执行定时任务，0 40 20 * * ? 
   	public void addThreeDKjNotices()
   	{
     	
@@ -453,7 +453,7 @@ public class TimingQuarzMethodController {
     /**
      * 生成3D试机号开奖公告
      */
-    @Scheduled(cron = "0 40 18 * * ? ")  //每天晚上6点40执行定时任务，0 40 20 * * ? 
+   // @Scheduled(cron = "0 40 18 * * ? ")  //每天晚上6点40执行定时任务，0 40 20 * * ? 
   	public void addSJThreeDKjNotices()
   	{
     	//2analysis.T_DATA_BASE_3D(3d)
