@@ -935,7 +935,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	}
 	
 	 public List<ShuangSQ> getShuangSQNumByIssueNumber(){
-		 String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5,NO6,NO7 FROM analysis.T_DATA_BASE_SHUANG ORDER BY ISSUE_NUMBER DESC  LIMIT " ;
+		 String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5,NO6,NO7 FROM analysis.T_DATA_BASE_SHUANG ORDER BY ISSUE_NUMBER DESC  LIMIT 300" ;
 			Object[] queryParams = new Object[]{
 			};
 			List<ShuangSQ> shuangSQList = shuangSQRepository.getEntityListBySql(ShuangSQ.class,execSql, queryParams);
@@ -947,7 +947,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 * @return
 	 */ 
 	  public List<ThreeD> get3DNumByIssueNumber(){
-		  String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,TEST_NUM FROM analysis.T_DATA_BASE_3D ORDER BY ISSUE_NUMBER DESC LIMIT " ;
+		  String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,TEST_NUM FROM analysis.T_DATA_BASE_3D ORDER BY ISSUE_NUMBER DESC LIMIT 300" ;
 			Object[] queryParams = new Object[]{
 			};
 			List<ThreeD> threeDList =threeDRepository.getEntityListBySql(ThreeD.class,execSql, queryParams);
@@ -959,7 +959,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	    * @return
 	    */
 	  public List<QiLeCai> getQiLeCaiNumByIssueNumber(){
-		    String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5,NO6,NO7,NO8 FROM analysis.T_DATA_BASE_QILECAI ORDER BY ISSUE_NUMBER DESC LIMIT " ;
+		    String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5,NO6,NO7,NO8 FROM analysis.T_DATA_BASE_QILECAI ORDER BY ISSUE_NUMBER DESC LIMIT 300" ;
 			Object[] queryParams = new Object[]{
 			};
 			List<QiLeCai> qiLeCaieDList =qiLeCaiRepository.getEntityListBySql(QiLeCai.class,execSql, queryParams);
