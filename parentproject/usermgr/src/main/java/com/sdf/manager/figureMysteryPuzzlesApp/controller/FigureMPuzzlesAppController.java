@@ -2090,7 +2090,7 @@ public class FigureMPuzzlesAppController
 				   figureAndPuzzles.setModify(this.getAuthenticatedExpertCode(httpSession));
 				   figureAndPuzzles.setModifyTime(new Timestamp(System.currentTimeMillis()));
 				   figureAndPuzzles.setIsDeleted(Constants.IS_NOT_DELETED);
-				   figureAndPuzzles.setCreater(this.getAuthenticatedExpertCode(httpSession));
+				   figureAndPuzzles.setCreater(this.getAuthenticatedExpertName(httpSession));
 				   figureAndPuzzles.setCreaterTime(new Timestamp(System.currentTimeMillis()));
 				   
 				   logger.info("添加图谜字谜数据");
@@ -2163,6 +2163,8 @@ public class FigureMPuzzlesAppController
 			 
 			 
 			 FigureAndPuzzles figureAndPuzzles = null;
+			 List<FigureAndPuzzleAndArea> figureAndPuzzleAndAreas = 
+					 new ArrayList<FigureAndPuzzleAndArea>();
 			 
 			 for (String id : ids) 
 				{
@@ -2177,6 +2179,18 @@ public class FigureMPuzzlesAppController
 				 		figureAndPuzzles.setIsDeleted(Constants.IS_DELETED);
 				 		figureAndPuzzles.setModify(this.getAuthenticatedExpertCode(httpSession));
 				 		figureAndPuzzles.setModifyTime(new Timestamp(System.currentTimeMillis()));
+				 		
+				 		
+				 		//删除关联区域表数据
+				 		List<FigureAndPuzzleAndArea> beforeFigureAndPuzzleAndAreas = 
+				 				figureAndPuzzles.getFigureAndPuzzleAndAreas();
+				 		for (FigureAndPuzzleAndArea figureAndPuzzleAndArea : beforeFigureAndPuzzleAndAreas) 
+				 		{
+				 			figureAndPuzzleAndAreaService.delete(figureAndPuzzleAndArea);
+				 			logger.info("删除图谜字谜与区域关联数据--关联id="+figureAndPuzzleAndArea.getId()+"==图谜字谜id="+id+""
+				 					+ "--操作人="+this.getAuthenticatedExpertCode(httpSession));
+						}
+				 		figureAndPuzzles.setFigureAndPuzzleAndAreas(figureAndPuzzleAndAreas);//将要删除的图谜字谜数据的区域取消关联
 				 		figureAndPuzzlesService.update(figureAndPuzzles);
 				 		
 				 		

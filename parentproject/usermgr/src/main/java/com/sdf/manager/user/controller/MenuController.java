@@ -471,6 +471,25 @@ public class MenuController extends GlobalExceptionHandler{
 	}
 	
 	/**
+	 * 
+	* @Title: figureAndPuzzleOfCompany 
+	* @Description: 图谜字谜公司审核模块 
+	* @param @return    设定文件 
+	* @author banna
+	* @date 2016年10月19日 上午9:17:05 
+	* @return String    返回类型 
+	* @throws
+	 */
+	@RequestMapping(value = "/figureAndPuzzleOfCompany.action", method = RequestMethod.GET)
+	public String figureAndPuzzleOfCompany()
+	{
+		String indexPage = "figureAndPuzzleApp/figureAndPuzzleOfCompany";
+		
+		
+		return indexPage;
+	}
+	
+	/**
 	 * 跳转到错误页
 	 * @return
 	 */
