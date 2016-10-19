@@ -20,6 +20,7 @@ import com.bs.outer.entity.AnnouncementReceipt;
 import com.bs.outer.entity.QiLeCai;
 import com.bs.outer.entity.ShuangSQ;
 import com.bs.outer.entity.ThreeD;
+import com.bs.outer.entity.ThreeDTiming;
 import com.bs.outer.service.AnnouncementReceiptService;
 import com.bs.outer.service.OuterInterfaceService;
 import com.sdf.manager.announcement.entity.Announcement;
@@ -387,7 +388,7 @@ public class TimingQuarzMethodController {
     	
     	//②从analysis.T_DATA_BASE_3D(3d)获取上一次生成时间后的更新数据
     	List<AppNoticeAndArea> appnoticeAndAreas = new ArrayList<AppNoticeAndArea>();
-    	List<ThreeD> threelist = outerInterfaceService.get3DNumKaijiang(threeDct);
+    	List<ThreeDTiming> threelist = outerInterfaceService.get3DNumKaijiang(threeDct);
     	
     	if(null!=threelist && threelist.size()>0)
     	{
@@ -411,7 +412,7 @@ public class TimingQuarzMethodController {
     		   notice.setId(UUID.randomUUID().toString());
     		   notice.setAppNoticeName(threeD);
     		   
-    		   ThreeD newThreeD = threelist.get(0);
+    		   ThreeDTiming newThreeD = threelist.get(0);
     		   StringBuffer appNoticeWord =  new StringBuffer(threeD+"开奖期号："+newThreeD.getIssueNumber() +"   开奖号码："
     		   		+ newThreeD.getNo1()+","+newThreeD.getNo2()+","+newThreeD.getNo3());
     		   notice.setAppNoticeWord(appNoticeWord.toString());//开奖公告内容
@@ -463,7 +464,7 @@ public class TimingQuarzMethodController {
     	Date threeDct =  outerInterfaceService.getNoticeByAppNoticeName(threeDSJ);
     	
     	//②从analysis.T_DATA_BASE_3D(3d)获取上一次生成时间后的更新数据
-    	List<ThreeD> threeSjlist = outerInterfaceService.get3DNumKaijiang(threeDct);
+    	List<ThreeDTiming> threeSjlist = outerInterfaceService.get3DNumKaijiang(threeDct);
     	
     	if(null!=threeSjlist && threeSjlist.size()>0)
     	{
@@ -487,7 +488,7 @@ public class TimingQuarzMethodController {
     		   notice.setId(UUID.randomUUID().toString());
     		   notice.setAppNoticeName(threeDSJ);
     		   
-    		   ThreeD newThreeD = threeSjlist.get(0);
+    		   ThreeDTiming newThreeD = threeSjlist.get(0);
     		   StringBuffer appNoticeWord =  new StringBuffer(threeDSJ+"  期号："+newThreeD.getIssueNumber() +"  试机号码："
     		   		+ newThreeD.getTestNum());
     		   notice.setAppNoticeWord(appNoticeWord.toString());//试机公告内容

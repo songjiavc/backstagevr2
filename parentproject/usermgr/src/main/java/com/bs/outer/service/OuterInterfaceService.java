@@ -83,7 +83,7 @@ public interface OuterInterfaceService {
 	
 	public List<QiLeCai> getQiLeCaiKaijiang(Date ct);
 	
-	public List<ThreeD> get3DNumKaijiang(Date ct);
+	public List<ThreeDTiming> get3DNumKaijiang(Date ct);
 	
 	public List<ShuangSQ> getShuangSQKaijiang(Date ct);
 	

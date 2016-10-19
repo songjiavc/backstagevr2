@@ -72,6 +72,9 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	
 	@Autowired
 	private ThreeDRepository threeDRepository;
+	
+	@Autowired
+	private ThreeDTimingRepository threeDTimingRepository;
 
 	@Autowired
 	private ShuangSQRepository shuangSQRepository;
@@ -323,7 +326,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		 * @author:banna
 		 * @return: List<QiLeCai>
 		 */
-	 public List<ThreeD> get3DNumKaijiang(Date ct){
+	 public List<ThreeDTiming> get3DNumKaijiang(Date ct){
 		 StringBuffer execSql = new StringBuffer("SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,TEST_NUM FROM analysis.T_DATA_BASE_3D ");
 			 if(null != ct)
 	 		{
@@ -332,7 +335,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	 		execSql.append(" ORDER BY ISSUE_NUMBER DESC LIMIT 300");
 			Object[] queryParams = new Object[]{
 			};
-			List<ThreeD> threeDList =threeDRepository.getEntityListBySql(ThreeD.class,execSql.toString(), queryParams);
+			List<ThreeDTiming> threeDList =threeDTimingRepository.getEntityListBySql(ThreeDTiming.class,execSql.toString(), queryParams);
 			return threeDList;
 	  }
 	 
