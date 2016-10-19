@@ -126,7 +126,7 @@
 			</div>
 			
 		    <div  data-options="region:'center'" data-options="border:false" style="height:89%;">
-		    	 <table id="datagrid" class="easyui-datagrid"  title="字谜类型列表" >
+		    	 <table id="datagrid" class="easyui-datagrid"  title="图谜字谜列表" >
 					</table>
 		 	</div>  
  	
