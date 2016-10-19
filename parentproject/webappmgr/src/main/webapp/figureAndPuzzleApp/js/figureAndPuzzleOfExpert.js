@@ -342,6 +342,7 @@ function logout()
 
 function closeDialog()
 {
+	$("#rejectResonDiv").dialog('close');
 	$("#detailFigureAndPuzzle").dialog('close');
 	$("#addFigureAndPuzzle").dialog('close');
 	$("#updateFigureAndPuzzle").dialog('close');
@@ -492,6 +493,11 @@ function initDatagrid()
 				            		btn='<a class="editcls" onclick="updateFigureAndPuzzle(&quot;'+row.id+'&quot;)" href="javascript:void(0)" title="编辑">编辑</a>'//代理编辑
 				                	+'<a class="deleterole" onclick="deleteFigureAndPuzzle(&quot;'+row.id+'&quot;)" href="javascript:void(0)" title="删除">删除</a>'//代理删除
 				                	+'<a class="submitFigureAndPuzzle" onclick="approveFigureAndPuzzle(&quot;'+row.id+'&quot;,1)" href="javascript:void(0)" title="提交">提交</a>'//代理提交
+				                	
+				                	if('02'==status)
+			                		{
+			                			btn=btn+'<a class="rejectOrder" onclick="showRejectReason(&quot;'+row.id+'&quot;)" href="javascript:void(0)" title="驳回理由">查看驳回理由</a>';
+			                		}
 			            		}
 			            	else
 			            		{
@@ -507,7 +513,7 @@ function initDatagrid()
 	        $('.detailcls').linkbutton({text:'详情',plain:true,iconCls:'icon-edit'}); 
 	        $('.submitFigureAndPuzzle').linkbutton({text:'提交',plain:true,iconCls:'icon-edit'});  
 	        $('.deleterole').linkbutton({text:'删除',plain:true,iconCls:'icon-remove'});   
-	        
+	        $('.rejectOrder').linkbutton({text:'查看驳回理由',plain:true,iconCls:'icon-help'});
 	        if(data.rows.length==0){
 				var body = $(this).data().datagrid.dc.body2;
 				body.find('table tbody').append('<tr><td width="'+body.width()+'" style="height: 25px; text-align: center;" colspan="7">没有数据</td></tr>');
@@ -516,6 +522,37 @@ function initDatagrid()
 	        
 	    }
 	});
+}
+
+/**
+ * 查看驳回理由
+ * @param id
+ */
+function showRejectReason(id)
+{
+	$("#rejectResonV").val("");
+	$("#rejectResonDiv").dialog('open');
+	var url = contextPath + '/fmpApp/getDetailFigureAndPuzzles.action';
+	var data1 = new Object();
+	data1.id=id;
+	
+	
+	$.ajax({
+		async: false,   //设置为同步获取数据形式
+        type: "get",
+        url: url,
+        data:data1,
+        dataType: "json",
+        success: function (data) {
+        	
+        	$("#rejectResonV").val(data.rejectReason);
+        	
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            window.parent.location.href = contextPath + "/menu/errorExpert.action";
+        }
+	});
+        	
 }
 
 /**

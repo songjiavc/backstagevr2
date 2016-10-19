@@ -525,6 +525,27 @@
             </div>
         </div>
     </div>
+    
+     <div id="rejectResonDiv" class="easyui-dialog" title="驳回理由" style="width:400px;height:300px;padding:10px"
+            data-options="
+            modal:true,
+                iconCls: 'icon-save',
+                buttons: [{
+                    text:'关闭',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        $('#rejectResonDiv').dialog('close');
+                    }
+                }]
+            ">
+        <div class="zTreeDemoBackground left" style="float:left;width: 200px;">
+        	<input type="hidden" id="fApIdRr" />
+        	<input type="hidden" id="operortypeRr" />
+       		 <textarea id="rejectResonV" name="rejectReson" class="easyui-validatebox" 
+	         	readonly="readonly" style="resize:none;width:360px;height:190px;"></textarea>
+		</div>
+    </div>
+    
 	<div id="ddA">Dialog Content.</div>
      <div id="uploadShowAimgPreview" title="图片浏览" class="easyui-dialog" data-options="modal:true"  style="width:600px; height:400px;"> </div>
 </body>

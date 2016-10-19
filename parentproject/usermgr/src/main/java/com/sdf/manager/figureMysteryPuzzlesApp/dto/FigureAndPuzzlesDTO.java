@@ -23,6 +23,8 @@ public class FigureAndPuzzlesDTO
 	
 	private String playName;//彩种玩法名称（例如：3d，双色球等等）
 	
+	private String playNum;//当前图谜字谜发布给玩法的第多少期对应的期号，这个数据由系统生成填充，在当前彩种开奖前，则只可以发布即将开奖这期的图谜字谜
+	
 	private String wordInImg;//图中字图片对应的附件的newsUuid，可以对应多个图中字图片
 	
 	private String puzzleContent;//字谜文字内容（专家发布字谜使用）
@@ -51,10 +53,32 @@ public class FigureAndPuzzlesDTO
 	private String statusName;
 	
 	private Timestamp statusTime;
+	
+	private String rejectReason;//驳回理由
 
 	
 	
 	
+	public String getRejectReason() {
+		return rejectReason;
+	}
+
+
+	public void setRejectReason(String rejectReason) {
+		this.rejectReason = rejectReason;
+	}
+
+
+	public String getPlayNum() {
+		return playNum;
+	}
+
+
+	public void setPlayNum(String playNum) {
+		this.playNum = playNum;
+	}
+
+
 	public String getFloorOfFigureAndPuzzlesName() {
 		return floorOfFigureAndPuzzlesName;
 	}

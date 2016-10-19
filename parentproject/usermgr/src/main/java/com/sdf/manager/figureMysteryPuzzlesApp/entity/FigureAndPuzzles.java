@@ -54,6 +54,9 @@ public class FigureAndPuzzles extends BaseEntiry implements Serializable
 	@Column(name="PLAY_NAME", length=45)
 	private String playName;//彩种玩法名称（例如：3d，双色球等等）
 	
+	@Column(name="PLAY_NUM", length=45)
+	private String playNum;//当前图谜字谜发布给玩法的第多少期对应的期号，这个数据由系统生成填充，在当前彩种开奖前，则只可以发布即将开奖这期的图谜字谜
+	
 	@Column(name="FIGURE_OR_PUZZLES")
 	private String figureOrPuzzles;//专家发布的是图谜、字谜或全部1：图谜，2：字谜 (专家发布时只可以选择是发布图谜或字谜)
 	
@@ -82,6 +85,9 @@ public class FigureAndPuzzles extends BaseEntiry implements Serializable
 	@Column(name="STATUS_TIME")
 	private Timestamp statusTime;//状态更新时间
 	
+	@Column(name="REJECT_REASON")
+	private String rejectReason;//驳回理由
+	
 	@Column(name="FLOOR_UPLOADID")
 	private String floorUploadid;//底板附件id(数据来源于图谜字谜对应的底板对应的底板附件的id)
 
@@ -99,6 +105,14 @@ public class FigureAndPuzzles extends BaseEntiry implements Serializable
 
 	
 	
+	public String getPlayNum() {
+		return playNum;
+	}
+
+	public void setPlayNum(String playNum) {
+		this.playNum = playNum;
+	}
+
 	/**
 	 * 一个图谜字谜可以发布给多个区域
 	 */
@@ -107,6 +121,14 @@ public class FigureAndPuzzles extends BaseEntiry implements Serializable
 	
 	
 	
+
+	public String getRejectReason() {
+		return rejectReason;
+	}
+
+	public void setRejectReason(String rejectReason) {
+		this.rejectReason = rejectReason;
+	}
 
 	public String getZimiStatus() {
 		return zimiStatus;
