@@ -2557,10 +2557,12 @@ public class FigureMPuzzlesAppController
 				 
 				 Map<String,Object> result = new HashMap<String, Object>();
 				 
-				 String playNum = "";
-				 String issueNum = "";
-				 String yearNum = "";
-				 if("3D".equals(playName))
+				 String playNum = "";//用户返回的期号
+				 String issueNum = "";//最近一期已经开奖的期号后3位
+				 String yearNum = "";//最近一期已经开奖的年份前4位
+				 String threeDname = "3D";//3D名称
+				 String ssQName = "双色球";//"双色球"名称
+				 if(threeDname.equals(playName))
 				 {
 					 List<ThreeDTiming> threeDTimings = figureAndPuzzlesService.get3DNumKaijiang(null);
 					 ThreeDTiming threeDTiming = threeDTimings.get(0);
@@ -2569,7 +2571,7 @@ public class FigureMPuzzlesAppController
 					 
 				 }
 				 else
-					 if("双色球".equals(playName))
+					 if(ssQName.equals(playName))
 					 {
 						 List<ShuangSQ> shuangSQs = figureAndPuzzlesService.getShuangSQKaijiang(null);
 						 ShuangSQ shuangSQ = shuangSQs.get(0);
