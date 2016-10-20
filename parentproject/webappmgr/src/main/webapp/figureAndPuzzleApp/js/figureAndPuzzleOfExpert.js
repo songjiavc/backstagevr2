@@ -125,6 +125,15 @@ function bindCombobox()
 
 		});
 	
+	$("#playNameA").combobox({
+
+		onSelect: function (rec) {
+			
+			initPlayNum(rec.value);
+		}
+
+		});
+	
 	$("#ff input[name='zimiStatus']").click(function()
 			{
 				var val = $("#ff input[name='zimiStatus']:checked").val();//获取选中的radio的值
@@ -164,6 +173,32 @@ function bindCombobox()
 	    	checkDeleteFujian();
 	    }  
 	}); 
+}
+
+/**
+ * 初始化当前发布到哪期的期号
+ */
+function initPlayNum(playName)
+{
+	var data = new Object();
+	
+	data.playName = playName;
+	
+	$.ajax({
+		async: false,   //设置为同步获取数据形式
+		type: "get",
+		data:data,
+		url: contextPath + '/fmpApp/getPlaynumOfPlayname.action',
+		dataType: "json",
+		success: function (dataresult) {
+			
+			$("#playNumA").val(dataresult.playNum);
+			
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+			alert(errorThrown);
+		}
+   });
 }
 
 /**
@@ -363,6 +398,9 @@ function addDialogOpen()
 	addZimiShow();
 	addTumiHide();
   	initFloorOfFAPAppCombobox('floorOfFigureAndPuzzleA','','puzzlesTypeIdA','');//初始化底板数据
+  	$("#playNameA").combobox("setValue","3D");
+  	var playName = "3D";
+  	initPlayNum(playName);
 }
 
 
@@ -398,7 +436,7 @@ function getPuzzletype(id)
         	typeWordsNum = data.typeWordsNum;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+        	window.parent.location.href = contextPath + "/menu/errorExpert.action";
         }
    });
 }
@@ -483,7 +521,7 @@ function initDatagrid()
 		            }  },
 		        {field:'puzzlesTypeName',title:'字谜类型名称',width:'15%',align:'center'},
 		        {field:'statusName',title:'审批状态',width:'15%',align:'center'},
-				{field:'opt',title:'操作',width:'15%',align:'center',  
+				{field:'opt',title:'操作',width:'20%',align:'center',  
 			            formatter:function(value,row,index){  
 			            	var status = row.status;
 			            	var ordercreater = row.creater;
@@ -583,6 +621,7 @@ function detailFigureAndPuzzle(id)
 					puzzlesTypeId:data.puzzlesTypeId,
 					figureImg:data.figureImg,//底板图片newsUuid
 					zimiStatus:data.zimiStatus,
+					playNum:data.playNum,
 					figureOrPuzzlesName:data.figureOrPuzzlesName,
 					puzzleContent:data.puzzleContent//字谜内容
 					
@@ -755,6 +794,7 @@ function updateFigureAndPuzzle(id)
 					puzzlesTypeId:data.puzzlesTypeId,
 					figureImg:data.figureImg,//底板图片newsUuid
 					zimiStatus:data.zimiStatus,
+					playNum:data.playNum,
 					figureOrPuzzlesName:data.figureOrPuzzlesName,
 					puzzleContent:data.puzzleContent//字谜内容
 					
@@ -1122,7 +1162,7 @@ function approveFigureAndPuzzle(fApId,operortype)
         	$.messager.alert('提示', data.message);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            window.parent.location.href = contextPath + "/error.jsp";
+        	window.parent.location.href = contextPath + "/menu/errorExpert.action";
         }
    });
 }

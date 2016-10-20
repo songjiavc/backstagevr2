@@ -175,10 +175,16 @@
 		            <label for="playNameA">彩种玩法:</label><!-- 用来拼接当前图谜字谜的名称，用于应用中显示 -->
 		             <div style="float:left;margin-left:30px;">
 		             	 <select class="easyui-combobox " id="playNameA" name="playName"  data-options="editable:false" style="width:200px;" >
-				          	  <option value="3D" >3D</option>
+				          	  <option value="3D" selected="selected">3D</option>
 				          	  <option value="双色球">双色球</option>
 						</select>
 		             </div>
+			 </div>
+			 
+			  <div class="ftitle">
+		            <label for="playNameA">发布期号:</label>
+		             <input class="easyui-validatebox commonInput" type="text" id="playNumA" name="playNum"  
+	                  readonly="readonly"/>
 			 </div>
 	        
 	        <div class="ftitle">
@@ -303,6 +309,13 @@
 						</select>
 		             </div> -->
 			 </div>
+			 
+			 <div class="ftitle">
+		            <label for="playNameA">发布期号:</label>
+		             <input class="easyui-validatebox commonInput" type="text" id="playNumU" name="playNum"  
+	                  readonly="readonly"/>
+			 </div>
+			 
 	        
 	        <div class="ftitle">
 		            <label for="lotteryTypeU">彩种分类:</label>
@@ -415,6 +428,12 @@
 				          	  <option value="双色球">双色球</option>
 						</select>
 		             </div> -->
+			 </div>
+			 
+			 <div class="ftitle">
+		            <label for="playNameA">发布期号:</label>
+		             <input class="easyui-validatebox commonInput" type="text" id="playNumD" name="playNum"  
+	                  readonly="readonly"/>
 			 </div>
 	        
 	        <div class="ftitle">

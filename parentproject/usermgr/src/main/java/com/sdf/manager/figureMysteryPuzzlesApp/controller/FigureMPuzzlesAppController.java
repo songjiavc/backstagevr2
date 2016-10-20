@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bs.outer.entity.ShuangSQ;
+import com.bs.outer.entity.ThreeDTiming;
 import com.sdf.manager.ad.entity.Advertisement;
 import com.sdf.manager.ad.entity.AppAdAndArea;
 import com.sdf.manager.ad.entity.Uploadfile;
@@ -103,6 +105,7 @@ public class FigureMPuzzlesAppController
 	
 	@Autowired
 	private CityService cityService;
+	
 	
 	
 	
@@ -1908,6 +1911,7 @@ public class FigureMPuzzlesAppController
 					@RequestParam(value="puzzleContent",required=false) String puzzleContent,//输入文字形式的字谜的字谜内容
 					@RequestParam(value="figureImg",required=false) String figureImg,//上传的图谜/字谜图片对应的newsUuid
 					@RequestParam(value="zimiStatus",required=false) String  zimiStatus,//字谜类型，0：输入文字,1：上传字谜图片
+					@RequestParam(value="playNum",required=false) String  playNum,//当前图谜字谜是给彩种玩法的哪期使用的
 					@RequestParam(value="operatype",required=false) String operatype,//0:保存 1：保存并提交
 //					@RequestParam(value="areadata",required=false) String areadata,//绑定的区域数据list,//审批完成时添加区域信息
 					ModelMap model,HttpSession httpSession) throws Exception
@@ -2032,7 +2036,7 @@ public class FigureMPuzzlesAppController
 				   figureAndPuzzles.setLotteryType(lotteryType);
 				   figureAndPuzzles.setIsCompany("0");//非公司虚拟发布
 				   figureAndPuzzles.setFigureOrPuzzles(figureOrPuzzles);//放置当前是图谜or字谜
-				 
+				   figureAndPuzzles.setPlayNum(playNum);//当前图谜字谜给哪期彩种玩法使用
 				   
 				   if(this.TUMI_FLAG.equals(figureOrPuzzles))
 				   {//图谜
@@ -2091,7 +2095,7 @@ public class FigureMPuzzlesAppController
 				   figureAndPuzzles.setModify(this.getAuthenticatedExpertCode(httpSession));
 				   figureAndPuzzles.setModifyTime(new Timestamp(System.currentTimeMillis()));
 				   figureAndPuzzles.setIsDeleted(Constants.IS_NOT_DELETED);
-				   figureAndPuzzles.setCreater(this.getAuthenticatedExpertName(httpSession));
+				   figureAndPuzzles.setCreater(this.getAuthenticatedExpertCode(httpSession));
 				   figureAndPuzzles.setCreaterTime(new Timestamp(System.currentTimeMillis()));
 				   
 				   logger.info("添加图谜字谜数据");
@@ -2529,6 +2533,59 @@ public class FigureMPuzzlesAppController
 				}
 				 
 				 return cityIds;
+				 
+			 }
+			 
+			 /**
+			  * 
+			 * @Title: getPlaynumOfPlayname 
+			 * @Description: 根据彩种玩法获取当前即将开奖的期号
+			 * @param @param playName
+			 * @param @param model
+			 * @param @param httpSession
+			 * @param @return
+			 * @param @throws Exception    设定文件 
+			 * @author banna
+			 * @date 2016年10月20日 上午9:41:38 
+			 * @return List<String>    返回类型 
+			 * @throws
+			  */
+			 @RequestMapping(value = "/getPlaynumOfPlayname", method = RequestMethod.GET)
+				public @ResponseBody Map<String,Object>  getPlaynumOfPlayname(
+						@RequestParam(value="playName",required=false) String playName,
+						ModelMap model,HttpSession httpSession) throws Exception {
+				 
+				 Map<String,Object> result = new HashMap<String, Object>();
+				 
+				 String playNum = "";
+				 String issueNum = "";
+				 String yearNum = "";
+				 if("3D".equals(playName))
+				 {
+					 List<ThreeDTiming> threeDTimings = figureAndPuzzlesService.get3DNumKaijiang(null);
+					 ThreeDTiming threeDTiming = threeDTimings.get(0);
+					 yearNum = threeDTiming.getIssueNumber().substring(0, 4);
+					 issueNum  = threeDTiming.getIssueNumber().substring(4, 7);
+					 
+				 }
+				 else
+					 if("双色球".equals(playName))
+					 {
+						 List<ShuangSQ> shuangSQs = figureAndPuzzlesService.getShuangSQKaijiang(null);
+						 ShuangSQ shuangSQ = shuangSQs.get(0);
+						 yearNum = shuangSQ.getIssueNumber().substring(0, 4);
+						 issueNum = shuangSQ.getIssueNumber().substring(4, 7);
+					 }
+				 
+				 if(null != issueNum)
+				 {
+					 int calPlaynum = Integer.parseInt(issueNum)+1;
+					 playNum = yearNum + calPlaynum;
+				 }
+				 
+				 result.put("playNum", playNum);
+				 
+				 return result;
 				 
 			 }
 		 

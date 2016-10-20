@@ -1,10 +1,13 @@
 package com.sdf.manager.figureMysteryPuzzlesApp.service;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 
+import com.bs.outer.entity.ShuangSQ;
+import com.bs.outer.entity.ThreeDTiming;
 import com.sdf.manager.common.util.QueryResult;
 import com.sdf.manager.figureMysteryPuzzlesApp.dto.FigureAndPuzzlesDTO;
 import com.sdf.manager.figureMysteryPuzzlesApp.entity.FigureAndPuzzles;
@@ -26,4 +29,8 @@ public interface FigureAndPuzzlesService
 	public FigureAndPuzzles getFigureAndPuzzlesById(String id);	
 	
 	public FigureAndPuzzles getFigureAndPuzzlesByFAPCode(String fAPCode);
+	
+	public List<ShuangSQ> getShuangSQKaijiang(Date ct);
+	
+	public List<ThreeDTiming> get3DNumKaijiang(Date ct);
 }

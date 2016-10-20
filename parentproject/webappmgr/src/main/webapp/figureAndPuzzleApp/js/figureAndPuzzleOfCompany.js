@@ -131,7 +131,7 @@ function initDatagrid()
 		            	return lotteryTypeName;  
 		            }  },
 		        {field:'puzzlesTypeName',title:'字谜类型名称',width:'15%',align:'center'},
-		        {field:'creater',title:'发布专家',width:'15%',align:'center'},
+		        {field:'createrName',title:'发布专家',width:'15%',align:'center'},
 		        {field:'statusName',title:'审批状态',width:'15%',align:'center'},
 				{field:'opt',title:'操作',width:'25%',align:'center',  
 			            formatter:function(value,row,index){  
@@ -347,6 +347,7 @@ function detailFigureAndPuzzle(id)
 					puzzlesTypeId:data.puzzlesTypeId,
 					figureImg:data.figureImg,//底板图片newsUuid
 					zimiStatus:data.zimiStatus,
+					playNum:data.playNum,
 					figureOrPuzzlesName:data.figureOrPuzzlesName,
 					puzzleContent:data.puzzleContent//字谜内容
 					
@@ -440,6 +441,7 @@ function viewFigureAndPuzzle(id)
 					puzzlesTypeId:data.puzzlesTypeId,
 					figureImg:data.figureImg,//底板图片newsUuid
 					zimiStatus:data.zimiStatus,
+					playNum:data.playNum,
 					figureOrPuzzlesName:data.figureOrPuzzlesName,
 					puzzleContent:data.puzzleContent//字谜内容
 					

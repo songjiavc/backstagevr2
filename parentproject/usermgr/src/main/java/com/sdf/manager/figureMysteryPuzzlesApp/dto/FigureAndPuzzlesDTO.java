@@ -46,6 +46,8 @@ public class FigureAndPuzzlesDTO
 	
 	private String creater;//创建人
 	
+	private String createrName;//创建人姓名
+	
 	private String figureImg;//图谜图片附件id
 	
 	
@@ -59,6 +61,16 @@ public class FigureAndPuzzlesDTO
 	
 	
 	
+	public String getCreaterName() {
+		return createrName;
+	}
+
+
+	public void setCreaterName(String createrName) {
+		this.createrName = createrName;
+	}
+
+
 	public String getRejectReason() {
 		return rejectReason;
 	}

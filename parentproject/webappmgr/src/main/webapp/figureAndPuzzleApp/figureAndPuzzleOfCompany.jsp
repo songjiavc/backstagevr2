@@ -161,6 +161,13 @@
 						</select>
 		             </div> -->
 			 </div>
+			 
+			  <div class="ftitle">
+		            <label for="playNameA">发布期号:</label>
+		             <input class="easyui-validatebox commonInput" type="text" id="playNumD" name="playNum"  
+	                  readonly="readonly"/>
+			 </div>
+	        
 	        
 	        <div class="ftitle">
 		            <label for="lotteryTypeD">彩种分类:</label>
@@ -276,6 +283,13 @@
 						</select>
 		             </div> -->
 			 </div>
+			 
+			  <div class="ftitle">
+		            <label for="playNameA">发布期号:</label>
+		             <input class="easyui-validatebox commonInput" type="text" id="playNumV" name="playNum"  
+	                  readonly="readonly"/>
+			 </div>
+	        
 	        
 	        <div class="ftitle">
 		            <label for="lotteryTypeNameV">彩种分类:</label>
