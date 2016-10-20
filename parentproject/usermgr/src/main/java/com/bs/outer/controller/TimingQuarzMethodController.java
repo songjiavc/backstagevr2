@@ -37,7 +37,7 @@ import com.sdf.manager.order.service.RelaBsStaAppService;
 import com.sdf.manager.station.entity.Station;
 import com.sdf.manager.station.service.StationService;
 
-@Component("taskJob") 
+@Component("taskJob")
 public class TimingQuarzMethodController {
 	
 	private Logger logger = LoggerFactory.getLogger(TimingQuarzMethodController.class);
