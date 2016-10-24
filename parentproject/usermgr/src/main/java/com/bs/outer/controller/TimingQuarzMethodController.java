@@ -454,7 +454,7 @@ public class TimingQuarzMethodController {
     /**
      * 生成3D试机号开奖公告
      */
-    @Scheduled(cron = "0 40 18 * * ? ")  //每天晚上6点40执行定时任务，0 40 20 * * ? 
+    @Scheduled(cron = "0 40,50,59 18 * * ? ")  //每天晚上6点40，50,59执行定时任务，0 40 20 * * ? 
   	public void addSJThreeDKjNotices()
   	{
     	//2analysis.T_DATA_BASE_3D(3d)
