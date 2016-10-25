@@ -2582,7 +2582,19 @@ public class FigureMPuzzlesAppController
 				 if(null != issueNum)
 				 {
 					 int calPlaynum = Integer.parseInt(issueNum)+1;
-					 playNum = yearNum + calPlaynum;
+					 
+					 String calPlaynumStr = calPlaynum+"";
+					 
+					 if(calPlaynumStr.length()<3)//期号流水号不足3位
+					 {
+						 int zeroNum = 3-calPlaynumStr.length();//需要补位的0的个数
+						 for(int i=0;i<zeroNum;i++)
+						 {
+							 calPlaynumStr = "0" + calPlaynumStr;
+						 }
+					 }
+					 
+					 playNum = yearNum + calPlaynumStr;
 				 }
 				 
 				 result.put("playNum", playNum);
