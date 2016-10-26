@@ -2,6 +2,7 @@ package com.sdf.manager.figureMysteryPuzzlesApp.dto;
 
 
 
+
 /**
  * 图谜字谜底板实体的dto
  * @author Administrator
@@ -22,6 +23,10 @@ public class FloorOfFigureAndPuzzlesDTO
 	
 	private String floorImg;
 	
+	private String startCoordinate;//开始坐标
+	
+	private String fontCss;//字体样式
+	
 	//一个字谜类型可以对应多个种类的底板
 	private String puzzlesTypeId;//若当前底板是属于某个字谜类型的，则这个字段放置对应的这个字谜类型的id
 	
@@ -32,6 +37,22 @@ public class FloorOfFigureAndPuzzlesDTO
 	private String creater;//创建人
 	
 	
+
+	public String getStartCoordinate() {
+		return startCoordinate;
+	}
+
+	public void setStartCoordinate(String startCoordinate) {
+		this.startCoordinate = startCoordinate;
+	}
+
+	public String getFontCss() {
+		return fontCss;
+	}
+
+	public void setFontCss(String fontCss) {
+		this.fontCss = fontCss;
+	}
 
 	public String getFigureOrPuzzlesName() {
 		return figureOrPuzzlesName;

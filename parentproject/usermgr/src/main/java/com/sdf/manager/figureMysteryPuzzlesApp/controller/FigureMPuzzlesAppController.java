@@ -1280,6 +1280,8 @@ public class FigureMPuzzlesAppController
 					@RequestParam(value="id",required=false) String id,
 					@RequestParam(value="floorName",required=false) String floorName,
 					@RequestParam(value="figureOrPuzzles",required=false) String figureOrPuzzles,
+					@RequestParam(value="startCoordinate",required=false) String startCoordinate,//开始坐标
+					@RequestParam(value="fontCss",required=false) String fontCss,//字体样式
 					@RequestParam(value="floorDescription",required=false) String floorDescription,
 					@RequestParam(value="floorImg",required=false) String floorImg,
 					@RequestParam(value="puzzlesTypeId",required=false) String puzzlesTypeId,//若当前的底板是字谜底板，这个字段放置的是字谜类型的id
@@ -1292,6 +1294,10 @@ public class FigureMPuzzlesAppController
 			   {//修改图谜字谜底板数据
 				   
 				   floorOfFigureAndPuzzles.setFloorName(floorName);
+				   
+				   //2016-10-25 ADD
+				   floorOfFigureAndPuzzles.setFontCss(fontCss);
+				   floorOfFigureAndPuzzles.setStartCoordinate(startCoordinate);
 				   
 //				   floorOfFigureAndPuzzles.setFigureOrPuzzles(figureOrPuzzles);//图谜字谜类型修改时不可进行修改
 				   floorOfFigureAndPuzzles.setFloorDescription(floorDescription);
@@ -1317,6 +1323,10 @@ public class FigureMPuzzlesAppController
 				   floorOfFigureAndPuzzles.setFigureOrPuzzles(figureOrPuzzles);
 				   floorOfFigureAndPuzzles.setFloorDescription(floorDescription);
 				   floorOfFigureAndPuzzles.setFloorImg(floorImg);
+				   
+				   //2016-10-25 ADD
+				   floorOfFigureAndPuzzles.setFontCss(fontCss);
+				   floorOfFigureAndPuzzles.setStartCoordinate(startCoordinate);
 				   
 				   PuzzlesType puzzlesType = puzzleTypeService.getPuzzlesTypeById(puzzlesTypeId);
 				   floorOfFigureAndPuzzles.setPuzzlesType(puzzlesType);

@@ -244,8 +244,10 @@
 	       	 
 	        <div class="ftitle" id="zimiContentA">
 	            <label for="versionDescriptionA">字谜内容:</label>
-	            <textarea id="puzzleContentA" name="puzzleContent" class="easyui-validatebox" 
-	         	 validType="checkPuzzleContent['#puzzleContentA']" style="resize:none;width:350px;height:60px;border-radius:5px;margin-left:30px;"></textarea>
+	            <div id="zimiContentAArea" style="float:left;margin-left:30px;">
+	            </div>
+	            <!-- <textarea id="puzzleContentA" name="puzzleContent" class="easyui-validatebox" 
+	         	 validType="checkPuzzleContent['#puzzleContentA']" style="resize:none;width:350px;height:60px;border-radius:5px;margin-left:30px;"></textarea> -->
 	        </div>
 			 
 			 <div class="ftitle" id="tumiDivImg">
@@ -376,8 +378,10 @@
 	       	 
 	        <div class="ftitle" id="zimiContentU">
 	            <label for="versionDescriptionU">字谜内容:</label>
-	            <textarea id="puzzleContentU" name="puzzleContent" class="easyui-validatebox" 
-	         	 validType="checkPuzzleContent['#puzzleContentU']" style="resize:none;width:350px;height:60px;border-radius:5px;margin-left:30px;"></textarea>
+	            <div id="zimiContentUArea" style="float:left;margin-left:30px;">
+	            </div>
+	           <!--  <textarea id="puzzleContentU" name="puzzleContent" class="easyui-validatebox" 
+	         	 validType="checkPuzzleContent['#puzzleContentU']" style="resize:none;width:350px;height:60px;border-radius:5px;margin-left:30px;"></textarea> -->
 	        </div>
 			 
 			 <div class="ftitle" id="tumiDivImgU">

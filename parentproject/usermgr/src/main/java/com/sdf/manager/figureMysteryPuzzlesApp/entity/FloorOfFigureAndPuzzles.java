@@ -43,6 +43,13 @@ public class FloorOfFigureAndPuzzles extends BaseEntiry implements Serializable
 	@Column(name="FIGURE_OR_PUZZLES")
 	private String figureOrPuzzles;//专家发布的是图谜、字谜或全部1：图谜，2：字谜  0：全部 
 	
+	 //2016-10-25 ADD
+	@Column(name="START_COORDINATE")
+	private String startCoordinate;//开始坐标
+	 //2016-10-25 ADD
+	@Column(name="FONT_CSS")
+	private String fontCss;//字体样式
+	
 	@Column(name="FLOOR_DESCRIPTION")
 	private String floorDescription;//底板的具体描述
 	
@@ -53,6 +60,24 @@ public class FloorOfFigureAndPuzzles extends BaseEntiry implements Serializable
 	@ManyToOne  
     @JoinColumn(name = "PUZZLE_TYPE_ID", referencedColumnName = "id")
 	private PuzzlesType puzzlesType;
+	
+	
+
+	public String getStartCoordinate() {
+		return startCoordinate;
+	}
+
+	public void setStartCoordinate(String startCoordinate) {
+		this.startCoordinate = startCoordinate;
+	}
+
+	public String getFontCss() {
+		return fontCss;
+	}
+
+	public void setFontCss(String fontCss) {
+		this.fontCss = fontCss;
+	}
 
 	public String getId() {
 		return id;

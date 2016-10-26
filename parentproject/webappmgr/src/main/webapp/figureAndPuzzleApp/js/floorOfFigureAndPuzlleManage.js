@@ -199,6 +199,8 @@ function updateFloorOfFAPApp(id)
 					figureOrPuzzles:data.figureOrPuzzles,
 					puzzlesTypeId:data.puzzlesTypeId,
 					floorDescription:data.floorDescription,
+					startCoordinate:data.startCoordinate,//2016-10-25 ADD
+					fontCss:data.fontCss,//2016-10-25 ADD
 					floorImg:data.floorImg//底板图片newsUuid
 					
 				});

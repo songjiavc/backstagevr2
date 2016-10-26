@@ -1,4 +1,6 @@
 var typeWordsNum = 0;//当前字谜类型可以输入的字谜字数
+var typeCol = 0;//当前字谜类型可以输入的字谜行数
+var typeColWordsNum = 0;//当前字谜类型每行可以输入的字谜字数
 
 $(function() {
 	
@@ -91,7 +93,7 @@ function bindCombobox()
 		onSelect: function (rec) {
 			
 			initFloorOfFAPAppCombobox('floorOfFigureAndPuzzleA','','puzzlesTypeIdA','');//初始化底板数据
-			getPuzzletype(rec.id);
+			getPuzzletype(rec.id,'add');
 		}
 
 		});
@@ -102,7 +104,7 @@ function bindCombobox()
 		onSelect: function (rec) {
 			
 			initFloorOfFAPAppCombobox('floorOfFigureAndPuzzleU','','puzzlesTypeIdU','');//初始化底板数据
-			getPuzzletype(rec.id);
+			getPuzzletype(rec.id,'update');
 		}
 
 		});
@@ -400,7 +402,8 @@ function addDialogOpen()
   	initFloorOfFAPAppCombobox('floorOfFigureAndPuzzleA','','puzzlesTypeIdA','');//初始化底板数据
   	$("#playNameA").combobox("setValue","3D");
   	var playName = "3D";
-  	initPlayNum(playName);
+  	initPlayNum(playName);//初始化当前的图谜字谜发布期号
+  	
 }
 
 
@@ -419,7 +422,7 @@ function addDialogCancel()
  * 获取当前字谜类型可以输入的最多字数
  * @param id
  */
-function getPuzzletype(id)
+function getPuzzletype(id,addOrUpdate)
 {
 	var data1 = new Object();
 	
@@ -434,11 +437,46 @@ function getPuzzletype(id)
         dataType: "json",
         success: function (data) {
         	typeWordsNum = data.typeWordsNum;
+        	typeCol = data.typeCol;
+        	typeColWordsNum = data.typeColWordsNum;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
         	window.parent.location.href = contextPath + "/menu/errorExpert.action";
         }
    });
+	
+	if('add' == addOrUpdate)
+		{//添加
+			//初始化输入框
+		  	if(typeCol>0)
+		  		{
+			  		var zimiContent = '';
+			  	  	for(var i=0;i<typeCol;i++)//根据字谜类型生成输入框，有几行就生成几个输入框
+			  	  		{
+			  	  			zimiContent += '<textarea id="puzzleContentA'+i+'"  class="easyui-validatebox" '+
+			  		         	'  validType="length[0,'+typeColWordsNum+']" invalidMessage="当前字谜此行最多可以输入'+typeColWordsNum+'个字" style="resize:none;width:350px;height:40px;border-radius:5px;"></textarea><br/>';
+			  	  		}
+			  	  	$("#zimiContentAArea").html(zimiContent);
+			  	  	$.parser.parse($("#zimiContentAArea"));//重新渲染动态添加的控件，因为使用了easyui的校验
+		  		}
+		  	
+		}
+	else
+		if('update' == addOrUpdate)
+		{//修改
+			//初始化输入框
+		  	if(typeCol>0)
+		  		{
+			  		var zimiContent = '';
+			  	  	for(var i=0;i<typeCol;i++)//根据字谜类型生成输入框，有几行就生成几个输入框
+			  	  		{
+			  	  			zimiContent += '<textarea id="puzzleContentU'+i+'"  class="easyui-validatebox" '+
+			  		         	'  validType="length[0,'+typeColWordsNum+']" invalidMessage="当前字谜此行最多可以输入'+typeColWordsNum+'个字" style="resize:none;width:350px;height:40px;border-radius:5px;"></textarea><br/>';
+			  	  		}
+			  	  	$("#zimiContentUArea").html(zimiContent);
+			  	  	$.parser.parse($("#zimiContentUArea"));//重新渲染动态添加的控件，因为使用了easyui的校验
+		  		}
+		}
 }
 
 
@@ -795,8 +833,7 @@ function updateFigureAndPuzzle(id)
 					figureImg:data.figureImg,//底板图片newsUuid
 					zimiStatus:data.zimiStatus,
 					playNum:data.playNum,
-					figureOrPuzzlesName:data.figureOrPuzzlesName,
-					puzzleContent:data.puzzleContent//字谜内容
+					figureOrPuzzlesName:data.figureOrPuzzlesName
 					
 				});
 				
@@ -831,7 +868,22 @@ function updateFigureAndPuzzle(id)
 								updateTumiHide();
 								$("#zimiStatusDivU").show();
 								initPuzzleTypeCombobox('puzzlesTypeIdU',data.puzzlesTypeId);//初始化字谜类型下拉框的值
-								getPuzzletype(data.puzzlesTypeId);
+								getPuzzletype(data.puzzlesTypeId,'update');
+								//初始化内容输入框
+								var contentArr = data.puzzleContent.split(",");
+								var contentArrLen = contentArr.length;
+							  	if(contentArrLen>0)
+							  		{
+								  		var zimiContent = '';
+								  	  	for(var i=0;i<contentArrLen;i++)//根据字谜类型生成输入框，有几行就生成几个输入框
+								  	  		{
+								  	  			zimiContent += '<textarea id="puzzleContentU'+i+'"  class="easyui-validatebox" '+
+								  		         	'  validType="length[0,'+typeColWordsNum+']" invalidMessage="当前字谜此行最多可以输入'+typeColWordsNum+'个字" style="resize:none;width:350px;height:40px;border-radius:5px;">'+contentArr[i]+'</textarea><br/>';
+								  	  		}
+								  	  	$("#zimiContentUArea").html(zimiContent);
+								  	  	$.parser.parse($("#zimiContentUArea"));//重新渲染动态添加的控件，因为使用了easyui的校验
+							  		}
+								
 								//初始化字谜底板选中值
 								initFloorOfFAPAppCombobox('floorOfFigureAndPuzzleU',data.floorOfFigureAndPuzzlesId,'puzzlesTypeIdU',data.puzzlesTypeId);//初始化底板数据
 //								$('#floorOfFigureAndPuzzleU').combobox('select',data.floorOfFigureAndPuzzlesId);
@@ -1174,6 +1226,23 @@ function submitAddFigureAndPuzzle(operatype)
 		onSubmit:function(param){
 			var flag = false;
 			
+			//组装字谜内容，使用分隔符：,
+			var puzzleContent = "";
+			for(var i=0;i<typeCol;i++)
+				{
+					
+					if(i == 0)
+						{
+							puzzleContent += $("#puzzleContentA"+i).val();
+						}
+					else
+						{
+							puzzleContent += ','+$("#puzzleContentA"+i).val();
+						}
+						
+				}
+			param.puzzleContent = puzzleContent;//带入分隔符组装的字谜内容
+			
 			if($('#ff').form('enableValidation').form('validate'))
 				{
 					flag = true;
@@ -1216,6 +1285,23 @@ function submitUpdateFigureAndPuzzle(operatype)
 		onSubmit:function(param){
 			var flag = false;
 			
+			//组装字谜内容，使用分隔符：,
+			var puzzleContent = "";
+			for(var i=0;i<typeCol;i++)
+				{
+					
+					if(i == 0)
+						{
+							puzzleContent += $("#puzzleContentU"+i).val();
+						}
+					else
+						{
+							puzzleContent += ','+$("#puzzleContentU"+i).val();
+						}
+						
+				}
+			param.puzzleContent = puzzleContent;//带入分隔符组装的字谜内容
+			
 			if($('#ffUpdate').form('enableValidation').form('validate'))
 				{
 					flag = true;
@@ -1241,10 +1327,10 @@ function submitUpdateFigureAndPuzzle(operatype)
  */
 $.extend($.fn.validatebox.defaults.rules, {
 	checkPuzzleContent: {//自定义校验name
-        validator: function(value,param){
+        validator: function(value){
         	var rules = $.fn.validatebox.defaults.rules;  
         	if(value.length>typeWordsNum){  
-        		rules.checkPuzzleContent.message = "当前字谜内容不可为空且长度不可以超过"+typeWordsNum+"个字符";  
+        		rules.checkPuzzleContent.message = "当前字谜内容每行不可为空且长度不可以超过"+typeColWordsNum+"个字符";  
                 return false;  
             }
         	else

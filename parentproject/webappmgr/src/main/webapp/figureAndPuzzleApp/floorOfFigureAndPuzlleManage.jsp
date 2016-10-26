@@ -143,6 +143,19 @@
 		             </div>
 				           
 			 </div>
+			 
+			 <div class="ftitle">
+				 <label for="startCoordinateA">起始坐标:</label>
+	            	<input class="easyui-validatebox commonInput" type="text" id="startCoordinateA" name="startCoordinate"  
+	                data-options="required:true" ></input>
+	        </div>
+	        
+	         <div class="ftitle">
+				 <label for="startCoordinateA">字体样式:</label>
+	            	<input class="easyui-validatebox commonInput" type="text" id="fontCssA" name="fontCss"  
+	                data-options="required:true" ></input>
+	         </div>
+	        
 	       <div class="ftitle">
 	            <label for="versionDescriptionA">底板描述:</label>
 	            <textarea id="floorDescriptionA" name="floorDescription" class="easyui-validatebox" 
@@ -207,6 +220,19 @@
 		             </div>
 				           
 			 </div>
+			 
+			  <div class="ftitle">
+				 <label for="startCoordinateU">起始坐标:</label>
+	            	<input class="easyui-validatebox commonInput" type="text" id="startCoordinateU" name="startCoordinate"  
+	                data-options="required:true" ></input>
+	        </div>
+	        
+	         <div class="ftitle">
+				 <label for="startCoordinateU">字体样式:</label>
+	            	<input class="easyui-validatebox commonInput" type="text" id="fontCssU" name="fontCss"  
+	                data-options="required:true" ></input>
+	         </div>
+			 
 	       <div class="ftitle">
 	            <label for="versionDescriptionA">底板描述:</label>
 	            <textarea id="floorDescriptionU" name="floorDescription" class="easyui-validatebox" 
