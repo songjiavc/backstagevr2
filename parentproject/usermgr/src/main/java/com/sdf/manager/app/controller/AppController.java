@@ -656,6 +656,7 @@ public class AppController  extends GlobalExceptionHandler{
 		public @ResponseBody ResultBean  checkAppName(
 				@RequestParam(value="id",required=false) String id,
 				@RequestParam(value="name",required=false) String name,
+				@RequestParam(value="province",required=false) String province,
 				ModelMap model,HttpSession httpSession) throws Exception {
 			
 			ResultBean resultBean = new ResultBean ();
@@ -675,6 +676,12 @@ public class AppController  extends GlobalExceptionHandler{
 			{
 				params.add(name);
 				buffer.append(" and appName = ?").append(params.size());
+			}
+			
+			if(null != province && !"".equals(province))
+			{
+				params.add(province);
+				buffer.append(" and province = ?").append(params.size());
 			}
 			
 			

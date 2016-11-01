@@ -41,8 +41,10 @@ function bindComboboxChange()
 	$("#privinceA").combobox({
 
 		onSelect: function (rec) {
+			
 			 //加载市级数据
 			 initCities('add','cityA','',rec.pcode);
+			 $("#ff").form('validate');
 		}
 
 		}); 
@@ -52,6 +54,7 @@ function bindComboboxChange()
 		onSelect: function (rec) {
 			//加载市级数据
 			initCities('update','cityU','',rec.pcode);
+			 $("#ffUpdate").form('validate');
 		}
 
 		}); 
@@ -740,9 +743,9 @@ $.extend($.fn.validatebox.defaults.rules, {
             }
         	else
     		{
-        		rules.checkAname.message = "当前应用名称已存在"; 
+        		rules.checkAname.message = "当前选中省,此应用名称已存在"; 
         		
-                return !checkAppName($("#"+param[1]).val(),value);
+                return !checkAppName($("#"+param[1]).val(),value,$("#"+param[2]).combobox('getValue'));
     		}
         	
         }
@@ -754,13 +757,14 @@ $.extend($.fn.validatebox.defaults.rules, {
 
 
 //校验应用名称（应用名称全局唯一）
-function checkAppName(id,name)
+function checkAppName(id,name,province)
 {
 	var flag = false;//当前值可用，不存在
 	var data = new Object();
 	
 	data.id = id;
 	data.name = name;
+	data.province = province;
 	
 	$.ajax({
 		async: false,   //设置为同步获取数据形式

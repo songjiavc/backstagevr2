@@ -141,7 +141,7 @@
 	        <div class="ftitle">
 	            <label for="nameA">应用名称:</label>
 	            <input class="easyui-validatebox commonInput" type="text" id="appNameA" name="appName" data-options="required:true"
-	             validType="checkAname['#appNameA','idA']" missingMessage="应用名称不可以为空" ></input>
+	             validType="checkAname['#appNameA','idA','privinceA']" missingMessage="应用名称不可以为空" ></input>
 	        </div>
 	         <div class="ftitle">
 				            <label for="lotteryTypeA">彩种分类:</label>
@@ -219,7 +219,7 @@
 	        <div class="ftitle">
 	            <label for="nameA">应用名称:</label>
 	            <input class="easyui-validatebox commonInput" type="text" id="appNameU" name="appName" data-options="required:true"
-	             validType="checkAname['#appNameU','idU']" missingMessage="应用名称不可以为空" ></input>
+	             validType="checkAname['#appNameU','idU','privinceU']" missingMessage="应用名称不可以为空" ></input>
 	        </div>
 	         <div class="ftitle">
 	            <label for="lotteryTypeU">彩种分类:</label>
