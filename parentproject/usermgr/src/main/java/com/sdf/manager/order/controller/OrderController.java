@@ -1280,7 +1280,7 @@ public class OrderController extends GlobalExceptionHandler
 		 	String userYear = uydiscount.getUseYear();//购买的使用年限（1年或者2年）
 		 	int discount = uydiscount.getDiscount();
 		 	
-		 	Double result = (Double.parseDouble(price)*Integer.parseInt(userYear)*discount)/100;
+		 	Double result = (Double.parseDouble(price)*Double.parseDouble(userYear)*discount)/100;
 		 	
 		 	resultBean.setMessage(result.toString());//返回计算结果
 		 	
