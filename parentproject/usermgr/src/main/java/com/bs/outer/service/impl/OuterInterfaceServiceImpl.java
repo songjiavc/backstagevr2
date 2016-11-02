@@ -721,7 +721,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	
 	public List<Ln5In12Bean> get5In11ListByIssueNumber(String issueNumber,String provinceNumber){
 		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in11number");
-		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM " + tableName + " WHERE ISSUE_NUMBER > ? LIMIT 1" ;
+		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM " + tableName + " WHERE ISSUE_NUMBER > ? " ;
 		Object[] queryParams = new Object[]{
 				issueNumber
 		};
