@@ -675,7 +675,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	
 	
 	public List<Ln5In12Bean> getLn5In12ListByIssueNumber(String issueNumber){
-		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM analysis.T_LN_5IN12_NUMBER WHERE ISSUE_NUMBER > ?  LIMIT " ;
+		String execSql = "SELECT ID,ISSUE_NUMBER,NO1,NO2,NO3,NO4,NO5 FROM analysis.T_LN_5IN12_NUMBER WHERE ISSUE_NUMBER > ?  LIMIT 1" ;
 		Object[] queryParams = new Object[]{
 				issueNumber
 		};
