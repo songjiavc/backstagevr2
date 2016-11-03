@@ -177,7 +177,10 @@ public class AppServiceImpl implements AppService {
 			{
 				Province province = new Province();
 				province = provinceService.getProvinceByPcode(entity.getProvince());
+				
 				dto.setProvinceName(null != province?province.getPname():"");
+				dto.setAppNameWithProvince(entity.getAppName()+" "+(null != province?province.getPname():""));
+				
 			}
 			if(null != entity.getCity())//市级区域
 			{

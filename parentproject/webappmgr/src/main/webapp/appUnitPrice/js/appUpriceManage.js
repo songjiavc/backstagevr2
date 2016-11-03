@@ -35,7 +35,7 @@ function initAppList(appId,addOrUpdate,oldValue,isAll)
 			method:'get',
 			url:contextPath+'/appversion/getAppcomboList.action',
 			valueField:'id',
-			textField:'appName',
+			textField:'appNameWithProvince',
 			 onLoadSuccess: function (data1) { //数据加载完毕事件
                  if (data1.length > 0 && "add" == addOrUpdate) 
                  {
