@@ -87,6 +87,7 @@ public class TimingQuarzMethodController {
     @Scheduled(cron = "0 0 1 * * ? ")  
 	public void updateRelaBsStaAndApp()
 	{
+    	logger.info("addReceiptOfAnnouncement start 开始执行");
     	try
     	{
     		 String status = "1";//正在使用的应用关联数据
@@ -127,6 +128,7 @@ public class TimingQuarzMethodController {
     @Scheduled(cron = "0 0 3 * * ? ")  //cron = "0 0 3 * * ? ""0 0/2 0/1 * * ? "
 	public void addReceiptOfAnnouncement()
 	{
+    	logger.info("addReceiptOfAnnouncement  start  开始执行");
     	Pageable pageable = new PageRequest(0, Integer.MAX_VALUE);
 		//参数
 		StringBuffer buffer = new StringBuffer();
@@ -228,7 +230,7 @@ public class TimingQuarzMethodController {
   	public void addKjNotices()
   	{
     	
-    	logger.info("addKjNotices：开始采集开奖数据作为开奖公告数据！");
+    	logger.info("addKjNotices start ：开始采集开奖数据作为开奖公告数据！");
     	
     	//1.analysis.T_DATA_BASE_QILECAI(七乐彩)
     	//①获取上一次的生成时间，根据“开奖公告名称”模糊查询
@@ -379,7 +381,7 @@ public class TimingQuarzMethodController {
   	public void addThreeDKjNotices()
   	{
     	
-    	
+    	logger.info("开始执行addThreeDKjNotices方法  start ");
     	//2analysis.T_DATA_BASE_3D(3d)
     	//①获取上一次的生成时间，根据“开奖公告名称”模糊查询
     	String threeD = "3D";
@@ -457,6 +459,7 @@ public class TimingQuarzMethodController {
     @Scheduled(cron = "0 40,50,59 18 * * ? ")  //每天晚上6点40，50,59执行定时任务，0 40 20 * * ? 
   	public void addSJThreeDKjNotices()
   	{
+    	logger.info("开始执行addSJThreeDKjNotices方法  start ");
     	//2analysis.T_DATA_BASE_3D(3d)
     	//①获取上一次的生成时间，根据“开奖公告名称”模糊查询
     	String threeDSJ = "3D试机";
