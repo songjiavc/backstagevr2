@@ -211,7 +211,7 @@ public class OrderController extends GlobalExceptionHandler
 			}
 			else
 				if(isFinancialManager)
-				{//TODO:若为“财务管理员”，则获取其下属专员对应的代理所发布的订单数据
+				{//TODO:若为“财务管理员”，则获取其下属专员对应的代理所发布的订单数据，在设置角色处，捋清市场专员还有市场总监和财务管理员的上下级关系，就可以有从属关系了
 					
 				}
 			
