@@ -9,6 +9,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,7 +165,8 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	 */
 	@RequestMapping(value="/login",method=RequestMethod.GET)
 	public @ResponseBody Map<String,Object> Login(@RequestParam(value="stationCode",required=true) String stationCode,//登录名
-										 @RequestParam(value="password",required=false) String password)//密码
+										 @RequestParam(value="password",required=false) String password
+										 ,HttpSession session)//密码
 	{
 		Map<String,Object> returnResult = new HashMap<String, Object>();
 		
@@ -174,6 +177,8 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			boolean loginFlag =true;//登录状态，true：登录成功，false：登录失败
 			
 			Station station = stationService.getStationByCode(stationCode);
+			
+			logger.info("ZNKB:OuterLogin : stationCode :"+stationCode+"::sessionId:"+session.getId());
 			
 			
 			if(null == station)//根据登录的登录编码（也就是登录名）没有获取到信息
@@ -948,7 +953,8 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	@RequestMapping(value="/getAdsOfStationAndApp",method = RequestMethod.GET)
 	public @ResponseBody Map<String,Object> getAdsOfStationAndApp(@RequestParam(value="stationId",required=true) String stationId,
 			/*@RequestParam(value="appName",required=true) String appName*/
-													@RequestParam(value="appId",required=true) String appId	)
+													@RequestParam(value="appId",required=true) String appId	
+													,HttpSession session)
 	{
 		Map<String,Object> result = new HashMap<String, Object>();
 		List<AdvertisementDTO> advertisementDTOs = new ArrayList<AdvertisementDTO>();
@@ -961,6 +967,8 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 		try
 		{
 			Station station = stationService.getSationById(stationId);
+			
+			logger.info("APP: getAdsOfStationAndApp : stationId :"+stationId+"::sessionId:"+session.getId());
 			
 			App app = appService.getAppById(appId);
 			lotteryType = app.getLotteryType();
@@ -1043,7 +1051,8 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	@RequestMapping(value="/getStaAdsOfStationAndApp",method = RequestMethod.GET)
 	public @ResponseBody Map<String,Object> getStaAdsOfStationAndApp(
 			@RequestParam(value="stationId",required=true) String stationId,
-			@RequestParam(value="appId",required=true) String appId	)
+			@RequestParam(value="appId",required=true) String appId,
+			HttpSession session)
 	{
 		Map<String,Object> result = new HashMap<String, Object>();
 		List<AdvertisementDTO> advertisementDTOs = new ArrayList<AdvertisementDTO>();
@@ -1055,6 +1064,8 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 		try
 		{
 			Station station = stationService.getSationById(stationId);
+			
+			logger.info("APP: getStaAdsOfStationAndApp : stationId :"+stationId+"::sessionId:"+session.getId());
 			
 			App app = appService.getAppById(appId);
 			lotteryType = app.getLotteryType();
