@@ -701,6 +701,7 @@ public class AppversionController extends GlobalExceptionHandler {
 		 		AppDTO allAppDto = new AppDTO();
 		 		allAppDto.setId("");
 		 		allAppDto.setAppName("全部");
+		 		allAppDto.setAppNameWithProvince("全部");
 		 		appDTOs.add(allAppDto);
 		 	}
 			

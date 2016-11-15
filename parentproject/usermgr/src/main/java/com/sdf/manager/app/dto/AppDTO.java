@@ -7,6 +7,8 @@ public class AppDTO {
 	
 	private String appName;//应用名称
 	
+	private String appNameWithProvince;//带省份的应用名称
+	
 	private String appStatus;//应用状态(0:待上架1:上架2:下架3:更新)
 	
 	private String appTypeName;//应用状态名称
@@ -40,6 +42,14 @@ public class AppDTO {
 	
 
 	
+
+	public String getAppNameWithProvince() {
+		return appNameWithProvince;
+	}
+
+	public void setAppNameWithProvince(String appNameWithProvince) {
+		this.appNameWithProvince = appNameWithProvince;
+	}
 
 	public String getLotteryType() {
 		return lotteryType;
