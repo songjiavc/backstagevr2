@@ -266,7 +266,7 @@ public class TimingQuarzMethodController {
     		   QiLeCai newQiLeCai = list.get(0);
     		   StringBuffer appNoticeWord =  new StringBuffer(qilecai+"开奖期号："+newQiLeCai.getIssueNumber() +"   开奖号码："
     		   		+ newQiLeCai.getNo1()+","+newQiLeCai.getNo2()+","+newQiLeCai.getNo3()+","+newQiLeCai.getNo4()+","+
-    		   		newQiLeCai.getNo5()+","+newQiLeCai.getNo6()+","+newQiLeCai.getNo7()+","+newQiLeCai.getNo8());
+    		   		newQiLeCai.getNo5()+","+newQiLeCai.getNo6()+","+newQiLeCai.getNo7()+",+"+newQiLeCai.getNo8());
     		   notice.setAppNoticeWord(appNoticeWord.toString());//开奖公告内容
     		   
     		   notice.setLotteryType(Constants.LOTTERY_TYPE_FC);
@@ -338,7 +338,7 @@ public class TimingQuarzMethodController {
     		   ShuangSQ newShuangSQ = shuangSQlist.get(0);
     		   StringBuffer appNoticeWord =  new StringBuffer(shuangSQ+"开奖期号："+newShuangSQ.getIssueNumber() +"   开奖号码："
     		   		+ newShuangSQ.getNo1()+","+newShuangSQ.getNo2()+","+newShuangSQ.getNo3()+","+newShuangSQ.getNo4()+","+
-    		   		newShuangSQ.getNo5()+","+newShuangSQ.getNo6()+","+newShuangSQ.getNo7());
+    		   		newShuangSQ.getNo5()+","+newShuangSQ.getNo6()+",+"+newShuangSQ.getNo7());
     		   notice.setAppNoticeWord(appNoticeWord.toString());//开奖公告内容
     		   
     		   notice.setLotteryType(Constants.LOTTERY_TYPE_FC);
