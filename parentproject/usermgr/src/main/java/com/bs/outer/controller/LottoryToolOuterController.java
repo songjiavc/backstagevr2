@@ -283,6 +283,49 @@ public class LottoryToolOuterController
 		}
 	}
 	
+	
+	/**
+	 *
+	 * @Title: getLotteryNum
+	 * @Description:  获取遗漏统计内容
+	 * * 对应的返回json数据结构：
+	 * @author:songjia
+	 * @return: Fast3
+	 */
+	@RequestMapping(value="/get5In12StatisticsInfo",method = RequestMethod.GET)
+	public @ResponseBody Map<String,Object> get5In12StatisticsInfo(@RequestParam(value="danMaIssueNumber",required=true) String danMaIssueNumber ,
+																   @RequestParam(value="siMaId",required=true) String siMaId ,
+																   @RequestParam(value="sameIssueNumber",required=true) String sameIssueNumber ,
+																   @RequestParam(value="followIssueNumber",required=true) String followIssueNumber,
+																   @RequestParam(value="provinceNumber",required=true) String provinceNumber
+																   )
+	{
+		Map<String,Object> rtnMap = new HashMap<String,Object>();
+		try{
+			List<Fast3DanMa> danMaList =outerInterfaceService.get5In12InitDanmaList(danMaIssueNumber, provinceNumber);
+			List<Fast3SiMa> simaList = outerInterfaceService.get5In12InitSimaList(Integer.parseInt(siMaId), provinceNumber);
+			List<Fast3Same> sameList = outerInterfaceService.get5In12InitSameList(sameIssueNumber, provinceNumber);
+			List<HotCoolBean> hotList = outerInterfaceService.get5In12HotCoolList(followIssueNumber,provinceNumber);
+			if(danMaList.size() == 0 || simaList.size() == 0 || sameList.size() == 0 || hotList.size() == 0){
+				rtnMap.put("message","failure");
+				rtnMap.put("status", "0");
+			}else{
+				rtnMap.put("message","success");
+				rtnMap.put("status", "1");
+				rtnMap.put("danMaList", danMaList);
+				rtnMap.put("simaList", simaList);
+				rtnMap.put("sameList", sameList);
+				rtnMap.put("hotList",hotList);
+			}
+		}catch(Exception ex){
+			logger.error("获取统计附表数据接口错误！provinceNumber="+provinceNumber);
+			rtnMap.put("message","failure");
+			rtnMap.put("status", "0");
+		}finally{
+			return rtnMap;
+		}
+	}
+	
 	/**
 	 *
 	 * @Title: getLotteryNum

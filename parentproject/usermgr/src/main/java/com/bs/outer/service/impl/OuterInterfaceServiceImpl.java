@@ -582,6 +582,37 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		}
 		return hotList;
 	}
+	
+	
+	public List<HotCoolBean> get5In12HotCoolList(String issueNumber, String provinceNumber) {
+		List<HotCoolBean> hotList = new ArrayList<HotCoolBean>();
+		String tbName1 = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in12follownumberlastissue");
+		String selSql = "SELECT ISSUE_NUMBER FROM " + tbName1;
+		Object[] queryParams = new Object[]{
+		};
+		FollowLastIssueBean dsIssueNumber = followLastIssueRepository.getEntityBySql(FollowLastIssueBean.class,selSql,queryParams);
+		if(StringUtils.isEmpty(issueNumber) || !dsIssueNumber.equals(issueNumber)){
+			//获取所有follow列表，而后进行加工
+			String tbName2 = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in12follownumber");
+			String selSql2 = "SELECT * FROM " + tbName2;
+			Object[] param = new Object[]{
+			};
+			List<FollowNumberBean> allList = followNumberRepository.getEntityListBySql(FollowNumberBean.class,selSql2,param);
+			List<FollowNumberBean> temp = null;
+			for(int i = 1;i <= 11;i++){
+				temp = allList.subList((i-1)*10,i*10);
+				List<List<FollowNumberTempBean>> rtnList = this.initSortList(temp);
+				HotCoolBean hotCoolBean = new HotCoolBean();
+				hotCoolBean.setNumber(i);
+				hotCoolBean.setFollow(translate(rtnList.get(0).get(0).followNumber)+translate(rtnList.get(0).get(1).followNumber)+translate(rtnList.get(0).get(2).followNumber));
+				hotCoolBean.setNoFollow(translate(rtnList.get(1).get(0).followNumber)+translate(rtnList.get(1).get(1).followNumber)+translate(rtnList.get(1).get(2).followNumber));
+				hotCoolBean.setThreeFollow(translate(rtnList.get(2).get(0).followNumber)+translate(rtnList.get(2).get(1).followNumber)+translate(rtnList.get(2).get(2).followNumber));
+				hotCoolBean.setThreeNoFollow(translate(rtnList.get(3).get(0).followNumber)+translate(rtnList.get(3).get(1).followNumber)+translate(rtnList.get(3).get(2).followNumber));
+				hotList.add(hotCoolBean);
+			}
+		}
+		return hotList;
+	}
 
 
 	private static String translate(int num){

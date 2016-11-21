@@ -236,6 +236,14 @@ public interface OuterInterfaceService {
 	 * @return
 	 */
 	public List<HotCoolBean> getHotCoolList(String issueNumber,String provinceNumber);
+	
+	
+	/**
+	 * @param issueNumber
+	 * @param provinceNumber
+	 * @return
+	 */
+	public List<HotCoolBean> get5In12HotCoolList(String issueNumber,String provinceNumber);
 	/**
 	 * @param issueNumber
 	 * @param provinceNumber
