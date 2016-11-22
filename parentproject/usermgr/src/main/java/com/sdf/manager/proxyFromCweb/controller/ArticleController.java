@@ -462,7 +462,7 @@ public class ArticleController extends GlobalExceptionHandler
 				 {
 					 	savePath = savePath +uploadfile.getUploadfilepath();
 					 	//2.删除附件
-				 		dirFile = new File(savePath+"1.jpg");//uploadfile.getUploadRealName()
+				 		dirFile = new File(savePath+uploadfile.getUploadRealName());//uploadfile.getUploadRealName()
 				 		logger.info("待删除文件路径："+dirFile);
 				        // 如果dir对应的文件不存在，或者不是一个目录，则退出
 			        	deleteFlag = dirFile.delete();
