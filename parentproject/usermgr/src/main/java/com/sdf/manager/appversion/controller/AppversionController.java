@@ -478,7 +478,7 @@ public class AppversionController extends GlobalExceptionHandler {
 			        	else
 			        	{
 			        		 logger.error("应用版本数据id为："+appversion.getId()+"的数据没有文件");
-			        		 logger.error("deleteAppversions ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath);
+			        		 logger.error("deleteAppversions ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath+";File.exists="+dirFile.exists());
 			        	}
 				        	
 				      //删除附件e
@@ -776,8 +776,7 @@ public class AppversionController extends GlobalExceptionHandler {
         	}
         	else
         	{
-        		logger.error("saveFujian ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath);
-        		logger.error("saveFujian ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath);
+        		logger.error("saveFujian ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath+";File.exists="+dirFile.exists());
         	}
 		    //删除附件e
 			 

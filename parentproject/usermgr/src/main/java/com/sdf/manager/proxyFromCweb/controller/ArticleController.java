@@ -129,7 +129,7 @@ public class ArticleController extends GlobalExceptionHandler
 				        	else
 				        	{
 				        		 logger.error("网站文章id为："+article.getId()+"的数据没有文件");
-						         logger.error("deleteArticles ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath);
+						         logger.error("deleteArticles ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath+";File.exists="+dirFile.exists());
 				        	}
 			 				 
 			 			 }
@@ -409,7 +409,7 @@ public class ArticleController extends GlobalExceptionHandler
 	        	}
 	        	else
 	        	{
-	        		logger.error("deleteImg ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath);
+	        		logger.error("deleteImg ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath+";File.exists="+dirFile.exists());
 	        	}
 			    //删除附件e
 		   		 uploadfile.setModify(uploadfile.getNewsUuid());//放置附件关联uuid
@@ -462,7 +462,7 @@ public class ArticleController extends GlobalExceptionHandler
 				 {
 					 	savePath = savePath +uploadfile.getUploadfilepath();
 					 	//2.删除附件
-				 		dirFile = new File(savePath+uploadfile.getUploadRealName());
+				 		dirFile = new File(savePath+"1.jpg");//uploadfile.getUploadRealName()
 				 		logger.info("待删除文件路径："+dirFile);
 				        // 如果dir对应的文件不存在，或者不是一个目录，则退出
 			        	deleteFlag = dirFile.delete();
@@ -472,7 +472,7 @@ public class ArticleController extends GlobalExceptionHandler
 			        	}
 			        	else
 			        	{
-			        		logger.error("deleteImg ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath);
+			        		logger.error("deleteImg ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath+";File.exists="+dirFile.exists());
 			        	}
 					    //删除附件e
 				   		 uploadfile.setModify(uploadfile.getNewsUuid());//放置附件关联uuid

@@ -572,7 +572,7 @@ public class AdvertisementController extends GlobalExceptionHandler
 				        	else
 				        	{
 				        		 logger.error("应用广告数据id为："+advertisement.getId()+"的数据没有文件");
-				        		 logger.error("deleteAdvertisements ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath);
+				        		 logger.error("deleteAdvertisements ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath+";File.exists="+dirFile.exists());
 				        	}
 					      //删除附件e
 				 		}
@@ -834,7 +834,7 @@ public class AdvertisementController extends GlobalExceptionHandler
         	}
         	else
         	{
-        		logger.error("saveFujian ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath);
+        		logger.error("saveFujian ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath+";File.exists="+dirFile.exists());
         	}
 		    //删除附件e
 			 

@@ -1051,7 +1051,7 @@ public class FigureMPuzzlesAppController
 	        	}
 	        	else
 	        	{
-	        		logger.error("saveSingleFAPAppFujian ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath);
+	        		logger.error("saveSingleFAPAppFujian ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath+";File.exists="+dirFile.exists());
 	        	}
 			    //删除附件e
 				 
@@ -1417,7 +1417,7 @@ public class FigureMPuzzlesAppController
 					        	else
 					        	{
 					        		 logger.error("图谜字谜底板数据id为："+floorOfFigureAndPuzzles.getId()+"的数据没有文件");
-							         logger.error("deleteFloorOfFAPApp ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath);
+							         logger.error("deleteFloorOfFAPApp ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath+";File.exists="+dirFile.exists());
 					        	}
 						        	
 						      //删除附件e
@@ -1495,7 +1495,7 @@ public class FigureMPuzzlesAppController
 				        	}
 				        	else
 				        	{
-				        		logger.error("deleteImgsByNewsuuid ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath);
+				        		logger.error("deleteImgsByNewsuuid ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath+";File.exists="+dirFile.exists());
 				        	}
 						    //删除附件e
 					   		 uploadfile.setModify(uploadfile.getNewsUuid());//放置附件关联uuid
@@ -1565,7 +1565,7 @@ public class FigureMPuzzlesAppController
 		        	}
 		        	else
 		        	{
-		        		logger.error("deleteImg ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath);
+		        		logger.error("deleteImg ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath+";File.exists="+dirFile.exists());
 		        	}
 		        		
 				    //删除附件e
