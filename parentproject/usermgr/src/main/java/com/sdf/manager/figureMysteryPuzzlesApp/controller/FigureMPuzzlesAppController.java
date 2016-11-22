@@ -1049,6 +1049,10 @@ public class FigureMPuzzlesAppController
 	        	{//删除附件(清空附件关联newsUuid)
 	        		logger.info("saveSingleFAPAppFujian==删除原附件文件数据--附件id="+uploadfile.getId()+"--操作人= 图谜字谜专家");
 	        	}
+	        	else
+	        	{
+	        		logger.error("saveSingleFAPAppFujian ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath);
+	        	}
 			    //删除附件e
 				 
 				 //②：保存新的附件文件
@@ -1413,6 +1417,7 @@ public class FigureMPuzzlesAppController
 					        	else
 					        	{
 					        		 logger.error("图谜字谜底板数据id为："+floorOfFigureAndPuzzles.getId()+"的数据没有文件");
+							         logger.error("deleteFloorOfFAPApp ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath);
 					        	}
 						        	
 						      //删除附件e
@@ -1488,6 +1493,10 @@ public class FigureMPuzzlesAppController
 				        	{//删除附件(清空附件关联newsUuid)
 				        		logger.info("deleteImgsByNewsuuid==删除原附件文件数据--附件id="+uploadfile.getId());
 				        	}
+				        	else
+				        	{
+				        		logger.error("deleteImgsByNewsuuid ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath);
+				        	}
 						    //删除附件e
 					   		 uploadfile.setModify(uploadfile.getNewsUuid());//放置附件关联uuid
 					   		 uploadfile.setModifyTime(new Timestamp(System.currentTimeMillis()));
@@ -1554,6 +1563,11 @@ public class FigureMPuzzlesAppController
 		        	{//删除附件(清空附件关联newsUuid)
 		        		logger.info("deleteImg==删除原附件文件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
 		        	}
+		        	else
+		        	{
+		        		logger.error("deleteImg ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath);
+		        	}
+		        		
 				    //删除附件e
 			   		 uploadfile.setModify(uploadfile.getNewsUuid());//放置附件关联uuid
 			   		 uploadfile.setModifyTime(new Timestamp(System.currentTimeMillis()));
