@@ -688,7 +688,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			
 			String appId = oldAppversion.getApp().getId();//获取应用id
 			
-			String oldversionFlowId = oldAppversion.getVersionFlowId();//获取当前使用版本的版本流水号
+			Integer oldversionFlowId = oldAppversion.getVersionFlowId();//获取当前使用版本的版本流水号
 			
 			/**获取最新版本数据**/
 
@@ -715,7 +715,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 				buffer.append(" and app.id = ?").append(params.size());
 			}
 			
-			if(null != oldversionFlowId&&!"".equals(oldversionFlowId.trim()))//获取当前版本流水号后发布的版本的数据
+			if(null != oldversionFlowId/*&&!"".equals(oldversionFlowId.trim())*/)//获取当前版本流水号后发布的版本的数据
 			{
 				params.add(oldversionFlowId);
 				buffer.append(" and versionFlowId > ?").append(params.size());
@@ -1386,7 +1386,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			{
 				
 				//获取当前appId下的且已上架的应用版本的最新版本数据
-				String maxVersionFlowId =
+				Integer maxVersionFlowId =
 						appversionService.
 						findMaxVersionFlowId(unInstallApp.getId(), AppversionController.APP_V_STATUS_SJ);//获取当前应用下的应用版本数据是上架状态的最大版本流水号
 				
@@ -1410,6 +1410,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 				}
 				else
 				{
+					logger.error("getAppversionsOfStationCouldUse：当前应用的已发布的应用版本的版本好是null;应用id="+unInstallApp.getId());
 					continue;
 				}
 				
@@ -1428,6 +1429,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			logger.error("获取当前通行证可以使用的使用的最新版本数据接口错误，stationId="+stationId);
 			/*result.put("status", "0");
 			result.put("message", "数据获取失败！");*/
+			e.printStackTrace();
 		}
 		
 		return appversionDTOs;
@@ -1473,7 +1475,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 					
 					
 					//获取当前appId下的且已上架的应用版本的最新版本数据
-					String maxVersionFlowId =
+					Integer maxVersionFlowId =
 							appversionService.
 							findMaxVersionFlowId(appId, AppversionController.APP_V_STATUS_SJ);//获取当前应用下的应用版本数据是上架状态的最大版本流水号
 					
@@ -1535,7 +1537,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			for (App unInstallApp : unInstallApps) {
 				
 				//获取当前appId下的且已上架的应用版本的最新版本数据
-				String maxVersionFlowId =
+				Integer maxVersionFlowId =
 						appversionService.
 						findMaxVersionFlowId(unInstallApp.getId(), AppversionController.APP_V_STATUS_SJ);//获取当前应用下的应用版本数据是上架状态的最大版本流水号
 				

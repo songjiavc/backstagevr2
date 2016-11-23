@@ -341,7 +341,7 @@ public class AppversionController extends GlobalExceptionHandler {
 			   appversion.setAppVersionStatus(appVersionStatus);
 			   appversion.setAppDeveloper(appDeveloper);
 			   appversion.setVersionCode(versionCode);
-			   String versionFlowId = this.generateFlowId(appId);
+			   Integer versionFlowId = this.generateFlowId(appId);
 			   appversion.setVersionFlowId(versionFlowId);
 			   appversion.setVersionDescription(versionDescription);//AddDate:2016-4-26
 			   
@@ -368,9 +368,9 @@ public class AppversionController extends GlobalExceptionHandler {
 		}
 	 
 	 
-	 private String generateFlowId(String appId)
+	 private Integer generateFlowId(String appId)
 	 {
-		 String versionFlowId = "";
+		 Integer versionFlowId = null;
 		 
 		/* Pageable pageable = new PageRequest(0,Integer.MAX_VALUE);
 			
@@ -402,12 +402,13 @@ public class AppversionController extends GlobalExceptionHandler {
 		 
 		 if(null != versionFlowId && !"".equals(versionFlowId))
 		 {
-			 String maxVersionFlowId =(Integer.parseInt(versionFlowId)+1)+"";
+//			 String maxVersionFlowId =(Integer.parseInt(versionFlowId)+1)+"";
+			 Integer maxVersionFlowId = versionFlowId + 1;
 			 versionFlowId = maxVersionFlowId;
 		 }
 		 else
 		 {
-			 versionFlowId = "1";
+			 versionFlowId = 1;
 		 }
 		 
 		 return versionFlowId;

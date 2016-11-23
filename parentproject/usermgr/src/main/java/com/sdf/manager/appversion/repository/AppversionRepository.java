@@ -19,7 +19,7 @@ public interface AppversionRepository extends GenericRepository<Appversion, Stri
 	 * @return: String
 	 */
 	@Query("select max(u.versionFlowId) as versionFlowId from Appversion u where  u.isDeleted='1' and u.app.id =?1 and u.appVersionStatus=?2")
-	public String findMaxVersionFlowId(String appId,String appVersionStatus);
+	public Integer findMaxVersionFlowId(String appId,String appVersionStatus);
 	
 	/**
 	 * 
@@ -29,7 +29,7 @@ public interface AppversionRepository extends GenericRepository<Appversion, Stri
 	 * @return: String
 	 */
 	@Query("select max(u.versionFlowId) as versionFlowId from Appversion u where  u.isDeleted='1' and u.app.id =?1 ")
-	public String findMaxVersionFlowId(String appId);
+	public Integer findMaxVersionFlowId(String appId);
 	
 	/**
 	 * 
@@ -39,5 +39,5 @@ public interface AppversionRepository extends GenericRepository<Appversion, Stri
 	 * @return: Appversion
 	 */
 	@Query("select u from Appversion u where  u.isDeleted='1' and u.app.id =?1 and u.versionFlowId =?2 ")
-	public Appversion getAppversionByAppIdAndVersionFlowId(String appId,String versionFlowId);
+	public Appversion getAppversionByAppIdAndVersionFlowId(String appId,Integer versionFlowId);
 }

@@ -11,7 +11,7 @@ public class AppversionDTO {
 	
 	private String versionCode;//版本号
 	
-	private String versionFlowId;//版本流水号
+	private Integer versionFlowId;//版本流水号
 	
 	private String appVersionUrl;//应用版本安装包位置
 	
@@ -101,11 +101,11 @@ public class AppversionDTO {
 		this.versionCode = versionCode;
 	}
 
-	public String getVersionFlowId() {
+	public Integer getVersionFlowId() {
 		return versionFlowId;
 	}
 
-	public void setVersionFlowId(String versionFlowId) {
+	public void setVersionFlowId(Integer versionFlowId) {
 		this.versionFlowId = versionFlowId;
 	}
 

@@ -115,16 +115,16 @@ public class AppversionServiceImpl implements AppversionService {
 		return dto;
 	}
 
-	public String findMaxVersionFlowId(String appId, String appVersionStatus) {
+	public Integer findMaxVersionFlowId(String appId, String appVersionStatus) {
 		return appversionRepository.findMaxVersionFlowId(appId, appVersionStatus);
 	}
 
-	public String findMaxVersionFlowId(String appId) {
+	public Integer findMaxVersionFlowId(String appId) {
 		return appversionRepository.findMaxVersionFlowId(appId);
 	}
 
 	public Appversion getAppversionByAppIdAndVersionFlowId(String appId,
-			String versionFlowId) {
+			Integer versionFlowId) {
 		return appversionRepository.getAppversionByAppIdAndVersionFlowId(appId, versionFlowId);
 	}
 	

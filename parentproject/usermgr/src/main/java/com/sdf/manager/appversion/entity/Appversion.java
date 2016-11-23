@@ -49,7 +49,7 @@ public class Appversion extends BaseEntiry{
 	
 	
 	@Column(name="VERSION_FLOW_ID", length=45)
-	private String versionFlowId;//版本流水号
+	private Integer versionFlowId;//版本流水号
 
 
 	@Column(name="APP_VERSION_URL", length=100)
@@ -183,11 +183,13 @@ public class Appversion extends BaseEntiry{
 		this.versionCode = versionCode;
 	}
 
-	public String getVersionFlowId() {
+
+
+	public Integer getVersionFlowId() {
 		return versionFlowId;
 	}
 
-	public void setVersionFlowId(String versionFlowId) {
+	public void setVersionFlowId(Integer versionFlowId) {
 		this.versionFlowId = versionFlowId;
 	}
 

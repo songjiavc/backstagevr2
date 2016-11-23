@@ -71,7 +71,7 @@ public interface AppversionService {
 	public  AppversionDTO toDTO(Appversion entity);
 	
 	
-	public String findMaxVersionFlowId(String appId,String appVersionStatus);
+	public Integer findMaxVersionFlowId(String appId,String appVersionStatus);
 	
 	/**
 	 * 
@@ -80,7 +80,7 @@ public interface AppversionService {
 	 * @author:banna
 	 * @return: String
 	 */
-	public String findMaxVersionFlowId(String appId);
+	public Integer findMaxVersionFlowId(String appId);
 	
 	/**
 	 * 
@@ -89,5 +89,5 @@ public interface AppversionService {
 	 * @author:banna
 	 * @return: Appversion
 	 */
-	public Appversion getAppversionByAppIdAndVersionFlowId(String appId,String versionFlowId);
+	public Appversion getAppversionByAppIdAndVersionFlowId(String appId,Integer versionFlowId);
 }
