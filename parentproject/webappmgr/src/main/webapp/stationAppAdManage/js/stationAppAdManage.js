@@ -334,7 +334,9 @@ function viewOrdersDetail(orderId)
 						appAdName:data.appAdName,
 						startTime:data.startTimestr,
 						endTime:data.endTimestr,//通行证组描述
-						addWord:data.addWord
+						addWord:data.addWord,
+						appName:data.appName,
+						stationNum:data.stationNum
 						
 					});
 					
@@ -380,7 +382,9 @@ function viewPTOrdersDetail(id)
 						appAdName:data.appAdName,
 						startTime:data.startTimestr,
 						endTime:data.endTimestr,//通行证组描述
-						addWord:data.addWord
+						addWord:data.addWord,
+						appName:data.appName,
+						stationNum:data.stationNum
 					});
 					
 					/*初始化附件列表

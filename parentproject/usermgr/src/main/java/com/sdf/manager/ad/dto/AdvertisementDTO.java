@@ -42,8 +42,30 @@ public class AdvertisementDTO {
 	
 	private String stationAdStatusTime;//通行证发布的应用广告的当前状态更新时间
 	
+	private String stationNum;//发布应用广告所属的通行证的站点号
+	
+	private String appName;//发布应用广告的通行证选择发布广告的应用的名称
 	
 	
+	
+	
+	
+
+	public String getStationNum() {
+		return stationNum;
+	}
+
+	public void setStationNum(String stationNum) {
+		this.stationNum = stationNum;
+	}
+
+	public String getAppName() {
+		return appName;
+	}
+
+	public void setAppName(String appName) {
+		this.appName = appName;
+	}
 
 	public String getStationAdStatus() {
 		return stationAdStatus;

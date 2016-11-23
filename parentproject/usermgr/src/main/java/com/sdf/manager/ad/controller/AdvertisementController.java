@@ -46,6 +46,8 @@ import com.sdf.manager.product.entity.City;
 import com.sdf.manager.product.entity.Province;
 import com.sdf.manager.product.service.CityService;
 import com.sdf.manager.product.service.ProvinceService;
+import com.sdf.manager.station.entity.Station;
+import com.sdf.manager.station.service.StationService;
 import com.sdf.manager.user.entity.Role;
 import com.sdf.manager.user.entity.User;
 import com.sdf.manager.user.service.UserService;
@@ -92,6 +94,9 @@ public class AdvertisementController extends GlobalExceptionHandler
 	@Autowired
 	private UploadfileService uploadfileService;
 	
+	@Autowired
+	private StationService stationService;
+	
 	
 	public static final String SJX_ROLE_CODE="5";//数据库初始化内容，市中心角色,应用公告也用
 	public static final String PROVINCE_ROLE_CODE="4";//数据库初始化内容，省中心角色,应用公告也用
@@ -119,6 +124,41 @@ public class AdvertisementController extends GlobalExceptionHandler
 		Advertisement advertisement = advertisementService.getAdvertisementById(id);
 		
 		AdvertisementDTO advertisementDTO = advertisementService.toDTO(advertisement);
+		
+		//站点类型的应用广告的返回数据要进行特殊处理
+		if(AdvertisementController.AD_TYPE_STATION.equals(advertisementDTO.getAddType()))
+		{//若当前获取详情的广告位站点广告类型，则获取当前站点广告发布的通行证的站点号和发布给哪个应用
+			if(null != advertisement )
+			{
+				if(null != advertisement.getCreatorStation())
+				{
+					Station station = stationService.getSationById(advertisement.getCreatorStation());//获取通行证详情
+					if(null != station)
+					{
+						String stationNum = station.getStationNumber();
+						advertisementDTO.setStationNum(stationNum);
+					}
+					
+				}
+				
+				//获取应用名称
+				if(null != advertisement.getApps())
+				{
+					App fbApp = advertisement.getApps().get(0);
+					if(null != fbApp)
+					{
+						String appName = fbApp.getAppName();
+						
+						advertisementDTO.setAppName(appName);
+					}
+					
+					
+				}
+				
+				
+			}
+			
+		}
 		
 		
 		return advertisementDTO;

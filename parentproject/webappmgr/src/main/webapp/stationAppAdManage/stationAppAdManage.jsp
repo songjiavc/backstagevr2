@@ -58,7 +58,7 @@
 .ftitle label {
 	float: left;
 	margin-left: 30px;
-	width: 75px;
+	width: 100px;
 }
 
 .ftitle .commonInput {
@@ -191,7 +191,7 @@
 
 	<div id="detailOrders" class="easyui-dialog" title="订单详情"
 		
-		style="width: 580px; height: 400px; padding: 10px; top: 40px;"
+		style="width: 580px; height: 500px; padding: 10px; top: 40px;"
 		data-options="
 		modal:true,
                 iconCls: 'icon-save',
@@ -230,6 +230,18 @@
 					data-options="editable:false" readonly="readonly">
 			</div>
 			<div class="ftitle">
+				<label for="priceA">发布应用:</label>
+					<input class="easyui-validatebox commonInput" type="text"
+						id="appNameU" name="appName" data-options="editable:false"
+						readonly="readonly"></input>
+			</div>
+			<div class="ftitle">
+				<label for="priceA">发布应用站点号:</label>
+					<input class="easyui-validatebox commonInput" type="text"
+						id="stationNumU" name="stationNum" data-options="editable:false"
+						readonly="readonly"></input>
+			</div>
+			<div class="ftitle">
 				<label for="priceA">有效开始时间:</label>
 				<div style="float: left; margin-left: 30px;">
 					<input class="easyui-datebox commonInput" type="text"
@@ -259,7 +271,7 @@
 				<label for="addWordA">广告内容:</label>
 				<textarea id="addWordA" name="addWord" class="easyui-validatebox"
 					validType="length[0,100]" readonly="readonly"
-					style="resize: none; width: 400px; height: 100px; border-radius: 5px; margin-left: 30px;"></textarea>
+					style="resize: none; width: 350px; height: 100px; border-radius: 5px; margin-left: 30px;"></textarea>
 			</div>
 
 
@@ -269,7 +281,7 @@
 	<!-- 普通用户订单详情弹框 -->
 	<div id="detailPTOrders" class="easyui-dialog"
 		 title="订单详情"
-		style="width: 580px; height: 400px; padding: 10px; top: 40px;"
+		style="width: 580px; height: 500px; padding: 10px; top: 40px;"
 		data-options="
 		modal:true,
                 iconCls: 'icon-save',
@@ -291,6 +303,18 @@
 					data-options="editable:false" readonly="readonly">
 			</div>
 			<div class="ftitle">
+				<label for="priceA">发布应用:</label>
+					<input class="easyui-validatebox commonInput" type="text"
+						id="appNameU" name="appName" data-options="editable:false"
+						readonly="readonly"></input>
+			</div>
+			<div class="ftitle">
+				<label for="priceA">发布应用站点号:</label>
+					<input class="easyui-validatebox commonInput" type="text"
+						id="stationNumU" name="stationNum" data-options="editable:false"
+						readonly="readonly"></input>
+			</div>
+			<div class="ftitle">
 				<label for="priceA">有效开始时间:</label>
 				<div style="float: left; margin-left: 30px;">
 					<input class="easyui-datebox commonInput" type="text"
@@ -320,7 +344,7 @@
 				<label for="addWordA">广告内容:</label>
 				<textarea id="addWordA" name="addWord" class="easyui-validatebox"
 					validType="length[0,100]" readonly="readonly"
-					style="resize: none; width: 400px; height: 100px; border-radius: 5px; margin-left: 30px;"></textarea>
+					style="resize: none; width: 350px; height: 100px; border-radius: 5px; margin-left: 30px;"></textarea>
 			</div>
 
 		</form>
