@@ -21,6 +21,6 @@ public interface UserRepository extends GenericRepository<User, String>  {
 	  * @param code
 	  * @return 
 	  */
-	@Query("select u from User u where u.code =?1")
+	@Query("select u from User u where u.isDeleted='1' and u.code =?1 ")
 	public User getUserByCode(String code);
 }
