@@ -599,7 +599,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 			};
 			List<FollowNumberBean> allList = followNumberRepository.getEntityListBySql(FollowNumberBean.class,selSql2,param);
 			List<FollowNumberBean> temp = null;
-			for(int i = 1;i <= 11;i++){
+			for(int i = 1;i <= 12;i++){
 				temp = allList.subList((i-1)*10,i*10);
 				List<List<FollowNumberTempBean>> rtnList = this.initSortList(temp);
 				HotCoolBean hotCoolBean = new HotCoolBean();
