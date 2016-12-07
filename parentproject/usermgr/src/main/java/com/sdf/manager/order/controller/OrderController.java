@@ -164,6 +164,11 @@ public class OrderController extends GlobalExceptionHandler
 		 order = orderService.getOrdersById(id);
 		 
 		 OrdersDTO orderDto = orderService.toDTO(order);
+		 
+		 RelaBsStationAndApp relaBsStationAndApp = relaBsStaAppService.
+					getRelaBsStationAndAppByStationIdAndAppId(orderDto.getStationId(), orderDto.getAppId());
+		 orderDto.setStartTime(DateUtil.formatDate(relaBsStationAndApp.getStartTime(), DateUtil.FULL_DATE_FORMAT));
+		 orderDto.setEndTime(DateUtil.formatDate(relaBsStationAndApp.getEndTime(), DateUtil.FULL_DATE_FORMAT));
 	 	 
 		 return orderDto;
 	 }

@@ -43,7 +43,7 @@
 	  		.ftitle label{
 	  			float : left;
 	  			margin-left: 30px;
-	  			width:75px;
+	  			width:110px;
 	  		}
 	  		.ftitle .commonInput{
 	  			float : left;
@@ -231,6 +231,18 @@
 	           	 	<input class="easyui-textbox" readonly="readonly" type="text" name="price" id="priceD" style="width:200px"/> 
 	           	</div>
 	        </div>
+	        <div id="stimeDetail" class="ftitle">
+	            <label for="priceA">应用有效开始时间:</label>
+	            <div style="float:left;margin-left: 30px;">
+	           	 	<input class="easyui-validatebox" readonly="readonly" type="text" name="startTime" id="startTimeD" style="width:200px;    border-radius: 5px;"/> 
+	           	</div>
+	        </div>
+	        <div id="etimeDetail" class="ftitle">
+	            <label for="priceA">应用有效结束时间:</label>
+	            <div style="float:left;margin-left: 30px;">
+	           	 	<input class="easyui-validatebox" readonly="readonly" type="text" name="endTime" id="endTimeD" style="width:200px;    border-radius: 5px;"/> 
+	           	</div>
+	        </div>
 	      </form>
     </div>
     
@@ -240,7 +252,7 @@
             modal:true,
                 iconCls: 'icon-save',
                 buttons: [{
-                    text:'取消',
+                    text:'关闭',
                     iconCls:'icon-cancel',
                     handler:function(){
                         $('#detailPTOrders').dialog('close');
@@ -281,6 +293,18 @@
 	            <label for="priceA">成交价格(元):</label>
 	            <div style="float:left;margin-left: 30px;">
 	           	 	<input class="easyui-textbox" readonly="readonly" type="text" name="price" id="pricePTD" style="width:200px"/> 
+	           	</div>
+	        </div>
+	         <div id="stimePTDetail" class="ftitle">
+	            <label for="priceA">应用有效开始时间:</label>
+	            <div style="float:left;margin-left: 30px;">
+	           	 	<input class="easyui-validatebox" readonly="readonly" type="text" name="startTime" id="startTimePTD" style="width:200px;    border-radius: 5px;"/> 
+	           	</div>
+	        </div>
+	        <div id="etimePTDetail" class="ftitle">
+	            <label for="priceA">应用有效结束时间:</label>
+	            <div style="float:left;margin-left: 30px;">
+	           	 	<input class="easyui-validatebox" readonly="readonly" type="text" name="endTime" id="endTimePTD" style="width:200px;    border-radius: 5px;"/> 
 	           	</div>
 	        </div>
 	      </form>
