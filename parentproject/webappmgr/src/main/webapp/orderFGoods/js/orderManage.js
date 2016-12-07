@@ -334,16 +334,16 @@ function viewOrdersDetail(orderId)
 						userYearName:data.userYearName
 					});
 					
-					$("#startTimeD").hide();
-					$("#endTimeD").hide();
+					$("#stimeDetail").hide();
+					$("#etimeDetail").hide();
 					if(null != data.startTime)
 						{
-							$("#startTimeD").show();
+							$("#stimeDetail").show();
 							$("#startTimeD").val(data.startTime);
 						}
 					if(null != data.endTime)
 					{
-						$("#endTimeD").show();
+						$("#etimeDetail").show();
 						$("#endTimeD").val(data.endTime);
 					}
 					
@@ -391,16 +391,16 @@ function viewPTOrdersDetail(orderId)
 						userYearName:data.userYearName
 					});
 					
-					$("#startTimePTD").hide();
-					$("#endTimePTD").hide();
+					$("#stimePTDetail").hide();
+					$("#etimePTDetail").hide();
 					if(null != data.startTime)
 						{
-							$("#startTimePTD").show();
+							$("#stimePTDetail").show();
 							$("#startTimePTD").val(data.startTime);
 						}
 					if(null != data.endTime)
 					{
-						$("#endTimePTD").show();
+						$("#etimePTDetail").show();
 						$("#endTimePTD").val(data.endTime);
 					}
 					
