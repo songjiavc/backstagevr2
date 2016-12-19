@@ -855,7 +855,7 @@ public class AdvertisementController extends GlobalExceptionHandler
 		 Uploadfile uploadfile = uploadfileService.getUploadfileByNewsUuid(uplId);
 		 
 		 //因为一个应用只能有一个图片附件，所以当这个upId有数据的话就进行修改操作，如果没有数据就创建数据
-		 if(null != uploadfile)
+		 if(null != uploadfile && !realname.equals(uploadfile.getUploadRealName()))//新添加的realname与原来的附件的realname不同时进行删除操作，为了避免同一方法被重复调用
 		 {
 			 //①：因为广告图片只有一个附件，所以在上传其他附件替换上一个附件时，要先把上一个附件文件删除
 			 String savePath = httpSession.getServletContext().getRealPath("");//获取项目根路径
@@ -891,23 +891,24 @@ public class AdvertisementController extends GlobalExceptionHandler
 			 uploadfileService.update(uploadfile);
 		 }
 		 else
-		 {
-			 uploadfile = new Uploadfile();
-			 uploadfile.setNewsUuid(uplId);
-			 uploadfile.setUploadFileName(filename);
-			 uploadfile.setUploadRealName(realname);
-			 uploadfile.setUploadfilepath(uploadfilepath);
-			 uploadfile.setUploadContentType(type);
-			
-			 //添加修改时间跟踪
-			 uploadfile.setCreater(uploadfile.getNewsUuid());//放置附件关联uuid
-			 uploadfile.setModify(uploadfile.getNewsUuid());//放置附件关联uuid
-			 uploadfile.setCreaterTime(new Timestamp(System.currentTimeMillis()));
-			 uploadfile.setModifyTime(new Timestamp(System.currentTimeMillis()));
-			 uploadfile.setIsDeleted(Constants.IS_NOT_DELETED);
-			 
-			 uploadfileService.save(uploadfile);
-		 }
+			 if(null == uploadfile)
+			 {
+					 uploadfile = new Uploadfile();
+					 uploadfile.setNewsUuid(uplId);
+					 uploadfile.setUploadFileName(filename);
+					 uploadfile.setUploadRealName(realname);
+					 uploadfile.setUploadfilepath(uploadfilepath);
+					 uploadfile.setUploadContentType(type);
+					
+					 //添加修改时间跟踪
+					 uploadfile.setCreater(uploadfile.getNewsUuid());//放置附件关联uuid
+					 uploadfile.setModify(uploadfile.getNewsUuid());//放置附件关联uuid
+					 uploadfile.setCreaterTime(new Timestamp(System.currentTimeMillis()));
+					 uploadfile.setModifyTime(new Timestamp(System.currentTimeMillis()));
+					 uploadfile.setIsDeleted(Constants.IS_NOT_DELETED);
+					 
+					 uploadfileService.save(uploadfile);
+			 }
 		 
 		 resultBean.setStatus("success");
 		 
