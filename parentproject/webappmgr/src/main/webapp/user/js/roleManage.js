@@ -196,35 +196,35 @@ function authManage(id,parentRole)
         }
    });
 	
-	//超级管理员即根节点是可以设置所有权限的
-	if(null != parentRole&&""!=parentRole)
+	//超级管理员即根节点是可以设置所有权限的,on 2016/12/29,放开权限，所有权限都可以被设置
+	/*if(null != parentRole&&""!=parentRole)
 		{
 			//设置根节点不可用，直接关联子节点
 			var authId = getOriginAuthId();//树根节点的id是‘1’（将写死的变量 写成静态变量，改为从后台获取，获取方法在MenuController）
 			var node0 = zTree.getNodeByParam("id",authId);
 			
-			/**禁用 或 解禁 某个节点的 checkbox / radio [setting.check.enable = true 时有效]
+			*//**禁用 或 解禁 某个节点的 checkbox / radio [setting.check.enable = true 时有效]
 			 * zTreeObj.setChkDisabled: Function(node, disabled, inheritParent, inheritChildren)
-			 */
+			 *//*
 			//设置父级角色的子级权限可操作选择
 			var parentauthlist = new Object();
 			parentauthlist = getParentAuth(parentRole);
 			zTree.setChkDisabled(node0, true,false,true);
 			var authparent;
-			var nodeparent;
+			var nodeparent;	
 			for(var i=0;i<parentauthlist.length;i++)
 			{
 				authparent = parentauthlist[i];
 				nodeparent = zTree.getNodeByParam("id",authparent.id);
-				if(null != nodeparent)/*为了避免当上级角色拥有的权限已经被设置为不启用状态或已删除时而关联表的数据还在，
-										则此时是获取不到树节点的，因为当前树不会加载不启用状态的权限和删除的权限*/
+				if(null != nodeparent)为了避免当上级角色拥有的权限已经被设置为不启用状态或已删除时而关联表的数据还在，
+										则此时是获取不到树节点的，因为当前树不会加载不启用状态的权限和删除的权限
 					{
 						zTree.setChkDisabled(nodeparent, false);
 					}
 				
 			}
 			
-		}
+		}*/
 	
 	$('#w').dialog('open');//打开弹框
 }
