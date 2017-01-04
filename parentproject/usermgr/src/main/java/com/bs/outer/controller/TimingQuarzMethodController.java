@@ -377,7 +377,7 @@ public class TimingQuarzMethodController {
     /**
      * 生成3d开奖公告
      */
-    @Scheduled(cron = "0 40 20 * * ? ")  //每天晚上8点40执行定时任务，0 40 20 * * ? 
+    @Scheduled(cron = "0 40,45,50,55,59 20 * * ? ")  //每天晚上8点40,45,50,55,59执行定时任务，0 40 20 * * ? 
   	public void addThreeDKjNotices()
   	{
     	
@@ -456,7 +456,7 @@ public class TimingQuarzMethodController {
     /**
      * 生成3D试机号开奖公告
      */
-    @Scheduled(cron = "0 40,50,59 18 * * ? ")  //每天晚上6点40，50,59执行定时任务，0 40 20 * * ? 
+    @Scheduled(cron = "0 0,10,20,30,40 19 * * ? ")  //每天晚上7点0,10,20,30,40执行定时任务，0 40 20 * * ? 
   	public void addSJThreeDKjNotices()
   	{
     	logger.info("开始执行addSJThreeDKjNotices方法  start ");
