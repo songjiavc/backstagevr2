@@ -377,7 +377,7 @@ public class TimingQuarzMethodController {
     /**
      * 生成3d开奖公告
      */
-    @Scheduled(cron = "0 40,45,50,55,59 20 * * ? ")  //每天晚上8点40,45,50,55,59执行定时任务，0 40 20 * * ? 
+    @Scheduled(cron = "0 0,10,20,30,40,50 20,21 * * ? ")  //每天晚上8点和9点的0，10,20,30，40,,50执行定时任务，0 40 20 * * ? 
   	public void addThreeDKjNotices()
   	{
     	
