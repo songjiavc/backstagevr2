@@ -377,7 +377,7 @@ public class TimingQuarzMethodController {
     /**
      * 生成3d开奖公告
      */
-    @Scheduled(cron = "0 0,10,20,30,40,50 20,21 * * ? ")  //每天晚上8点和9点的0，10,20,30，40,,50执行定时任务，0 40 20 * * ? 
+    @Scheduled(cron = "0 10,20,30,40,50 21 * * ? ")  //每天晚上9点的10,20,30，40,,50执行定时任务，0 40 20 * * ? 
   	public void addThreeDKjNotices()
   	{
     	
@@ -391,33 +391,35 @@ public class TimingQuarzMethodController {
     	//②从analysis.T_DATA_BASE_3D(3d)获取上一次生成时间后的更新数据
     	List<AppNoticeAndArea> appnoticeAndAreas = new ArrayList<AppNoticeAndArea>();
     	List<ThreeDTiming> threelist = outerInterfaceService.get3DNumKaijiang(threeDct);
+    	ThreeDTiming newThreeD = threelist.get(0);
     	
     	if(null!=threelist && threelist.size()>0)
     	{
     		logger.info("addThreeDKjNotices：开始生成3D开奖公告！");
-    		//③替换之前此彩种的开奖公告
-        	List<Notice> lastlist = outerInterfaceService.getLastKjNoticeOfNoticename(threeD).getResultList();
-        	for (Notice notice : lastlist) {
-        		notice.setIsDeleted("0");
-    	 		notice.setModify("sysauto");
-    	 		notice.setModifyTime(new Timestamp(System.currentTimeMillis()));
-    	 		
-		 		
-		 		notice.setAppNoticeAndAreas(appnoticeAndAreas);
-    	 		noticeService.update(notice);
-    	 		logger.info("删除3D开奖公告数据--id="+notice.getId()+"--操作人=sysauto");
-    		}
-        	
-        	//④生成新的开奖公告数据
-        	
-        	   Notice  notice = new Notice();
-    		   notice.setId(UUID.randomUUID().toString());
-    		   notice.setAppNoticeName(threeD);
-    		   
-    		   ThreeDTiming newThreeD = threelist.get(0);
-    		   StringBuffer appNoticeWord =  new StringBuffer();
     		   if(null != newThreeD.getNo1())//已经开出3d的开奖
     		   {
+    			   //③替换之前此彩种的开奖公告
+		        	List<Notice> lastlist = outerInterfaceService.getLastKjNoticeOfNoticename(threeD).getResultList();
+		        	for (Notice notice : lastlist) 
+		        	{
+		        		notice.setIsDeleted("0");
+		    	 		notice.setModify("sysauto");
+		    	 		notice.setModifyTime(new Timestamp(System.currentTimeMillis()));
+		    	 		
+				 		
+				 		notice.setAppNoticeAndAreas(appnoticeAndAreas);
+		    	 		noticeService.update(notice);
+		    	 		logger.info("删除3D开奖公告数据--id="+notice.getId()+"--操作人=sysauto");
+		    		}
+	        	
+		        	//④生成新的开奖公告数据
+	        	
+	        	   Notice  notice = new Notice();
+	    		   notice.setId(UUID.randomUUID().toString());
+	    		   notice.setAppNoticeName(threeD);
+	    		   
+	    		  
+	    		   StringBuffer appNoticeWord =  new StringBuffer();
     			   appNoticeWord.append(threeD+"开奖期号："+newThreeD.getIssueNumber() +"   开奖号码："
     	    		   		+ newThreeD.getNo1()+","+newThreeD.getNo2()+","+newThreeD.getNo3());
     			   notice.setAppNoticeWord(appNoticeWord.toString());//开奖公告内容
