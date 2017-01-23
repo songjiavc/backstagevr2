@@ -391,10 +391,10 @@ public class TimingQuarzMethodController {
     	//②从analysis.T_DATA_BASE_3D(3d)获取上一次生成时间后的更新数据
     	List<AppNoticeAndArea> appnoticeAndAreas = new ArrayList<AppNoticeAndArea>();
     	List<ThreeDTiming> threelist = outerInterfaceService.get3DNumKaijiang(threeDct);
-    	ThreeDTiming newThreeD = threelist.get(0);
     	
     	if(null!=threelist && threelist.size()>0)
     	{
+    		ThreeDTiming newThreeD = threelist.get(0);
     		logger.info("addThreeDKjNotices：开始生成3D开奖公告！");
     		   if(null != newThreeD.getNo1())//已经开出3d的开奖
     		   {
