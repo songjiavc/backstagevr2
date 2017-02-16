@@ -146,6 +146,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	 @Autowired
 	 private CityService cityService;//市业务层
 	 
+	 
 	 @Autowired
 	 private AnnouncementReceiptService announcementReceiptService;//通告回执表业务层
 	 
@@ -165,7 +166,8 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 	 */
 	@RequestMapping(value="/login",method=RequestMethod.GET)
 	public @ResponseBody Map<String,Object> Login(@RequestParam(value="stationCode",required=true) String stationCode,//登录名
-										 @RequestParam(value="password",required=false) String password
+										 @RequestParam(value="password",required=false) String password,
+										 @RequestParam(value="macAddr",required=false) String macAddr
 										 ,HttpSession session)//密码
 	{
 		Map<String,Object> returnResult = new HashMap<String, Object>();
@@ -178,7 +180,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			
 			Station station = stationService.getStationByCode(stationCode);
 			
-			logger.info("ZNKB:OuterLogin : stationCode :"+stationCode+"::sessionId:"+session.getId());
+//			logger.info("ZNKB:OuterLogin : stationCode :"+stationCode+"::sessionId:"+session.getId());
 			
 			
 			if(null == station)//根据登录的登录编码（也就是登录名）没有获取到信息
@@ -192,6 +194,25 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 				{
 					loginFlag = false;
 					message = "登录失败,登录密码错误!";
+				}
+				else
+				{
+					if(null != macAddr && !"".equals(macAddr) && (null == station.getMacAddr() || "".equals(station.getMacAddr())))
+					{//若mac地址接口传入值不为空且之前当前通行证没有录入过mac地址则进行mac地址的插入
+						logger.info("macAddr="+macAddr);
+						station.setMacAddr(macAddr);
+						stationService.update(station);
+					}
+					else
+					{
+						if(null!=macAddr && !macAddr.equalsIgnoreCase((station.getMacAddr())))
+						{
+							logger.info("macAddr="+macAddr);
+							loginFlag = false;
+							message = "登录失败,设备错误!";
+						}
+					}
+					
 				}
 			}
 			
