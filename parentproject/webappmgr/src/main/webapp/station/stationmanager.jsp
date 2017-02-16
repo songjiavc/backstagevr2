@@ -139,6 +139,13 @@
 		    		<td colspan="1">
 		    			<input id="searchFormAgent" name="searchFormAgent" class="easyui-combobox textbox"  />
 		    		</td>
+		    		<td colspan="1" class="td_font">到期排序：</td>
+		    		<td colspan="2">
+		    			<select class="easyui-combobox" id="searchEndtime" name="searchEndtime" style="width:100px;">
+							<option value="0" >否</option>
+							<option value="1">是</option>
+						</select>
+		    		</td>
 		    		<td class="td_font" colspan="2">
 		    			<input style="cursor:pointer;background-color: #e0ecff;border-radius:5px;float:left;width:80;" class="easyui-linkbutton" data-options="iconCls:'icon-search'"  type="button" value="查询" onclick="initDatagrid()">
 		    			<input style="cursor:pointer;background-color: #e0ecff;border-radius:5px;float:left;margin-left:5px;width:80;" class="easyui-linkbutton" data-options="iconCls:'icon-search'" type="button" value="重置" onclick="reset()">
@@ -230,6 +237,10 @@
 	            <label for="addFormStationCode">登录账号:</label>
 	            <input class="easyui-validatebox textbox" type="text" name="addFormStationCode"  id="addFormStationCode"  
 	              readonly="readonly"></input>
+	        </div>
+	        <div class="ftitle">
+	            <label for="addFormAddress" >MAC地址:</label>
+	            <input class="easyui-validatebox textbox" type="text" name="macAddr"  data-options="multiline:true,required:true"  missingMessage="硬件mac地址"></input>
 	        </div>
 	        <div class="ftitle">
 	            <label for="addFormAddress" >详细地址:</label>

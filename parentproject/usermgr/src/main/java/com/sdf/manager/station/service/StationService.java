@@ -73,6 +73,26 @@ public interface StationService {
 	
 	/**
 	 * 
+	* @Title: getStationListEndtime 
+	* @Description: TODO(查找即将到期的数据) 
+	* @param @param entityClass
+	* @param @param whereJpql
+	* @param @param queryParams
+	* @param @param orderby
+	* @param @param pageable
+	* @param @return    设定文件 
+	* @author banna
+	* @date 2017年2月15日 下午2:44:14 
+	* @return QueryResult<Station>    返回类型 
+	* @throws
+	 */
+	public QueryResult<Station> getStationListEndtime(Class<Station> entityClass, String whereJpql, Object[] queryParams, 
+			LinkedHashMap<String, String> orderby, Pageable pageable,String searchFormNumber,String searchFormStyle,
+			String searchFormName,String searchFormTelephone,
+			String searchFormProvince,String searchFormCity,String searchFormDistrict,String searchFormAgent);
+	
+	/**
+	 * 
 	* @Description: TODO(用一句话描述该文件做什么) 
 	* @author bann@sdfcp.com
 	* @date 2015年12月1日 上午9:09:58

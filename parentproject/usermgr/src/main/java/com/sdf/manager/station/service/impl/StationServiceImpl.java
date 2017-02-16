@@ -60,6 +60,7 @@ public class StationServiceImpl implements StationService {
 				station.setCreaterTime(new Date());
 				station.setModify(userId);
 				station.setModifyTime(new Date());
+				station.setMacAddr(stationFormDto.getMacAddr());
 				stationRepository.save(station);
 			}else{
 				throw new BizException(0201);
@@ -79,6 +80,7 @@ public class StationServiceImpl implements StationService {
 			station.setPassword(stationFormDto.getPassword());
 			station.setModify(userId);
 			station.setModifyTime(new Date());
+			station.setMacAddr(stationFormDto.getMacAddr());
 			stationRepository.save(station);
 		}
 	}
@@ -159,5 +161,75 @@ public class StationServiceImpl implements StationService {
 	public void update(Station station)
 	{
 		stationRepository.save(station);
+	}
+
+
+	/**
+	 * 
+	* @Title: getStationListEndtime 
+	* @Description: TODO(查找即将到期的数据) 
+	* @param @param entityClass
+	* @param @param whereJpql
+	* @param @param queryParams
+	* @param @param orderby
+	* @param @param pageable
+	* @param @return    设定文件 
+	* @author banna
+	* @date 2017年2月15日 下午2:44:14 
+	* @return QueryResult<Station>    返回类型 
+	* @throws
+	 */
+	public QueryResult<Station> getStationListEndtime(
+			Class<Station> entityClass, String whereJpql, Object[] queryParams,
+			LinkedHashMap<String, String> orderby, Pageable pageable,String searchFormNumber,String searchFormStyle,
+			String searchFormName,String searchFormTelephone,
+			String searchFormProvince,String searchFormCity,String searchFormDistrict,String searchFormAgent)
+	{
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append("SELECT b.* FROM T_SDF_STATIONS b,RELA_BS_STATION_AND_APP a WHERE b.id=a.STATION_ID "+
+						" AND b.IS_DELETED=1 AND a.IS_DELETED=1 AND a.END_TIME>=NOW() ");
+		if(null != searchFormNumber&& !"".equals(searchFormNumber))
+		{
+			sql.append(" AND b.STATION_NUMBER='"+searchFormNumber+"' ");
+		}
+		
+		if(null != searchFormStyle&& !"".equals(searchFormStyle))
+		{
+			sql.append(" AND b.STATION_TYPE='"+searchFormStyle+"' ");
+		}
+		
+		if(null != searchFormName&& !"".equals(searchFormName))
+		{
+			sql.append(" AND b.OWNER like '%"+searchFormName+"%' ");
+		}
+		
+		if(null != searchFormTelephone&& !"".equals(searchFormTelephone))
+		{
+			sql.append(" AND b.OWNER_TELEPHONE = '"+searchFormTelephone+"' ");
+		}
+		
+		if(null != searchFormProvince&& !"".equals(searchFormProvince)&& !Constants.PROVINCE_ALL.equals(searchFormProvince))
+		{
+			sql.append(" AND b.PROVINCE_CODE = '"+searchFormProvince+"' ");
+		}
+		
+		if(null != searchFormCity&& !"".equals(searchFormCity)&& !Constants.CITY_ALL.equals(searchFormCity))
+		{
+			sql.append(" AND b.CITY_CODE = '"+searchFormCity+"' ");
+		}
+		
+		if(null != searchFormDistrict&& !"".equals(searchFormDistrict)&& !Constants.DISTRICT_ALL.equals(searchFormDistrict))
+		{
+			sql.append(" AND b.REGION_CODE = '"+searchFormDistrict+"' ");
+		}
+		
+		if(null != searchFormAgent&& !"".equals(searchFormAgent))
+		{
+			sql.append(" AND b.AGENT_ID = '"+searchFormAgent+"' ");
+		}
+		sql.append(" ORDER BY a.END_TIME");
+		QueryResult<Station> result = stationRepository.getScrollDataBySql(Station.class, sql.toString(), null, pageable);
+		return result;
 	}
 }

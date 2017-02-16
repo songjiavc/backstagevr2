@@ -38,7 +38,15 @@ public class StationFormDto {
 	//确认密码
 	private String confirmPassword;
 	
+	private String macAddr;//mac地址
 	
+	
+	public String getMacAddr() {
+		return macAddr;
+	}
+	public void setMacAddr(String macAddr) {
+		this.macAddr = macAddr;
+	}
 	public String getId() {
 		return id;
 	}

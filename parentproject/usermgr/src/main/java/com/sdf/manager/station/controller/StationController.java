@@ -146,6 +146,7 @@ public class StationController {
 			@RequestParam(value="searchFormCity",required=false) String searchFormCity,//模糊查询所选市
 			@RequestParam(value="searchFormDistrict",required=false) String searchFormDistrict,//模糊查询所选区
 			@RequestParam(value="searchFormAgent",required=false) String searchFormAgent,//模糊查询所选市
+			@RequestParam(value="searchEndtime",required=false) String searchEndtime,//是否按到期排序
 			ModelMap model,HttpSession httpSession) throws Exception
 	{
 		Map<String,Object> returnData = new HashMap<String, Object>();
@@ -154,7 +155,7 @@ public class StationController {
 		StringBuffer buffer = new StringBuffer();
 		
 		LinkedHashMap<String, String> orderBy = new LinkedHashMap<String, String>();
-		orderBy.put("id", "desc");
+		
 		List<Object> params = new ArrayList<Object>();
 		//只查询未删除数据
 		params.add(Constants.IS_NOT_DELETED);//只查询有效的数据
@@ -203,13 +204,33 @@ public class StationController {
 			params.add(searchFormAgent);//根据产品描述模糊查询产品数据
 			buffer.append(" and agentId = ?").append(params.size());
 		}
-		QueryResult<Station> stationList = stationService.getStationList(Station.class, buffer.toString(), params.toArray(),
-				orderBy, pageable);
-		List<Station> stations = stationList.getResultList();
-		List<StationDto> stationDtos = this.toDtos(stations);
-		Long totalrow = stationList.getTotalRecord();
-		returnData.put("rows", stationDtos);
-		returnData.put("total", totalrow);
+		
+		QueryResult<Station> stationList = null;
+		if("1".equals(searchEndtime))
+		{
+			stationList = stationService.getStationListEndtime(Station.class, buffer.toString(), params.toArray(),
+					orderBy, pageable,searchFormNumber,searchFormStyle,searchFormName,searchFormTelephone,
+					searchFormProvince,searchFormCity,searchFormDistrict,searchFormAgent);
+			List<Station> stations = stationList.getResultList();
+			List<StationDto> stationDtos = this.toDtos(stations);
+			int totalrow = stationList.getTotalCount();
+			returnData.put("rows", stationDtos);
+			returnData.put("total", totalrow);
+		}
+		else
+		{
+			orderBy.put("id", "desc");
+			stationList = stationService.getStationList(Station.class, buffer.toString(), params.toArray(),
+					orderBy, pageable);
+			List<Station> stations = stationList.getResultList();
+			List<StationDto> stationDtos = this.toDtos(stations);
+			Long totalrow = stationList.getTotalRecord();
+			returnData.put("rows", stationDtos);
+			returnData.put("total", totalrow);
+		}
+		
+		
+		
 		return returnData;
 	}
 	@RequestMapping(value = "/getStationDetail", method = RequestMethod.GET)

@@ -240,7 +240,8 @@ function initDatagrid()
 			searchFormCity : $('#searchFormCity').combobox('getValue'),
 			searchFormName : $('#searchFormName').val(),
 			searchFormTelephone : $('#searchFormTelephone').val(),
-			searchFormAgent : $('#searchFormAgent').combobox('getValue')
+			searchFormAgent : $('#searchFormAgent').combobox('getValue'),
+			searchEndtime:$('#searchEndtime').combobox('getValue')
 	};
 	//渲染列表
 	$('#stationDataGrid').datagrid({

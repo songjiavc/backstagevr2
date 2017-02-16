@@ -35,9 +35,15 @@ public class StationDto {
 	
 	private String cityCode;//市编码
 	
+	private String macAddr;//mac地址
 	
 	
-	
+	public String getMacAddr() {
+		return macAddr;
+	}
+	public void setMacAddr(String macAddr) {
+		this.macAddr = macAddr;
+	}
 	public String getProvinceCode() {
 		return provinceCode;
 	}
