@@ -240,7 +240,7 @@
 	        </div>
 	        <div class="ftitle">
 	            <label for="addFormAddress" >MAC地址:</label>
-	            <input class="easyui-validatebox textbox" type="text" name="macAddr"  data-options="multiline:true,required:true"  missingMessage="硬件mac地址"></input>
+	            <input class="easyui-validatebox textbox" type="text" name="macAddr"  data-options="multiline:true"  missingMessage="硬件mac地址"></input>
 	        </div>
 	        <div class="ftitle">
 	            <label for="addFormAddress" >详细地址:</label>
