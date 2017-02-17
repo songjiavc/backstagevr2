@@ -243,6 +243,10 @@
 	            <input class="easyui-validatebox textbox" type="text" name="macAddr"  data-options="multiline:true"  missingMessage="硬件mac地址"></input>
 	        </div>
 	        <div class="ftitle">
+	            <label for="addFormAddress" >MAC_2地址:</label>
+	            <input class="easyui-validatebox textbox" type="text" name="macAddrTwo"  data-options="multiline:true"  missingMessage="硬件mac地址"></input>
+	        </div>
+	        <div class="ftitle">
 	            <label for="addFormAddress" >详细地址:</label>
 	            <input class="easyui-validatebox textbox" type="text" name="addFormAddress"  data-options="multiline:true,required:true,validType:['length[0,40]']"  missingMessage="站点详细地址"></input>
 	        </div>

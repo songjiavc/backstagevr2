@@ -40,7 +40,16 @@ public class StationFormDto {
 	
 	private String macAddr;//mac地址
 	
+	private String macAddrTwo;//mac2地址
 	
+	
+	
+	public String getMacAddrTwo() {
+		return macAddrTwo;
+	}
+	public void setMacAddrTwo(String macAddrTwo) {
+		this.macAddrTwo = macAddrTwo;
+	}
 	public String getMacAddr() {
 		return macAddr;
 	}

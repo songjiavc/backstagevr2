@@ -253,6 +253,8 @@ public class StationController {
 		stationFormDto.setAddFormTelephone(station.getOwnerTelephone());
 		stationFormDto.setPassword(station.getPassword());
 		stationFormDto.setConfirmPassword(station.getPassword());
+		stationFormDto.setMacAddr(station.getMacAddr());
+		stationFormDto.setMacAddrTwo(station.getMacAddrTwo());
 		return stationFormDto;
 	}
 	

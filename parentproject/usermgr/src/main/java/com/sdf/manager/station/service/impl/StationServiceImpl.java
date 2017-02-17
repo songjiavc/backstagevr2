@@ -61,6 +61,7 @@ public class StationServiceImpl implements StationService {
 				station.setModify(userId);
 				station.setModifyTime(new Date());
 				station.setMacAddr(stationFormDto.getMacAddr());
+				station.setMacAddrTwo(stationFormDto.getMacAddrTwo());
 				stationRepository.save(station);
 			}else{
 				throw new BizException(0201);
@@ -81,6 +82,7 @@ public class StationServiceImpl implements StationService {
 			station.setModify(userId);
 			station.setModifyTime(new Date());
 			station.setMacAddr(stationFormDto.getMacAddr());
+			station.setMacAddrTwo(stationFormDto.getMacAddrTwo());
 			stationRepository.save(station);
 		}
 	}

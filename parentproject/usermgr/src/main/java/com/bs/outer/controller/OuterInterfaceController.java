@@ -197,20 +197,35 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 				}
 				else
 				{
-					if(null != macAddr && !"".equals(macAddr) && (null == station.getMacAddr() || "".equals(station.getMacAddr())))
+					if(null != macAddr && !"".equals(macAddr) 
+							&& (null == station.getMacAddr() || "".equals(station.getMacAddr())))
 					{//若mac地址接口传入值不为空且之前当前通行证没有录入过mac地址则进行mac地址的插入
 						logger.info("macAddr="+macAddr);
 						station.setMacAddr(macAddr);
+						station.setModifyTime(new Timestamp(System.currentTimeMillis()));
 						stationService.update(station);
 					}
 					else
 					{
-						if(null!=macAddr && !macAddr.equalsIgnoreCase((station.getMacAddr())))
-						{
-							logger.info("macAddr="+macAddr);
-							loginFlag = false;
-							message = "登录失败,设备错误!";
+						if(null != macAddr && !"".equals(macAddr) && !macAddr.equals(station.getMacAddr())
+								&& (null == station.getMacAddrTwo() || "".equals(station.getMacAddrTwo())))
+						{//若mac地址接口传入值不为空且mac1地址已填写
+							logger.info("macAddrTwo="+macAddr);
+							station.setMacAddrTwo(macAddr);
+							station.setModifyTime(new Timestamp(System.currentTimeMillis()));
+							stationService.update(station);
 						}
+						else
+						{
+							if(null!=macAddr && !"".equals(macAddr) && !macAddr.equalsIgnoreCase((station.getMacAddr()))
+									&& !macAddr.equalsIgnoreCase((station.getMacAddrTwo())))
+							{//当前传入的mac地址和mac1地址和mac2地址都不匹配，则设备错误
+								logger.info("macAddr="+macAddr);
+								loginFlag = false;
+								message = "登录失败,设备错误!";
+							}
+						}
+						
 					}
 					
 				}

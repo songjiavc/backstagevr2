@@ -90,6 +90,9 @@ public class Station extends BaseEntiry implements Serializable
 	@Column(name="MAC_ADDR")
 	private String macAddr;//mac地址
 	
+	@Column(name="MAC_ADDR_TWO")
+	private String macAddrTwo;//mac2地址
+	
 	
 	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinTable(name = "RELA_BS_STATION_AND_UGROUP", 
@@ -118,6 +121,14 @@ public class Station extends BaseEntiry implements Serializable
 	private List<RelaBsStationAndAppHis> relaBsStationAndAppHis;//通行证与“通行证应用表历史记录表”的关联
 	
 	
+
+	public String getMacAddrTwo() {
+		return macAddrTwo;
+	}
+
+	public void setMacAddrTwo(String macAddrTwo) {
+		this.macAddrTwo = macAddrTwo;
+	}
 
 	public String getMacAddr() {
 		return macAddr;
