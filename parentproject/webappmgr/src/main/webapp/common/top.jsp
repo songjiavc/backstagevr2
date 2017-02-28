@@ -59,7 +59,7 @@
         },
         mobile: {
           validator: function (value, param) {
-            return /^(?:13\d|15\d|18\d)-?\d{5}(\d{3}|\*{3})$/.test(value);
+            return /^(?:13\d|15\d|18\d|17\d)-?\d{5}(\d{3}|\*{3})$/.test(value);
           },
           message: '手机号码不正确'
         },
