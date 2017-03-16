@@ -144,6 +144,38 @@ public class GlobalCacheServiceImpl implements GlobalCacheService{
 				   put("5in11follownumber","T_ANHUI_5IN11_FOLLOWNUMBER");
 				   put("5in11follownumberlastissue","T_ANHUI_5IN11_FOLLOW_LAST_ISSUE");
 			   }});
+		   put("420000",new HashMap<String,String>(){
+			   {
+				   put("kuai3number","T_HUBEI_KUAI3_NUMBER");
+				   put("kuai3missanalysis","T_HUBEI_KUAI3_MISSANALYSIS");
+				   put("kuai3sima","T_HUBEI_KUAI3_SIMA");
+				   put("kuai3danma","T_HUBEI_KUAI3_DANMA");
+				   put("kuai3samenumber","T_HUBEI_KUAI3_SAMENUMBER");
+				   
+				   put("5in11number","T_HUBEI_5IN11_NUMBER");
+				   put("5in11missanalysis","T_HUBEI_5IN11_MISSANALYSIS");
+				   put("5in11danma","T_HUBEI_5IN11_DANMA");
+				   put("5in11sima","T_HUBEI_5IN11_SIMA");
+				   put("5in11samenumber","T_HUBEI_5IN11_SAMENUMBER");
+				   put("5in11follownumber","T_HUBEI_5IN11_FOLLOWNUMBER");
+				   put("5in11follownumberlastissue","T_HUBEI_5IN11_FOLLOW_LAST_ISSUE");
+			   }});
+		   put("320000",new HashMap<String,String>(){
+			   {
+				   put("kuai3number","T_JS_KUAI3_NUMBER");
+				   put("kuai3missanalysis","T_JS_KUAI3_MISSANALYSIS");
+				   put("kuai3sima","T_JS_KUAI3_SIMA");
+				   put("kuai3danma","T_JS_KUAI3_DANMA");
+				   put("kuai3samenumber","T_JS_KUAI3_SAMENUMBER");
+				   
+				   put("5in11number","T_JS_5IN11_NUMBER");
+				   put("5in11missanalysis","T_JS_5IN11_MISSANALYSIS");
+				   put("5in11danma","T_JS_5IN11_DANMA");
+				   put("5in11sima","T_JS_5IN11_SIMA");
+				   put("5in11samenumber","T_JS_5IN11_SAMENUMBER");
+				   put("5in11follownumber","T_JS_5IN11_FOLLOWNUMBER");
+				   put("5in11follownumberlastissue","T_JS_5IN11_FOLLOW_LAST_ISSUE");
+			   }});
        }
     };
     
