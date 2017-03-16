@@ -276,6 +276,7 @@ public class LottoryToolOuterController
 			}
 		}catch(Exception ex){
 			logger.error("获取统计附表数据接口错误！provinceNumber="+provinceNumber);
+			ex.printStackTrace();
 			rtnMap.put("message","failure");
 			rtnMap.put("status", "0");
 		}finally{
