@@ -147,7 +147,7 @@
 	        </div>
 	        <div class="ftitle">
 	        	<label for="addFormTelephone" >代理手机号:</label>
-	            <input class="easyui-validatebox textbox" type="text" name="addFormTelephone"  data-options="required:true,validType:['mobile']" missingMessage="站主手机号"></input>
+	            <input class="easyui-validatebox textbox" type="text" name="addFormTelephone"  data-options="required:true,validType:['mobileAndTel']" missingMessage="站主手机号"></input>
 	        </div>
 	        <div class="ftitle">
 	            <label  for="password">密码:</label>
