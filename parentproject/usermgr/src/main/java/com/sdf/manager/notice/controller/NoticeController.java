@@ -546,7 +546,7 @@ public class NoticeController extends GlobalExceptionHandler {
 			   Date st = DateUtil.formatStringToDate(DateUtil.formatCurrentDateWithYMD(), DateUtil.SIMPLE_DATE_FORMAT);//注意：在将string转换为date时，转换的格式一定要与string的格式统一，否则无法转换，eg：“2016-03-21”转换为date类型，只能使用DateUtil.SIMPLE_DATE_FORMAT转换，否则抛出异常
 			   notice.setStartTime(DateUtil.formatDateToTimestamp(st, DateUtil.FULL_DATE_FORMAT));
 			   Date et = DateUtil.getNextDayOfCurrentTime(new Timestamp(System.currentTimeMillis()), 365);
-			   
+			   notice.setEndTime(DateUtil.formatDateToTimestamp(et, DateUtil.FULL_DATE_FORMAT));
 			   notice.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
 			   notice.setModifyTime(new Timestamp(System.currentTimeMillis()));
 			   
@@ -626,7 +626,7 @@ public class NoticeController extends GlobalExceptionHandler {
 			   Date st = DateUtil.formatStringToDate(DateUtil.formatCurrentDateWithYMD(), DateUtil.SIMPLE_DATE_FORMAT);
 			   notice.setStartTime(DateUtil.formatDateToTimestamp(st, DateUtil.FULL_DATE_FORMAT));
 			   Date et = DateUtil.getNextDayOfCurrentTime(new Timestamp(System.currentTimeMillis()), 365);
-			   
+			   notice.setEndTime(DateUtil.formatDateToTimestamp(et, DateUtil.FULL_DATE_FORMAT));
 			   notice.setModify(LoginUtils.getAuthenticatedUserCode(httpSession));
 			   notice.setModifyTime(new Timestamp(System.currentTimeMillis()));
 			   notice.setCreater(LoginUtils.getAuthenticatedUserCode(httpSession));
