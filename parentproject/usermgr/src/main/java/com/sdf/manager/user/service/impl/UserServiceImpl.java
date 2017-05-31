@@ -304,7 +304,7 @@ public class UserServiceImpl implements UserService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return user.getRoles();
+		return null != user?user.getRoles():null;
 	}
 	/* (非 Javadoc) 
 	 * <p>Title: getUserList</p> 

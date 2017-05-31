@@ -1,9 +1,7 @@
 package com.sdf.manager.weixin.controller;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -26,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sdf.manager.common.bean.ResultBean;
 import com.sdf.manager.common.exception.GlobalExceptionHandler;
 import com.sdf.manager.common.util.Constants;
-import com.sdf.manager.common.util.DateUtil;
 import com.sdf.manager.common.util.LoginUtils;
 import com.sdf.manager.common.util.QueryResult;
 import com.sdf.manager.product.entity.Province;
@@ -1055,6 +1052,7 @@ public class WeixinController extends GlobalExceptionHandler
 		 * @return
 		 * @throws Exception
 		 */
+		@SuppressWarnings("unchecked")
 		@RequestMapping(value = "/getNumofMakeupList", method = RequestMethod.GET)
 		public @ResponseBody Map<String,Object> getNumofMakeupList(
 				@RequestParam(value="page",required=false) int page,
@@ -1089,17 +1087,14 @@ public class WeixinController extends GlobalExceptionHandler
 					lNum = Integer.parseInt(lotteryNumber);
 				}
 				
-				SimpleDateFormat sdf = new SimpleDateFormat(DateUtil.FULL_DATE_FORMAT);
 				
 				if("0".equals(numOrChar))//数字方案
 				{
 					int snum = Integer.parseInt(lBulufangan.getStartNumber());//开始号码
-					int endNum = Integer.parseInt(lBulufangan.getEndNumber());//结束号码
 					for (Map<String, Object> data : queryList) 
 					{
 						Map<String , Object> resultData = new HashMap<String, Object>();
 						
-						Long cl = 0l;
 						if(null != data.get("CREATE_TIME") && !"".equals(data.get("CREATE_TIME").toString()))
 						{
 							resultData.put("CREATE_TIME", data.get("CREATE_TIME").toString().substring(0, 19));
@@ -1135,7 +1130,6 @@ public class WeixinController extends GlobalExceptionHandler
 					{
 						Map<String , Object> resultData = new HashMap<String, Object>();
 						
-						Long cl = 0l;
 						if(null != data.get("CREATE_TIME") && !"".equals(data.get("CREATE_TIME").toString()))
 						{
 							resultData.put("CREATE_TIME", data.get("CREATE_TIME").toString().substring(0, 19));

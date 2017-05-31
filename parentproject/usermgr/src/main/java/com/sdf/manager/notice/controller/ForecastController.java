@@ -133,10 +133,13 @@ public class ForecastController extends GlobalExceptionHandler
 			
 			if(null!=noticeData&&"1".equals(noticeData))//获取的若是应用公告的预测数据，则要显示
 			{
-				Date st =  DateUtil.formatStringToDate(startTime.toString(), DateUtil.SIMPLE_DATE_FORMAT);//将前台传过来的字符串日期转换为date时，使用的格式应该与接收的字符串一样，即：若2014-02-01则应该用DateUtil.SIMPLE_DATE_FORMAT，在date和时间戳之间可以跨越格式转换
+				Date st =  null;
+				if(null != startTime)
+					st =  DateUtil.formatStringToDate(startTime.toString(), DateUtil.SIMPLE_DATE_FORMAT);//将前台传过来的字符串日期转换为date时，使用的格式应该与接收的字符串一样，即：若2014-02-01则应该用DateUtil.SIMPLE_DATE_FORMAT，在date和时间戳之间可以跨越格式转换
 				
-				
-				Date et =  DateUtil.formatStringToDate(endTime.toString(), DateUtil.SIMPLE_DATE_FORMAT);
+				Date et =  null;
+				if(null != endTime)
+					et =  DateUtil.formatStringToDate(endTime.toString(), DateUtil.SIMPLE_DATE_FORMAT);
 				
 				
 				if(null != startTime&& !"".equals(startTime.trim()) )//

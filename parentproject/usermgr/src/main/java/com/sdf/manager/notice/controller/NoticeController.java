@@ -837,26 +837,36 @@ public class NoticeController extends GlobalExceptionHandler {
 		 
 		 String code = LoginUtils.getAuthenticatedUserCode(httpSession);
 		 User user = userService.getUserByCode(code);
-		 String lotteryType = user.getLotteryType();
+		 String lotteryType = "";
+		 List<Role> roles =  null;
+		 if(null != user)
+		 {
+			 lotteryType = user.getLotteryType();
+			 //获取当前登录人员的角色list
+			 roles = user.getRoles();
+		 }
+			
 		 
-		 //获取当前登录人员的角色list
-		 List<Role> roles = user.getRoles();
+		
 		 
 		 //公告类别,0:省中心公告1：市中心公告2：公司普通公告3：公司开奖公告4：公司预测公告
 		 String appcategory ="2";//默认广告类别为公司广告
-		 for (Role role : roles) {
-			if(AdvertisementController.SJX_ROLE_CODE.equals(role.getCode()))
-			{
-				appcategory = "1";
-				break;
-			}
-			else
-				if(AdvertisementController.PROVINCE_ROLE_CODE.equals(role.getCode()))
-				{
-					appcategory = "0";
-					break;
-				}
-				
+		 if(null != roles)
+		 {
+			 for (Role role : roles) {
+					if(AdvertisementController.SJX_ROLE_CODE.equals(role.getCode()))
+					{
+						appcategory = "1";
+						break;
+					}
+					else
+						if(AdvertisementController.PROVINCE_ROLE_CODE.equals(role.getCode()))
+						{
+							appcategory = "0";
+							break;
+						}
+						
+				 }
 		 }
 		 
 		 

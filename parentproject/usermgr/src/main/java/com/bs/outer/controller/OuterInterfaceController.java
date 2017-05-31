@@ -332,7 +332,8 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			logger.error("更新密码操作失败！更新的通行证id为："+station.getId());
+			if(null != station)
+				logger.error("更新密码操作失败！更新的通行证id为："+station.getId());
 			/*returnResult.put("status", "0");
 			returnResult.put("message", "接口访问失败");*/
 		}
@@ -1537,7 +1538,7 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 					{
 						continue;
 					}
-					
+					logger.info("获取根据应用id获取一体机当前安装的所有应用的最新版本数据接口数据成功getAppversionsOfnew！appId="+appId);
 					
 				}
 				appversionDTOs = appversionService.toRDTOS(appversions);
@@ -1609,11 +1610,11 @@ public class OuterInterfaceController //extends GlobalExceptionHandler
 			/*
 			result.put("status", "1");
 			result.put("message", "数据获取成功！");*/
-			logger.info("获取根据应用id获取一体机当前安装的所有应用的最新版本数据接口数据成功getAppversionsOfnew！appIds="+appIds);
+			
 		}
 		catch(Exception e)
 		{
-			logger.error("获取根据应用id获取一体机当前安装的所有应用的最新版本数据接口数据报错getAppversionsOfnew！appIds="+appIds);
+			logger.error("获取根据应用id获取一体机当前安装的所有应用的最新版本数据接口数据报错getAppversionsOfnew！appIds="+stationId);
 			/*result.put("status", "0");
 			result.put("message", "数据获取失败！");*/
 		}

@@ -560,7 +560,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		Object[] queryParams = new Object[]{
 		};
 		FollowLastIssueBean dsIssueNumber = followLastIssueRepository.getEntityBySql(FollowLastIssueBean.class,selSql,queryParams);
-		if(StringUtils.isEmpty(issueNumber) || !dsIssueNumber.equals(issueNumber)){
+		if((null != issueNumber && !"".equals(issueNumber)) ||(null != dsIssueNumber &&!dsIssueNumber.getIssueNumber().equals(issueNumber))){
 			//获取所有follow列表，而后进行加工
 			String tbName2 = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in11follownumber");
 			String selSql2 = "SELECT * FROM " + tbName2;
@@ -591,7 +591,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		Object[] queryParams = new Object[]{
 		};
 		FollowLastIssueBean dsIssueNumber = followLastIssueRepository.getEntityBySql(FollowLastIssueBean.class,selSql,queryParams);
-		if(StringUtils.isEmpty(issueNumber) || !dsIssueNumber.equals(issueNumber)){
+		if((null != issueNumber && !"".equals(issueNumber)) ||(null != dsIssueNumber &&!dsIssueNumber.getIssueNumber().equals(issueNumber))){
 			//获取所有follow列表，而后进行加工
 			String tbName2 = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in12follownumber");
 			String selSql2 = "SELECT * FROM " + tbName2;

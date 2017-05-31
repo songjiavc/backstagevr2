@@ -749,27 +749,37 @@ public class AdvertisementController extends GlobalExceptionHandler
 		 
 		 String code = LoginUtils.getAuthenticatedUserCode(httpSession);
 		 User user = userService.getUserByCode(code);
-		 String lotteryType = user.getLotteryType();
+		 String lotteryType = "";
+		 List<Role> roles = null;
+		 if(null != user)
+		 {
+			 lotteryType = user.getLotteryType();
+			//获取当前登录人员的角色list
+			 roles = user.getRoles();
+		 }
+			 
 		 
-		 //获取当前登录人员的角色list
-		 List<Role> roles = user.getRoles();
 		 
 		 //广告类别,0：站点广告 1.市中心应用广告2.省中心应用广告3.公司应用广告
 		 String adType =AdvertisementController.AD_TYPE_COMPANY;//默认广告类别为公司广告
-		 for (Role role : roles) {
-			if(AdvertisementController.SJX_ROLE_CODE.equals(role.getCode()))
-			{
-				adType = AdvertisementController.AD_TYPE_CITY;
-				break;
-			}
-			else
-				if(AdvertisementController.PROVINCE_ROLE_CODE.equals(role.getCode()))
-				{
-					adType = AdvertisementController.AD_TYPE_SJX;
-					break;
-				}
-				
+		 if(null != roles)
+		 {
+			 for (Role role : roles) {
+					if(AdvertisementController.SJX_ROLE_CODE.equals(role.getCode()))
+					{
+						adType = AdvertisementController.AD_TYPE_CITY;
+						break;
+					}
+					else
+						if(AdvertisementController.PROVINCE_ROLE_CODE.equals(role.getCode()))
+						{
+							adType = AdvertisementController.AD_TYPE_SJX;
+							break;
+						}
+						
+				 }
 		 }
+		
 		 
 		 
 		 if(null != user)

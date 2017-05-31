@@ -89,16 +89,19 @@ public class CustomLogAppender extends FileAppender {
         if (maxBackupIndex > 0) {
             File folder = new File(file.getParent());
             List<String> maxBackupIndexDates = getMaxBackupIndexDates();
-            for (File ff : folder.listFiles()) {
-                if (ff.getName().startsWith(file.getName()) && !ff.getName().equals(file.getName())) {
-                    String markedDate = ff.getName().substring(file.getName().length());
-                    if (!maxBackupIndexDates.contains(markedDate)) {
-                        result = ff.delete();
-                    }
-                    if (result) {
-                        LogLog.debug(ff.getName() + " ->deleted ");
-                    } else {
-                        LogLog.error("Failed to deleted old DayRollingFileAppender file :" + ff.getName());
+            if(null != folder)
+            {
+            	for (File ff : folder.listFiles()) {
+                    if (ff.getName().startsWith(file.getName()) && !ff.getName().equals(file.getName())) {
+                        String markedDate = ff.getName().substring(file.getName().length());
+                        if (!maxBackupIndexDates.contains(markedDate)) {
+                            result = ff.delete();
+                        }
+                        if (result) {
+                            LogLog.debug(ff.getName() + " ->deleted ");
+                        } else {
+                            LogLog.error("Failed to deleted old DayRollingFileAppender file :" + ff.getName());
+                        }
                     }
                 }
             }

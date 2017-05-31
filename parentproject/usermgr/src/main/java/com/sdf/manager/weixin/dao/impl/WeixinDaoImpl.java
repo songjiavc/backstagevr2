@@ -1,14 +1,8 @@
 package com.sdf.manager.weixin.dao.impl;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -38,7 +32,6 @@ public class WeixinDaoImpl implements WeixinDao
 		
 		Map<String,Object> returnData = new HashMap<String, Object>();
 		
-		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
 		
 		
 		StringBuffer sql = new StringBuffer("SELECT * FROM ");

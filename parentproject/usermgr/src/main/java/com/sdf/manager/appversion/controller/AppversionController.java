@@ -400,7 +400,7 @@ public class AppversionController extends GlobalExceptionHandler {
 		 
 		 versionFlowId = appversionService.findMaxVersionFlowId(appId);//根据应用id获取该应用下有效应用版本数据下的最大版本号
 		 
-		 if(null != versionFlowId && !"".equals(versionFlowId))
+		 if(null != versionFlowId)
 		 {
 //			 String maxVersionFlowId =(Integer.parseInt(versionFlowId)+1)+"";
 			 Integer maxVersionFlowId = versionFlowId + 1;

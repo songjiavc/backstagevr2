@@ -87,7 +87,6 @@ public class DateUtil {
      */
     public static Timestamp formatDateToTimestamp(Date date,String formatstr) throws ParseException {
 
-        SimpleDateFormat df = new SimpleDateFormat(formatstr);
         Timestamp timestamp = null;
         if (null == date) {
             return timestamp;
