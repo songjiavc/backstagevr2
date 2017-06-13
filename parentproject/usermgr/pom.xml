@@ -180,6 +180,20 @@
 		   <artifactId>spring-context-support</artifactId>
 		   <version>3.1.1.RELEASE</version>
 		  </dependency>
+		  
+		  <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-ehcache -->
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-ehcache</artifactId>
+		    <version>4.2.20.Final</version>
+		</dependency>
+		
+		<!-- ehcache -->
+		<dependency>
+		    <groupId>net.sf.ehcache</groupId>
+		    <artifactId>ehcache-core</artifactId>
+		    <version>2.6.9</version>
+		</dependency>
 		    
   </dependencies>
 </project>

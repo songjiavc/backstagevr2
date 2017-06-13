@@ -22,7 +22,9 @@ import com.sdf.manager.product.entity.Province;
 import com.sdf.manager.product.service.CityService;
 import com.sdf.manager.product.service.ProvinceService;
 import com.sdf.manager.station.entity.Station;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -97,7 +99,8 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	//TODO:未完成
 	public QueryResult<Announcement> getAnnouncementOfSta(Class<Announcement> entityClass, String whereJpql, Object[] queryParams, 
 			LinkedHashMap<String, String> orderby, Pageable pageable,String ugroups,String province,String city,String lotteryType){
-		StringBuffer sql = new StringBuffer("SELECT u.* FROM (T_BS_ANNOUNCEMENT u LEFT JOIN RELA_BS_ANN_AND_AREA a ON u.ID=a.ANNOUNCEMENT_ID) LEFT JOIN RELA_BS_ANN_AND_UGROUP au ON u.ID=au.ANNOUNCE_ID"+
+		StringBuffer sql = new StringBuffer("SELECT u.ID,u.CREATER,u.CREATER_TIME,u.IS_DELETED,u.MODIFY,u.MODIFY_TIME,u.ANNOUNCE_STATUS,"
+				+ " u.ANNOUNCEMENT_CONTENT,u.ANNOUNCEMENT_NAME,u.END_TIME,u.LOTTERY_TYPE,u.START_TIME FROM (T_BS_ANNOUNCEMENT u LEFT JOIN RELA_BS_ANN_AND_AREA a ON u.ID=a.ANNOUNCEMENT_ID) LEFT JOIN RELA_BS_ANN_AND_UGROUP au ON u.ID=au.ANNOUNCE_ID"+
 					"	WHERE u.IS_DELETED='1' AND u.ANNOUNCE_STATUS='1'   "+
 					"   AND u.END_TIME>=CURDATE() AND u.START_TIME<=CURDATE()  AND u.LOTTERY_TYPE='"+lotteryType+"'");
 					if(ugroups.length()>0)
@@ -116,7 +119,8 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	
 	public QueryResult<Announcement> getAnnouncementOfStaAndNotInReceipt(Class<Announcement> entityClass, String whereJpql, Object[] queryParams, 
 			LinkedHashMap<String, String> orderby, Pageable pageable,String ugroups,String province,String city,String lotteryType,String stationId){
-		StringBuffer sql = new StringBuffer("SELECT u.* FROM (T_BS_ANNOUNCEMENT u LEFT JOIN RELA_BS_ANN_AND_AREA a ON u.ID=a.ANNOUNCEMENT_ID) LEFT JOIN RELA_BS_ANN_AND_UGROUP au ON u.ID=au.ANNOUNCE_ID"+
+		StringBuffer sql = new StringBuffer("SELECT u.ID,u.CREATER,u.CREATER_TIME,u.IS_DELETED,u.MODIFY,u.MODIFY_TIME,u.ANNOUNCE_STATUS,"
+				+ " u.ANNOUNCEMENT_CONTENT,u.ANNOUNCEMENT_NAME,u.END_TIME,u.LOTTERY_TYPE,u.START_TIME  FROM (T_BS_ANNOUNCEMENT u LEFT JOIN RELA_BS_ANN_AND_AREA a ON u.ID=a.ANNOUNCEMENT_ID) LEFT JOIN RELA_BS_ANN_AND_UGROUP au ON u.ID=au.ANNOUNCE_ID"+
 					"	WHERE u.IS_DELETED='1' AND u.ANNOUNCE_STATUS='1'   "+
 					"   AND u.END_TIME>=CURDATE() AND u.START_TIME<=CURDATE()  AND u.LOTTERY_TYPE='"+lotteryType+"'");
 					if(ugroups.length()>0)
@@ -140,7 +144,8 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 			Class<CompanyNotice> entityClass, String whereJpql,
 			Object[] queryParams, LinkedHashMap<String, String> orderby,
 			Pageable pageable,String ugroups,String province,String city,String lotteryType) {
-		StringBuffer sql = new StringBuffer("SELECT u.* FROM (T_BS_COM_NOTICE u LEFT JOIN RELA_BS_COMNOTICE_AND_AREA a ON u.ID=a.COMNOTICE_ID) LEFT JOIN RELA_BS_COMNOTICE_AND_UGROUP au ON u.ID=au.COM_NOTICE_ID  "+
+		StringBuffer sql = new StringBuffer("SELECT u.ID,u.CREATER,u.CREATER_TIME,u.IS_DELETED,u.MODIFY,u.MODIFY_TIME,u.COMNOTICE_CONTENT,"
+				+ " u.COMNOTICE_NAME,u.COMNOTICE_STATUS,u.END_TIME,u.LOTTERY_TYPE,u.START_TIME FROM (T_BS_COM_NOTICE u LEFT JOIN RELA_BS_COMNOTICE_AND_AREA a ON u.ID=a.COMNOTICE_ID) LEFT JOIN RELA_BS_COMNOTICE_AND_UGROUP au ON u.ID=au.COM_NOTICE_ID  "+
 				"	WHERE u.IS_DELETED='1' AND u.COMNOTICE_STATUS='1'  "+
 				"   AND u.END_TIME>=CURDATE() AND u.START_TIME<=CURDATE() AND u.LOTTERY_TYPE='"+lotteryType+"'  ");
 		
@@ -162,7 +167,9 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 			Class<Advertisement> entityClass, String whereJpql,
 			Object[] queryParams, LinkedHashMap<String, String> orderby,
 			Pageable pageable,String ugroups,String province,String city,String appId,String lotteryType,String stationId) {
-		StringBuffer sql = new StringBuffer("SELECT u.* FROM ((T_BS_APP_AD u LEFT JOIN RELA_BS_APPAD_AND_APP app ON u.ID=app.APP_AD_ID)  "+
+		StringBuffer sql = new StringBuffer("SELECT u.ID,u.CREATER,u.CREATER_TIME,u.IS_DELETED,u.MODIFY,u.MODIFY_TIME,u.AD_STATUS,u.AD_TIME,"
+				+ " u.AD_TYPE,u.APP_WORD,u.APP_AD_NAME,u.APP_IMG_URL,u.AD_END_TIME,u.IMG_OR_WORD,u.AD_START_TIME,u.AD_FONT_COLOR,"
+				+ " u.CREATOR_STATION,u.STATION_AD_STATUS,u.STATION_AD_STATUS_TIME FROM ((T_BS_APP_AD u LEFT JOIN RELA_BS_APPAD_AND_APP app ON u.ID=app.APP_AD_ID)  "+
 				"	 LEFT JOIN RELA_BS_APPAD_AND_UGROUP au ON u.ID=au.APP_AD_ID) LEFT JOIN RELA_BS_APPAD_AND_AREA aarea ON u.id = aarea.APP_AD_ID WHERE u.IS_DELETED='1'  "+
 				"	AND u.AD_STATUS='1' AND app.APP_ID='"+appId+"'"+
 				"   AND u.AD_END_TIME>=CURDATE() AND u.AD_START_TIME<=NOW() ");//AND u.LOTTERY_TYPE='"+lotteryType+"'"
@@ -197,7 +204,9 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 			Object[] queryParams, LinkedHashMap<String, String> orderby,
 			Pageable pageable, String ugroups, String province, String city,
 			String appId, String lotteryType, String stationId) {
-		StringBuffer sql = new StringBuffer("SELECT u.* FROM ((T_BS_APP_AD u LEFT JOIN RELA_BS_APPAD_AND_APP app ON u.ID=app.APP_AD_ID)  "+
+		StringBuffer sql = new StringBuffer("SELECT u.ID,u.CREATER,u.CREATER_TIME,u.IS_DELETED,u.MODIFY,u.MODIFY_TIME,u.AD_STATUS,u.AD_TIME,"
+				+ " u.AD_TYPE,u.APP_WORD,u.APP_AD_NAME,u.APP_IMG_URL,u.AD_END_TIME,u.IMG_OR_WORD,u.AD_START_TIME,u.AD_FONT_COLOR,"
+				+ " u.CREATOR_STATION,u.STATION_AD_STATUS,u.STATION_AD_STATUS_TIME FROM ((T_BS_APP_AD u LEFT JOIN RELA_BS_APPAD_AND_APP app ON u.ID=app.APP_AD_ID)  "+
 				"	 LEFT JOIN RELA_BS_APPAD_AND_UGROUP au ON u.ID=au.APP_AD_ID) LEFT JOIN RELA_BS_APPAD_AND_AREA aarea ON u.id = aarea.APP_AD_ID WHERE u.IS_DELETED='1'  "+
 				"	AND u.AD_STATUS='1' AND app.APP_ID='"+appId+"'"+
 				"   AND u.AD_END_TIME>=CURDATE() AND u.AD_START_TIME<=NOW() ");//AND u.LOTTERY_TYPE='"+lotteryType+"'"
@@ -212,7 +221,9 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	public QueryResult<Notice> getNoticeOfStaAndApp(Class<Notice> entityClass,
 			String whereJpql, Object[] queryParams,
 			LinkedHashMap<String, String> orderby, Pageable pageable,String ugroups,String province,String city,String appId,String lotteryType) {
-		StringBuffer sql = new StringBuffer("SELECT u.* FROM ((T_BS_APP_NOTICE u LEFT JOIN RELA_BS_NOTICE_AND_APP app ON u.ID=app.APP_NOTICE_ID) "+
+		StringBuffer sql = new StringBuffer("SELECT u.ID,u.CREATER,u.CREATER_TIME,u.IS_DELETED,u.MODIFY,u.MODIFY_TIME,u.APP_CATEGORY,"
+				+ " u.APP_NOTICE_NAME,u.APP_NOTICE_WORD,u.NOTICE_ENDTIME,u.LOTTERY_TYPE,u.NOTICE_STATUS,u.NOTICE_STARTTIME,u.NOTICE_FONT_COLOR"
+				+ " FROM ((T_BS_APP_NOTICE u LEFT JOIN RELA_BS_NOTICE_AND_APP app ON u.ID=app.APP_NOTICE_ID) "+
 				"    LEFT JOIN RELA_BS_NOTICE_AND_UGROUP au ON u.ID=au.APP_NOTICE_ID) LEFT JOIN RELA_BS_NOTICE_AND_AERA aarea ON u.id = aarea.NOTICE_ID WHERE u.IS_DELETED='1' "+
 				"   AND u.NOTICE_STATUS='1' AND app.APP_ID='"+appId+"' "+
 				"   AND u.NOTICE_ENDTIME>=CURDATE() AND u.NOTICE_STARTTIME<=CURDATE() AND u.LOTTERY_TYPE='"+lotteryType+"'");
@@ -371,9 +382,11 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	/* (non-Javadoc)
 	 * @see com.bs.outer.service.OuterInterfaceService#getKaiJiangNumberByIssueId(java.lang.Class, java.lang.String, java.lang.String)
 	 */
+//	@Cacheable(value="entityCache",key="#issueNumber#provinceNumber")
 	public Fast3 getKaiJiangNumberByIssueId(String issueNumber,String provinceNumber) {
 		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("kuai3number");
-		String execSql = "SELECT u.* FROM "+tableName +" u  WHERE ISSUE_NUMBER > ? LIMIT 1 ";
+		String execSql = "SELECT u.ID,u.ISSUE_NUMBER,u.NO1,u.NO2,u.NO3,u.THREE_SUM,u.THREE_SPAN,u.BIG_COUNT,u.SMALL_COUNT,u.ODD_COUNT,u.EVEN_COUNT,u.NUM_STATUS "
+				+ " FROM "+tableName +" u  WHERE ISSUE_NUMBER > ? LIMIT 1 ";
 		Object[] queryParams = new Object[]{
 				issueNumber
 		};
@@ -405,7 +418,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		}else{
 			where = " WHERE  "+ issueNumber +" <  (SELECT ISSUE_NUMBER FROM "+ tableName +" ORDER BY ISSUE_NUMBER DESC LIMIT 1)  ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
 		}
-		String execSql = "SELECT * FROM "+tableName + where;
+		String execSql = "SELECT ID,ISSUE_NUMBER,DANMA_ONE,DANMA_TWO,DROWN_NUMBER,CREATE_TIME,STATUS FROM "+tableName + where;
 		Object[] queryParams = new Object[]{
 		};
 		List<Fast3DanMa> fast3AnalysisList = fast3DanMaRepository.getEntityListBySql(Fast3DanMa.class,execSql, queryParams);
@@ -426,7 +439,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		}else{
 			where = " WHERE  "+ issueNumber +" <  (SELECT ISSUE_NUMBER FROM "+ tableName +" ORDER BY ISSUE_NUMBER DESC LIMIT 1)  ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
 		}
-		String execSql = "SELECT * FROM "+tableName + where;
+		String execSql = "SELECT ID,ISSUE_NUMBER,DANMA_ONE,DANMA_TWO,DROWN_NUMBER,CREATE_TIME,STATUS FROM "+tableName + where;
 		Object[] queryParams = new Object[]{
 		};
 		List<Fast3DanMa> fast3AnalysisList = fast3DanMaRepository.getEntityListBySql(Fast3DanMa.class,execSql, queryParams);
@@ -447,7 +460,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		}else{
 			where = " WHERE  "+ issueNumber +" <  (SELECT ISSUE_NUMBER FROM "+ tableName +" ORDER BY ISSUE_NUMBER DESC LIMIT 1)  ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
 		}
-		String execSql = "SELECT * FROM "+tableName + where;
+		String execSql = "SELECT ID,ISSUE_NUMBER,DANMA_ONE,DANMA_TWO,DROWN_NUMBER,CREATE_TIME,STATUS FROM "+tableName + where;
 		Object[] queryParams = new Object[]{
 		};
 		List<Fast3DanMa> fast3AnalysisList = fast3DanMaRepository.getEntityListBySql(Fast3DanMa.class,execSql, queryParams);
@@ -594,7 +607,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		if((null != issueNumber && !"".equals(issueNumber)) ||(null != dsIssueNumber &&!dsIssueNumber.getIssueNumber().equals(issueNumber))){
 			//获取所有follow列表，而后进行加工
 			String tbName2 = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in12follownumber");
-			String selSql2 = "SELECT * FROM " + tbName2;
+			String selSql2 = "SELECT ID,NUMBER,FOLLOW_NUMBER,FOLLOW_COUNT,THREE_FOLLOW_COUNT,NO_FOLLOW_COUNT,THREE_NO_FOLLOW_COUNT FROM " + tbName2;
 			Object[] param = new Object[]{
 			};
 			List<FollowNumberBean> allList = followNumberRepository.getEntityListBySql(FollowNumberBean.class,selSql2,param);
@@ -686,7 +699,7 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 		}else{
 			where = " WHERE "+ issueNumber +"  <  (SELECT CURRENT_ISSUE FROM "+ tableName +" ORDER BY CURRENT_ISSUE DESC LIMIT 1)  ORDER BY CURRENT_ISSUE DESC LIMIT 10  ";
 		}
-		String execSql = "SELECT * FROM "+tableName + where;
+		String execSql = "SELECT ID,CURRENT_ISSUE,LOTTORY_NUMBER,NEXT_ISSUE,NEXT_LOTTORY_NUMBER,CREATE_TIME FROM "+tableName + where;
 		Object[] queryParams = new Object[]{
 		};
 		List<Fast3Same> fast3SameList = fast3SameRepository.getEntityListBySql(Fast3Same.class,execSql, queryParams);

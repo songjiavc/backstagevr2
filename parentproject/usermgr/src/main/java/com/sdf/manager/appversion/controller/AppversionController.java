@@ -45,7 +45,7 @@ import com.sdf.manager.goods.controller.GoodsController;
 @RequestMapping("appversion")
 public class AppversionController extends GlobalExceptionHandler {
 	
-	private Logger logger = LoggerFactory.getLogger(AppversionController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(AppversionController.class);
 	
 	
 	@Autowired
@@ -326,7 +326,7 @@ public class AppversionController extends GlobalExceptionHandler {
 			   resultBean.setStatus("success");
 			  
 			   //日志输出
-				 logger.info("修改应用版本--应用版本id="+id+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+			   LOG.info("修改应用版本--应用版本id="+id+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
 			   
 		   }
 		   else
@@ -357,7 +357,7 @@ public class AppversionController extends GlobalExceptionHandler {
 			   resultBean.setStatus("success");
 			   
 			 //日志输出
-			logger.info("添加应用版本--应用版本code="+appVersionCode+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+			   LOG.info("添加应用版本--应用版本code="+appVersionCode+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
 			   
 		   }
 		   
@@ -464,7 +464,7 @@ public class AppversionController extends GlobalExceptionHandler {
 			 		{
 			 			//2.删除附件
 				 		dirFile = new File(savePath+uploadfile.getUploadRealName());
-				 		logger.info("待删除文件路径："+dirFile);
+				 		LOG.info("待删除文件路径："+dirFile);
 				        // 如果dir对应的文件不存在，或者不是一个目录，则退出
 				 		deleteFlag = dirFile.delete();
 			        	if(deleteFlag)
@@ -474,12 +474,12 @@ public class AppversionController extends GlobalExceptionHandler {
 			   			 	uploadfile.setNewsUuid("");
 			   			 	uploadfile.setIsDeleted(Constants.IS_DELETED);
 			        		uploadfileService.update(uploadfile);
-			        		logger.info("删除附件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+			        		LOG.info("删除附件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
 			        	}
 			        	else
 			        	{
-			        		 logger.error("应用版本数据id为："+appversion.getId()+"的数据没有文件");
-			        		 logger.error("deleteAppversions ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath+";File.exists="+dirFile.exists());
+			        		LOG.error("应用版本数据id为："+appversion.getId()+"的数据没有文件");
+			        		LOG.error("deleteAppversions ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath+";File.exists="+dirFile.exists());
 			        	}
 				        	
 				      //删除附件e
@@ -487,7 +487,7 @@ public class AppversionController extends GlobalExceptionHandler {
 			 		
 			 		
 			 		 //日志输出
-					 logger.info("删除应用版本--应用版本id="+id+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+			 		LOG.info("删除应用版本--应用版本id="+id+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
 				   
 			 	}
 			}
@@ -535,7 +535,7 @@ public class AppversionController extends GlobalExceptionHandler {
 			 		appversionService.update(appversion);
 			 		
 			 		 //日志输出
-					 logger.info("更新应用版本状态--应用版本id="+id+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+			 		LOG.info("更新应用版本状态--应用版本id="+id+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
 				   
 			 	}
 			}
@@ -754,7 +754,7 @@ public class AppversionController extends GlobalExceptionHandler {
 		 ResultBean resultBean = new ResultBean();
 		 String type=getExt(filename);
 		 String uploadfilepath = "/uploadApkFile/";
-		 logger.info("saveFujian？？应用版本名称="+filename);
+		 LOG.info("saveFujian？？应用版本名称="+filename);
 		 Uploadfile uploadfile = uploadfileService.getUploadfileByNewsUuid(uplId);
 		 
 		 //因为一个应用只能有一个图片附件，所以当这个upId有数据的话就进行修改操作，如果没有数据就创建数据
@@ -768,16 +768,16 @@ public class AppversionController extends GlobalExceptionHandler {
 			 boolean deleteFlag = false;//删除附件flag
 			//2.删除附件
 	 		dirFile = new File(savePath+uploadfile.getUploadRealName());
-	 		logger.info("待删除文件路径："+dirFile);
+	 		LOG.info("待删除文件路径："+dirFile);
 	        // 如果dir对应的文件不存在，或者不是一个目录，则退出
         	deleteFlag = dirFile.delete();
         	if(deleteFlag)
         	{//删除附件(清空附件关联newsUuid)
-        		logger.info("saveFujian==删除原附件文件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
+        		LOG.info("saveFujian==删除原附件文件数据--附件id="+uploadfile.getId()+"--操作人="+LoginUtils.getAuthenticatedUserId(httpSession));
         	}
         	else
         	{
-        		logger.error("saveFujian ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath+";File.exists="+dirFile.exists());
+        		LOG.error("saveFujian ERROR==没有找到要删除的附件文件或删除失败，附件路径为="+savePath+";File.exists="+dirFile.exists());
         	}
 		    //删除附件e
 			 
@@ -894,7 +894,7 @@ public class AppversionController extends GlobalExceptionHandler {
 				String maxCode = appverlist.getResultList().get(0).getAppVersionCode();
 				String weihao = maxCode.substring(18, maxCode.length());
 				int num = Integer.parseInt(weihao);
-				String newNum = (++num)+"";
+				String newNum = Integer.toString(++num);
 				int needLen = (GoodsController.SERIAL_NUM_LEN-newNum.length());
 				for(int i=0;i<needLen;i++)
 				{

@@ -56,7 +56,7 @@ public class LottoryToolOuterController
 				ln5In12List=outerInterfaceService.getLn5In12ListByIssueNumber(issueNumber);
 			}
 			
-			if(ln5In12List.size() == 0 ){
+			if(null != ln5In12List &&  ln5In12List.size() == 0 ){
 				rtnMap.put("message","failure");
 				rtnMap.put("status", "0");
 			}else{
@@ -68,9 +68,8 @@ public class LottoryToolOuterController
 			logger.error("彩民工具获取辽宁12选5数据错误！");
 			rtnMap.put("message","failure");
 			rtnMap.put("status", "0");
-		}finally{
-			return rtnMap;
 		}
+		return rtnMap;
 	}
 	
 	/**
@@ -170,7 +169,7 @@ public class LottoryToolOuterController
 	@RequestMapping(value="/get5In12MissAnalysisTop3",method = RequestMethod.GET)
 	public @ResponseBody Map<String,Object> get5In12MissAnalysisTop3(@RequestParam(value="issueNumber",required=false) String issueNumber,@RequestParam(value="provinceNumber",required=true) String provinceNumber)
 	{
-		Map<String,Object> rtnMap = new HashMap<String,Object>();
+		 Map<String,Object> rtnMap = new HashMap<String,Object>();
 		List<Fast3Analysis> fast3AnalysisList = null;
 		try{
 			fast3AnalysisList = outerInterfaceService.get5In12MissAnalysisTop3(issueNumber, provinceNumber);
@@ -186,9 +185,8 @@ public class LottoryToolOuterController
 			logger.error("12选5遗漏统计结果错误！"+ex.getMessage()+"\nissueNumber="+issueNumber+"provinceNumber="+provinceNumber);
 			rtnMap.put("message","failure");
 			rtnMap.put("status", "0");
-		}finally{
-			return rtnMap;
 		}
+		return rtnMap;
 	}
 	
 	/**
@@ -207,13 +205,12 @@ public class LottoryToolOuterController
 			result.setMessage("遗漏数据查询成功！");
 			result.setEntity(fast3Analysis);
 		}catch(Exception ex){
-			ex.printStackTrace();
+			logger.error("error:", ex);
 			logger.error("12选5遗漏数据查询失败！"+ex.getMessage()+"\type="+type+"group="+group+"provinceNumber="+provinceNumber);
 			result.setStatus("failure");
 			result.setMessage("遗漏数据查询失败！");
-		}finally{
-			return result;
 		}
+		return result;
 	}
 	
 	/**
@@ -236,9 +233,8 @@ public class LottoryToolOuterController
 			logger.error("11选5遗漏数据查询失败！"+ex.getMessage()+"\type="+type+"group="+group+"provinceNumber="+provinceNumber);
 			result.setStatus("failure");
 			result.setMessage("遗漏数据查询失败！");
-		}finally{
-			return result;
 		}
+		return result;
 	}
 
 	/**
@@ -279,9 +275,8 @@ public class LottoryToolOuterController
 			ex.printStackTrace();
 			rtnMap.put("message","failure");
 			rtnMap.put("status", "0");
-		}finally{
-			return rtnMap;
 		}
+		return rtnMap;
 	}
 	
 	
