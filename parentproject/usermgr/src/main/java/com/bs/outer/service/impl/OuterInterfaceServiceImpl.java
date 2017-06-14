@@ -34,6 +34,9 @@ import org.springframework.util.StringUtils;
 
 import java.util.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
 @Service("outerInterfaceService")
 @Transactional(propagation = Propagation.REQUIRED)
 public class OuterInterfaceServiceImpl implements OuterInterfaceService {
@@ -95,6 +98,9 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	
 	@Autowired
 	private GlobalCacheService globalCacheService;
+	
+	@Autowired
+	private EntityManager entityManager;
 	
 	//TODO:未完成
 	public QueryResult<Announcement> getAnnouncementOfSta(Class<Announcement> entityClass, String whereJpql, Object[] queryParams, 
@@ -413,10 +419,16 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	public List<Fast3DanMa> getInitDanmaList(String issueNumber,String provinceNumber){
 		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("kuai3danma");
 		String where = null;
+		//获取当前胆码预测最大期号
+		String zisql="SELECT ISSUE_NUMBER FROM "+ tableName +" ORDER BY ISSUE_NUMBER DESC LIMIT 1";
+		Query query =  entityManager.createNativeQuery(zisql);
+		List<String> result=  query.getResultList();
+		
 		if(StringUtils.isEmpty(issueNumber)){
 			where = " ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
 		}else{
-			where = " WHERE  "+ issueNumber +" <  (SELECT ISSUE_NUMBER FROM "+ tableName +" ORDER BY ISSUE_NUMBER DESC LIMIT 1)  ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
+//			where = " WHERE  "+ issueNumber +" <  (SELECT ISSUE_NUMBER FROM "+ tableName +" ORDER BY ISSUE_NUMBER DESC LIMIT 1)  ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
+			where = " WHERE  "+ issueNumber +" <  "+result.get(0)+"  ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
 		}
 		String execSql = "SELECT ID,ISSUE_NUMBER,DANMA_ONE,DANMA_TWO,DROWN_NUMBER,CREATE_TIME,STATUS FROM "+tableName + where;
 		Object[] queryParams = new Object[]{
@@ -434,10 +446,18 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	public List<Fast3DanMa> get5In11InitDanmaList(String issueNumber,String provinceNumber){
 		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in11danma");
 		String where = null;
+		//获取当前胆码预测最大期号
+		String zisql="SELECT ISSUE_NUMBER FROM "+ tableName +" ORDER BY ISSUE_NUMBER DESC LIMIT 1";
+		Query query =  entityManager.createNativeQuery(zisql);
+		List<String> result=  query.getResultList();
+		
+		//result.get(0)
 		if(StringUtils.isEmpty(issueNumber)){
 			where = " ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
 		}else{
-			where = " WHERE  "+ issueNumber +" <  (SELECT ISSUE_NUMBER FROM "+ tableName +" ORDER BY ISSUE_NUMBER DESC LIMIT 1)  ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
+//			where = " WHERE  "+ issueNumber +" <  (SELECT ISSUE_NUMBER FROM "+ tableName +" ORDER BY ISSUE_NUMBER DESC LIMIT 1)  ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
+			where = " WHERE  "+ issueNumber +" <  "+result.get(0)+"  ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
+
 		}
 		String execSql = "SELECT ID,ISSUE_NUMBER,DANMA_ONE,DANMA_TWO,DROWN_NUMBER,CREATE_TIME,STATUS FROM "+tableName + where;
 		Object[] queryParams = new Object[]{
@@ -455,10 +475,15 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	public List<Fast3DanMa> get5In12InitDanmaList(String issueNumber,String provinceNumber){
 		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in12danma");
 		String where = null;
+		String zisql="SELECT ISSUE_NUMBER FROM "+ tableName +" ORDER BY ISSUE_NUMBER DESC LIMIT 1";
+		Query query =  entityManager.createNativeQuery(zisql);
+		List<String> result=  query.getResultList();
+		
 		if(StringUtils.isEmpty(issueNumber)){
 			where = " ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
 		}else{
-			where = " WHERE  "+ issueNumber +" <  (SELECT ISSUE_NUMBER FROM "+ tableName +" ORDER BY ISSUE_NUMBER DESC LIMIT 1)  ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
+//			where = " WHERE  "+ issueNumber +" <  (SELECT ISSUE_NUMBER FROM "+ tableName +" ORDER BY ISSUE_NUMBER DESC LIMIT 1)  ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
+			where = " WHERE  "+ issueNumber +" <  "+result.get(0)+"  ORDER BY ISSUE_NUMBER DESC LIMIT 10 ";
 		}
 		String execSql = "SELECT ID,ISSUE_NUMBER,DANMA_ONE,DANMA_TWO,DROWN_NUMBER,CREATE_TIME,STATUS FROM "+tableName + where;
 		Object[] queryParams = new Object[]{
@@ -536,10 +561,16 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	public List<Fast3Same> getInitSameList(String issueNumber, String provinceNumber) {
 		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("kuai3samenumber");
 		String where = null;
+		String zisql="SELECT CURRENT_ISSUE FROM "+ tableName +" ORDER BY CURRENT_ISSUE DESC LIMIT 1";
+		Query query =  entityManager.createNativeQuery(zisql);
+		List<String> result=  query.getResultList();
+		
 		if(StringUtils.isEmpty(issueNumber)){
 			where = " ORDER BY CURRENT_ISSUE DESC LIMIT 10 ";
 		}else{
-			where = " WHERE "+ issueNumber +"  <  (SELECT CURRENT_ISSUE FROM "+ tableName +" ORDER BY CURRENT_ISSUE DESC LIMIT 1)  ORDER BY CURRENT_ISSUE DESC LIMIT 10  ";
+//			where = " WHERE "+ issueNumber +"  <  (SELECT CURRENT_ISSUE FROM "+ tableName +" ORDER BY CURRENT_ISSUE DESC LIMIT 1)  ORDER BY CURRENT_ISSUE DESC LIMIT 10  ";
+			where = " WHERE "+ issueNumber +"  <  "+result.get(0)+"  ORDER BY CURRENT_ISSUE DESC LIMIT 10  ";
+
 		}
 		String execSql = "SELECT * FROM "+tableName + where;
 		Object[] queryParams = new Object[]{
@@ -554,10 +585,16 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	public List<Fast3Same> get5In11InitSameList(String issueNumber, String provinceNumber) {
 		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in11samenumber");
 		String where = null;
+		String zisql="SELECT CURRENT_ISSUE FROM "+ tableName +" ORDER BY CURRENT_ISSUE DESC LIMIT 1";
+		Query query =  entityManager.createNativeQuery(zisql);
+		List<String> result=  query.getResultList();
+		
 		if(StringUtils.isEmpty(issueNumber)){
 			where = " ORDER BY CURRENT_ISSUE DESC LIMIT 10 ";
 		}else{
-			where = " WHERE "+ issueNumber +"  <  (SELECT CURRENT_ISSUE FROM "+ tableName +" ORDER BY CURRENT_ISSUE DESC LIMIT 1)  ORDER BY CURRENT_ISSUE DESC LIMIT 10  ";
+//			where = " WHERE "+ issueNumber +"  <  (SELECT CURRENT_ISSUE FROM "+ tableName +" ORDER BY CURRENT_ISSUE DESC LIMIT 1)  ORDER BY CURRENT_ISSUE DESC LIMIT 10  ";
+			where = " WHERE "+ issueNumber +"  <  "+result.get(0)+"  ORDER BY CURRENT_ISSUE DESC LIMIT 10  ";
+
 		}
 		String execSql = "SELECT * FROM "+tableName + where;
 		Object[] queryParams = new Object[]{
@@ -694,10 +731,16 @@ public class OuterInterfaceServiceImpl implements OuterInterfaceService {
 	public List<Fast3Same> get5In12InitSameList(String issueNumber, String provinceNumber) {
 		String tableName = "analysis."+globalCacheService.getCacheMap(provinceNumber).get("5in12samenumber");
 		String where = null;
+		String zisql="SELECT CURRENT_ISSUE FROM "+ tableName +" ORDER BY CURRENT_ISSUE DESC LIMIT 1";
+		Query query =  entityManager.createNativeQuery(zisql);
+		List<String> result=  query.getResultList();
+		
 		if(StringUtils.isEmpty(issueNumber)){
 			where = " ORDER BY CURRENT_ISSUE DESC LIMIT 10 ";
 		}else{
-			where = " WHERE "+ issueNumber +"  <  (SELECT CURRENT_ISSUE FROM "+ tableName +" ORDER BY CURRENT_ISSUE DESC LIMIT 1)  ORDER BY CURRENT_ISSUE DESC LIMIT 10  ";
+//			where = " WHERE "+ issueNumber +"  <  (SELECT CURRENT_ISSUE FROM "+ tableName +" ORDER BY CURRENT_ISSUE DESC LIMIT 1)  ORDER BY CURRENT_ISSUE DESC LIMIT 10  ";
+			where = " WHERE "+ issueNumber +"  <  "+result.get(0)+"  ORDER BY CURRENT_ISSUE DESC LIMIT 10  ";
+
 		}
 		String execSql = "SELECT ID,CURRENT_ISSUE,LOTTORY_NUMBER,NEXT_ISSUE,NEXT_LOTTORY_NUMBER,CREATE_TIME FROM "+tableName + where;
 		Object[] queryParams = new Object[]{
